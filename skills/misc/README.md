@@ -37,7 +37,6 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[docker-patterns](./docker-patterns/SKILL.md)** — Docker Compose, multi-stage builds, networking, volumes, security.
 - **[dotnet-patterns](./dotnet-patterns/SKILL.md)** — C#/.NET patterns, DI, EF Core, Minimal APIs. Use only when building .NET applications.
 - **[error-handling](./error-handling/SKILL.md)** — Error-handling review checklist for typed errors, retries, safe messages, logging, and swallowed exceptions.
-- **[eval-harness](./eval-harness/SKILL.md)** — Eval-driven development for AI workflows — define pass/fail criteria, pass@k metrics, regression suites.
 - **[evm-token-decimals](./evm-token-decimals/SKILL.md)** — ERC-20 decimal handling — runtime lookup, chain-aware caching, safe normalization, bridged-token drift.
 - **[fastapi-patterns](./fastapi-patterns/SKILL.md)** — FastAPI project structure, Pydantic v2, DI, auth, testing. Use only when building FastAPI backends.
 - **[flox-environments](./flox-environments/SKILL.md)** — Reproducible dev environments with Flox. Use only when managing reproducible dev environments.

@@ -35,7 +35,6 @@ Active repo skills:
 - `zoom-out`
 - `prototype`
 - `review`
-- `eval-session`
 - `accessibility`
 - `ai-regression-testing`
 - `android-clean-architecture`
@@ -71,7 +70,6 @@ Active repo skills:
 - `docker-patterns`
 - `dotnet-patterns`
 - `error-handling`
-- `eval-harness`
 - `evm-token-decimals`
 - `fastapi-patterns`
 - `flox-environments`

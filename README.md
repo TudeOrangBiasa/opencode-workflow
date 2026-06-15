@@ -57,7 +57,6 @@ Skills I use daily for code work.
 - **[zoom-out](./skills/engineering/zoom-out/SKILL.md)** — Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code.
 - **[prototype](./skills/engineering/prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
 - **[review](./skills/engineering/review/SKILL.md)** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
-- **[eval-session](./skills/engineering/eval-session/SKILL.md)** — Capture agent error patterns as evals, diagnose failures, self-heal workflow.
 
 ### Productivity
 
@@ -104,7 +103,6 @@ General workflow tools, not code-specific.
 - **[docker-patterns](./skills/misc/docker-patterns/SKILL.md)** — Docker patterns.
 - **[dotnet-patterns](./skills/misc/dotnet-patterns/SKILL.md)** — C#/.NET patterns. Use only when building .NET applications.
 - **[error-handling](./skills/misc/error-handling/SKILL.md)** — Error-handling review checklist.
-- **[eval-harness](./skills/misc/eval-harness/SKILL.md)** — Eval-driven development for AI.
 - **[evm-token-decimals](./skills/misc/evm-token-decimals/SKILL.md)** — ERC-20 decimal handling.
 - **[fastapi-patterns](./skills/misc/fastapi-patterns/SKILL.md)** — FastAPI patterns and project structure. Use only when building FastAPI backends.
 - **[flox-environments](./skills/misc/flox-environments/SKILL.md)** — Reproducible dev environments with Flox. Use only when managing Flox environments.

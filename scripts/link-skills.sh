@@ -18,7 +18,6 @@ ACTIVE_SKILLS=(
   skills/engineering/zoom-out
   skills/engineering/prototype
   skills/engineering/review
-  skills/engineering/eval-session
   skills/misc/accessibility
   skills/misc/ai-regression-testing
   skills/misc/android-clean-architecture
@@ -54,7 +53,6 @@ ACTIVE_SKILLS=(
   skills/misc/docker-patterns
   skills/misc/dotnet-patterns
   skills/misc/error-handling
-  skills/misc/eval-harness
   skills/misc/evm-token-decimals
   skills/misc/fastapi-patterns
   skills/misc/flox-environments

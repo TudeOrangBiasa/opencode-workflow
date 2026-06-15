@@ -28,11 +28,75 @@ Next owner actions: who does what next
 
 No version bump allowed for unreleased work-in-progress. Version decision is required for any merged change.
 
-## Changelog Categories
+## Changelog
 
-`Added` `Changed` `Fixed` `Removed` `Security` `Migration`
+### When to Update
 
-Each entry: `- Category: short description (PR/issue link)`
+| Trigger | Action |
+|---------|--------|
+| Periodic (every N changes / session end) | Append entries to `CHANGELOG.md` under `[Unreleased]` |
+| Pre-release | Move `[Unreleased]` entries to versioned section, bump version |
+
+### Format (Caveman Style)
+
+```markdown
+# Changelog
+
+## [Unreleased]
+- Feature: invoice export PDF
+- Fix: pricing discount calc
+- Checkout: 4 steps → 2
+
+## [1.2.0] - 2026-06-15
+- Feature: multi-currency support
+- Feature: PDF export
+- Fix: pricing discount calc
+- Checkout: 4 steps → 2
+
+## [1.1.0] - 2026-06-10
+- Feature: dark mode
+- Fix: login redirect loop
+```
+
+Rules:
+- Terse, no fluff. Caveman style.
+- User-facing only. No internal refactor, no debug cleanup.
+- One line per change. No paragraphs.
+- Prefix: `Feature:`, `Fix:`, `Breaking:`, `Security:` (optional, use only when clarifying)
+- Date format: `YYYY-MM-DD`
+
+### File Location
+
+```
+CHANGELOG.md  (project root)
+```
+
+Not in `.scratch/` — changelog is a first-class project artifact, not temporary.
+
+### What Goes In
+
+| Type | Include? | Example |
+|------|----------|---------|
+| New user-facing feature | ✅ | `Feature: invoice PDF export` |
+| Bug fix user felt | ✅ | `Fix: pricing calc wrong on discount` |
+| Breaking change | ✅ | `Breaking: API v1 removed, use v2` |
+| Security fix | ✅ | `Security: XSS in comment field` |
+| Internal refactor | ❌ | (git log only) |
+| Debug cleanup | ❌ | (git log only) |
+| Docs update | ❌ | (git log only) |
+| Dependency bump | ❌ | (git log only) |
+| CI/CD change | ❌ | (git log only) |
+
+### Dual-Layer for Agents
+
+Agents can read `CHANGELOG.md` directly — it's terse enough for context window. For detailed context, agent reads git log for specific version tag.
+
+```bash
+# Agent wants detail for v1.2.0
+git log v1.1.0..v1.2.0 --oneline
+```
+
+Changelog = summary for humans + quick-parse for agents. Git log = detail when needed.
 
 ## Team-Friendly Rules
 

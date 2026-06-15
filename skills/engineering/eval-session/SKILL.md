@@ -1,165 +1,153 @@
 ---
 name: eval-session
-description: Use when capturing agent error patterns from a session, creating eval definitions, logging eval runs, or diagnosing eval failures for self-healing. Triggers on "create eval", "evaluate session", "eval this", "run eval", "self-heal", "diagnose eval".
+description: Use when analyzing a session for agent errors, user frustration, repeated mistakes, or token waste. Scans conversation history, detects patterns, creates evals in .scratch/evals/. Triggers on "eval session", "evaluate this", "what went wrong", "diagnose session", "self-heal", "check mistakes".
 ---
 
 # Eval Session
 
-Create and manage workspace-local evals from session observations. Evals live in `.scratch/evals/` — each workspace tracks its own agent performance.
+Analyze the current session for agent failures, user frustration, and repeated mistakes. Dynamically create evals from observed patterns. Uses `eval-harness` framework for grader types and pass@k metrics.
 
 ## When to Activate
 
-- User observed agent mistakes and wants to capture them as evals
-- User says "create eval", "evaluate this session", "eval this"
-- User wants to diagnose why an eval failed and fix the workflow
-- User wants self-healing: update evals/harness based on what worked
-
-## Quick Start
-
-```
-User: "eval session ini, gw buang banyak token di grep"
-→ Capture error pattern → create eval definition → store in .scratch/evals/
-```
+- User says "eval session", "what went wrong", "diagnose session"
+- User expresses frustration ("wasting token", "kok gini", "kenapa", "lagi")
+- Session has repeated tool failures or scope creep
+- User wants to capture lessons learned for self-healing
 
 ## Workflow
 
-### 1. Capture Error Pattern
+### 1. Scan Session
 
-Ask user (or observe from conversation):
-- What went wrong? (token waste, scope creep, missing verification, etc.)
-- What should have happened instead?
-- How to grade it? (code-based deterministic, or model-based)
+Analyze conversation history for these signals:
 
-### 2. Create Eval Definition
+**User Frustration Signals:**
+- Explicit: "wasting token", "sia-sia", "buang token", "boros", "kok gini", "kenapa", "lagi lagi"
+- Implicit: repeated corrections, "sudah gw bilang", "itu tadi", short impatient replies
+- Silence: user stops responding after agent mistakes
+
+**Agent Error Patterns:**
+- Tool loops: > 3 grep/search with 0 results (circuit breaker missing)
+- Scope creep: agent added changes user didn't ask for
+- Missing skills: agent worked on UI without loading `impeccable`
+- Debug leftovers: console.log, debugger, temp code in commits
+- Token waste: bash grep instead of built-in grep (rtk), repeated small reads
+- File pollution: screenshots/scripts in workspace root or /tmp/
+- Missing verification: UI changes without browser-qa
+
+**Log Sources (if available):**
+- `.scratch/afk-sessions/` — AFK session logs
+- `.scratch/evals/` — previous eval definitions
+- `git log --oneline -10` — recent commit patterns
+- `git diff --stat HEAD~1` — what changed recently
+
+### 2. Classify Findings
+
+For each finding, classify:
+
+| Dimension | Options |
+|-----------|---------|
+| Severity | HIGH (token waste > 50%, user frustrated, broken output) / MEDIUM / LOW |
+| Category | tool-misuse, scope-creep, missing-skill, debug-leftover, verification-gap, token-waste |
+| Repeat | First time / Repeated (seen in previous evals) |
+| Grader | Code-based (deterministic) / Model-based (judgment) / Human |
+
+### 3. Create Eval Definition
 
 Create file: `.scratch/evals/<session-name>.md`
 
-Template:
+Use `eval-harness` grader types:
+- **Code-based**: grep, test, build — deterministic, preferred
+- **Model-based**: LLM judges output quality — for subjective evals
+- **Human**: flag for manual review — ambiguous cases
+
+Use `eval-harness` metrics:
+- pass@1: first attempt success rate
+- pass@3: success within 3 attempts
+- pass^3: all k trials succeed (critical paths)
+
+### 4. Apply Fixes
+
+For each HIGH severity finding:
+1. Identify which agent/skill needs updating
+2. Make the fix (update agent rules, add checklist, adjust skill)
+3. Verify fix works
+4. Log in Self-Healing table
+
+For MEDIUM/LOW:
+- Log for tracking, fix opportunistically
+
+### 5. Self-Heal
+
+If a finding is repeated (seen in previous evals):
+- The previous fix didn't work — escalate
+- Update the agent/skill more aggressively
+- Consider creating a new dedicated skill if pattern persists
+
+## Output Format
 
 ```markdown
-# Eval: <session-name>
+# Session Eval: <name>
 
-**Session:** <brief description>
 **Date:** YYYY-MM-DD
-**Model:** <model used>
+**Model:** <model>
+**Session summary:** <what user was trying to do>
 
-## Evals
+## Findings
 
-### EVAL-01: <error-pattern-name>
-**Task:** What the agent should do
-**Failure observed:** What actually happened
-**Grader:** How to check (code-based or model-based)
-**Severity:** HIGH / MEDIUM / LOW
+### [SEVERITY] <finding-name>
+- **Category:** tool-misuse / scope-creep / missing-skill / etc.
+- **Evidence:** <what happened in conversation>
+- **Impact:** <token waste, user frustration, broken output>
+- **Grader:** code-based / model-based / human
+- **Repeat:** first / repeated
 
-### EVAL-02: ...
-(repeat for each error pattern)
+(repeat for each finding)
 
 ## Metrics
 
-| Eval | Result | Target | Verdict |
-|------|--------|--------|---------|
-| EVAL-01 | FAIL | 100% | 🔴 |
-| ... | ... | ... | ... |
+| Finding | Severity | Category | Repeat | Verdict |
+|---------|----------|----------|--------|---------|
+| ... | HIGH | tool-misuse | first | 🔴 |
 
-**Overall pass@1:** X%
+**pass@1:** X%
 
-## Fix Checklist
+## Fixes Applied
 
-□ Action 1
-□ Action 2
-□ Action 3
+| Finding | Fix | Agent/Skill Updated |
+|---------|-----|---------------------|
+| ... | ... | orchestrator.md |
 
 ## Self-Healing Log
 
-| Date | Eval | Fix Applied | Result |
-|------|------|-------------|--------|
+| Date | Finding | Fix Attempted | Result |
+|------|---------|---------------|--------|
 | | | | |
 ```
 
-### 3. Diagnose Failures
+## Integration
 
-When an eval fails, run diagnosis loop:
+- `eval-harness` — Grader types, pass@k metrics, eval workflow (define → implement → evaluate → report)
+- `verify-evidence` — Tool-based verification checklist
+- `context-budget` — Token overhead audit
+- `diagnose` — Diagnosis loop for hard bugs
+- `impeccable` — UI/UX gate (load before any frontend work)
 
-1. **Reproduce**: What exact agent behavior triggered the failure?
-2. **Root cause**: Is it a skill gap, tool misuse, or prompt issue?
-3. **Fix**: Update skill, add checklist item, or adjust eval grader
-4. **Verify**: Re-run eval to confirm fix works
-5. **Log**: Record in Self-Healing Log table
+## Example: Session Analysis
 
-### 4. Update Harness
+User says: "eval session ini, gw buang banyak token di grep"
 
-If diagnosis reveals a systemic gap:
-- Update the relevant skill (e.g., add checklist to `diagnose`, `review`)
-- Or create a new skill if no existing skill covers the gap
-- Record the change in the eval's Self-Healing Log
+Skill scans conversation:
+- Finds: 47 grep calls, 0 results, no explore subagent
+- Finds: user said "wasting my token" at turn 12
+- Finds: agent added console.log to 3 files without asking
+- Finds: no browser-qa after CSS change
 
-## Eval Conventions
-
-### Severity Levels
-
-| Level | Meaning | Action |
-|-------|---------|--------|
-| HIGH | Token waste > 50%, user frustration, broken output | Fix immediately, add skill guardrail |
-| MEDIUM | Suboptimal but functional, minor waste | Fix in next session |
-| LOW | Cosmetic, preference, minor overhead | Track, fix opportunistically |
-
-### Grader Types
-
-- **Code-based**: Deterministic (grep, test, build). Preferred.
-- **Model-based**: LLM judges output quality. Use for subjective evals.
-- **Human**: Flag for manual review. Use for ambiguous cases.
-
-### pass@k Targets
-
-- Capability evals: pass@3 >= 90%
-- Regression evals: pass^3 = 100% for critical paths
-- Agent behavior evals: pass@1 >= 80% after self-healing
-
-## Storage
-
-```
-.scratch/
-  evals/
-    <session-name>.md       # Eval definition + metrics + self-healing log
-    <session-name>.log      # Raw run history (optional)
-```
-
-Evals are workspace-local. Each project tracks its own agent performance patterns.
-
-## Integration with Existing Skills
-
-- `eval-harness` — Theory and formal framework for eval-driven development
-- `verify-evidence` — Tool-based verification checklist (feeds eval graders)
-- `context-budget` — Token overhead audit (feeds token-waste evals)
-- `diagnose` — Diagnosis loop for hard bugs (same pattern for eval failures)
-
-## Example: Token Waste Eval
-
-User observes: "I used 100+ grep calls searching for a pattern that didn't exist"
-
-Created eval:
+Creates eval:
 ```markdown
-### EVAL-02: Search Circuit Breaker
-**Task:** If grep/search returns 0 results for 3 consecutive attempts on same pattern, STOP and delegate to `explore` subagent.
-**Failure observed:** 100+ sequential grep commands, 0 matches, no subagent
-**Grader:** Two-part:
-1. Circuit breaker: 3 consecutive 0-results = FAIL.
-2. Total guard: > 10 grep/search calls for same task without finding target = FAIL.
-**Severity:** HIGH — token waste, user explicitly complained
+### Search Circuit Breaker Missing
+- **Category:** tool-misuse
+- **Evidence:** 47 grep calls with 0 results, no circuit breaker
+- **Impact:** HIGH — token waste, user explicitly frustrated
+- **Grader:** code-based (count grep calls with 0 results)
+- **Fix:** Add circuit breaker rule to orchestrator.md
 ```
-
-Self-healing: After creating this eval, the agent's `AGENTS.md` or relevant skill could be updated with:
-> "If 3+ search attempts return 0 results, stop and delegate to `explore` subagent."
-
-## Corrected Eval Patterns
-
-See `.scratch/evals/eval-agent-error-patterns.md` for grilled eval definitions with corrected graders. Key corrections applied to agent files:
-
-- **Skill prerequisite**: Universal check in orchestrator/reviewer — verify repo prerequisites before repo-aware skills
-- **Circuit breaker**: In orchestrator — 3 consecutive 0-results = stop, delegate to explore
-- **impeccable gate**: In orchestrator/reviewer — load impeccable before UI work, extract design.md for existing projects
-- **rtk preference**: In AGENTS.md — use built-in grep/glob/read over shell equivalents
-- **Scope freeze**: In orchestrator — ask "anything else?" before adding unrelated changes
-- **Debug removal**: In builder — grep modified files for debug artifacts before commit
-- **Commit hygiene**: In orchestrator — show diff summary, confirm only intended files staged
-- **Artifact placement**: In builder — .scratch/ not workspace root or /tmp/

@@ -20,6 +20,10 @@ Load this skill when orchestrator or reviewer needs independent evidence. Do not
 - No acceptance criteria AND no high-risk/AFK/reviewer evidence need exists
 - Review is purely style/naming suggestions
 
+## Eval Pattern Integration
+
+If `.scratch/evals/eval-agent-error-patterns.md` exists, cross-reference verification evidence against known agent error patterns. Flag any pattern violations as part of the evidence report.
+
 ## Evidence Mapping
 
 Map each acceptance criterion to a verifiable signal. Run commands, inspect output.

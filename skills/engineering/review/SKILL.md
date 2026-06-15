@@ -21,6 +21,7 @@ Use `reviewer` directly for small per-slice review. Use this skill for branch/PR
    - commit list when relevant: `git log <fixed-point>..HEAD --oneline`
    - spec source: issue refs, user-provided path, or matching file under `docs/`, `specs/`, `.scratch/`
    - standards sources: `AGENTS.md`, `CONTEXT.md`, `docs/adr/`, `docs/agents/`, `CONTRIBUTING.md`, style/config files
+   - eval patterns: `.scratch/evals/eval-agent-error-patterns.md` if it exists — check diff against known agent error patterns
 
 3. **Run review passes** - for branch/PR/WIP review, spawn up to two read-only fresh-context subagents in parallel:
    - **Behavior**: spec alignment, missing requirements, scope creep, correctness, regressions, verification gaps
@@ -55,7 +56,7 @@ Inputs:
 
 Be direct, demanding, and specific. Do not be rude. If the diff makes the codebase messier, say so clearly.
 
-Check aggressively for: code-judo simplification, spaghetti growth, wrong layer, weak abstraction, type boundary smell, missing canonical helper reuse, and brittle atomicity/sequencing.
+Check aggressively for: code-judo simplification, spaghetti growth, wrong layer, weak abstraction, type boundary smell, missing canonical helper reuse, brittle atomicity/sequencing, and agent error patterns from `.scratch/evals/eval-agent-error-patterns.md` (scope creep, debug artifacts, commit hygiene, circuit breaker violations).
 
 Stay bounded to the diff and touched area. Suggest /improve-codebase-architecture only if the issue is broader than this review.
 

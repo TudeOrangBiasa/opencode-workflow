@@ -122,6 +122,10 @@ ACTIVE_SKILLS=(
   skills/productivity/grill-me
   skills/productivity/handoff
   skills/productivity/write-a-skill
+  skills/personal/eval
+  skills/personal/openviking
+  skills/personal/ddev
+  skills/personal/idea-fragments
 )
 
 # If the destination is a symlink that resolves into this repo, we'd end up

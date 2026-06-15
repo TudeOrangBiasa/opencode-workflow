@@ -20,6 +20,7 @@ Small set of agents, each with a single narrow responsibility.
 | `planner` | subagent | Expensive | Read-only planning, issue breakdown, risk ordering |
 | `builder` | subagent | Cheap | Narrow bounded code edits, verification, status report |
 | `reviewer` | subagent | Expensive/Medium | Behavior + Change Health diff review, escalation hints |
+| `session-evaluator` | subagent | Medium | Agent behavior audit: tool efficiency, skills, scope, token waste |
 | `browser-qa` | subagent | Expensive (browser) | Browser QA: layout, responsive, console/network, data consistency |
 | `explore` (built-in) | — | Cheap | Built-in OpenCode read-only discovery agent |
 | `scout` (built-in) | — | Cheap | Built-in OpenCode external docs / dependency / upstream source research |

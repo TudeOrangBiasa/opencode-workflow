@@ -127,6 +127,7 @@ General workflow tools, not code-specific.
 - **[laravel-verification](./skills/misc/laravel-verification/SKILL.md)** — Laravel verification loop.
 - **[mcp-server-patterns](./skills/misc/mcp-server-patterns/SKILL.md)** — Build MCP servers.
 - **[mysql-patterns](./skills/misc/mysql-patterns/SKILL.md)** — MySQL/MariaDB patterns.
+- **[modular-monolith-patterns](./skills/misc/modular-monolith-patterns/SKILL.md)** — Modular monolith architecture — domain separation, Client/Implementation pattern, ArchUnit enforcement.
 - **[nestjs-patterns](./skills/misc/nestjs-patterns/SKILL.md)** — NestJS module architecture. Use only when building NestJS APIs.
 - **[nextjs-turbopack](./skills/misc/nextjs-turbopack/SKILL.md)** — Next.js with Turbopack. Use only when using Next.js + Turbopack.
 - **[nodejs-keccak256](./skills/misc/nodejs-keccak256/SKILL.md)** — Ethereum hashing in Node.js. Use only when computing Ethereum hashes.

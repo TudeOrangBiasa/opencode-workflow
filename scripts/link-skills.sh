@@ -77,6 +77,7 @@ ACTIVE_SKILLS=(
   skills/misc/laravel-verification
   skills/misc/mcp-server-patterns
   skills/misc/mysql-patterns
+  skills/misc/modular-monolith-patterns
   skills/misc/nestjs-patterns
   skills/misc/nextjs-turbopack
   skills/misc/nodejs-keccak256

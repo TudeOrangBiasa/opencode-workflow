@@ -94,6 +94,7 @@ Active repo skills:
 - `laravel-verification`
 - `mcp-server-patterns`
 - `mysql-patterns`
+- `modular-monolith-patterns`
 - `nestjs-patterns`
 - `nextjs-turbopack`
 - `nodejs-keccak256`

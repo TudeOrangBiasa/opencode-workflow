@@ -61,6 +61,7 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[laravel-verification](./laravel-verification/SKILL.md)** — Laravel verification loop — env checks, Pint, PHPStan, tests, security audit, migrations, deploy readiness.
 - **[mcp-server-patterns](./mcp-server-patterns/SKILL.md)** — Build MCP servers with Node/TS SDK — tools, resources, prompts, transport.
 - **[mysql-patterns](./mysql-patterns/SKILL.md)** — MySQL/MariaDB schema, indexing, queries, transactions, connection pools, replication.
+- **[modular-monolith-patterns](./modular-monolith-patterns/SKILL.md)** — Modular monolith architecture — domain separation, Client/Implementation pattern, ArchUnit enforcement, migration to microservices.
 - **[nestjs-patterns](./nestjs-patterns/SKILL.md)** — NestJS modules, controllers, DTOs, guards, interceptors. Use only when building NestJS APIs.
 - **[nextjs-turbopack](./nextjs-turbopack/SKILL.md)** — Next.js with Turbopack — config, loaders, migration. Use only when using Next.js with Turbopack.
 - **[nodejs-keccak256](./nodejs-keccak256/SKILL.md)** — Ethereum Keccak-256 hashing in JS/TS. Use only when computing Ethereum hashes in JavaScript/TypeScript.

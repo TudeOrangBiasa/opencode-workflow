@@ -1,8 +1,105 @@
 # Misc
 
-Tools I keep around but rarely use.
+Occasional specialist capabilities. Use only when the specific domain appears.
 
-- **[git-guardrails-claude-code](./git-guardrails-claude-code/SKILL.md)** — Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, etc.) before they execute.
-- **[migrate-to-shoehorn](./migrate-to-shoehorn/SKILL.md)** — Migrate test files from `as` type assertions to @total-typescript/shoehorn.
-- **[scaffold-exercises](./scaffold-exercises/SKILL.md)** — Create exercise directory structures with sections, problems, solutions, and explainers.
-- **[setup-pre-commit](./setup-pre-commit/SKILL.md)** — Set up Husky pre-commit hooks with lint-staged, Prettier, type checking, and tests.
+- **[accessibility](./accessibility/SKILL.md)** — Frontend accessibility patterns for forms, ARIA, keyboard nav, and screen readers.
+- **[ai-regression-testing](./ai-regression-testing/SKILL.md)** — Regression testing for AI-assisted dev — sandbox API tests, bug-check workflow, AI blind spot patterns.
+- **[android-clean-architecture](./android-clean-architecture/SKILL.md)** — Clean Architecture for Android/KMP — modules, UseCases, Repositories, Room/SQLDelight/Ktor, Koin/Hilt.
+- **[angular-developer](./angular-developer/SKILL.md)** — Angular code generation, signals, forms, DI, routing, SSR, testing. Use only when working in Angular projects.
+- **[api-connector-builder](./api-connector-builder/SKILL.md)** — Build API connectors matching the host repo's existing integration pattern.
+- **[api-design](./api-design/SKILL.md)** — REST/API design checklist for endpoint naming, status codes, pagination, filtering, errors, and versioning.
+- **[architecture-decision-records](./architecture-decision-records/SKILL.md)** — Capture architectural decisions as structured ADRs.
+- **[backend-patterns](./backend-patterns/SKILL.md)** — Backend architecture patterns — API design, repo/service layers, caching, error handling, auth, rate limiting.
+- **[bun-runtime](./bun-runtime/SKILL.md)** — Bun as JS/TS runtime, package manager, bundler, test runner, and Node migration. Use only when adopting Bun.
+- **[canary-watch](./canary-watch/SKILL.md)** — Post-deploy monitoring for HTTP, console errors, assets, performance, API health, SSE.
+- **[click-path-audit](./click-path-audit/SKILL.md)** — Trace button click paths for sequential-undo, race, stale-closure, and dead-path bugs in shared state.
+- **[clickhouse-io](./clickhouse-io/SKILL.md)** — ClickHouse schema design, queries, partitioning, ingestion. Use only when working with ClickHouse.
+- **[codebase-onboarding](./codebase-onboarding/SKILL.md)** — Analyze unfamiliar codebases; generate onboarding guide and AGENTS.md notes.
+- **[coding-standards](./coding-standards/SKILL.md)** — Baseline coding conventions (naming, readability, immutability). Use only when enforcing coding standards across projects.
+- **[compose-multiplatform-patterns](./compose-multiplatform-patterns/SKILL.md)** — Compose Multiplatform patterns — state management, type-safe navigation, theming, performance.
+- **[context-budget](./context-budget/SKILL.md)** — OpenCode context overhead audit across agents, skills, MCP servers, and repo instructions.
+- **[cpp-coding-standards](./cpp-coding-standards/SKILL.md)** — Modern C++17/20 conventions, RAII, smart pointers. Use only when writing C++ code.
+- **[cpp-testing](./cpp-testing/SKILL.md)** — C++ testing with GoogleTest, CMake/CTest, sanitizers. Use only when writing C++ tests.
+- **[csharp-testing](./csharp-testing/SKILL.md)** — C# testing with xUnit, NUnit, Moq, FluentAssertions. Use only when writing C# tests.
+- **[dart-flutter-patterns](./dart-flutter-patterns/SKILL.md)** — Dart/Flutter patterns — null safety, BLoC/Riverpod, GoRouter, Dio, Freezed, testing.
+- **[data-scraper-agent](./data-scraper-agent/SKILL.md)** — Build AI-powered data collection agents — scrapes on schedule, enriches with free-tier LLM, stores to Notion/Sheets or equivalent.
+- **[database-migrations](./database-migrations/SKILL.md)** — Safe, reversible database migration patterns.
+- **[database-review](./database-review/SKILL.md)** — Database review checklist for schema, indexes, RLS, transactions, query performance, and data integrity.
+- **[deep-research](./deep-research/SKILL.md)** — Multi-source deep research with web search — cited reports, competitive analysis, due diligence.
+- **[defi-amm-security](./defi-amm-security/SKILL.md)** — Security checklist for Solidity AMM contracts — reentrancy, donation attacks, TWAP, slippage.
+- **[deployment-patterns](./deployment-patterns/SKILL.md)** — Deployment workflows — rolling/blue-green/canary, Docker multi-stage, CI/CD, health checks, rollback.
+- **[design-system](./design-system/SKILL.md)** — Generate, audit, or review design systems for visual consistency.
+- **[django-celery](./django-celery/SKILL.md)** — Django + Celery async task patterns and testing. Use only when adding background jobs to Django.
+- **[django-patterns](./django-patterns/SKILL.md)** — Django architecture, DRF, ORM, caching, signals. Use only when building Django applications.
+- **[django-security](./django-security/SKILL.md)** — Django security — auth, CSRF, XSS, SQL injection, headers. Use only when hardening Django applications.
+- **[django-tdd](./django-tdd/SKILL.md)** — Django testing with pytest-django, factory_boy, TDD. Use only when writing Django tests.
+- **[django-verification](./django-verification/SKILL.md)** — Django pre-deployment verification loop. Use only when verifying Django projects before PR/deploy.
+- **[docker-patterns](./docker-patterns/SKILL.md)** — Docker Compose, multi-stage builds, networking, volumes, security.
+- **[dotnet-patterns](./dotnet-patterns/SKILL.md)** — C#/.NET patterns, DI, EF Core, Minimal APIs. Use only when building .NET applications.
+- **[error-handling](./error-handling/SKILL.md)** — Error-handling review checklist for typed errors, retries, safe messages, logging, and swallowed exceptions.
+- **[eval-harness](./eval-harness/SKILL.md)** — Eval-driven development for AI workflows — define pass/fail criteria, pass@k metrics, regression suites.
+- **[evm-token-decimals](./evm-token-decimals/SKILL.md)** — ERC-20 decimal handling — runtime lookup, chain-aware caching, safe normalization, bridged-token drift.
+- **[fastapi-patterns](./fastapi-patterns/SKILL.md)** — FastAPI project structure, Pydantic v2, DI, auth, testing. Use only when building FastAPI backends.
+- **[flox-environments](./flox-environments/SKILL.md)** — Reproducible dev environments with Flox. Use only when managing reproducible dev environments.
+- **[flutter-dart-code-review](./flutter-dart-code-review/SKILL.md)** — Flutter/Dart code review — widgets, state, null safety. Use only when reviewing Flutter/Dart code.
+- **[fsharp-testing](./fsharp-testing/SKILL.md)** — F# testing with Expecto, FsCheck, NUnit. Use only when writing F# tests.
+- **[git-workflow](./git-workflow/SKILL.md)** — Branching strategies, commit conventions, merge vs rebase, PR workflow.
+- **[github-ops](./github-ops/SKILL.md)** — GitHub operations — issue triage, PR management, CI/CD debug, releases, security alerts via gh CLI.
+- **[golang-patterns](./golang-patterns/SKILL.md)** — Idiomatic Go patterns, error handling, concurrency. Use only when writing Go code.
+- **[golang-testing](./golang-testing/SKILL.md)** — Go testing — table-driven tests, benchmarks, fuzzing. Use only when writing Go tests.
+- **[hexagonal-architecture](./hexagonal-architecture/SKILL.md)** — Ports & Adapters architecture. Use only when designing or refactoring toward hexagonal architecture.
+- **[ios-icon-gen](./ios-icon-gen/SKILL.md)** — Generate iOS app icons at all required sizes. Use only when generating iOS app icons.
+- **[java-coding-standards](./java-coding-standards/SKILL.md)** — Java 17+ conventions for Spring Boot and Quarkus. Use only when writing Java code.
+- **[jpa-patterns](./jpa-patterns/SKILL.md)** — JPA/Hibernate entity mapping, fetch strategies, caching. Use only when working with JPA.
+- **[kotlin-coroutines-flows](./kotlin-coroutines-flows/SKILL.md)** — Kotlin coroutines and Flow structured concurrency. Use only when working with Kotlin coroutines.
+- **[kotlin-exposed-patterns](./kotlin-exposed-patterns/SKILL.md)** — JetBrains Exposed ORM patterns. Use only when using JetBrains Exposed.
+- **[kotlin-ktor-patterns](./kotlin-ktor-patterns/SKILL.md)** — Ktor HTTP API patterns with Koin DI. Use only when building Ktor applications.
+- **[kotlin-patterns](./kotlin-patterns/SKILL.md)** — Idiomatic Kotlin patterns, null safety, sealed classes. Use only when writing Kotlin code.
+- **[kotlin-testing](./kotlin-testing/SKILL.md)** — Kotlin testing with Kotest, MockK, Kover. Use only when writing Kotlin tests.
+- **[kubernetes-patterns](./kubernetes-patterns/SKILL.md)** — K8s workload patterns, probes, RBAC, HPA, kubectl. Use only when writing K8s manifests or debugging clusters.
+- **[laravel-patterns](./laravel-patterns/SKILL.md)** — Laravel app structure, Eloquent, routing, form requests, API resources.
+- **[laravel-security](./laravel-security/SKILL.md)** — Laravel security — auth, Eloquent safety, CSRF, XSS, API security, file uploads, production config.
+- **[laravel-verification](./laravel-verification/SKILL.md)** — Laravel verification loop — env checks, Pint, PHPStan, tests, security audit, migrations, deploy readiness.
+- **[mcp-server-patterns](./mcp-server-patterns/SKILL.md)** — Build MCP servers with Node/TS SDK — tools, resources, prompts, transport.
+- **[mysql-patterns](./mysql-patterns/SKILL.md)** — MySQL/MariaDB schema, indexing, queries, transactions, connection pools, replication.
+- **[nestjs-patterns](./nestjs-patterns/SKILL.md)** — NestJS modules, controllers, DTOs, guards, interceptors. Use only when building NestJS APIs.
+- **[nextjs-turbopack](./nextjs-turbopack/SKILL.md)** — Next.js with Turbopack — config, loaders, migration. Use only when using Next.js with Turbopack.
+- **[nodejs-keccak256](./nodejs-keccak256/SKILL.md)** — Ethereum Keccak-256 hashing in JS/TS. Use only when computing Ethereum hashes in JavaScript/TypeScript.
+- **[nuxt4-patterns](./nuxt4-patterns/SKILL.md)** — Nuxt 4 patterns — hydration safety, route rules, data fetching, lazy loading.
+- **[perl-patterns](./perl-patterns/SKILL.md)** — Modern Perl conventions, Moose/Moo, DBI, testing. Use only when writing Perl code.
+- **[perl-security](./perl-security/SKILL.md)** — Perl security — taint mode, SQL injection, XSS. Use only when hardening Perl applications.
+- **[perl-testing](./perl-testing/SKILL.md)** — Perl testing with Test::More, TAP, mocking. Use only when writing Perl tests.
+- **[php-review](./php-review/SKILL.md)** — PHP/Laravel review checklist for framework correctness, security, static analysis, and conventions.
+- **[postgres-patterns](./postgres-patterns/SKILL.md)** — PostgreSQL schema, indexing, RLS, queries, and config patterns.
+- **[prediction-market-risk-review](./prediction-market-risk-review/SKILL.md)** — Review prediction-market/trading workflows for compliance, safety, data quality, execution risk.
+- **[prisma-patterns](./prisma-patterns/SKILL.md)** — Prisma ORM patterns — schema, queries, transactions, pagination, soft delete, serverless pools, critical traps.
+- **[production-audit](./production-audit/SKILL.md)** — Local-evidence production readiness audit with score and blockers.
+- **[python-patterns](./python-patterns/SKILL.md)** — Idiomatic Python patterns, type hints, decorators. Use only when writing Python code.
+- **[python-testing](./python-testing/SKILL.md)** — Python testing with pytest, fixtures, mocking. Use only when writing Python tests.
+- **[pytorch-patterns](./pytorch-patterns/SKILL.md)** — PyTorch training loops, data loading, GPU optimization. Use only when building PyTorch deep learning pipelines.
+- **[quarkus-patterns](./quarkus-patterns/SKILL.md)** — Quarkus CDI, Panache, RESTEasy Reactive, Camel. Use only when building Quarkus services.
+- **[quarkus-security](./quarkus-security/SKILL.md)** — Quarkus security — JWT, @RolesAllowed, CORS, validation. Use only when securing Quarkus applications.
+- **[quarkus-tdd](./quarkus-tdd/SKILL.md)** — Quarkus TDD with REST Assured, Camel testing, JaCoCo. Use only when doing TDD for Quarkus.
+- **[quarkus-verification](./quarkus-verification/SKILL.md)** — Quarkus pre-deployment verification loop. Use only when verifying Quarkus projects before PR/deploy.
+- **[react-patterns](./react-patterns/SKILL.md)** — React 18/19 patterns: hooks, RSC boundaries, Suspense, forms, state management.
+- **[react-performance](./react-performance/SKILL.md)** — React/Next.js performance: waterfalls, bundle size, re-renders, Web Vitals.
+- **[react-testing](./react-testing/SKILL.md)** — React testing with RTL, Vitest, MSW, and axe — behavior-focused component/hook/page tests.
+- **[redis-patterns](./redis-patterns/SKILL.md)** — Redis data structures, caching, distributed locks, rate limiting, pub/sub, streams.
+- **[rust-patterns](./rust-patterns/SKILL.md)** — Idiomatic Rust patterns, ownership, error handling. Use only when writing Rust code.
+- **[rust-testing](./rust-testing/SKILL.md)** — Rust testing with rstest, mockall, proptest, coverage. Use only when writing Rust tests.
+- **[search-first](./search-first/SKILL.md)** — Research-before-coding workflow: search, evaluate, decide, implement.
+- **[security-bounty-hunter](./security-bounty-hunter/SKILL.md)** — Web app auditing for bug bounty programs. Use only when auditing web apps for security bounties.
+- **[security-review](./security-review/SKILL.md)** — Security review checklist for auth, input handling, secrets, uploads, PII, dependencies, and unsafe config.
+- **[shared-hosting-deployment](./shared-hosting-deployment/SKILL.md)** — Shared hosting/cPanel deployment workflow.
+- **[springboot-patterns](./springboot-patterns/SKILL.md)** — Spring Boot REST APIs, JPA, caching, validation. Use only when building Spring Boot services.
+- **[springboot-security](./springboot-security/SKILL.md)** — Spring Boot security — JWT, CORS, CSRF, secrets. Use only when hardening Spring Boot.
+- **[springboot-tdd](./springboot-tdd/SKILL.md)** — Spring Boot TDD with JUnit 5, Mockito, MockMvc. Use only when doing TDD for Spring Boot.
+- **[springboot-verification](./springboot-verification/SKILL.md)** — Spring Boot pre-deployment verification. Use only when verifying Spring Boot projects.
+- **[swift-actor-persistence](./swift-actor-persistence/SKILL.md)** — Swift actor-based persistence (SwiftData, Core Data). Use only when implementing actor-based persistence in Swift.
+- **[swift-concurrency-6-2](./swift-concurrency-6-2/SKILL.md)** — Swift 6.x concurrency, Sendable, actor isolation. Use only when working with Swift 6.x concurrency.
+- **[swift-protocol-di-testing](./swift-protocol-di-testing/SKILL.md)** — Swift protocol-based DI and testing. Use only when designing Swift DI with protocols.
+- **[swiftui-patterns](./swiftui-patterns/SKILL.md)** — SwiftUI @Observable, navigation, view composition. Use only when building SwiftUI views.
+- **[team-handoff-quality](./team-handoff-quality/SKILL.md)** — Team-ready handoff checklist.
+- **[ui-to-vue](./ui-to-vue/SKILL.md)** — Convert mockups/screenshots into Vue SFC components. Use only when converting UI designs to Vue.
+- **[verify-evidence](./verify-evidence/SKILL.md)** — Tool-based verification checklist.
+- **[vite-patterns](./vite-patterns/SKILL.md)** — Vite build tool patterns — config, plugins, HMR, env vars, proxy, SSR, library mode, optimization.

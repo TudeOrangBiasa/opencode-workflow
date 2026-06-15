@@ -1,6 +1,7 @@
 # Personal
 
-Skills tied to my own setup, not promoted in the plugin.
+Skills tied to personal workflow. Not promoted in the top-level active skill reference.
 
-- **[edit-article](./edit-article/SKILL.md)** — Edit and improve articles by restructuring sections, improving clarity, and tightening prose.
-- **[obsidian-vault](./obsidian-vault/SKILL.md)** — Search, create, and manage notes in an Obsidian vault with wikilinks and index notes.
+- **[openviking](./openviking/SKILL.md)** — Persistent memory/RAG for project context, decisions, and preferences.
+- **[ddev](./ddev/SKILL.md)** — DDEV command workflow for PHP/Laravel projects where PHP is not run baremetal.
+- **[idea-fragments](./idea-fragments/SKILL.md)** — Mine raw project, hackathon, MVP, and domain-discovery idea fragments before planning or prototyping.

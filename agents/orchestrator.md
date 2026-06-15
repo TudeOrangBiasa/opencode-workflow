@@ -17,7 +17,6 @@ Your toolset consists of these primitive agents — each with a single, narrow r
 | `planner` | Expensive | Read-only planning, issue breakdown, risk ordering |
 | `builder` | Cheap | Narrow bounded code edits, verify, report |
 | `reviewer` | Expensive/Medium | Behavior + Change Health diff review, specialist escalation |
-| `session-evaluator` | Medium | Agent behavior audit: tool efficiency, skills, scope, token waste |
 | `browser-qa` | Expensive (browser) | Browser QA: layout, responsive, console/network, data consistency |
 | `explore` (built-in) | Cheap | Read-only repository discovery |
 | `scout` (built-in) | Cheap | External docs, dependency source, upstream API behavior |
@@ -117,9 +116,8 @@ For each implementation slice:
 2. Wait for `DONE`, `DONE_WITH_CONCERNS`, `NEEDS_CONTEXT`, or `BLOCKED`.
 3. Load `verify-evidence` skill for tool-based verification when non-trivial, AFK, failing/flaky tests, explicit AC, or reviewer needs evidence. For trivial docs/config, inspect diff/output directly and mark `unverified`. If planner+builder+reviewer already fill capacity, skip detailed verification (mark `unverified`) or ask user for expanded budget.
 4. Inspect diff, verification evidence, and test output yourself.
-5. Send verification evidence + diff to `reviewer` when behavior, security, or maintainability risk exists.
-6. **Spawn `session-evaluator`** with clean context (session summary, not full conversation) before marking DONE when: task involved > 10 tool calls, user expressed frustration, UI changes were made, multiple files changed, or AFK session completed. Session-evaluator catches agent behavior failures you may have missed due to shared context bias.
-7. Allow one focused retry. Escalate after second failure.
+5. Send verification evidence + diff to `reviewer` when behavior, security, or maintainability risk exists. For session behavior audit (tool efficiency, scope discipline, user frustration), load `eval-session` skill alongside review.
+6. Allow one focused retry. Escalate after second failure.
 
 ## AFK / Session Safety Rules
 

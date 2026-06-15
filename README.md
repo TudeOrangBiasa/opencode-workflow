@@ -29,7 +29,6 @@ OpenCode agent files live in [`agents/`](./agents/). They use OpenCode-compatibl
 - `planner` — read-only planning specialist.
 - `builder` — narrow execution agent for bounded code changes.
 - `reviewer` — Behavior + Change Health diff review with specialist escalation hints.
-- `session-evaluator` — agent behavior audit: tool efficiency, skills, scope, token waste. Clean context, tough evaluator.
 - `explore` — built-in OpenCode read-only discovery agent.
 - `scout` — built-in OpenCode external docs, dependency source, and upstream API research.
 - `browser-qa` — browser QA for responsive layout, spacing, broken UI, full-page coverage, and frontend data consistency.

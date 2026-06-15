@@ -76,8 +76,19 @@ If the diff touches a domain that needs deep expertise, recommend escalation ins
 | Playwright E2E tests | Recommend `tdd` for test creation or `browser-qa` for runtime browser evidence |
 | Hard bug or exploit reproduction | Load `diagnose` skill |
 | Domain terminology fuzzy | Suggest `grill-with-docs` before review |
+| Session behavior audit (tool waste, scope creep, user frustration) | Load `eval-session` skill |
 
 Do not become a mega-specialist. If the diff needs deep domain knowledge, say: "Suggestion: load [skill] for [reason]."
+
+## Session Behavior Audit
+
+When orchestrator requests session behavior audit (or when review reveals agent behavior issues), load `eval-session` skill. This evaluates:
+- Tool efficiency (circuit breaker, rtk waste, repeated failures)
+- Skill loading (impeccable, prerequisites, missing skills)
+- Scope discipline (creep, unrelated changes, debug artifacts)
+- User frustration signals (corrections, silence, explicit complaints)
+
+`eval-session` provides structured analysis; reviewer applies verdict. This keeps reviewer as the single judgment gate without adding new primitive agents.
 
 ## Verification Evidence
 

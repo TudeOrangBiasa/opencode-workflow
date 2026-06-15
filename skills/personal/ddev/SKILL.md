@@ -1,6 +1,6 @@
 ---
 name: ddev
-description: DDEV workflow guidance for PHP/Laravel projects. Use when running PHP, Composer, Artisan, Pest/PHPUnit, Laravel, database, or webserver commands in projects that use DDEV instead of baremetal PHP.
+description: DDEV workflow for PHP/Laravel — Composer, Artisan, PHPUnit, database commands. Use when project uses DDEV instead of baremetal PHP.
 ---
 
 # DDEV Workflow

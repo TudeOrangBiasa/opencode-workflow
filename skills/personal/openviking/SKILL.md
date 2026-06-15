@@ -1,6 +1,6 @@
 ---
 name: openviking
-description: Persistent context database for AI agents. Use when storing/retrieving long-term memory, managing project context across sessions, or querying stored knowledge. Triggers on "memory", "context", "remember", "openviking", "store", "retrieve".
+description: Persistent memory for AI agents — store/retrieve context across sessions. Triggers on "memory", "remember", "openviking", "store", "retrieve".
 ---
 
 # OpenViking Context Database

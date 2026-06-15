@@ -1,6 +1,6 @@
 ---
 name: idea-fragments
-description: Grilling session that mines the user for raw project idea fragments: problems, user pains, hackathon angles, MVP possibilities, domain unknowns, weird observations, and feasibility questions. Use when the user wants to explore fresh project ideas before planning, PRD, prototype, or implementation.
+description: Mine raw project idea fragments from the user — problems, pains, hackathon angles, MVP possibilities. Use when exploring fresh project ideas before planning or prototyping.
 ---
 
 # Idea Fragments

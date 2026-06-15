@@ -1,6 +1,6 @@
 ---
 name: eval
-description: Use when analyzing a session for agent errors, user frustration, repeated mistakes, or token waste. Detects stuck patterns, scope drift, tool misuse. Creates eval report in opencode-workflow/.scratch/evals/. Report only — no direct fixes. After report, use grill-with-docs or grill-me to plan fixes. Triggers on "eval session", "evaluate this", "what went wrong", "diagnose session", "check mistakes".
+description: Analyze sessions for agent errors, stuck patterns, scope drift, tool misuse. Creates report in opencode-workflow/.scratch/evals/. Report only. Triggers on "eval session", "what went wrong", "diagnose session".
 ---
 
 # Eval

@@ -30,17 +30,48 @@ Your toolset consists of these primitive agents — each with a single, narrow r
 - Use skills as workflow primitives when they fit: `diagnose`, `tdd`, `to-prd`, `to-issues`, `triage`, `execute-issues`, `grill-with-docs`, `zoom-out`.
 - Use `openviking` for persistent memory, `browser-qa` agent for browser evidence before UI review, `verify-evidence` skill for tool evidence before reviewer judgment.
 
-## Optional OpenViking Preflight
+## OpenViking — Persistent Memory
 
-OpenViking is optional. Before routing work on a codebase you have not seen this session:
+OpenViking is the agent's persistent memory. Use it for self-learning, self-healing, and remembering durable context across sessions.
 
-1. **Detect availability**: Use OpenViking memory only if MCP/tools/skill are available.
-2. **If available**: Search OpenViking for relevant domain context, ADRs, and past decisions.
-3. **If unavailable**: Continue with local files only. Mention OpenViking as a recommendation only when persistent memory would help.
-4. **Local files win**: If memory conflicts with current file contents, local files are authoritative. Flag the discrepancy but use local files.
-5. **Store decisions**: Store durable decisions only after user confirmation.
+### When to Retrieve
 
-Use `docs/workflow.md` for routing rules, optional-memory discipline, and the agent/skill architecture.
+| Trigger | Command |
+|---------|---------|
+| User says "continue", "where were we", "what did we decide" | `ov find "<query>"` |
+| Agent makes same mistake twice | `ov find "<mistake-keyword>"` |
+| Starting work on known project | `ov find "viking://resources/projects/<name>"` |
+| Context unclear after local files fail | `ov find "<topic>"` |
+
+### When to Store
+
+| Trigger | URI |
+|---------|-----|
+| User expresses preference ("gw suka X", "jangan Y", "biasanya Z") | `viking://user/preferences/` |
+| User corrects agent ("sudah gw bilang", "kok salah lagi") | `viking://user/lessons/` |
+| Agent learns significant pattern (3+ confirmations) | `viking://agent/patterns/` |
+| New project context first visit | `viking://resources/projects/<name>/` |
+
+### Discipline
+
+1. **Detect availability**: Check if openviking-server is running.
+2. **If available**: Use OpenViking triggers above.
+3. **If unavailable**: Continue with local files only. Do not block work.
+4. **Local files win**: If memory conflicts with current file contents, local files are authoritative. Flag the discrepancy.
+5. **Confirm before storing preferences**: User preferences need explicit signal. Don't auto-store speculation.
+6. **No secrets**: Never store API keys, tokens, secrets, or provider keys.
+
+### Cleanup
+
+| Namespace | TTL | Max |
+|-----------|-----|-----|
+| `viking://user/preferences/` | none | none |
+| `viking://user/lessons/` | 90 days | 50 |
+| `viking://agent/patterns/` | 60 days | 30 |
+
+When entry > TTL or > max, agent reviews and decides: keep (update TTL) or delete.
+
+Use `docs/workflow.md` for routing rules, and the `openviking` skill (personal) for full namespace details.
 
 ## Subagent Cost Controls
 

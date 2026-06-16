@@ -33,6 +33,9 @@ Tool-produced output (test results, lint output, diff stats, console logs) colle
 **AFK session**:
 Unattended orchestrator run against a set of issues. Logged to `.scratch/afk-sessions/` with checkpoints, stuck-loop detection, and human escalation gates.
 
+**OpenViking**:
+Persistent memory store for the agent. URI scheme: `viking://user/preferences/`, `viking://user/lessons/`, `viking://agent/patterns/`, `viking://resources/projects/<name>/`. Auto-triggers on user preference, user correction, and repeated agent patterns. Cleanup rules enforce TTL and max entries to prevent context pollution.
+
 **Artifact repo**:
 Private production artifact repository that excludes environment files and secrets. Holds compiled JS, vendor deps, and deployable code only. Never committed to the development source repo.
 
@@ -53,6 +56,7 @@ Durable summary (changes, verification evidence, version bump, changelog, migrat
 - `reviewer` is the review gate; `verify-evidence` provides independent evidence, not a separate active agent
 - An **Artifact repo** excludes env/secrets; a `public_html` symlink points at the **Public artifact** only
 - A **Team handoff** bundles verification evidence, changelog, and next-owner actions for durable transfer
+- **OpenViking** stores user preferences (durable), user lessons (TTL 90d), agent patterns (TTL 60d), and project context (manual cleanup)
 
 ## Flagged ambiguities
 

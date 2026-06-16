@@ -35,6 +35,30 @@ OpenCode agent files live in [`agents/`](./agents/). They use OpenCode-compatibl
 
 > **Verifier**: No dedicated primitive agent. Use `verify-evidence` on-demand skill (misc) for tool-based verification in AFK, high-risk, or evidence-gap scenarios. See [Verification Agent Decision](./AGENTS.md#verification-agent-decision).
 
+## Persistent Memory
+
+OpenViking is the agent's persistent memory — used for self-learning, self-healing, and durable context across sessions. It is standard practice, but not required.
+
+### When OpenViking is running
+
+The orchestrator auto-triggers OpenViking on:
+- User preferences ("gw suka X", "jangan Y")
+- User corrections ("sudah gw bilang", "kok salah")
+- Agent learning a pattern (3+ confirmations)
+- Manual user triggers ("remember this", "what did we decide")
+
+### When OpenViking is NOT running
+
+The workflow continues without it. The agent skips memory triggers and uses local files only. No errors, no blocking. To enable, run:
+
+```bash
+openviking-server &
+```
+
+### Setup
+
+OpenViking requires the `openviking` skill (linked to `~/.config/opencode/skills/`) and an OpenViking server. See [openviking skill](./skills/personal/openviking/SKILL.md) for namespace details, cleanup rules, and anti-patterns.
+
 ### Specialist Capabilities
 
 Specialist prompts are skills, not agents. Occasional review skills live under `misc`; daily engineering workflows stay under `engineering` (see [`docs/workflow.md`](./docs/workflow.md#on-demand-skills-and-promotion-rule)).

@@ -68,7 +68,7 @@ Use the cheapest reliable context source. Do not spawn subagents for work one di
 | Source | Use for | Do not use for |
 | --- | --- | --- |
 | Direct `read` / `grep` / `glob` | Known files, exact strings, quick checks | Broad codebase discovery |
-| OpenViking (optional) | Prior decisions, memories, workspace preferences, indexed docs | Current local-file truth |
+| OpenViking | Prior decisions, memories, user preferences, agent patterns, project context (if running) | Current local-file truth |
 | `explore` | Current working tree discovery, symbols, flows, file maps | External library docs |
 | `scout` | External docs, dependency source, upstream API behavior | Local repo search |
 | `browser-qa` | Runtime UI/browser truth | Static code exploration |
@@ -76,7 +76,7 @@ Use the cheapest reliable context source. Do not spawn subagents for work one di
 ### Decision Order
 
 1. Known file or exact term: use direct tools.
-2. Continuation or "what did we decide": search OpenViking first if available; otherwise continue with local files.
+2. Continuation or "what did we decide": search OpenViking first if running; otherwise continue with local files.
 3. Current repo unknowns: use built-in `explore`.
 4. External dependency docs or upstream source: use built-in `scout`.
 5. UI/runtime behavior: use `browser-qa`.
@@ -89,14 +89,25 @@ Include: target question, desired thoroughness (`quick`/`medium`/`very thorough`
 
 Include: library/framework name + version, exact API/behavior to verify, preferred source (official docs or source), output shape with citations/URLs.
 
-### Optional OpenViking Discipline
+### OpenViking Discipline
 
-- OpenViking is optional. Do not block work if missing.
-- Detect availability: MCP tools available, skill available, or server reachable.
-- If missing and persistent memory would help, recommend once. Do not ask repeatedly.
-- Local files and `git diff` are authoritative. If OpenViking conflicts with local files, trust local files and flag discrepancy.
-- Store durable decisions only after user confirmation.
-- Never store secrets, API keys, transient command output, or unconfirmed assumptions.
+OpenViking is standard practice but not required. The workflow continues without it.
+
+**If OpenViking is running:**
+- Auto-store on user preferences, corrections, and agent patterns
+- Retrieve on session continue, repeated mistakes, or unclear context
+- See `openviking` skill for namespace details
+
+**If OpenViking is missing:**
+- Do not block work
+- Skip memory triggers, use local files only
+- Recommend OpenViking once, do not repeat
+- Local files and `git diff` are authoritative
+
+**Always:**
+- Local files win over indexed memory
+- Never store secrets, API keys, or unconfirmed assumptions
+- Store durable decisions only after user confirmation
 
 ## Implementation / Review Gate
 

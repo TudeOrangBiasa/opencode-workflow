@@ -140,7 +140,7 @@ Active repo skills:
 - `handoff`
 - `write-a-skill`
 
-Global-only skills such as `humanizer` and `impeccable` stay in `~/.config/opencode/skills`. Personal repo skills such as `openviking` and `ddev` live under `skills/personal/` and are not linked by the default active-skill script. OpenViking is optional; the workflow continues without it.
+Global-only skills such as `humanizer` and `impeccable` stay in `~/.config/opencode/skills`. Personal repo skills such as `openviking`, `eval`, `ddev`, and `idea-fragments` live under `skills/personal/` and are linked by the default active-skill script. OpenViking is the agent's persistent memory — standard practice, but optional. If `openviking-server` is not running, the workflow continues without it (graceful degradation).
 
 ## OpenCode Restart
 
@@ -154,7 +154,7 @@ The template includes MCP examples for Exa, Chrome DevTools, and optional OpenVi
 
 See [`docs/models.md`](./models.md) for model tier guidance.
 
-See [`docs/workflow.md`](./workflow.md) for routing rules, primitive agents, AFK session log, and optional OpenViking integration.
+See [`docs/workflow.md`](./workflow.md) for routing rules, primitive agents, AFK session log, and OpenViking integration.
 
 ## Secret Safety
 

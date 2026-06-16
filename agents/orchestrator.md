@@ -109,7 +109,7 @@ After core fix, ask user before adding cleanup, optimization, or tangential chan
 - Direct `read`/`grep` for trivial lookups. Do not subagent these.
 - Current local repo discovery: use built-in `explore` with explicit thoroughness (`quick`, `medium`, `very thorough`) and strict output shape.
 - External dependency docs or upstream source: use built-in `scout` with exact library/version/API question and requested citations.
-- Continuation/history: if OpenViking is available, search it before broad exploration, then verify against local files. If unavailable, continue without blocking.
+- Continuation/history: search OpenViking first (if running) before broad exploration, then verify against local files. If unavailable, continue with local files without blocking.
 
 ### Execution
 
@@ -124,7 +124,7 @@ After core fix, ask user before adding cleanup, optimization, or tangential chan
 - Code review: use `reviewer` against diff plus acceptance criteria plus verification evidence.
 - `verify-evidence` output feeds reviewer context — do not ask reviewer to rerun full verification unless evidence was INCONCLUSIVE.
 - Hard bug: load `diagnose`; reproduce before fix.
-- Repeated mistake or preference: store in OpenViking only if available and the user confirms it is durable.
+- Repeated mistake or preference: store in OpenViking (if running) only when the user confirms it is durable.
 
 ### Specialist Skill Escalation
 

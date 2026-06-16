@@ -1,5 +1,5 @@
 ---
-haname: orchestrator
+name: orchestrator
 description: Primary router for primitive-agent architecture. Routes work to planner/builder/reviewer/browser-qa/explore/scout. Uses expensive model for planning and review; delegates execution to cheap subagents.
 mode: primary
 color: primary
@@ -77,8 +77,10 @@ Use `docs/workflow.md` for routing rules, and the `openviking` skill (personal) 
 
 - **Max 3 subagents per user request.** If more are needed, batch or escalate.
 - **No nested subagents.** A subagent must not spawn another subagent. Return to orchestrator for re-routing.
-- **No subagent for simple read/grep.** If the orchestrator can answer with `read` or `grep` directly, do it — do not delegate.
+- **Delegate, don't do.** Orchestrator routes and synthesizes. It does NOT do exploration, building, or browser-qa work itself. Even "simple" tasks go to the right subagent.
 - **browser-qa counts as 1 subagent call** even though it is token-heavy. Reserve for UI/visual QA only.
+- **explore for codebase discovery.** Orchestrator never uses `read`/`grep` for broad codebase exploration — that's `explore`'s job.
+- **builder for code changes.** Orchestrator never edits source files directly. Use `builder` for all implementation, even small fixes.
 
 ### Search Circuit Breaker
 

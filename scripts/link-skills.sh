@@ -38,6 +38,7 @@ ACTIVE_SKILLS=(
   skills/misc/cpp-testing
   skills/misc/csharp-testing
   skills/misc/dart-flutter-patterns
+  skills/misc/drawio
   skills/misc/data-scraper-agent
   skills/misc/database-migrations
   skills/misc/database-review
@@ -52,6 +53,7 @@ ACTIVE_SKILLS=(
   skills/misc/django-verification
   skills/misc/docker-patterns
   skills/misc/dotnet-patterns
+  skills/misc/emil-design-eng
   skills/misc/error-handling
   skills/misc/evm-token-decimals
   skills/misc/fastapi-patterns
@@ -101,6 +103,7 @@ ACTIVE_SKILLS=(
   skills/misc/react-performance
   skills/misc/react-testing
   skills/misc/redis-patterns
+  skills/misc/review-animations
   skills/misc/rust-patterns
   skills/misc/rust-testing
   skills/misc/search-first
@@ -126,6 +129,7 @@ ACTIVE_SKILLS=(
   skills/personal/openviking
   skills/personal/ddev
   skills/personal/idea-fragments
+  skills/personal/ponytail
 )
 
 # If the destination is a symlink that resolves into this repo, we'd end up

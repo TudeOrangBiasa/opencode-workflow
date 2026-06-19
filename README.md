@@ -112,6 +112,7 @@ General workflow tools, not code-specific.
 - **[cpp-testing](./skills/misc/cpp-testing/SKILL.md)** — C++ testing with GoogleTest/CTest. Use only when writing C++ tests.
 - **[csharp-testing](./skills/misc/csharp-testing/SKILL.md)** — C# testing with xUnit, Moq. Use only when writing C# tests.
 - **[dart-flutter-patterns](./skills/misc/dart-flutter-patterns/SKILL.md)** — Dart/Flutter patterns.
+- **[drawio](./skills/misc/drawio/SKILL.md)** — Professional diagrams from natural language via draw.io — architecture, ERD, UML, flowchart, ML/DL models. Exports PNG/SVG/PDF/JPG. Requires draw.io desktop CLI.
 - **[data-scraper-agent](./skills/misc/data-scraper-agent/SKILL.md)** — Build AI data collection agents.
 - **[database-migrations](./skills/misc/database-migrations/SKILL.md)** — Safe database migrations.
 - **[database-review](./skills/misc/database-review/SKILL.md)** — Database review checklist.
@@ -126,6 +127,7 @@ General workflow tools, not code-specific.
 - **[django-verification](./skills/misc/django-verification/SKILL.md)** — Django pre-deployment verification. Use only when verifying Django.
 - **[docker-patterns](./skills/misc/docker-patterns/SKILL.md)** — Docker patterns.
 - **[dotnet-patterns](./skills/misc/dotnet-patterns/SKILL.md)** — C#/.NET patterns. Use only when building .NET applications.
+- **[emil-design-eng](./skills/misc/emil-design-eng/SKILL.md)** — Emil Kowalski's design engineering: UI polish, animation decisions, easing curves, springs, gestures. Use when building polished interfaces with intentional motion.
 - **[error-handling](./skills/misc/error-handling/SKILL.md)** — Error-handling review checklist.
 - **[evm-token-decimals](./skills/misc/evm-token-decimals/SKILL.md)** — ERC-20 decimal handling.
 - **[fastapi-patterns](./skills/misc/fastapi-patterns/SKILL.md)** — FastAPI patterns and project structure. Use only when building FastAPI backends.
@@ -175,6 +177,7 @@ General workflow tools, not code-specific.
 - **[react-performance](./skills/misc/react-performance/SKILL.md)** — React/Next.js performance.
 - **[react-testing](./skills/misc/react-testing/SKILL.md)** — React testing with RTL.
 - **[redis-patterns](./skills/misc/redis-patterns/SKILL.md)** — Redis patterns.
+- **[review-animations](./skills/misc/review-animations/SKILL.md)** — Reviews animation and motion code against Emil Kowalski's craft bar. Block/approve verdict with findings table. Companion to emil-design-eng.
 - **[rust-patterns](./skills/misc/rust-patterns/SKILL.md)** — Idiomatic Rust patterns. Use only when writing Rust code.
 - **[rust-testing](./skills/misc/rust-testing/SKILL.md)** — Rust testing. Use only when writing Rust tests.
 - **[search-first](./skills/misc/search-first/SKILL.md)** — Research-before-coding workflow.

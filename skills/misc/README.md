@@ -22,6 +22,7 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[cpp-testing](./cpp-testing/SKILL.md)** — C++ testing with GoogleTest, CMake/CTest, sanitizers. Use only when writing C++ tests.
 - **[csharp-testing](./csharp-testing/SKILL.md)** — C# testing with xUnit, NUnit, Moq, FluentAssertions. Use only when writing C# tests.
 - **[dart-flutter-patterns](./dart-flutter-patterns/SKILL.md)** — Dart/Flutter patterns — null safety, BLoC/Riverpod, GoRouter, Dio, Freezed, testing.
+- **[drawio](./drawio/SKILL.md)** — Professional diagrams from natural language via draw.io — architecture, ERD, UML, flowchart, ML/DL models. Exports PNG/SVG/PDF/JPG. Requires draw.io desktop CLI.
 - **[data-scraper-agent](./data-scraper-agent/SKILL.md)** — Build AI-powered data collection agents — scrapes on schedule, enriches with free-tier LLM, stores to Notion/Sheets or equivalent.
 - **[database-migrations](./database-migrations/SKILL.md)** — Safe, reversible database migration patterns.
 - **[database-review](./database-review/SKILL.md)** — Database review checklist for schema, indexes, RLS, transactions, query performance, and data integrity.
@@ -36,6 +37,7 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[django-verification](./django-verification/SKILL.md)** — Django pre-deployment verification loop. Use only when verifying Django projects before PR/deploy.
 - **[docker-patterns](./docker-patterns/SKILL.md)** — Docker Compose, multi-stage builds, networking, volumes, security.
 - **[dotnet-patterns](./dotnet-patterns/SKILL.md)** — C#/.NET patterns, DI, EF Core, Minimal APIs. Use only when building .NET applications.
+- **[emil-design-eng](./emil-design-eng/SKILL.md)** — Emil Kowalski's design engineering philosophy: UI polish, animation decisions, easing curves, spring physics, gesture interactions, and the invisible details that make software feel great.
 - **[error-handling](./error-handling/SKILL.md)** — Error-handling review checklist for typed errors, retries, safe messages, logging, and swallowed exceptions.
 - **[evm-token-decimals](./evm-token-decimals/SKILL.md)** — ERC-20 decimal handling — runtime lookup, chain-aware caching, safe normalization, bridged-token drift.
 - **[fastapi-patterns](./fastapi-patterns/SKILL.md)** — FastAPI project structure, Pydantic v2, DI, auth, testing. Use only when building FastAPI backends.
@@ -82,6 +84,7 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[quarkus-tdd](./quarkus-tdd/SKILL.md)** — Quarkus TDD with REST Assured, Camel testing, JaCoCo. Use only when doing TDD for Quarkus.
 - **[quarkus-verification](./quarkus-verification/SKILL.md)** — Quarkus pre-deployment verification loop. Use only when verifying Quarkus projects before PR/deploy.
 - **[react-patterns](./react-patterns/SKILL.md)** — React 18/19 patterns: hooks, RSC boundaries, Suspense, forms, state management.
+- **[review-animations](./review-animations/SKILL.md)** — Reviews animation and motion code against a high craft bar. Default to flagging; approval is earned. Companion to emil-design-eng.
 - **[react-performance](./react-performance/SKILL.md)** — React/Next.js performance: waterfalls, bundle size, re-renders, Web Vitals.
 - **[react-testing](./react-testing/SKILL.md)** — React testing with RTL, Vitest, MSW, and axe — behavior-focused component/hook/page tests.
 - **[redis-patterns](./redis-patterns/SKILL.md)** — Redis data structures, caching, distributed locks, rate limiting, pub/sub, streams.

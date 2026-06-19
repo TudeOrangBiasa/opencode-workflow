@@ -7,6 +7,7 @@
 - Feature: ponytail skill + 5 companions — lazy dev ruleset (YAGNI/stdlib/native), review, audit, debt, gain, help (personal)
 - Fix: review-animations — restore STANDARDS.md reference + create standards file from upstream
 - Fix: ponytail companions — restore `/ponytail-*` command triggers from upstream
+- Fix: drawio — sync with upstream v1.14.0 (references/, scripts/, data/, styles/)
 
 ## [0.6.0] - 2026-06-18
 

@@ -1,51 +1,50 @@
-# Domain Docs
+# Domain Docs — Design Reference
 
-How the engineering skills should consume this repo's domain documentation when exploring the codebase.
+## What this file is
 
-## Before exploring, read these
+The project's **design taste reference** — concrete design tokens, anti-patterns, and component rules that AI agents (builder, browser-qa, reviewer) load before any UI work. Captures the "why" behind visual decisions so agents produce work that matches the existing design language.
 
-- **`CONTEXT.md`** at the repo root, or
-- **`CONTEXT-MAP.md`** at the repo root if it exists — it points at one `CONTEXT.md` per context. Read each one relevant to the topic.
-- **`docs/adr/`** — read ADRs that touch the area you're about to work in. In multi-context repos, also check `src/<context>/docs/adr/` for context-scoped decisions.
+This file is the consumer rule: every UI-touching skill/agent reads this before generating or critiquing code.
 
-If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The producer skill (`/grill-with-docs`) creates them lazily when terms or decisions actually get resolved.
+## When to use
 
-## File structure
+- Before any new UI component, page, or view
+- Before any visual change (color, typography, spacing, layout)
+- When critiquing existing UI for taste/aesthetic
+- When refactoring view files
+- When onboarding to a new repo (read this first to learn the design language)
 
-Single-context repo (most repos):
+## What goes here
 
-```
-/
-├── CONTEXT.md
-├── docs/adr/
-│   ├── 0001-event-sourced-orders.md
-│   └── 0002-postgres-for-write-model.md
-└── src/
-```
+A `design.md` (or `docs/agents/design.md`) per project containing:
 
-Multi-context repo (presence of `CONTEXT-MAP.md` at the root):
+1. **Design principles** — the "why" behind decisions (mood, intent, restraint vs. density)
+2. **Tokens** — concrete values (colors, type scales, spacing, radii) in machine-parseable format
+3. **Anti-patterns** — explicit things to never generate
+4. **Component patterns** — how specific UI elements should look
+5. **Reference examples** — links to good/bad examples in the codebase
 
-```
-/
-├── CONTEXT-MAP.md
-├── docs/adr/                          ← system-wide decisions
-└── src/
-    ├── ordering/
-    │   ├── CONTEXT.md
-    │   └── docs/adr/                  ← context-specific decisions
-    └── billing/
-        ├── CONTEXT.md
-        └── docs/adr/
-```
+If multi-domain (e.g. monorepo with separate frontend/backend, or multiple product surfaces), use `design-map.md` at the root pointing to per-domain `design.md` files.
 
-## Use the glossary's vocabulary
+## Layout
 
-When your output names a domain concept (in an issue title, a refactor proposal, a hypothesis, a test name), use the term as defined in `CONTEXT.md`. Don't drift to synonyms the glossary explicitly avoids.
+- **Single-domain**: one `design.md` at project root (or `docs/agents/design.md`)
+- **Multi-domain**: `design-map.md` at project root + per-domain `design.md` files
 
-If the concept you need isn't in the glossary yet, that's a signal — either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `/grill-with-docs`).
+## Consumer rules
 
-## Flag ADR conflicts
+- **builder** — reads `design.md` before any UI generation. Applies tokens, avoids anti-patterns, follows component rules.
+- **browser-qa** — reads `design.md` before UI critique. Judges taste against the project's design language, not generic "good UI."
+- **reviewer** — references `design.md` when reviewing UI changes for design consistency.
+- **scout** — references design tokens when researching external UI patterns to match style.
 
-If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:
+## How this was created
 
-> _Contradicts ADR-0007 (event-sourced orders) — but worth reopening because…_
+Run the `setup-matt-pocock-skills` skill in this repo. It will scaffold:
+
+- `docs/agents/issue-tracker.md` — where issues live
+- `docs/agents/triage-labels.md` — triage label vocabulary
+- `docs/agents/domain.md` — this file (and `design.md` / `design-map.md`)
+- An `## Agent skills` block in `AGENTS.md` pointing to all three
+
+For an existing `design.md`, the skill will preserve it. To rewrite, delete the file and re-run the skill.

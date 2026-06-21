@@ -65,8 +65,18 @@ Before any deploy/build/ship intent:
 | impeccable | UI, frontend, layout, design, polish, visual |
 | php-review | PHP, Laravel, blade, eloquent |
 | security-review | auth, secret, password, credential, vulnerability |
+| emil-design-eng | motion, animation, easing, spring, transition, gesture |
 
 When user mentions or task involves these keywords, load the skill BEFORE delegating. Never delegate a task that needs domain expertise without forwarding that expertise.
+
+## UI Work Protocol (design.md + impeccable)
+
+For any task involving UI — new page, new component, view refactor, visual fix, browser-qa review — instruct the subagent as follows:
+
+1. **builder** must read `design.md` (at project root or `docs/agents/design.md`, or follow `docs/agents/design-map.md` for multi-domain) and apply its tokens, anti-patterns, and component rules. Never invent hex values, font sizes, or spacing outside the design scale.
+2. **browser-qa** must read `design.md` and judge taste/aesthetic against the project's design language, not generic "good UI." Reference specific anti-patterns from `design.md` when reporting visual issues.
+3. **Both agents** auto-load the `impeccable` skill. If the work involves motion/animation, also load `emil-design-eng`.
+4. If `design.md` does not exist in the project, the orchestrator runs the `setup-matt-pocock-skills` skill (or scaffolds a minimal `design.md` with the user) before delegating UI work. Never delegate UI work without a design reference.
 
 ## Primitive Agents
 

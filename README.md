@@ -67,6 +67,19 @@ OpenViking requires the `openviking` skill (linked to `~/.config/opencode/skills
 Specialist prompts are skills, not agents. Occasional review skills live under `misc`; daily engineering workflows stay under `engineering` (see [`docs/workflow.md`](./docs/workflow.md#on-demand-skills-and-promotion-rule)).
 `shared-hosting-deployment` and `team-handoff-quality` fit personal/team workflow needs under misc.
 
+### Design Reference (design.md)
+
+For any UI work, agents need a **design reference** — concrete tokens, anti-patterns, and component rules. Without it, agents invent generic "AI slop" UI.
+
+The `setup-matt-pocock-skills` skill scaffolds `design.md` per project (single-domain) or `design-map.md` + per-domain `design.md` files (multi-domain). After setup:
+
+- **`builder`** reads `design.md` before any UI generation. Applies its tokens, avoids anti-patterns.
+- **`browser-qa`** reads `design.md` before UI critique. Judges taste against the project's design language.
+- Both auto-load the `impeccable` skill; motion/animation work also loads `emil-design-eng`.
+- Orchestrator refuses to delegate UI work without a design reference — run the setup skill first if missing.
+
+See [`skills/engineering/setup-matt-pocock-skills/SKILL.md`](./skills/engineering/setup-matt-pocock-skills/SKILL.md) and the [`design.md` seed template](./skills/engineering/setup-matt-pocock-skills/design.md).
+
 ## Reference
 
 ### Engineering

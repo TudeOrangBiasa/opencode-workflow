@@ -1,6 +1,6 @@
 ---
 name: setup-matt-pocock-skills
-description: Sets up an `## Agent skills` block in AGENTS.md and `docs/agents/` so the engineering skills know this repo's issue tracker (GitHub or local markdown), triage label vocabulary, and domain doc layout. Run before first use of `to-issues`, `to-prd`, `triage`, `diagnose`, `tdd`, `improve-codebase-architecture`, or `zoom-out` — or if those skills appear to be missing context about the issue tracker, triage labels, or domain docs.
+description: Sets up an `## Agent skills` block in AGENTS.md and `docs/agents/` so the engineering skills know this repo's issue tracker (GitHub or local markdown), triage label vocabulary, domain doc layout, and design reference. Run before first use of `to-issues`, `to-prd`, `triage`, `diagnose`, `tdd`, `improve-codebase-architecture`, `zoom-out`, or any UI work — or if those skills appear to be missing context about the issue tracker, triage labels, domain docs, or design tokens.
 disable-model-invocation: true
 ---
 
@@ -11,6 +11,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Issue tracker** — where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels** — the strings used for the five canonical triage roles
 - **Domain docs** — where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
+- **Design reference** — `design.md` with tokens, anti-patterns, and component rules that builder, browser-qa, and reviewer load before any UI work
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -23,13 +24,15 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `git remote -v` and `.git/config` — is this a GitHub repo? Which one?
 - `AGENTS.md` at the repo root — does it exist? Is there already an `## Agent skills` section?
 - `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
+- `design.md` at the repo root or in `docs/agents/` — does it already exist? If so, preserve it.
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `docs/agents/` — does this skill's prior output already exist?
 - `.scratch/` — sign that a local-markdown issue tracker convention is already in use
+- Framework indicators: `tailwind.config.*`, `sass/_variables.scss`, `theme.json`, `bootstrap` import — these tell us the design token source
 
 ### 2. Present findings and ask
 
-Summarise what's present and what's missing. Then walk the user through the three decisions **one at a time** — present a section, get the user's answer, then move to the next. Don't dump all three at once.
+Summarise what's present and what's missing. Then walk the user through the four decisions **one at a time** — present a section, get the user's answer, then move to the next. Don't dump all four at once.
 
 Assume the user does not know what these terms mean. Each section starts with a short explainer (what it is, why these skills need it, what changes if they pick differently). Then show the choices and the default.
 
@@ -67,12 +70,29 @@ Confirm the layout:
 - **Single-context** — one `CONTEXT.md` + `docs/adr/` at the repo root. Most repos are this.
 - **Multi-context** — `CONTEXT-MAP.md` at the root pointing to per-context `CONTEXT.md` files (typically a monorepo).
 
+**Section D — Design reference.**
+
+> Explainer: When builder, browser-qa, or reviewer touch UI, they need to know the project's design tokens, anti-patterns, and component rules. Without a design reference, they invent generic "AI slop" UI. The `design.md` file is the canonical place for this — it's loaded as context before any UI work.
+
+Confirm:
+
+- **Single-domain** — one `design.md` at repo root or in `docs/agents/`. One design language covers the whole repo.
+- **Multi-domain** — `design-map.md` at the root + per-domain `design.md` files (e.g. admin vs. public site, or monorepo with separate frontend apps).
+
+If the repo already has a `design.md`, preserve it. Otherwise, seed from the design template in this skill folder and ask the user to fill in the tokens. Offer to extract from the codebase if there's an obvious source:
+
+- Tailwind config → extract color, spacing, radius tokens
+- Sass/SCSS variables → same
+- CSS custom properties (`--bs-*`, `--primary`, etc.) → same
+- shadcn/ui config → extract from `components.json`
+- Bootstrap 5.3+ → read CSS variables from compiled stylesheet
+
 ### 3. Confirm and edit
 
 Show the user a draft of:
 
 - The `## Agent skills` block to add to `AGENTS.md`
-- The contents of `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/domain.md`
+- The contents of `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/domain.md`, and (if creating) `docs/agents/design.md` or `design-map.md`
 
 Let them edit before writing.
 
@@ -103,18 +123,27 @@ The block:
 ### Domain docs
 
 [one-line summary of layout — "single-context" or "multi-context"]. See `docs/agents/domain.md`.
+
+### Design reference
+
+[one-line summary — "single-domain" or "multi-domain"]. See `docs/agents/design.md` (or `docs/agents/design-map.md` for multi-domain).
 ```
 
-Then write the three docs files using the seed templates in this skill folder as a starting point:
+Then write the docs files using the seed templates in this skill folder as a starting point:
 
 - [issue-tracker-github.md](./issue-tracker-github.md) — GitHub issue tracker
 - [issue-tracker-gitlab.md](./issue-tracker-gitlab.md) — GitLab issue tracker
 - [issue-tracker-local.md](./issue-tracker-local.md) — local-markdown issue tracker
 - [triage-labels.md](./triage-labels.md) — label mapping
 - [domain.md](./domain.md) — domain doc consumer rules + layout
+- [design.md](./design.md) — design reference (tokens, anti-patterns, components) — seed template
 
 For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch using the user's description.
 
+If multi-domain design, also write `docs/agents/design-map.md` as a pointer file with the list of per-domain `design.md` paths.
+
 ### 5. Done
 
-Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later — re-running this skill is only necessary if they want to switch issue trackers or restart from scratch.
+Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later — re-running this skill is only necessary if they want to switch issue trackers, add a new design domain, or restart from scratch.
+
+After setup, the `builder`, `browser-qa`, and `reviewer` agents will auto-read `design.md` before any UI work. The `impeccable` and `emil-design-eng` skills are loaded alongside as UI craft context.

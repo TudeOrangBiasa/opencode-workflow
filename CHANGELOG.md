@@ -24,6 +24,7 @@
   - Skill triggers: auto-load officecli/ponytail/diagnose/tdd on keyword match
 - Refactor: move Phase 1 prompt from `opencode.json` `prompt` field to `agents/orchestrator.md` — agent behavior lives in agent files, JSON only carries routing config
 - Cleanup: delete unused `agents/planner.md` (removed from config earlier)
+- Feature: design.md workflow — `setup-matt-pocock-skills` now scaffolds `design.md` (or `design-map.md` for multi-domain) with tokens, anti-patterns, component rules. `builder` and `browser-qa` read it before any UI work and auto-load `impeccable` (+ `emil-design-eng` for motion). Orchestrator refuses to delegate UI work without a design reference.
 
 ## [0.6.0] - 2026-06-18
 

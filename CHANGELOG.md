@@ -13,6 +13,9 @@
 - Cleanup: trim `planner` agent from local config (1 session ever, orchestrator plans inline)
 - Wire: reviewer auto-invokes ponytail skill (YAGNI review for security audit)
 - Wire: orchestrator auto-invokes officecli skill for .docx/.pptx/.xlsx tasks
+- Routing: scout → 9router/oc/mimo-v2.5-free (multimodal for external docs with images)
+- Cleanup: delete 462 stale sessions from old configs (implementer, browser-extractor, sdd-*, etc.); 23K messages + 105K parts removed; DB 3.6GB → 3.2GB
+- Wire: orchestrator error pattern tracking via OpenViking — auto-store tool failure workarounds to avoid repeating them
 
 ## [0.6.0] - 2026-06-18
 

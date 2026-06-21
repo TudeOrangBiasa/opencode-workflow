@@ -148,9 +148,29 @@ OpenCode loads config, agents, skills, and plugins at startup. Quit and restart 
 
 ## Config Template
 
-Use [`docs/templates/opencode.primitive-agents.jsonc`](./templates/opencode.primitive-agents.jsonc) as a manual merge template for `~/.config/opencode/opencode.json` when activating this workflow. Replace model IDs with exact IDs from `opencode models`.
+Use [`docs/templates/opencode.primitive-agents.jsonc`](./templates/opencode.primitive-agents.jsonc) as the canonical config template for `~/.config/opencode/opencode.json`. It includes:
 
-The template includes MCP examples for Exa, Chrome DevTools, and optional OpenViking. Enable only the MCP servers you actually run.
+- Model assignments per agent (orchestrator, builder, reviewer, browser-qa, scout, etc.)
+- Permission rules (orchestrator can spawn subagents, browser-qa can't edit/bash, etc.)
+- Skill triggers (auto-load keywords for officecli, ponytail, impeccable, emil-design-eng, etc.)
+- Disabled built-ins (`general`, `plan`, `build`)
+- MCP examples (exa, chrome-devtools, openviking, officecli)
+
+To activate:
+
+```bash
+# Option A: copy the template (replaces any existing config)
+cp docs/templates/opencode.primitive-agents.jsonc ~/.config/opencode/opencode.json
+
+# Option B: merge into your existing config
+# Manually copy the agent, permission, skill_triggers, and MCP sections
+```
+
+After copying, replace `REPLACE_WITH_YOUR_KEY` with your actual provider API key, and update model IDs with exact values from `opencode models`.
+
+**This template IS the source of truth for the local config.** When you change a model assignment, permission, or skill trigger in `~/.config/opencode/opencode.json`, also update the template in the repo so it stays in sync. The repo can then be re-cloned or shared and the workflow will work the same way.
+
+**Note**: The actual `opencode.json` is local-only and never committed (it may contain API keys). Only the template is versioned.
 
 See [`docs/models.md`](./models.md) for model tier guidance.
 

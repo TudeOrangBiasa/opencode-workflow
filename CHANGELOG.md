@@ -28,6 +28,7 @@
 - Feature: `dev-workflow` skill — development workflow for the opencode-workflow repo itself. Walks through adding skills, modifying agents, syncing from upstream, committing. References `docs/development.md`.
 - Feature: `workflow-audit` skill — audit opencode config, symlink health, repo sync, and recent session activity. Read-only, surfaces mismatches.
 - Documentation: `docs/development.md` — full dev workflow for the opencode-workflow repo (setup, layout, add-skill decision tree, agent edits, link script, changelog, commit, testing, releasing).
+- Fix: `docs/templates/opencode.primitive-agents.jsonc` — updated to match current config. Removed stale `planner` agent, added `skill_triggers` (8 skills), updated scout to mimo (multimodal), added `officecli` MCP. Local `opencode.json` never committed (has API keys); this template is the versioned source of truth.
 
 ## [0.6.0] - 2026-06-18
 

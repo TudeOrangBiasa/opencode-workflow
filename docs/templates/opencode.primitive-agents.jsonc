@@ -8,7 +8,7 @@
   "default_agent": "orchestrator",
 
   // Default conversation model. Pick one strong reasoning model.
-  // Recommended candidates for orchestrator/planner/reviewer deep mode:
+  // Recommended candidates for orchestrator:
   // - mimo-v2.5-pro
   // - kimi-k2.6
   // - deepseek-v4-pro
@@ -21,10 +21,30 @@
   // Cheap/free model for bounded execution and exploration.
   "small_model": "opencode/deepseek-v4-flash-free",
 
+  "plugin": ["caveman"],
+
   "skills": {
     "paths": [
+      ".opencode/skills",
       "~/.config/opencode/skills"
     ]
+  },
+
+  // Provider config — replace with your own. Examples shown for 9router.
+  "provider": {
+    "9router": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://127.0.0.1:20128/v1",
+        "apiKey": "REPLACE_WITH_YOUR_KEY"
+      },
+      "models": {
+        "openai-t1-sg/gpt-5.5": { "name": "openai-t1-sg/gpt-5.5" },
+        "oc/deepseek-v4-flash-free": { "name": "oc/deepseek-v4-flash-free" },
+        "oc/mimo-v2.5-free": { "name": "oc/mimo-v2.5-free" },
+        "tr/MiniMax-M3": { "name": "tr/MiniMax-M3" }
+      }
+    }
   },
 
   // Optional modules such as OpenViking can be enabled in personal config.
@@ -37,27 +57,30 @@
       "permission": {
         "task": {
           "*": "deny",
-          "planner": "allow",
           "builder": "allow",
           "reviewer": "allow",
           "browser-qa": "allow",
           "explore": "allow",
           "scout": "allow"
         }
-      }
-    },
-
-    "planner": {
-      "mode": "subagent",
-      "model": "opencode-go/minimax-m3",
-      "permission": {
-        "edit": "deny"
+      },
+      // Skill auto-load triggers: keywords that fire skill load before delegation.
+      // Edit this when adding new auto-loadable skills.
+      "skill_triggers": {
+        "officecli": ["docx", "pptx", "xlsx", "laporan", "spreadsheet", "presentation"],
+        "ponytail": ["review", "audit", "yagni", "over-engineer", "simple", "minimal", "refactor"],
+        "diagnose": ["bug", "broken", "error", "crash", "slow", "regression"],
+        "tdd": ["implement", "feature", "test-first", "red-green"],
+        "impeccable": ["ui", "frontend", "layout", "design", "polish", "visual"],
+        "emil-design-eng": ["motion", "animation", "easing", "spring", "transition", "gesture"],
+        "php-review": ["php", "laravel", "blade", "eloquent"],
+        "security-review": ["auth", "secret", "password", "credential", "vulnerability"]
       }
     },
 
     "builder": {
       "mode": "subagent",
-      "model": "opencode/deepseek-v4-flash-free"
+      "model": "9router/oc/deepseek-v4-flash-free"
     },
 
     "reviewer": {
@@ -65,12 +88,15 @@
       "model": "opencode-go/qwen3.7-plus",
       "permission": {
         "edit": "deny"
+      },
+      "skill_triggers": {
+        "ponytail": ["review", "audit", "yagni", "over-engineer", "simple", "minimal"]
       }
     },
 
     "browser-qa": {
       "mode": "subagent",
-      "model": "opencode/mimo-v2.5-free",
+      "model": "9router/oc/mimo-v2.5-free",
       "permission": {
         "edit": "deny",
         "bash": "deny"
@@ -81,7 +107,7 @@
       // Built-in OpenCode subagent. Keep prompt built-in; tune only model/permissions here.
       // Use for current local repo discovery.
       "mode": "subagent",
-      "model": "opencode/deepseek-v4-flash-free",
+      "model": "9router/oc/deepseek-v4-flash-free",
       "permission": {
         "edit": "deny"
       }
@@ -90,15 +116,16 @@
     "scout": {
       // Built-in OpenCode subagent. Keep prompt built-in; tune only model/permissions here.
       // Use for external docs/dependency source research.
+      // mimo is multimodal — good for reading docs/screenshots with images.
       "mode": "subagent",
-      "model": "opencode/deepseek-v4-flash-free",
+      "model": "9router/oc/mimo-v2.5-free",
       "permission": {
         "edit": "deny"
       }
     },
 
     "compaction": {
-      "model": "opencode/deepseek-v4-flash-free",
+      "model": "9router/oc/deepseek-v4-flash-free",
       "temperature": 0.1
     },
 
@@ -131,6 +158,16 @@
     "openviking": {
       "type": "remote",
       "url": "http://localhost:1933/mcp",
+      "enabled": true
+    },
+
+    // Office document tool. Required for .docx/.xlsx/.pptx work.
+    "officecli": {
+      "type": "local",
+      "command": [
+        "officecli",
+        "mcp"
+      ],
       "enabled": true
     }
   }

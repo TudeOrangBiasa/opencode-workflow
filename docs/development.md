@@ -285,7 +285,20 @@ Before pushing, verify:
 4. **Skill loads**: invoke the skill via `/skill-name` or trigger keyword
 5. **Agent behavior**: run a small task through the agent
 
-If you change `opencode.json` (local config), commit it separately. Local config is not in the repo.
+## Local Config vs Template
+
+The actual `opencode.json` (`~/.config/opencode/opencode.json`) is local-only and **never committed** (it may contain API keys). But the routing config (model assignments, permissions, skill triggers, MCP, disabled built-ins) should be shared — otherwise new clones start with defaults and lose your carefully tuned setup.
+
+**Solution**: the canonical config template lives at `docs/templates/opencode.primitive-agents.jsonc`. It has the same content as your local `opencode.json` but with `REPLACE_WITH_YOUR_KEY` placeholders. This is the versioned source of truth for shared config.
+
+When you change `opencode.json` locally:
+
+1. Edit `~/.config/opencode/opencode.json`
+2. Mirror the change in `docs/templates/opencode.primitive-agents.jsonc` (replace any new keys with `REPLACE_WITH_YOUR_KEY`)
+3. Commit the template change with a `Wire:` or `Cleanup:` prefix in CHANGELOG
+4. Do NOT commit the local `opencode.json` itself
+
+On a new machine, copy the template to `~/.config/opencode/opencode.json` and fill in your keys. The workflow will work identically.
 
 ## Syncing from Upstream
 

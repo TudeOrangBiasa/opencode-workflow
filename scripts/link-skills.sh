@@ -18,6 +18,7 @@ ACTIVE_SKILLS=(
   skills/engineering/zoom-out
   skills/engineering/prototype
   skills/engineering/review
+  skills/engineering/ponytail
   skills/misc/accessibility
   skills/misc/ai-regression-testing
   skills/misc/android-clean-architecture
@@ -124,12 +125,12 @@ ACTIVE_SKILLS=(
   skills/misc/vite-patterns
   skills/productivity/grill-me
   skills/productivity/handoff
+  skills/productivity/officecli
   skills/productivity/write-a-skill
   skills/personal/eval
   skills/personal/openviking
   skills/personal/ddev
   skills/personal/idea-fragments
-  skills/personal/ponytail
 )
 
 # If the destination is a symlink that resolves into this repo, we'd end up

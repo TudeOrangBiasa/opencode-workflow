@@ -13,3 +13,4 @@ Skills I use daily for code work.
 - **[zoom-out](./zoom-out/SKILL.md)** — Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code.
 - **[prototype](./prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
 - **[review](./review/SKILL.md)** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
+- **[ponytail](./ponytail/SKILL.md)** — Forces the laziest solution that actually works. YAGNI → stdlib → native → one line → minimum. Levels: lite/full/ultra. Companion skills: review, audit, debt, gain, help. From [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail).

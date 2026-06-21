@@ -26,7 +26,6 @@ This repo is for maturing workflow/config locally before anything is installed i
 OpenCode agent files live in [`agents/`](./agents/). They use OpenCode-compatible frontmatter only.
 
 - `orchestrator` — primary router and final synthesizer.
-- `planner` — read-only planning specialist.
 - `builder` — narrow execution agent for bounded code changes.
 - `reviewer` — Behavior + Change Health diff review with specialist escalation hints.
 - `explore` — built-in OpenCode read-only discovery agent.
@@ -81,6 +80,7 @@ Skills I use daily for code work.
 - **[zoom-out](./skills/engineering/zoom-out/SKILL.md)** — Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code.
 - **[prototype](./skills/engineering/prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
 - **[review](./skills/engineering/review/SKILL.md)** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
+- **[ponytail](./skills/engineering/ponytail/SKILL.md)** — Forces the laziest solution that actually works. YAGNI → stdlib → native → one line → minimum. Levels: lite/full/ultra. Companion skills: review, audit, debt, gain, help. From [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail).
 
 ### Productivity
 
@@ -88,6 +88,7 @@ General workflow tools, not code-specific.
 
 - **[grill-me](./skills/productivity/grill-me/SKILL.md)** — Get relentlessly interviewed about a plan or design until every branch of the decision tree is resolved.
 - **[handoff](./skills/productivity/handoff/SKILL.md)** — Compact the current conversation into a handoff document so another agent can continue the work.
+- **[officecli](./skills/productivity/officecli/SKILL.md)** — Create, analyze, proofread, and modify Office documents (.docx, .xlsx, .pptx) using the officecli CLI. Use when the user wants to create, inspect, format, or fix any Office document.
 - **[write-a-skill](./skills/productivity/write-a-skill/SKILL.md)** — Create new skills with proper structure, progressive disclosure, and bundled resources.
 
 ### Misc

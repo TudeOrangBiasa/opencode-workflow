@@ -17,6 +17,7 @@ This repo is for maturing workflow/config locally before anything is installed i
 - [`AGENTS.md`](./AGENTS.md) — repo rules for agents working here.
 - [`docs/install.md`](./docs/install.md) — manual activation steps for OpenCode.
 - [`docs/workflow.md`](./docs/workflow.md) — architecture, agents, skills, routing, AFK session log.
+- [`docs/development.md`](./docs/development.md) — how to develop this repo: add skills, modify agents, sync from upstream, commit, release.
 - [`docs/models.md`](./docs/models.md) — model tiers, candidates, parallelism rules.
 - [`CONTEXT.md`](./CONTEXT.md) — domain language for this workflow kit.
 - [`.out-of-scope/`](./.out-of-scope/) — rejected or deferred feature notes.

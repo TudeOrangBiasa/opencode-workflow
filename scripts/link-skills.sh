@@ -131,6 +131,8 @@ ACTIVE_SKILLS=(
   skills/personal/openviking
   skills/personal/ddev
   skills/personal/idea-fragments
+  skills/personal/dev-workflow
+  skills/personal/workflow-audit
 )
 
 # If the destination is a symlink that resolves into this repo, we'd end up

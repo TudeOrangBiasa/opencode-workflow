@@ -25,12 +25,16 @@ This repo is for maturing workflow/config locally before anything is installed i
 
 OpenCode agent files live in [`agents/`](./agents/). They use OpenCode-compatible frontmatter only.
 
-- `orchestrator` — primary router and final synthesizer.
+- `orchestrator` — primary router and final synthesizer. See [`agents/orchestrator.md`](./agents/orchestrator.md).
 - `builder` — narrow execution agent for bounded code changes.
 - `reviewer` — Behavior + Change Health diff review with specialist escalation hints.
 - `explore` — built-in OpenCode read-only discovery agent.
 - `scout` — built-in OpenCode external docs, dependency source, and upstream API research.
 - `browser-qa` — browser QA for responsive layout, spacing, broken UI, full-page coverage, and frontend data consistency.
+
+### Agent behavior lives in `agents/`, not in `opencode.json`
+
+Agent prompts, rules, and operating model are stored as `.md` files in [`agents/`](./agents/) and symlinked to `~/.config/opencode/agents/`. `opencode.json` only carries routing config (model, permissions, skill_triggers). To change agent behavior, edit the file; to change routing, edit JSON.
 
 > **Verifier**: No dedicated primitive agent. Use `verify-evidence` on-demand skill (misc) for tool-based verification in AFK, high-risk, or evidence-gap scenarios. See [Verification Agent Decision](./AGENTS.md#verification-agent-decision).
 

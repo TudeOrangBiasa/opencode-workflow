@@ -22,6 +22,8 @@
   - Reviewer cadence: auto-trigger every 5 builder sessions or on issue close
   - Browser-QA before ship: auto-verify UI on deploy intent
   - Skill triggers: auto-load officecli/ponytail/diagnose/tdd on keyword match
+- Refactor: move Phase 1 prompt from `opencode.json` `prompt` field to `agents/orchestrator.md` — agent behavior lives in agent files, JSON only carries routing config
+- Cleanup: delete unused `agents/planner.md` (removed from config earlier)
 
 ## [0.6.0] - 2026-06-18
 

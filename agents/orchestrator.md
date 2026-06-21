@@ -69,14 +69,56 @@ Before any deploy/build/ship intent:
 
 When user mentions or task involves these keywords, load the skill BEFORE delegating. Never delegate a task that needs domain expertise without forwarding that expertise.
 
-## UI Work Protocol (design.md + impeccable)
+## UI Work Protocol (impeccable sub-commands + design.md)
 
-For any task involving UI — new page, new component, view refactor, visual fix, browser-qa review — instruct the subagent as follows:
+impeccable is the canonical UI craft skill. It has 20+ sub-commands — load the right one based on intent, not just "impeccable" generically.
 
-1. **builder** must read `design.md` (at project root or `docs/agents/design.md`, or follow `docs/agents/design-map.md` for multi-domain) and apply its tokens, anti-patterns, and component rules. Never invent hex values, font sizes, or spacing outside the design scale.
-2. **browser-qa** must read `design.md` and judge taste/aesthetic against the project's design language, not generic "good UI." Reference specific anti-patterns from `design.md` when reporting visual issues.
-3. **Both agents** auto-load the `impeccable` skill. If the work involves motion/animation, also load `emil-design-eng`.
-4. If `design.md` does not exist in the project, the orchestrator runs the `setup-matt-pocock-skills` skill (or scaffolds a minimal `design.md` with the user) before delegating UI work. Never delegate UI work without a design reference.
+| Intent | Skill / sub-command | What it does |
+|--------|---------------------|--------------|
+| New product/brand context, no DESIGN.md | `impeccable teach` | Gathers context, writes PRODUCT.md + DESIGN.md at project root |
+| Existing app, want to extract design tokens | `impeccable document` | Auto-generates DESIGN.md from screenshots / CSS / codebase |
+| Build new UI (page, component) | `impeccable craft` | Full design process: shape → code → inspect → improve |
+| Adapt UI to new context (responsive!) | `impeccable adapt` | Rethink for new screen size, device, platform |
+| Review existing UI for taste | `impeccable audit` | 5-dimension code quality check, scored 0-4 |
+| Critique existing UI design | `impeccable critique` | Design critique |
+| Polish / final touches | `impeccable polish` | Last-mile quality pass |
+| Make UI more bold or restrained | `impeccable bolder` / `quieter` | Adjust intensity |
+| Color treatment | `impeccable colorize` | Color work |
+| Typography work | `impeccable typeset` | Typography |
+| Performance / quality optimization | `impeccable optimize` | |
+| Robustness | `impeccable harden` | |
+| Motion / animation | `impeccable polish` + `emil-design-eng` | Both for motion taste |
+| Live browser iteration (HMR) | `impeccable live` | Hot-swap variants in browser |
+| Convert screenshots to Vue | `ui-to-vue` | Only if project uses Vue |
+| Review motion code | `review-animations` | Per-element motion review |
+
+### Protocol
+
+For any task involving UI:
+
+1. **Identify intent** from the table above. Pick the specific sub-command, not just "impeccable".
+2. **Check for design reference**: `design.md` (or `docs/agents/design.md`, or follow `docs/agents/design-map.md` for multi-domain).
+3. **If `design.md` is missing** AND task is non-trivial:
+   - For greenfield / new project → `impeccable teach` first
+   - For existing app with no design doc → `impeccable document` first
+4. **builder** (for new UI): load the chosen impeccable sub-command + read `design.md` + apply tokens
+5. **browser-qa** (for review): load `impeccable audit` for taste checks, `impeccable critique` for design critique
+6. **Never delegate UI work without a design reference.** If user pushes back, scaffold a minimal `design.md` first.
+
+### When to use multiple sub-commands
+
+- `teach` + `craft` — design context, then build
+- `document` + `craft` — extract design from existing, then build new
+- `craft` + `audit` — build, then quality check
+- `craft` + `adapt` — build desktop, then adapt to mobile
+- `craft` + `live` + `polish` — build, iterate in browser, final polish
+
+### Other design skills (use alongside impeccable)
+
+- `emil-design-eng` — motion/animation taste (load with `impeccable polish` for any motion work)
+- `design-system` — generate/audit design systems (alternative to impeccable teach/document for some workflows)
+- `ui-to-vue` — **only if project uses Vue**, convert screenshots to Vue components
+- `review-animations` — review motion code against craft bar (use after any animation work)
 
 ## Primitive Agents
 

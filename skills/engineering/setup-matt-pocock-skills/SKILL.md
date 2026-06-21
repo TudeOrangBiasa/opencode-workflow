@@ -74,12 +74,26 @@ Confirm the layout:
 
 > Explainer: When builder, browser-qa, or reviewer touch UI, they need to know the project's design tokens, anti-patterns, and component rules. Without a design reference, they invent generic "AI slop" UI. The `design.md` file is the canonical place for this — it's loaded as context before any UI work.
 
+**Prefer the `impeccable` skill for this.** It has sub-commands that auto-generate the design reference:
+
+- `impeccable teach` — gathers context (PRODUCT.md + DESIGN.md) for greenfield / new project
+- `impeccable document` — auto-extracts DESIGN.md from existing app (screenshot / CSS / codebase)
+
+These are richer than filling the template manually. Recommend them first.
+
+Fallback (if user can't / doesn't want to run impeccable): the design.md seed template in this skill folder.
+
 Confirm:
 
 - **Single-domain** — one `design.md` at repo root or in `docs/agents/`. One design language covers the whole repo.
 - **Multi-domain** — `design-map.md` at the root + per-domain `design.md` files (e.g. admin vs. public site, or monorepo with separate frontend apps).
 
-If the repo already has a `design.md`, preserve it. Otherwise, seed from the design template in this skill folder and ask the user to fill in the tokens. Offer to extract from the codebase if there's an obvious source:
+If the repo already has a `design.md`, preserve it. Otherwise, choose:
+
+- **Recommended**: run `impeccable teach` (greenfield) or `impeccable document` (existing app)
+- **Fallback**: seed from the design template in this skill folder and ask the user to fill in the tokens
+
+Other extractable sources (handy if `impeccable` is unavailable):
 
 - Tailwind config → extract color, spacing, radius tokens
 - Sass/SCSS variables → same

@@ -30,23 +30,6 @@
     ]
   },
 
-  // Provider config — replace with your own. Examples shown for 9router.
-  "provider": {
-    "9router": {
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "http://127.0.0.1:20128/v1",
-        "apiKey": "REPLACE_WITH_YOUR_KEY"
-      },
-      "models": {
-        "openai-t1-sg/gpt-5.5": { "name": "openai-t1-sg/gpt-5.5" },
-        "oc/deepseek-v4-flash-free": { "name": "oc/deepseek-v4-flash-free" },
-        "oc/mimo-v2.5-free": { "name": "oc/mimo-v2.5-free" },
-        "tr/MiniMax-M3": { "name": "tr/MiniMax-M3" }
-      }
-    }
-  },
-
   // Optional modules such as OpenViking can be enabled in personal config.
   // If OpenViking MCP is absent, agents should continue with local files only.
 
@@ -71,8 +54,20 @@
         "ponytail": ["review", "audit", "yagni", "over-engineer", "simple", "minimal", "refactor"],
         "diagnose": ["bug", "broken", "error", "crash", "slow", "regression"],
         "tdd": ["implement", "feature", "test-first", "red-green"],
-        "impeccable": ["ui", "frontend", "layout", "design", "polish", "visual"],
+        "impeccable": [
+          "ui", "frontend", "layout", "design", "polish", "visual", "ux",
+          "impeccable teach", "impeccable document", "impeccable craft",
+          "impeccable audit", "impeccable critique", "impeccable adapt",
+          "impeccable live", "impeccable polish", "impeccable bolder",
+          "impeccable quieter", "impeccable colorize", "impeccable optimize",
+          "impeccable harden", "impeccable typeset", "impeccable delight",
+          "impeccable distill", "impeccable clarify", "impeccable shape",
+          "impeccable extract", "impeccable onboard", "impeccable overdrive"
+        ],
         "emil-design-eng": ["motion", "animation", "easing", "spring", "transition", "gesture"],
+        "design-system": ["design system", "design tokens", "style guide"],
+        "ui-to-vue": ["vue", "convert to vue", "vue component"],
+        "review-animations": ["review motion", "review animation", "animation review"],
         "php-review": ["php", "laravel", "blade", "eloquent"],
         "security-review": ["auth", "secret", "password", "credential", "vulnerability"]
       }
@@ -80,7 +75,7 @@
 
     "builder": {
       "mode": "subagent",
-      "model": "9router/oc/deepseek-v4-flash-free"
+      "model": "opencode/deepseek-v4-flash-free"
     },
 
     "reviewer": {
@@ -96,7 +91,7 @@
 
     "browser-qa": {
       "mode": "subagent",
-      "model": "9router/oc/mimo-v2.5-free",
+      "model": "opencode/mimo-v2.5-free",
       "permission": {
         "edit": "deny",
         "bash": "deny"
@@ -107,7 +102,7 @@
       // Built-in OpenCode subagent. Keep prompt built-in; tune only model/permissions here.
       // Use for current local repo discovery.
       "mode": "subagent",
-      "model": "9router/oc/deepseek-v4-flash-free",
+      "model": "opencode/deepseek-v4-flash-free",
       "permission": {
         "edit": "deny"
       }
@@ -118,14 +113,14 @@
       // Use for external docs/dependency source research.
       // mimo is multimodal — good for reading docs/screenshots with images.
       "mode": "subagent",
-      "model": "9router/oc/mimo-v2.5-free",
+      "model": "opencode/mimo-v2.5-free",
       "permission": {
         "edit": "deny"
       }
     },
 
     "compaction": {
-      "model": "9router/oc/deepseek-v4-flash-free",
+      "model": "opencode/deepseek-v4-flash-free",
       "temperature": 0.1
     },
 

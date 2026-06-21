@@ -29,6 +29,7 @@
 - Feature: `workflow-audit` skill — audit opencode config, symlink health, repo sync, and recent session activity. Read-only, surfaces mismatches.
 - Documentation: `docs/development.md` — full dev workflow for the opencode-workflow repo (setup, layout, add-skill decision tree, agent edits, link script, changelog, commit, testing, releasing).
 - Fix: `docs/templates/opencode.primitive-agents.jsonc` — updated to match current config. Removed stale `planner` agent, added `skill_triggers` (8 skills), updated scout to mimo (multimodal), added `officecli` MCP. Local `opencode.json` never committed (has API keys); this template is the versioned source of truth.
+- Wire: impeccable sub-commands — `skill_triggers` now includes all 20+ impeccable sub-commands (teach, document, craft, audit, critique, adapt, live, polish, bolder, quieter, colorize, optimize, harden, typeset, delight, distill, clarify, shape, extract, onboard, overdrive). orchestrator, builder, browser-qa agents now reference the right sub-command by intent (not just "impeccable" generically). `setup-matt-pocock-skills` now recommends `impeccable teach` / `impeccable document` to auto-generate DESIGN.md instead of manual template fill. Added `design-system` and `review-animations` triggers; `ui-to-vue` is Vue-specific.
 
 ## [0.6.0] - 2026-06-18
 

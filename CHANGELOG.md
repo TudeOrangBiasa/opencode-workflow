@@ -16,6 +16,12 @@
 - Routing: scout → 9router/oc/mimo-v2.5-free (multimodal for external docs with images)
 - Cleanup: delete 462 stale sessions from old configs (implementer, browser-extractor, sdd-*, etc.); 23K messages + 105K parts removed; DB 3.6GB → 3.2GB
 - Wire: orchestrator error pattern tracking via OpenViking — auto-store tool failure workarounds to avoid repeating them
+- Phase 1 fixes (from session pain analysis): orchestrator prompt now includes:
+  - Memory protocol: mandatory `ov find` at task start, `ov remember` at end
+  - Preflight checks: read before edit/write (kills 9.8%/7.5% error rates)
+  - Reviewer cadence: auto-trigger every 5 builder sessions or on issue close
+  - Browser-QA before ship: auto-verify UI on deploy intent
+  - Skill triggers: auto-load officecli/ponytail/diagnose/tdd on keyword match
 
 ## [0.6.0] - 2026-06-18
 

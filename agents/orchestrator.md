@@ -64,12 +64,69 @@ Auto-invoke `reviewer` subagent:
 
 Don't wait until end of project. Reviewer is isolated from context by design — that's the point.
 
-## Browser-QA Before Ship
+## Ship Verification Gate (UI + Docs)
 
-Before any deploy/build/ship intent:
-1. Run browser-qa on the affected views (auto-detect from edited files)
-2. Skip only if changes are config-only with no UI impact
-3. If browser-qa finds issues, route to builder for fix, then re-verify
+**This is mandatory** before any "ship", "done", "merge", "deploy", "release", or `/ship` intent. The geopredict session shipped 21 builder changes with 1 browser-qa — visual issues went uncaught. This gate exists to prevent that.
+
+### Ship intent detection (any of these trigger the gate)
+
+Keywords (case-insensitive, any position in user message):
+- `ship`, `ship it`, `let's ship`
+- `done`, `done?`, `is it done?`
+- `finish`, `finished`, `finito`
+- `merge`, `merge it`, `pr ready`
+- `deploy`, `deploy it`, `push to prod`
+- `release`, `cut release`, `tag release`
+
+Slash commands (always ship intent): `/ship`, `/ship-it`, `/yeet`
+
+When detected: **load the `verify-evidence` skill** (auto-loaded via skill_trigger). Do not declare the task complete without walking the checklist.
+
+### File-type classification (drives verification type)
+
+Detect changes via `git diff --name-only` (working tree + staged) since session start or last commit:
+
+| File extensions | Verification |
+|-----------------|--------------|
+| UI: `.tsx`, `.jsx`, `.vue`, `.svelte`, `.astro`, `.css`, `.scss`, `.sass`, `.less`, `.html`, `.htm`, `.blade.php`, `.erb`, `.liquid` | `browser-qa` subagent (chrome-devtools screenshot + DOM check) |
+| Docs: `.docx`, `.pptx`, `.xlsx` | `officecli view screenshot` (PNG, no Office required) — pre-flight: confirm officecli installed |
+| Config-only: `.json`, `.yaml`, `.yml`, `.toml`, `.ini`, `.env`, `.sh`, `.gitignore`, `Makefile` | Skip visual QA, still walk `verify-evidence` correctness checklist |
+| Mixed (UI + config, or docs + config) | Run all applicable checks |
+| No changes | Walk checklist anyway, declare "no changes" status |
+
+### Verification checklist (must complete all that apply)
+
+1. **Identify changes**: `git diff --name-only HEAD` (or staged + unstaged). Group by type.
+2. **For UI changes**: invoke `browser-qa` subagent on the affected views. **Require screenshot evidence** (PNG path in the report). No screenshot = `unverified`, not done.
+3. **For doc changes**: run `officecli view <file> screenshot -o .scratch/verification/<date>-<ship>/<file>.png` per file. **Require PNG on disk**. If officecli fails, run pre-flight check (load `officecli` skill) before falling back.
+4. **For config changes**: walk the `verify-evidence` skill's correctness checklist (commands, schema, secrets check).
+5. **For mixed**: combine the above. Order: pre-flight → run all applicable → collect evidence → write report.
+6. **If any check finds issues**: route to `builder` subagent for fix, then re-run the failing check. Do NOT declare done until all checks pass or are explicitly waived by user.
+7. **Save evidence** to `.scratch/verification/<YYYY-MM-DD>-<intent-slug>/` with the report + screenshots. This makes verification auditable later.
+
+### Skip conditions (only with explicit user override)
+
+Skip visual QA ONLY if user says "skip verification" or "ship without QA" verbatim. Otherwise:
+- "I trust this" → still run, just don't ask for confirmation
+- "We're in a hurry" → still run, just collect minimal evidence
+- "It's just docs/notes" → still walk the checklist, even if no changes detected
+
+### Failure modes
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `officecli` not in PATH | OfficeCLI not installed | Run pre-flight from `setup-matt-pocock-skills`. Install: `curl -fsSL https://raw.githubusercontent.com/iOfficeAI/OfficeCLI/main/install.sh \| bash` |
+| `browser-qa` click/fill fails with stale uid | Page state changed since last snapshot | Re-snapshot first (Issue 04 rule) |
+| PNG screenshot is empty/blank | Office render issue or no Office plugin | Try `officecli view <file> html -o <path>.html` instead; capture HTML evidence |
+| User insists on shipping anyway | Genuine time pressure | Log the skipped checks in `.scratch/verification/<date>-ship/skipped.md` and ship |
+
+### Reference
+
+- `verify-evidence` skill: canonical verification workflow (statuses, evidence mapping, stop conditions)
+- `officecli` skill: L1/L2/L3 command reference for doc edits + `view screenshot`
+- `browser-qa` subagent: chrome-devtools based UI evidence collector
+- Issue 04: re-snapshot rule (kills the 16 chrome-devtools errors)
+- Issue 02: officecli pre-flight check
 
 ## Skill Triggers (auto-load on keyword match)
 
@@ -79,6 +136,7 @@ Before any deploy/build/ship intent:
 | ponytail | review, audit, yagni, over-engineer, simple, minimal, refactor |
 | diagnose | bug, broken, error, crash, slow, regression |
 | tdd | implement, feature, test-first, red-green |
+| verify-evidence | ship, done, finish, merge, deploy, release, push to prod, /ship, /yeet |
 | impeccable | UI, frontend, layout, design, polish, visual |
 | emil-design-eng | motion, animation, easing, spring, transition, gesture |
 | php-review | PHP, Laravel, blade, eloquent |

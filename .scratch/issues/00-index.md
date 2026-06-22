@@ -20,7 +20,7 @@ done
 | 02 | [OfficeCLI pre-flight + .NET dep check](./02-officecli-preflight.md) | AFK | 25, 11 | New |
 | 03 | [OfficeCLI smart fallback (skill auto-load)](./03-officecli-smart-fallback.md) | AFK | 6, 9, 10, 26, 27 | New (blocked by 02) |
 | 04 | [Browser-QA re-snapshot on click failure](./04-browser-qa-resnapshot.md) | AFK | 12, 13 | New |
-| 05 | [Browser-QA mandatory before "ship" intent](./05-browser-qa-mandatory.md) | HITL | 14, 16 | New (blocked by 04) |
+| 05 | [Ship verification gate — UI + Docs](./05-browser-qa-mandatory.md) | AFK (reopened) | 14, 16 | In progress — officecli unblocks doc verification |
 | 06 | [Stuck-loop detection mechanism](./06-stuck-loop-detection.md) | HITL | 17, 18 | New |
 | 07 | [URL cache + scout rate-limiting + batch](./07-url-cache-scout-batching.md) | AFK | 19, 20, 21 | New |
 | 08 | [Pass skill context in subagent delegations](./08-skill-context-delegation.md) | AFK | 7, 8 | Verify existing |

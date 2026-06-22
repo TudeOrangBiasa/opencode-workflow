@@ -157,10 +157,13 @@
     },
 
     // Office document tool. Required for .docx/.xlsx/.pptx work.
+    // Install: curl -fsSL https://raw.githubusercontent.com/iOfficeAI/OfficeCLI/main/install.sh | bash
+    // Path is absolute to avoid PATH resolution conflicts with the unrelated
+    // npm "officecli" package (officecli.io / delaym, generation-only API tool).
     "officecli": {
       "type": "local",
       "command": [
-        "officecli",
+        "/home/todayz/.local/bin/officecli",
         "mcp"
       ],
       "enabled": true

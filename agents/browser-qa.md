@@ -127,3 +127,4 @@ Severity: `blocker`, `high`, `medium`, `low`.
 - If you can't access browser, say so immediately
 - Prioritize: blocker data corruption/trust issue > unusable responsive layout > console/network error > visual polish
 - Never claim a page is clean unless full-page scroll sweep was done. If only current viewport was checked, say so in `Coverage` and `unverified`.
+- **Re-snapshot on chrome-devtools failure**: if `click`, `fill`, or `fill_form` fails, ALWAYS take a new snapshot first. Element uids go stale after page state changes (load, animation, scroll). Retrying with a cached uid loops on "Element uid X no longer exists".

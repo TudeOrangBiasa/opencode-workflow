@@ -161,3 +161,54 @@ If multi-domain design, also write `docs/agents/design-map.md` as a pointer file
 Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later — re-running this skill is only necessary if they want to switch issue trackers, add a new design domain, or restart from scratch.
 
 After setup, the `builder`, `browser-qa`, and `reviewer` agents will auto-read `design.md` before any UI work. The `impeccable` and `emil-design-eng` skills are loaded alongside as UI craft context.
+
+## Tool Pre-flight Checks
+
+Some external tools the agents depend on (OfficeCLI, drawio desktop, exa MCP, chrome-devtools) have prerequisite checks that should pass before delegating work that uses them. Add a "Pre-flight" section to `docs/agents/preflight.md` for each tool your project uses.
+
+### OfficeCLI (`.docx`/`.pptx`/`.xlsx` work)
+
+Add a `## OfficeCLI preflight` section in the project's `docs/agents/preflight.md` (or `AGENTS.md` if you skip the docs layout):
+
+```markdown
+## OfficeCLI preflight
+
+Before delegating any `.docx`/`.pptx`/`.xlsx` work, verify OfficeCLI is working:
+
+```bash
+officecli --version       # or: officecli mcp
+```
+
+If this fails with `Could not load file or assembly 'DocumentFormat.OpenXml.Framework'`:
+- The .NET OfficeCLI tool is missing the OpenXml framework dependency
+- Install: `dotnet tool install --global OpenXml.Framework` (or per the tool's install docs)
+- Re-verify with the version check above
+- Do NOT proceed with .docx delegation until pre-flight passes
+```
+
+Why: missing .NET deps cascade into 100+ bash workarounds per session (unzip → sed → python3+lxml) because the agent doesn't know officecli is broken until the first call fails. The pre-flight catches it BEFORE delegation.
+
+### Browser-QA re-snapshot (chrome-devtools)
+
+If the project uses `browser-qa` with chrome-devtools MCP, add this to the same preflight doc:
+
+```markdown
+## Browser-QA re-snapshot rule
+
+On chrome-devtools click/fill/fill_form failure, ALWAYS re-snapshot the page first.
+The element uid is stale after page state changes (load, animation, scroll). Do
+NOT retry with the cached uid — that loops on "Element uid X no longer exists".
+```
+
+### exa MCP rate-limiting
+
+If scout or orchestrator uses `exa_web_search_exa`, add:
+
+```markdown
+## exa MCP rate limit
+
+Max 10 `exa_web_search_exa` calls per session. After hitting the limit, fall back
+to `webfetch` with a cached URL (check OpenViking `viking://cache/web/...` first).
+```
+
+These pre-flight checks are agent-facing — the orchestrator should read them before delegating.

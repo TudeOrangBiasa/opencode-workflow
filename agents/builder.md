@@ -95,3 +95,4 @@ Blocked:
 - **Never commit** — unless the user explicitly asks
 - **Do not self-initiate broad TDD loops** — if orchestrator or the `tdd` skill assigns a test-first slice, follow it narrowly
 - **Artifact placement:** Screenshots, test scripts, automation scripts, temp files go in `.scratch/` (screenshots/, scripts/, tmp/), NOT workspace root or `/tmp/`
+- **OfficeCLI smart fallback**: when `officecli` tool fails, do NOT immediately fall back to bash. Load the `officecli` skill, read the error, try the corrected command (e.g. `set` instead of `raw-set`, correct XML node type). Only fall back to bash if officecli genuinely can't do it. Silent fallbacks to `unzip → sed → python3+lxml` produced 238 python3 calls and corrupted output in past sessions.

@@ -20,15 +20,32 @@ ov remember "viking://agent/projects/<project>" "<1-2 sentence: what was done, w
 ov remember "viking://agent/patterns/<category>" "<pattern that emerged>"
 ```
 Future sessions with similar tasks will find these and avoid the same mistakes.
-
 ## Error Pattern Tracking
 
 When a tool call fails or requires a non-obvious workaround (e.g., officecli `set` failing then manual bash hack), store the pattern in OpenViking BEFORE falling back:
+
 ```
 ov remember "viking://agent/patterns/tool-failures/<tool>" "<brief: what failed, why, what worked instead>"
 ```
+
 Fallback is acceptable; repeating it is not.
 
+### OfficeCLI Smart Fallback (kills the 314-bash-workaround cascade)
+
+When `officecli` tool fails, do NOT immediately fall back to bash. Instead:
+
+1. **Load the `officecli` skill** (if not already loaded). The skill has documented error → solution patterns.
+2. **Read the error message carefully**. Common errors and fixes:
+   - `Unknown tool: raw-set` → use `set` instead (raw-set is not a valid command)
+   - `--index must be non-negative` → verify the element index first, or use 0-based
+   - `Cannot add 'run' under /body` → use the correct XML node type for that location
+   - `Path not found: /body/tbl[X]/tr[Y]/tc[Z]/p` → check actual table structure first
+   - `Could not load file or assembly 'DocumentFormat.OpenXml.Framework'` → run the pre-flight check (install missing .NET dep), do NOT proceed with .docx work
+3. **Try the corrected command**. Run it 2-3 times with different approaches.
+4. **Only after officecli genuinely fails**: store the pattern in OpenViking and consider a fallback (e.g. impeccable craft for new docx generation, but editing existing docx is a last-resort bash path).
+5. **NEVER** silently fall back to `unzip → sed → python3+lxml` without trying the proper officecli path first. That pattern produced 238 python3 calls in BAB V/VII sessions with corrupted output.
+
+The pre-flight check (in `setup-matt-pocock-skills/SKILL.md`) runs BEFORE delegation. If officecli isn't healthy, the delegation is rejected — better to fail loudly than cascade into 200+ bash calls.
 ## Preflight Checks (kill 9.8% edit / 7.5% write errors)
 
 Before ANY `edit` or `write` tool call:

@@ -93,6 +93,7 @@ Detect changes via `git diff --name-only` (working tree + staged) since session 
 | Config-only: `.json`, `.yaml`, `.yml`, `.toml`, `.ini`, `.env`, `.sh`, `.gitignore`, `Makefile` | Skip visual QA, still walk `verify-evidence` correctness checklist |
 | Mixed (UI + config, or docs + config) | Run all applicable checks |
 | No changes | Walk checklist anyway, declare "no changes" status |
+| **Tiny diff** (UI, < 10 insertions+deletions, 1 file) | **Skip browser-qa, just walk `verify-evidence` checklist**. Reasoning: visual check is unreliable for tiny edits (CSS color, copy fix, single-line type); verify-evidence + the diff itself are enough. Tests catch logic bugs, not browser-qa. |
 
 ### Verification checklist (must complete all that apply)
 

@@ -25,7 +25,7 @@ done
 | 07 | [URL cache + scout rate-limiting + batch](./07-url-cache-scout-batching.md) | AFK | 19, 20, 21 | New |
 | 08 | [Pass skill context in subagent delegations](./08-skill-context-delegation.md) | AFK | 7, 8 | Verify existing |
 | 09 | [Skill intent-based triggers — verify complete](./09-skill-intent-triggers.md) | AFK | 5, 22, 23, 24 | Verify existing |
-| 10 | [Skip QA dance for tiny diffs](./10-skip-qa-tiny-diffs.md) | HITL | 15 | New (blocked by 05) |
+| 10 | [Skip browser-qa for tiny diffs — ponytail cut](./10-skip-qa-tiny-diffs.md) | AFK (ponytail) | 15 | In progress |
 
 ## Dependency Graph
 

@@ -138,12 +138,50 @@ Skip visual QA ONLY if user says "skip verification" or "ship without QA" verbat
 | diagnose | bug, broken, error, crash, slow, regression |
 | tdd | implement, feature, test-first, red-green |
 | verify-evidence | ship, done, finish, merge, deploy, release, push to prod, /ship, /yeet |
+| openviking | memory, remember, store, retrieve, start, begin, new task, fix, implement, build, create, update, modify, refactor, add, find |
 | impeccable | UI, frontend, layout, design, polish, visual |
 | emil-design-eng | motion, animation, easing, spring, transition, gesture |
 | php-review | PHP, Laravel, blade, eloquent |
 | security-review | auth, secret, password, credential, vulnerability |
 
 When user mentions or task involves these keywords, load the skill BEFORE delegating. Never delegate a task that needs domain expertise without forwarding that expertise.
+
+## Delegation Protocol (kills the 15% skill-context rate)
+
+When delegating to a subagent (`builder`, `reviewer`, `browser-qa`, `explore`, `scout`), **always include relevant skill context in the delegation prompt**. Subagents start fresh — they don't know which skills are relevant.
+
+**Mandatory format** for every `task` prompt:
+
+```markdown
+<task description>
+
+Skills relevant to this task:
+- [skill-name] — [1-sentence summary of when to apply]
+- [skill-name-2] — [1-sentence summary]
+
+Load each skill before starting work.
+```
+
+**Example**:
+
+```markdown
+Fix the spacing on the pricing page card grid. Tests should pass.
+
+Skills relevant to this task:
+- impeccable craft — UI design quality for product interfaces
+- accessibility — semantic HTML, ARIA, keyboard nav, focus management
+```
+
+**Heuristic for picking skills**:
+- UI/design work → impeccable + emil-design-eng (if motion)
+- Security/auth/secret → security-review
+- PHP/Laravel → php-review
+- Docs (.docx/.pptx/.xlsx) → officecli
+- Diagnosis of a bug → diagnose
+- Code review → ponytail
+- Before any ship/done intent → verify-evidence
+
+If no skill matches, write "No specific skill applies" — don't fabricate.
 
 ## URL Cache + Scout Rate-Limiting (kills 7 exa timeouts + 3 webfetch 404s)
 

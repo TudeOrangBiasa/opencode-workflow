@@ -1,9 +1,39 @@
 ---
 name: openviking
-description: Persistent memory for AI agents — store/retrieve context across sessions. Triggers on "memory", "remember", "openviking", "store", "retrieve".
+description: Persistent memory for AI agents — store/retrieve context across sessions. Triggers on "memory", "remember", "openviking", "store", "retrieve", "start", "begin", "task", "fix", "implement", "build", "create", "update", "modify", "refactor", "add", "find", "search memory".
 ---
 
 # OpenViking Context Database
+
+## PROTOCOL (mandatory on every task)
+
+This skill auto-loads on task-start keywords (start, begin, fix, implement, build, create, update, modify, refactor, add, find). When loaded, follow this protocol:
+
+**1. At task start** — check for prior context:
+```bash
+ov find "<task-keyword>"   # e.g. "laporan docx", "laravel invoice", "auth fix"
+```
+Skip ONLY if task is a one-line typo fix.
+
+**2. At task end** (user signals done / ship / finish) — store what was learned:
+```bash
+ov remember "viking://agent/projects/<project>" "<1-2 sentence: what was done, what worked, what to avoid>"
+ov remember "viking://agent/patterns/<category>" "<pattern that emerged>"
+```
+
+**3. Before retrying a tool that failed** — check for known patterns:
+```bash
+ov find "viking://agent/patterns/tool-failures/<tool>"
+```
+
+**4. When user expresses preference** ("gw suka X", "jangan Y", "biasanya Z") — store immediately:
+```bash
+ov remember "viking://user/preferences/<topic>" "<preference>"
+```
+
+**5. When agent makes same mistake twice** — store as lesson before retrying.
+
+## Reference
 
 Persistent memory and context management for AI agents.
 

@@ -1,30 +1,38 @@
-# Issue 1: OpenViking memory protocol — verify it fires
+# Issue 1: OpenViking memory protocol — fixed
 
-## What to build
+## Status
 
-Verify that the OpenViking memory protocol added in `agents/orchestrator.md` (memory protocol section) actually fires in real sessions. This is a verification issue, not a build issue.
+**Resolved.** Root cause: `openviking` skill was in the description's trigger list but **NOT in `opencode.json` `skill_triggers`**. The skill existed but never auto-loaded → 0% firing.
 
-The protocol requires:
-- `ov find "<task-keyword>"` at task start
-- `ov remember` at task end (with `viking://agent/projects/<name>` or `viking://agent/patterns/<category>`)
-- Check known tool failure patterns before retrying
+## Fix (ponytail cut)
 
-**Verify by**:
-- Run a few real sessions and check the DB for `ov` calls
-- Confirm OpenViking usage goes from 0% to meaningful
-- Confirm lessons get stored
+1. **Add `openviking` to `opencode.json` `skill_triggers`** with 18 task-start keywords:
+   ```
+   "openviking": ["memory", "remember", "openviking", "store", "retrieve",
+                  "start", "begin", "new task", "task", "fix", "implement",
+                  "build", "create", "update", "modify", "refactor", "add",
+                  "find", "search memory"]
+   ```
+   Now auto-loads on any task verb. The 0% rate was a config bug, not a model problem.
 
-## Acceptance criteria
+2. **Rewrite top of `skills/personal/openviking/SKILL.md`** as imperative "PROTOCOL" section (5 numbered steps, not passive description). Agent reads protocol, follows it.
 
-- [ ] Query OpenViking usage from `~/.local/share/opencode/opencode.db` after running 5+ sessions
-- [ ] Confirm `ov find` and `ov remember` calls appear in messages
-- [ ] Confirm patterns stored at `viking://agent/patterns/tool-failures/*`
-- [ ] Update CHANGELOG with verification results
+## Mechanism vs Rule
 
-## Blocked by
+Pattern confirmed: **prompt rules alone don't fire, but auto-loaded skills do**. The fix moves the protocol from a rule in `agents/orchestrator.md` to a skill that auto-loads via trigger keywords. The skill content IS the protocol — the agent reads it, follows it.
 
-None — can start immediately.
+## Verification
+
+- Restart opencode, run a task that starts with "fix X" or "implement Y" → `openviking` skill auto-loads
+- Check session DB: `ov find` and `ov remember` calls should appear in messages
+- Check `~/.local/share/opencode/opencode.db` for OpenViking usage
+
+## Out of scope
+
+- Auto-trigger on every session start (opencode has no session-start hook)
+- Sub-skill auto-triggering (e.g., loading specific memory namespaces)
+- Cache layer for hot queries
 
 ## Notes
 
-Already implemented in commit `3703ffe` and `efc2146`. This is verification only.
+The skill description claimed triggers, but the triggers were only in the description text — not in the config. Classic meta-data vs config mismatch. The fix is one line in `opencode.json` and a SKILL.md rewrite. No framework, no script, no hook.

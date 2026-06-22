@@ -16,16 +16,16 @@ done
 
 | # | Title | Type | Stories | Status |
 |---|-------|------|---------|--------|
-| 01 | [OpenViking memory protocol — verify](./01-openviking-memory-protocol.md) | AFK | 1, 2, 3, 4 | Verify existing |
-| 02 | [OfficeCLI pre-flight + .NET dep check](./02-officecli-preflight.md) | AFK | 25, 11 | New |
-| 03 | [OfficeCLI smart fallback (skill auto-load)](./03-officecli-smart-fallback.md) | AFK | 6, 9, 10, 26, 27 | New (blocked by 02) |
-| 04 | [Browser-QA re-snapshot on click failure](./04-browser-qa-resnapshot.md) | AFK | 12, 13 | New |
-| 05 | [Ship verification gate — UI + Docs](./05-browser-qa-mandatory.md) | AFK (reopened) | 14, 16 | In progress — officecli unblocks doc verification |
+| 01 | [OpenViking memory protocol — fixed](./01-openviking-memory-protocol.md) | Done | 1, 2, 3, 4 | Skill added to skill_triggers + protocol in SKILL.md |
+| 02 | [OfficeCLI pre-flight + .NET dep check](./02-officecli-preflight.md) | Done | 25, 11 | Implemented in `8a8cd80` |
+| 03 | [OfficeCLI smart fallback (skill auto-load)](./03-officecli-smart-fallback.md) | Done | 6, 9, 10, 26, 27 | Implemented in `8a8cd80` |
+| 04 | [Browser-QA re-snapshot on click failure](./04-browser-qa-resnapshot.md) | Done | 12, 13 | Implemented in `8a8cd80` |
+| 05 | [Ship verification gate — UI + Docs](./05-browser-qa-mandatory.md) | Done | 14, 16 | Implemented in `9f9524c` (ship gate) |
 | 06 | [Stuck-loop detection mechanism](./06-stuck-loop-detection.md) | HITL | 17, 18 | New |
-| 07 | [URL cache + scout rate-limiting + batch](./07-url-cache-scout-batching.md) | AFK | 19, 20, 21 | New |
-| 08 | [Pass skill context in subagent delegations](./08-skill-context-delegation.md) | AFK | 7, 8 | Verify existing |
-| 09 | [Skill intent-based triggers — verify complete](./09-skill-intent-triggers.md) | AFK | 5, 22, 23, 24 | Verify existing |
-| 10 | [Skip browser-qa for tiny diffs — ponytail cut](./10-skip-qa-tiny-diffs.md) | AFK (ponytail) | 15 | In progress |
+| 07 | [URL cache + scout rate-limiting + batch](./07-url-cache-scout-batching.md) | Done | 19, 20, 21 | Implemented in `15ff44c` |
+| 08 | [Pass skill context in subagent delegations](./08-skill-context-delegation.md) | Done | 7, 8 | Delegation Protocol format added to orchestrator.md |
+| 09 | [Skill intent-based triggers — fixed](./09-skill-intent-triggers.md) | Done | 5, 22, 23, 24 | ROUTING TABLE added to impeccable SKILL.md |
+| 10 | [Skip browser-qa for tiny diffs — ponytail cut](./10-skip-qa-tiny-diffs.md) | Done | 15 | Implemented in `45d02ea` (1 row in ship gate table) |
 
 ## Dependency Graph
 

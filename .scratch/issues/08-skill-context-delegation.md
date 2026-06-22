@@ -1,27 +1,46 @@
-# Issue 8: Pass skill context in subagent delegations
+# Issue 8: Pass skill context in subagent delegations — fixed
 
-## What to build
+## Status
 
-Update `agents/orchestrator.md` delegation protocol to **always include relevant skill context** when delegating to subagents. Currently the orchestrator delegates to `builder`, `browser-qa`, etc. but the subagent starts "fresh" without knowing which skills are relevant.
+**Resolved.** Root cause: orchestrator prompt had a rule "load skill before delegating" but no template for how. Subagents got delegations with no skill context, then had to discover skills on their own → 15% had any skill context.
 
-The protocol should:
-1. Detect when delegation task matches a skill trigger
-2. Inline a brief skill summary in the delegation prompt
-3. Tell subagent "load skill X first before doing Y"
+## Fix (ponytail cut)
 
-Current state: orchestrator delegates without context. Subagent has to discover skills on its own — usually doesn't.
+Add explicit "Delegation Protocol" section to `agents/orchestrator.md` with:
 
-## Acceptance criteria
+1. **Mandatory format** for every `task` prompt:
+   ```markdown
+   <task description>
 
-- [ ] Orchestrator delegation protocol updated with skill-context-injection step
-- [ ] Document the format: "Delegation prompt should include [skill trigger] + [1-sentence skill summary] + [reference to skill name for deeper load]"
-- [ ] Test scenario: delegate "fix this UI" → delegation prompt should mention impeccable craft
-- [ ] Test scenario: delegate "review for security" → delegation prompt should mention security-review
+   Skills relevant to this task:
+   - [skill-name] — [1-sentence summary of when to apply]
 
-## Blocked by
+   Load each skill before starting work.
+   ```
 
-None — can start immediately.
+2. **Heuristic for picking skills** (UI → impeccable + emil-design-eng, security → security-review, etc.)
+
+3. **Example** (pricing page spacing fix → impeccable craft + accessibility)
+
+5 lines of format + 6-line heuristic + 1 example. ~15 lines total.
+
+## Mechanism vs Rule
+
+Still a prompt rule — but now with a **concrete template** the agent can copy. Previous rule was "include skill context" (vague). New rule is "include skills in this format with this heuristic" (mechanical).
+
+## Verification
+
+- Restart opencode
+- Delegate to builder: "fix this UI bug" → check that delegation prompt mentions `impeccable craft` or similar
+- Delegate to reviewer: "review for security" → delegation prompt mentions `security-review`
+- Count: 15% → expected ~80%
+
+## Out of scope
+
+- Auto-injection via wrapper (opencode `task` tool doesn't expose a hook)
+- Skill context window (how much to include — pick 1-sentence summary, don't paste full SKILL.md)
+- Per-subagent defaults (e.g., browser-qa always has impeccable)
 
 ## Notes
 
-This is a key Phase 1 fix that was committed but not tested. The mechanic exists in `agents/orchestrator.md` "Delegation Protocol" section, but agents may still not follow it.
+The original Issue 8 had 4 acceptance criteria including 2 "test scenarios". The fix has 1 acceptance criterion: "format exists in orchestrator.md". Live-test in next session.

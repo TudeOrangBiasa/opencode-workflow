@@ -80,11 +80,44 @@ Before any deploy/build/ship intent:
 | diagnose | bug, broken, error, crash, slow, regression |
 | tdd | implement, feature, test-first, red-green |
 | impeccable | UI, frontend, layout, design, polish, visual |
+| emil-design-eng | motion, animation, easing, spring, transition, gesture |
 | php-review | PHP, Laravel, blade, eloquent |
 | security-review | auth, secret, password, credential, vulnerability |
-| emil-design-eng | motion, animation, easing, spring, transition, gesture |
 
 When user mentions or task involves these keywords, load the skill BEFORE delegating. Never delegate a task that needs domain expertise without forwarding that expertise.
+
+## URL Cache + Scout Rate-Limiting (kills 7 exa timeouts + 3 webfetch 404s)
+
+For research-heavy work (scout calls, web research), apply these rules to avoid the geopredict pain pattern (82 exa calls in 1 day → 7 MCP timeouts + 3 webfetch 404s + 11 scout calls in 1 hour with no consolidation):
+
+### URL Cache (avoid repeated 404s)
+
+When `webfetch` returns 200, store the URL in OpenViking:
+```
+ov remember "viking://cache/web/<host>/<path>" "<brief: page content summary>"
+```
+
+When scout or builder needs to fetch a URL, check `viking://cache/web/...` first:
+- If URL is cached and recent → use the cached content
+- If URL is cached but old → re-fetch with `webfetch`
+- If URL returns 404 → store the negative result, don't retry
+
+### Scout Rate-Limiting
+
+**Max 10 `exa_web_search_exa` calls per session.** After hitting the limit:
+- Fall back to `webfetch` (with URL cache check first)
+- If `exa` returns timeout or 5xx → wait 30s before retry, don't hammer
+- Track exa calls per session in the orchestrator's task state
+
+### Scout Batching (avoid 11 parallel calls)
+
+When the user asks for research, do NOT spawn multiple parallel `scout` subagents with overlapping topics. Instead:
+
+1. **Group related questions** into 1-3 scout calls. Example: instead of "scout: research backend", "scout: research frontend", "scout: research middleware" → one "scout: research the X stack" with 3 sub-questions.
+2. **If multiple scout calls are needed**, do them sequentially or in pairs, not 5+ parallel. (Parallelism saves wall-clock time but burns tokens and context.)
+3. **The orchestrator should MERGE scout results** before delegating to builder. Don't pass N separate research reports — synthesize them.
+
+These rules are pre-flight (in `setup-matt-pocock-skills/SKILL.md` Tool Pre-flight section) and orchestrator-prompt-level enforcement.
 
 ## UI Work Protocol (impeccable sub-commands + design.md)
 

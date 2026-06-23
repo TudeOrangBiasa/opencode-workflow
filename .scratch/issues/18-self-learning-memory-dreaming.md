@@ -2,7 +2,7 @@
 
 ## Status
 
-**Done (P0+P1+P2 shipped in `b7a764d`)**. Source: Anthropic's "Memory and dreaming for self-learning agents" talk (Code w/ Claude 2026, May 6, Mahesh Murag). Full research at `.scratch/research/memory-dreaming-framework.md` (423 lines, ready to delete per AGENTS.md — content promoted to this issue + memory-dreaming skill).
+**Done (P0+P1+P2 shipped in `b7a764d`)**. Source: Anthropic's "Memory and dreaming for self-learning agents" talk (Code w/ Claude 2026, May 6, Mahesh Murag). Full research was at `.scratch/research/memory-dreaming-framework.md` (465 lines, **deleted** in cleanup commit per AGENTS.md rule — content promoted to this issue + memory-dreaming skill).
 
 ## Pain
 
@@ -178,7 +178,7 @@ Before building P1, spawned 3 parallel `explore` subagents with different lenses
 
 ## References
 
-- Full research: `.scratch/research/memory-dreaming-framework.md` (423 lines)
+- Full research: `.scratch/research/memory-dreaming-framework.md` (465 lines, **deleted** — content promoted)
 - 12 Anthropic official sources (blog, docs, workshop)
 - 5 academic papers (McClelland 1995, Mnih 2015, Tulving 1972, Park 2023, Packer 2023)
 - Karpathy llm-wiki (June 2026) — parallel architecture

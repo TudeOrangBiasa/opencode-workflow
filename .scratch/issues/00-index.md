@@ -33,6 +33,7 @@ done
 | 15 | [Cell-by-cell table verification pattern](./15-cell-by-cell-table.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #6 + §9 checklist |
 | 16 | [Sentence length guard against over-correction](./16-sentence-length-guard.md) | Done (by skill) | — | Resolved by `document-writing` skill §5 rule 7 + Issue 11 humanizer |
 | 17 | [SQL code block must contain executable SQL](./17-sql-code-block-content.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #9 + §9 checklist |
+| 18 | [Self-Learning via Memory + Dreaming](./18-self-learning-memory-dreaming.md) | New (P0+P1+P2) | — | Source: Anthropic's "Memory and dreaming" talk. P0=Issue 14 (20min). P1=dreaming skill (2h). P2=cross-agent (30min). YAGNI on automation, vector DB, versioning |
 
 ## Dependency Graph
 

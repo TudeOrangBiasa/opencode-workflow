@@ -148,30 +148,50 @@ Skip visual QA ONLY if user says "skip verification" or "ship without QA" verbat
 
 When user mentions or task involves these keywords, load the skill BEFORE delegating. Never delegate a task that needs domain expertise without forwarding that expertise.
 
-## Delegation Protocol (kills the 15% skill-context rate)
+## Delegation Protocol (kills the 15% skill-context rate + subagent amnesia)
 
-When delegating to a subagent (`builder`, `reviewer`, `browser-qa`, `explore`, `scout`), **always include relevant skill context in the delegation prompt**. Subagents start fresh — they don't know which skills are relevant.
+When delegating to a subagent (`builder`, `reviewer`, `browser-qa`, `explore`, `scout`), **always include relevant skill context AND prior lessons in the delegation prompt**. Subagents start fresh — they don't know which skills are relevant OR what was learned in previous sessions.
 
 **Mandatory format** for every `task` prompt:
 
 ```markdown
 <task description>
 
+Project: <project-name>   # for ov find/remember lookups
 Skills relevant to this task:
 - [skill-name] — [1-sentence summary of when to apply]
 - [skill-name-2] — [1-sentence summary]
 
-Load each skill before starting work.
+Prior lessons for this project:
+<ov find "viking://agent/projects/<project>/lessons" output, or "No prior lessons." if empty>
+
+Load each skill and apply each lesson before starting work. At task end, store what you learned via `ov remember "viking://agent/projects/<project>/lessons" "..."`.
 ```
+
+**How to fetch prior lessons** (run before delegating):
+
+```bash
+ov find "viking://agent/projects/<project>/lessons" 2>/dev/null | head -30
+```
+
+If output is empty, write `No prior lessons.` in the prompt. The subagent will store new lessons at task end.
 
 **Example**:
 
 ```markdown
 Fix the spacing on the pricing page card grid. Tests should pass.
 
+Project: dbl-data-management
 Skills relevant to this task:
 - impeccable craft — UI design quality for product interfaces
 - accessibility — semantic HTML, ARIA, keyboard nav, focus management
+
+Prior lessons for this project:
+- BAB numbering: use officecli add --num-id, never raw-set on numbering.xml
+- Cell-by-cell: verify ALL cells got the styling, not just first
+- Snapshot before major edit: cp doc.docx .scratch/snapshot-<ts>.docx
+
+Load each skill and apply each lesson before starting work. At task end, store what you learned.
 ```
 
 **Heuristic for picking skills**:

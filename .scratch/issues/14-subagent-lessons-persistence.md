@@ -1,8 +1,61 @@
-# Issue 14: Subagent lessons persistence via OpenViking (still OPEN)
+# Issue 14: Subagent lessons persistence via OpenViking (P0 IMPLEMENTED)
 
 ## Status
 
-**STILL OPEN.** Different scope from Issues 12/13/15/16/17. This is about **subagent memory across sessions**, NOT about document writing. Document-writing skill does not solve this.
+**DONE (P0).** Implemented 2026-06-23. Issue 18 P1+P2 (dreaming skill, cross-agent) still open.
+
+## What was implemented
+
+### 1. Orchestrator delegation protocol updated
+
+`agents/orchestrator.md` Delegation Protocol section now includes:
+- Mandatory `Project: <name>` line in every subagent task prompt
+- Mandatory `Prior lessons for this project:` section (orchestrator runs `ov find` before delegating, includes result in prompt)
+- Mandatory instruction to subagent: "At task end, store what you learned via `ov remember`"
+
+### 2. Each subagent has memory rules
+
+**`agents/builder.md`**: New section `-1. Apply Prior Lessons (from OpenViking)`
+- Run `ov find "viking://agent/projects/<project>/lessons"` at task start
+- Apply each lesson
+- At task end, store via `ov remember`
+
+**`agents/reviewer.md`**: New section `Prior Lessons (from OpenViking)`
+- Run `ov find` for project lessons + review-failures patterns
+- Apply each
+- Store at end
+
+**`agents/browser-qa.md`**: New section `Prior Lessons (from OpenViking)`
+- Run `ov find` for project lessons + browser-quirks patterns
+- Apply each
+- Store at end
+
+## Acceptance criteria
+
+- [x] Orchestrator's Delegation Protocol includes `ov find` for project lessons in every subagent task prompt
+- [x] Each subagent (`builder`, `reviewer`, `browser-qa`) has "Apply prior lessons" rule
+- [x] Each subagent has "Store what you learned" rule at task end
+- [ ] Manual test: 2 sequential builder tasks on same project, 2nd task retrieves 1st task's lesson (verify in next session)
+
+## Remaining (Issue 18 P1 + P2)
+
+- P1: `memory-dreaming` skill (manual-trigger consolidation, ~2 hours) — designed in Issue 18
+- P2: Cross-agent memory sharing (orchestrator mirrors reviewer→builder lessons, ~30 min) — designed in Issue 18
+
+## Notes
+
+P0 is the **online write layer** of the self-learning loop. Text lessons are now stored per-session. The full loop (online + dream + recall) is complete when P1 ships.
+
+**Visual memory (v1.5)** is in Issue 18's "EXTENDABLE" section — not in P0 scope.
+
+## Files
+
+- `agents/orchestrator.md` (line 151-194, Delegation Protocol)
+- `agents/builder.md` (line 11-26, Prior Lessons section)
+- `agents/reviewer.md` (line 11-29, Prior Lessons section)
+- `agents/browser-qa.md` (line 11-29, Prior Lessons section)
+
+All files are symlinked to `~/.config/opencode/agents/`. Restart opencode to take effect.
 
 ## Scope difference
 

@@ -9,6 +9,23 @@ You are a builder. Execute the assigned slice only. Do not make broad product or
 
 ## Process
 
+### -1. Apply Prior Lessons (from OpenViking)
+
+Before starting any task, check the project's lesson store. The orchestrator should have already included lessons in the task prompt. If not, fetch them yourself:
+
+```bash
+ov find "viking://agent/projects/<project>/lessons" 2>/dev/null
+```
+
+Apply each lesson. Do not re-derive what's already known.
+
+At task end, store what you learned:
+```bash
+ov remember "viking://agent/projects/<project>/lessons" "<1-sentence: what worked, what to avoid>"
+```
+
+This is the **online memory write** layer of the self-learning loop. Without it, the next builder task re-derives the same lessons.
+
 ### 0. Read Context (before editing)
 
 Before writing any code:

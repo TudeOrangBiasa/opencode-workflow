@@ -1,44 +1,52 @@
-# Issue 14: Subagent lessons persistence via OpenViking (BIGGEST IMPACT)
+# Issue 14: Subagent lessons persistence via OpenViking (still OPEN)
 
 ## Status
 
-New. Source: dbl-data-management 3-angle synthesis. Pattern #10 hit 3x: user repeated 11 writing rules across 3 BAB building prompts. **This is the biggest ROI issue of the 6**.
+**STILL OPEN.** Different scope from Issues 12/13/15/16/17. This is about **subagent memory across sessions**, NOT about document writing. Document-writing skill does not solve this.
 
-## Pain
+## Scope difference
 
-In dbl-data-management:
-- User wrote 11 writing rules in BAB V prompt
-- User wrote 11 writing rules AGAIN in BAB VI prompt
-- User wrote 11 writing rules AGAIN in BAB VII prompt
-- Each subagent session starts fresh, has no memory of the previous session
+| | Issues 12/13/15/16/17 | Issue 14 |
+|---|---------------------|----------|
+| **Concern** | How agent writes documents | How agent remembers lessons between sessions |
+| **Resolved by** | `document-writing` skill | NOT covered by document-writing skill |
+| **Mechanism** | Workflow + rules | OpenViking protocol extension |
 
-Same pattern: subagent context loss. Issues 01/08/09 fixed it for the orchestrator. Now we need it for subagents.
+## Pain (re-stated)
+
+In dbl-data-management, user repeated 11 writing rules in 3 BAB building prompts. Each subagent session starts fresh, no memory of previous session. Document-writing skill fixes the writing, but doesn't fix the FORGETTING.
+
+Example: 
+- BAB V builder gets styleId mapping
+- BAB VI builder re-discovers the same mapping
+- BAB VII builder re-discovers again
+- All because each subagent session has no memory of the previous
+
+## Why not consolidated
+
+Document-writing skill is loaded on demand when the user wants to write. The lessons persistence is a BACKGROUND mechanism — runs at subagent start/end regardless of what task.
+
+Different layer. Different scope.
 
 ## Fix (ponytail)
 
-Extend openviking PROTOCOL with subagent-specific step:
+Extend openviking PROTOCOL with subagent-specific steps:
 
 **Currently (Issue 01)**: orchestrator at task start does `ov find "viking://agent/projects/<project>"`
 
 **Add**: every subagent (builder, reviewer, browser-qa, scout) at task start:
 ```bash
-# In the subagent's task prompt, the orchestrator includes:
 ov find "viking://agent/projects/<project>/lessons" 2>/dev/null && apply || echo "no prior lessons"
 ```
 
-And at task end:
+At task end:
 ```bash
 ov remember "viking://agent/projects/<project>/lessons" "<1-sentence: what was learned>"
 ```
 
-**Concrete example** for dbl-data-management:
-- BAB V lesson stored: "BAB numbering: use officecli add with --num-id N, never raw-set on numbering.xml"
-- BAB VI builder: `ov find` at start → gets this lesson → applies from start
-- BAB VII builder: same → doesn't repeat the mistake
-
 **Implementation**:
-- Add a rule to orchestrator's "Delegation Protocol" section: "For all subagent tasks, include `ov find 'viking://agent/projects/<name>/lessons'` in the task prompt. Include the result in the subagent's context."
-- Add a rule to `agents/builder.md` and others: "Before starting, run `ov find ...` for project lessons. Apply. At end, store what you learned."
+- Add rule to orchestrator's "Delegation Protocol" section: "For all subagent tasks, include `ov find` for project lessons in the task prompt."
+- Add rule to `agents/builder.md` and others: "Before starting, run `ov find` for project lessons. Apply. At end, store what you learned."
 
 ## Acceptance criteria
 
@@ -56,6 +64,6 @@ ov remember "viking://agent/projects/<project>/lessons" "<1-sentence: what was l
 
 ## Notes
 
-This is the **single biggest improvement** available. Without it, the same 11 writing rules will be re-typed by user in EVERY project's EVERY subagent session. With it, the lessons compound.
+The **single biggest improvement** still available. Without it, the same lessons re-learned every project. With it, lessons compound.
 
-Ponytail cut: extend openviking PROTOCOL (which already exists from Issue 01) with 1 line per subagent.
+Effort: ~20 min for the orchestrator rule + agent prompts. Same pattern as Issue 01 but applied to subagent context.

@@ -2,55 +2,47 @@
 
 ## Status
 
-New. Source: dbl-data-management 3-angle synthesis. Pattern #2 (styleId by-name vs numeric) hit 3x and caused 4-session TOC fix.
+**RESOLVED** by `document-writing` skill (v2, 2026-06-23). No separate implementation needed.
 
-## Pain
+## Resolution
 
-Agent uses `style="Heading 1"` (by name) thinking it works. officecli accepts the by-name but doesn't resolve to internal `styleId=763`. The docx opens fine in Word but TOC generation, numbering, and cross-references break.
+`document-writing` skill §3 Phase 2 ("Discover styleId + numbering scheme") covers this:
 
-3 sessions to discover:
-- `Heading 1` → styleId `779` (BAB titles)
-- `Heading 2` → styleId `778` (sub-bab)
-- `Heading 3` → styleId `889` (sub-sub-bab)
-- `toc 1` → styleId `945` (BAB entries in TOC)
-- `toc 2` → styleId `952` (sub-bab entries in TOC)
-- `Hyperlink` → styleId `946` (TOC hyperlink character style)
-- `Normal` → styleId `937`
-
-The mapping is **per-docx** — different docx files have different numeric IDs. Re-discovery every time.
-
-## Fix (ponytail)
-
-Add to `agents/builder.md` and to `officecli` SKILL.md (or `setup-matt-pocock-skills` preflight):
-
-**Before any docx edit, run styleId discovery**:
 ```bash
-officecli query doc.docx "style[name=Heading 1]" --json | jq -r '.[].path'
-# Then numeric ID is in the path. Cache in design.md.
+# Get styleId mapping (per-docx, critical!)
+officecli query existing.docx "style[name=Heading 1]" --json
+officecli query existing.docx "style[name=Heading 2]" --json
+officecli query existing.docx "style[name=Normal]" --json
+
+# Get current numId assignments
+officecli query existing.docx "num" --json
 ```
 
-Better: extract all styleIds once and cache to project's `design.md`:
-```bash
-officecli query doc.docx "style" --json > .scratch/style-mapping.json
+And cache to `design.md`:
+```markdown
+## StyleId Mapping (cached YYYY-MM-DD)
+- Heading 1 → styleId 779
+- Heading 2 → styleId 778
+- ...
 ```
 
-Builder self-review rule: never use by-name styles. Always use the numeric styleId from the cached mapping.
+Plus §6 anti-pattern #1 makes it explicit: "Use `styleId=NNN` (numeric), not by-name".
 
-**Auto-update `design.md`** on first docx edit: append a "## StyleId Mapping" section to the project's `docs/agents/design.md` with the discovered IDs.
+Plus §9 self-review checklist enforces it.
 
-## Acceptance criteria
+## Why consolidated
 
-- [ ] `agents/builder.md` has rule: "Before any docx edit, run styleId discovery. Never use by-name styles."
-- [ ] `officecli` SKILL.md has a "StyleId Discovery" section
-- [ ] `design.md` template includes a "## StyleId Mapping" section placeholder
-- [ ] Manual test: build BAB X in a new docx, verify styleId mapping is auto-discovered and cached
+This issue was conceived as "auto-extract on first edit, then update design.md". The `document-writing` skill is the WORKFLOW. The user-facing artifact (skill) is more discoverable, auto-loads on intent, and the workflow is reusable across projects.
 
-## Out of scope
+Implementing this as a separate "auto-styleid-extract" mechanism would have been:
+- A wrapper script
+- A hook into officecli calls
+- Another piece of code to maintain
 
-- Per-docx style migration tools (over-engineering)
-- Cross-docx style normalization (rare use case)
-- Style conflict detection (low frequency)
+The skill is the mechanism — it tells the agent exactly what to do at Phase 2.
 
-## Notes
+## What changed
 
-This is a 5-min fix that prevents a 4-session discovery chain. Same pattern as Issue 11: use what we have, don't build new.
+- Issue 12 marked Done in 00-index.md
+- No code/script added
+- Resolution lives in `skills/productivity/document-writing/SKILL.md`

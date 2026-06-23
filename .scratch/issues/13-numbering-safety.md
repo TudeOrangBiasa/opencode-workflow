@@ -2,46 +2,35 @@
 
 ## Status
 
-New. Source: dbl-data-management 3-angle synthesis. Pattern #1 (numbering corruption) hit 4x. Worst: BAB VII edit wiped BAB VI text + broke BAB V numbering, required recovery from UTS backup.
+**RESOLVED** by `document-writing` skill (v2, 2026-06-23). No separate implementation needed.
 
-## Pain
+## Resolution
 
-Numbering corruption pattern:
-- BAB V built → BAB V works
-- BAB VI built → BAB V numbering breaks
-- BAB VII built → BAB VI text wiped, BAB V double-numbers
+`document-writing` skill covers numbering safety in 3 places:
 
-Root cause: each BAB builder used `raw-set` to inject new abstractNum/numId definitions, overwriting or conflicting with existing ones. numbering.xml is a SHARED resource — touching it affects all chapters.
+1. **§6 Anti-pattern #2**: "raw-set on numbering.xml part → Use add --num-id (high-level) — raw-set breaks cross-BAB numbering"
+2. **§3 Phase 4 Edit safely**: explicit step "Use add (NOT raw-set on numbering.xml)"
+3. **§9 Self-review**: "No raw-set on numbering.xml part"
+4. **§8 Officecli quick reference**: explicit "SAFETY: NEVER do this — raw-set on numbering"
 
-User quote: "aduh filenya hancur banget grgr lu, btw ada backupnya ga?"
+The skill's decision tree also routes PATH B through officecli (which uses safe `add --num-id`), avoiding the raw-set failure mode entirely for new BAB additions.
 
-## Fix (ponytail)
+## Snapshot recovery
 
-Add to `agents/builder.md` and `officecli` SKILL.md:
+`document-writing` skill §3 Phase 4 step 1 + §6 anti-pattern #10 enforce snapshot before major edit:
 
-**Hard rule for any docx edit:**
-1. NEVER use `raw-set` on `numbering.xml` part. Use `add` with `--num-id` and `--abstract-num-id` parameters.
-2. After ANY docx edit, run `officecli validate doc.docx` — abort if structural errors.
-3. Before any BAB-level edit, snapshot the docx with `cp doc.docx .scratch/snapshot-<timestamp>.docx`.
+```bash
+cp existing.docx .scratch/snapshot-$(date +%s).docx
+```
 
-**Self-review checklist** (already in `builder.md` Step 4):
-- [ ] Used `add` with explicit num-id, NOT raw-set on numbering.xml
-- [ ] `officecli validate` returned no errors after edit
-- [ ] BAB I-IV numbering unchanged (compare to snapshot)
+If numbering breaks, recovery is automatic (restore from snapshot).
 
-## Acceptance criteria
+## Why consolidated
 
-- [ ] `agents/builder.md` has explicit "Never raw-set numbering.xml" rule
-- [ ] `officecli` SKILL.md has a "Numbering Safety" section
-- [ ] `officecli validate` is in self-review checklist
-- [ ] Auto-snapshot before BAB-level edits: builder creates `.scratch/snapshot-<timestamp>.docx` automatically
+Numbering safety is a workflow concern, not a separate tool. The skill teaches the agent WHEN and HOW to snapshot, edit, and validate. A separate "numbering-safety" tool would have been a thin wrapper around officecli.
 
-## Out of scope
+## What changed
 
-- numbering.xml introspection tools (over-engineering)
-- Automatic conflict detection (low ROI)
-- Per-BAB isolated numbering (different problem)
-
-## Notes
-
-This is a 5-min fix that prevents the WORST failure mode (data loss). The "always snapshot before BAB edit" rule is a single line of bash. The "use add not raw-set" is one sentence in builder.md.
+- Issue 13 marked Done in 00-index.md
+- No code/script added
+- Resolution lives in `skills/productivity/document-writing/SKILL.md`

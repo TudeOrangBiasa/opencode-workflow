@@ -2,46 +2,24 @@
 
 ## Status
 
-New. Source: dbl-data-management 3-angle synthesis. Pattern #6 (choppy over-correction) hit BAB VI + VII. 30% of sentences < 8 words.
+**RESOLVED** by `document-writing` skill (v2, 2026-06-23) + `humanizer` skill (Issue 11).
 
-## Pain
+## Resolution
 
-User said "short sentences" → agent over-applied. BAB VI mean = 10.1 words, BAB VII mean = 10.4 words. Target for Indonesian academic prose: 15-25 words. The result reads like notes, not academic prose.
+`document-writing` skill §5 rule 7:
 
-Quote from analysis: "BAB VI and VII are notably choppier than BAB V. The mean sentence length drops below 11 words, with 1 in 3 sentences being 8 words or fewer. This is below the 15-25 word range for formal Indonesian academic prose."
+> "Sentence length: 15-25 words for academic Indonesian, 10-20 for casual/README"
 
-## Fix (ponytail)
+Plus §9 self-review checklist: "Mean sentence length 15-25 (academic) or 10-20 (casual)".
 
-Extend humanizer SKILL.md (where Issue 11 already added Repetition Check) with a Sentence Length Check:
+`humanizer` skill (Issue 11) has the "Repetition Check" section and is auto-loaded for prose writing via skill_triggers.
 
-```markdown
-## Sentence Length Check
-- After humanizer pass, check mean sentence length
-- Target for academic Indonesian: 15-25 words
-- Target for casual/README: 10-20 words
-- If mean < 11 words: too choppy, expand short sentences by combining or adding context
-- If 30%+ sentences < 8 words: rewrite for academic register
-- If mean > 30 words: too dense, split sentences
-```
+## Why consolidated
 
-Add to `humanizer` description trigger keywords: "academic", "akademik", "formal", "laporan" (already in list).
+The sentence length guard is a writing rule, not a separate tool. The skill teaches the rule + the verification method (mean sentence length in self-review). A separate "sentence-length-guard" tool would be a 5-line check that the agent can do inline.
 
-Add to `agents/builder.md` self-review: "Mean sentence length matches target register (academic 15-25, casual 10-20)."
+## What changed
 
-## Acceptance criteria
-
-- [ ] `humanizer` SKILL.md has "Sentence Length Check" section
-- [ ] `agents/builder.md` self-review includes sentence length check
-- [ ] Default target for prose: 15-25 words (academic Indonesian)
-
-## Out of scope
-
-- LLM-based sentence splitting (over-engineering)
-- Per-project target customization (just use defaults)
-- Word frequency analysis (different problem)
-
-## Notes
-
-The user EXPLICITLY said "short sentences" — but in context of removing AI fluff, not in context of "write telegraph-style". The agent confused "remove fluff" with "minimize word count". This is a common AI failure mode.
-
-The fix: provide a TARGET RANGE, not just "be short". 15-25 is concrete and checkable.
+- Issue 16 marked Done in 00-index.md
+- No code/script added
+- Resolution lives in `skills/productivity/document-writing/SKILL.md` + `humanizer` skill

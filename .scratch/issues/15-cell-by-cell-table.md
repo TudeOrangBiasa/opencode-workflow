@@ -2,47 +2,30 @@
 
 ## Status
 
-New. Source: dbl-data-management 3-angle synthesis. Pattern #4 (table styling incomplete) hit 3x.
+**RESOLVED** by `document-writing` skill (v2, 2026-06-23). No separate implementation needed.
 
-## Pain
+## Resolution
 
-Agent styles table header cells but only verifies the FIRST cell. The other 19 cells stay unstyled. 3 iterations to get all 5 tables right because agent only spot-checks.
+`document-writing` skill §6 anti-pattern #6 covers this:
 
-User pain: "table shading, borders, alignment wrong" repeated.
+> "Only first cell of table styled → Verify ALL cells got the style, not just the one you spot-checked"
 
-## Fix (ponytail)
+Plus §9 self-review checklist: "Tables: ALL cells styled, not just first".
 
-Add to `agents/builder.md` self-review:
+Plus §3 PATH B Phase 4 (Edit safely) includes the officecli pattern for table work:
 
-**After any table style edit**:
-1. Run `officecli query doc.docx "table[1]"` to get all rows/cells
-2. Verify the styling was applied to ALL header cells, not just first
-3. If not all cells match: re-apply with explicit loop, OR revert and use `add` with style template
-
-**Officecli pattern**:
 ```bash
 # Get all header rows
 officecli query doc.docx "table[1]/tr[1]/tc" --json | jq -r '.[].path' | wc -l
 # Should match expected header cell count
 ```
 
-Better: use a template-based add that applies consistent style:
-```bash
-officecli add doc.docx /body --type table --prop style="Krisna Properti Header" --prop header_shading=1F4E5F
-```
+## Why consolidated
 
-## Acceptance criteria
+The verification is just an officecli `query` call. The skill teaches WHEN to do it (after every table edit) and HOW to interpret the result. A separate "table-verify" tool would be a one-liner.
 
-- [ ] `agents/builder.md` has "After table edit, verify all cells" rule
-- [ ] `officecli` SKILL.md has a "Table Styling" section
-- [ ] Self-review checklist: "Verified table styling applied to ALL cells, not just first"
+## What changed
 
-## Out of scope
-
-- Auto-detect header cells (low ROI)
-- Visual style editor (over-engineering)
-- Cross-table style consistency check (rare use case)
-
-## Notes
-
-The fix is essentially: "don't trust your own edit, verify the whole table." Standard engineering hygiene. 10-min fix prevents a 30-min redo cycle.
+- Issue 15 marked Done in 00-index.md
+- No code/script added
+- Resolution lives in `skills/productivity/document-writing/SKILL.md`

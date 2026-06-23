@@ -350,3 +350,35 @@ The repo doesn't currently tag releases. When you decide to tag:
 ### Repo out of sync with global config
 - Run `link-skills.sh` to re-link
 - Check the local `opencode.json` for changes that should be ported to repo
+
+## Periodic Quality Audit
+
+After ~10 commits of rapid growth, drift accumulates: stale agent references in docs, missing skill triggers in tables, orphan issue files, dead empty directories. Run this audit periodically.
+
+**When to run**:
+- Every 10 commits since last audit
+- Before any version release
+- After merging a large feature (3+ issues resolved in one go)
+
+**How to run**: Spawn 1 `explore` subagent with the audit checklist from `.scratch/audit/quality-audit-2026-06-23.md`. The audit takes ~5 min and produces a ranked list of actionable items + YAGNI deferrals.
+
+**7-check audit checklist** (synthesized from Issue 14 follow-up audit):
+
+1. **Agent file bloat** — Are agent files < 600 lines? Sections duplicating? Stale agent references (e.g., `planner` after removal)?
+2. **Skill triggers consistency** — `opencode.json` `skill_triggers` field, `agents/orchestrator.md` Skill Triggers table, `docs/templates/opencode.primitive-agents.jsonc`. All three must list the same skills with same keywords.
+3. **Skill file consistency** — All SKILL.md structured the same? Description in frontmatter matches description in skill_triggers? Dead empty dirs?
+4. **Issue tracking** — `.scratch/issues/00-index.md` matches reality? Done issues in `done/` subfolder? No orphan files?
+5. **Link integrity** — All symlinks in `~/.config/opencode/{skills,agents}/` valid? `link-skills.sh` covers all active skills?
+6. **Documentation sync** — `docs/workflow.md`, `CONTEXT.md`, `README.md`, bucket READMEs reference current agent set (no deprecated agents like `planner`)?
+7. **YAGNI check** — Anything we added that doesn't fire / doesn't get used? Skills that could be removed? Agent rules that contradict each other? Over-engineered patterns?
+
+**Output format**: Report at `.scratch/audit/quality-audit-YYYY-MM-DD.md` with:
+- Per-check status (OK / ISSUE / DRIFT / INCONSISTENT) + severity
+- Top 10 actionable items ranked
+- Quick wins (< 5 min each)
+- Defer (YAGNI) — items that look like issues but don't matter
+- Score summary (e.g., 7.5/10)
+
+**Ponytail principle**: Audit finds real issues. Fix the actionable. Defer the rest. Don't audit for the sake of auditing.
+
+**Reference**: First audit at `.scratch/audit/quality-audit-2026-06-23.md` (323 lines, 7.5/10 baseline). Established the pattern.

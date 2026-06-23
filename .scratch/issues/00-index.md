@@ -34,7 +34,7 @@ done
 | 15 | [Cell-by-cell table verification pattern](./done/15-cell-by-cell-table.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #6 + §9 checklist |
 | 16 | [Sentence length guard against over-correction](./done/16-sentence-length-guard.md) | Done (by skill) | — | Resolved by `document-writing` skill §5 rule 7 + Issue 11 humanizer |
 | 17 | [SQL code block must contain executable SQL](./done/17-sql-code-block-content.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #9 + §9 checklist |
-| 18 | [Self-Learning via Memory + Dreaming](./18-self-learning-memory-dreaming.md) | New (P0+P1+P2) | — | Source: Anthropic's "Memory and dreaming" talk. P0=Issue 14 (20min). P1=dreaming skill (2h). P2=cross-agent (30min). YAGNI on automation, vector DB, versioning. **Visual memory (v1.5)** = OpenViking VLM (Gemini via 9router) for image indexing, not in v1 |
+| 18 | [Self-Learning via Memory + Dreaming](./18-self-learning-memory-dreaming.md) | Done (P0+P1+P2) | — | Shipped in `b7a764d`. P1 = `memory-dreaming` skill 95 lines, 2-phase (YAGNI-cut from 4-phase spec). P2 = 1 orchestrator line (broad `ov find` query, covers all subagent namespaces). P0 leftover = `ov remember` hallucination killed in orchestrator (4 sites). **Visual memory (v1.5)** = OpenViking VLM (Gemini via 9router) for image indexing, deferred. Live test: skill correctly returns 11 entries / 0 dupes / honest "no action needed" |
 
 ## Dependency Graph
 

@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- Feat: Issue 18 P1+P2 complete — `memory-dreaming` skill (95 lines, 2-phase: Review → Present+Merge) + cross-agent memory sharing (orchestrator's `ov find` drops subagent suffix, single broad query covers all namespaces). P0 leftover fix: `agents/orchestrator.md` still used hallucinated `ov remember` (4 sites); replaced with `ov add-memory` + `[tag:...]` prefix. Live test: "consolidate opencode-workflow lessons" → 11 entries, 0 dupes, honest "no action needed". Commit `b7a764d`. Closes Issue 18.
 - Feature: emil-design-eng skill — Emil Kowalski's design engineering for UI animation, easing, springs, gestures (misc)
 - Feature: review-animations skill — review motion/animation code against high craft bar (misc)
 - Feature: ponytail skill + 5 companions — lazy dev ruleset (YAGNI/stdlib/native), review, audit, debt, gain, help (personal)

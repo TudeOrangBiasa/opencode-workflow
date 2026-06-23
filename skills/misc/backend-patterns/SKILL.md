@@ -125,7 +125,10 @@ export function withAuth(handler: NextApiHandler): NextApiHandler {
 export default withAuth(async (req, res) => {
   // Handler has access to req.user
 })
+
 ```
+
+For deeper API contract patterns (REST/GraphQL contracts, error formats, versioning, pagination), see `api-design`.
 
 ## Database Patterns
 

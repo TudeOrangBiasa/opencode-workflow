@@ -42,3 +42,5 @@ Risk: low | medium | high | critical
 
 Evidence reviewed: [migration/query/schema/test evidence]
 ```
+
+For safe migration creation patterns, see `database-migrations`.

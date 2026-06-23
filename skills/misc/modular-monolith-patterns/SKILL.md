@@ -310,3 +310,5 @@ public interface ProductClient {
 
 Video: "Modular Monolith: Arsitektur Terbaik Sebelum Microservices" by Programmer Zaman Now
 Source code: https://github.com/ProgrammerZamanNow/modular-monolith-demo
+
+For the WHEN/WHY of evolution stages (when to add API gateway, broker, cache layer), see `modular-monolith-decisions`.

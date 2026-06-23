@@ -1,3 +1,3 @@
 # In Progress
 
-No active in-progress skills.
+Drafts not ready to ship. Promote to a bucket folder (`engineering/`, `productivity/`, `misc/`) when stable.

@@ -62,6 +62,7 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[laravel-security](./laravel-security/SKILL.md)** — Laravel security — auth, Eloquent safety, CSRF, XSS, API security, file uploads, production config.
 - **[laravel-verification](./laravel-verification/SKILL.md)** — Laravel verification loop — env checks, Pint, PHPStan, tests, security audit, migrations, deploy readiness.
 - **[mcp-server-patterns](./mcp-server-patterns/SKILL.md)** — Build MCP servers with Node/TS SDK — tools, resources, prompts, transport.
+- **[modular-monolith-decisions](./modular-monolith-decisions/SKILL.md)** — Architecture decision framework for backend evolution — 6-stage progression from single server to microservices, with pain-driven promotion triggers. Use when designing backend architecture or deciding monolith vs microservices.
 - **[mysql-patterns](./mysql-patterns/SKILL.md)** — MySQL/MariaDB schema, indexing, queries, transactions, connection pools, replication.
 - **[modular-monolith-patterns](./modular-monolith-patterns/SKILL.md)** — Modular monolith architecture — domain separation, Client/Implementation pattern, ArchUnit enforcement, migration to microservices.
 - **[nestjs-patterns](./nestjs-patterns/SKILL.md)** — NestJS modules, controllers, DTOs, guards, interceptors. Use only when building NestJS APIs.

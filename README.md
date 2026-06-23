@@ -99,6 +99,7 @@ Skills I use daily for code work.
 - **[prototype](./skills/engineering/prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
 - **[review](./skills/engineering/review/SKILL.md)** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
 - **[ponytail](./skills/engineering/ponytail/SKILL.md)** — Forces the laziest solution that actually works. YAGNI → stdlib → native → one line → minimum. Levels: lite/full/ultra. Companion skills: review, audit, debt, gain, help. From [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail).
+- **[memory-dreaming](./skills/engineering/memory-dreaming/SKILL.md)** — Consolidate agent lessons across sessions: 2-phase pipeline (find + present/merge). Manual trigger on "consolidate", "dream", "clean up lessons", "memory hygiene".
 
 ### Productivity
 

@@ -16,16 +16,16 @@ If similar work was done before, apply the lessons. Skip the lookup only if the 
 
 **At task end** (when user signals done / task complete / not just an intermediate step):
 ```
-ov remember "viking://agent/projects/<project>" "<1-2 sentence: what was done, what worked, what to avoid>"
-ov remember "viking://agent/patterns/<category>" "<pattern that emerged>"
+ov add-memory "[project:<name>] <1-2 sentence: what was done, what worked, what to avoid>"
+ov add-memory "[pattern:<category>] <pattern that emerged>"
 ```
-Future sessions with similar tasks will find these and avoid the same mistakes.
+`ov add-memory` is the real OpenViking v0.3.25 command. `ov remember` is hallucinated. The `[project:...]` / `[pattern:...]` prefix is just a text tag for later filtering; storage auto-routes to `viking://agent/default/memories/`. Future sessions with similar tasks will find these and avoid the same mistakes.
 ## Error Pattern Tracking
 
 When a tool call fails or requires a non-obvious workaround (e.g., officecli `set` failing then manual bash hack), store the pattern in OpenViking BEFORE falling back:
 
 ```
-ov remember "viking://agent/patterns/tool-failures/<tool>" "<brief: what failed, why, what worked instead>"
+ov add-memory "[tool-failure:<tool>] <brief: what failed, why, what worked instead>"
 ```
 
 Fallback is acceptable; repeating it is not.
@@ -179,8 +179,10 @@ Load each skill and apply each lesson before starting work. At task end, store w
 **How to fetch prior lessons** (run before delegating):
 
 ```bash
-ov find "<project-name> lessons" 2>/dev/null | head -30
+ov find "<project-name>" 2>/dev/null | head -30
 ```
+
+Use the bare project name (no `lessons` / `review patterns` / `browser quirks` suffix). Semantic search is project-agnostic — a single broad query returns lessons from ALL subagent namespaces (builder, reviewer, browser-qa). This is the cross-agent memory sharing rule (P2 of Issue 18): the orchestrator's wide query surfaces any subagent's lessons to any other subagent's delegation prompt.
 
 This is a SEMANTIC SEARCH — query is a natural language description, not a URI. OpenViking returns relevant context across `agent/default/memories/`, `user/default/memories/`, and `resources/`. Auto-summarization of session events means past lessons are already captured.
 
@@ -232,7 +234,7 @@ For research-heavy work (scout calls, web research), apply these rules to avoid 
 
 When `webfetch` returns 200, store the URL in OpenViking:
 ```
-ov remember "viking://cache/web/<host>/<path>" "<brief: page content summary>"
+ov add-memory "[cache-web:<host>/<path>] <brief: page content summary>"
 ```
 
 When scout or builder needs to fetch a URL, check `viking://cache/web/...` first:

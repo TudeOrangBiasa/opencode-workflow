@@ -21,7 +21,7 @@ done
 | 03 | [OfficeCLI smart fallback (skill auto-load)](./03-officecli-smart-fallback.md) | Done | 6, 9, 10, 26, 27 | Implemented in `8a8cd80` |
 | 04 | [Browser-QA re-snapshot on click failure](./04-browser-qa-resnapshot.md) | Done | 12, 13 | Implemented in `8a8cd80` |
 | 05 | [Ship verification gate — UI + Docs](./05-browser-qa-mandatory.md) | Done | 14, 16 | Implemented in `9f9524c` (ship gate) |
-| 06 | [Stuck-loop detection mechanism](./06-stuck-loop-detection.md) | HITL | 17, 18 | New |
+| 06 | [Stuck-loop detection mechanism](./06-stuck-loop-detection.md) | Skipped (YAGNI) | 17, 18 | 0.1% frequency, 8 rules already cover it |
 | 07 | [URL cache + scout rate-limiting + batch](./07-url-cache-scout-batching.md) | Done | 19, 20, 21 | Implemented in `15ff44c` |
 | 08 | [Pass skill context in subagent delegations](./08-skill-context-delegation.md) | Done | 7, 8 | Delegation Protocol format added to orchestrator.md |
 | 09 | [Skill intent-based triggers — fixed](./09-skill-intent-triggers.md) | Done | 5, 22, 23, 24 | ROUTING TABLE added to impeccable SKILL.md |

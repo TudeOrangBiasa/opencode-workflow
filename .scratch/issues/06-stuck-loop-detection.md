@@ -1,30 +1,62 @@
-# Issue 6: Stuck-loop detection mechanism — HITL
+# Issue 6: Stuck-loop detection mechanism — SKIPPED (YAGNI)
 
-## What to build
+## Status
 
-Build a real mechanism (not just a prompt rule) to detect when the agent is stuck in a loop:
-- Same tool called 8+ times consecutively with same arguments
-- Bash returning same output 3+ times
-- Agent repeating same reasoning pattern
+**Skipped.** Decision: don't build. Reasoning below.
 
-This addresses the 271-repeat grep loop in the linkbook UI/UX session ($19.21 cost).
+## Why skipped
 
-Current state: prompt rule "stop after 5x" — but models don't reliably follow this. Need a mechanism OUTSIDE the model.
+Three questions, three "no":
 
-**HITL** because: needs architectural decision on where to add this — OpenCode extension? Wrapper? External tool?
+### 1. Is the problem real?
 
-## Acceptance criteria
+Data: **1 session out of 965** (linkbook UI/UX) had 271 identical bash calls = $19.21 wasted.
 
-- [ ] Mechanism detects 8+ consecutive same-tool calls
-- [ ] Mechanism detects bash returning same output 3+ times
-- [ ] On detection: pause agent, force check-in (not just a prompt)
-- [ ] Mechanism can be configured (threshold, on/off)
-- [ ] Document where the mechanism lives (config option, plugin, etc.)
+- 0.1% of sessions affected
+- Average waste: $0.02/session
+- Not a pattern, a 1-off
 
-## Blocked by
+### 2. Does the existing system already cover it?
 
-None — can start immediately (this is a design discussion first).
+Yes. 8 separate rules already address stuck-loop patterns:
 
-## Notes
+| Rule | Location |
+|------|----------|
+| One retry max, then escalate | `agents/builder.md` |
+| Re-snapshot on chrome-devtools failure | `agents/browser-qa.md` |
+| 0 results × 3 → STOP, delegate to `explore` | `agents/orchestrator.md` |
+| Same builder fails 2x → BLOCKED | `agents/orchestrator.md` |
+| No output growth × 3 → load `verify-evidence` | `agents/orchestrator.md` |
+| Hard limit: 2 retries per subagent | `agents/orchestrator.md` |
+| Pattern repeats 3+ → flag systemic | `agents/reviewer.md` |
+| Tool efficiency (circuit breaker) | `agents/reviewer.md` |
 
-The linkbook $19.21 session had 271 identical bash calls = ~$1.86 in pure waste. Even a 50% reduction in loop waste would save the user $1 per loop-prone session. Hard mechanism required, not prompt rule.
+Adding a 9th rule (now a skill) = more config, not less complexity.
+
+### 3. Does the 01/08/09 fix already help?
+
+Yes, indirectly. The new openviking PROTOCOL step 3:
+
+> **Before retrying a tool that failed** — check for known patterns:
+> ```bash
+> ov find "viking://agent/patterns/tool-failures/<tool>"
+> ```
+
+The 271-call case would have stopped at iteration 2-3 if the agent had checked tool-failure patterns before retrying.
+
+## What this issue would have built (if we did)
+
+Convert the 8 scattered rules into 1 `stuck-loop` skill:
+
+- 1 trigger on keywords: `stuck`, `loop`, `retry`, `same error`, `BLOCKED`, `failing again`, `still failing`
+- ~50 lines in SKILL.md
+- 4 detection patterns (tool-call repeat, bash same-output, no-output-growth, builder-fail-repeat)
+- Same pattern as Issues 01, 08, 09
+
+Cost: 30 minutes of work, but adds config maintenance burden.
+
+## When to revisit
+
+If we see ≥5 stuck-loop sessions in a 30-day window, reopen this issue. Until then, leave it.
+
+Ponytail principle: "Question whether the task needs to exist at all." Answer: not now.

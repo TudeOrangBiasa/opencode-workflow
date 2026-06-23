@@ -16,6 +16,7 @@ done
 
 | # | Title | Type | Stories | Status |
 |---|-------|------|---------|--------|
+| 0001 | [readme-to-issues-tracker-wording](./done/0001-readme-to-issues-tracker-wording.md) | — | — | Archived (orphan, not in 01-18 series) |
 | 01 | [OpenViking memory protocol — fixed](./01-openviking-memory-protocol.md) | Done | 1, 2, 3, 4 | Skill added to skill_triggers + protocol in SKILL.md |
 | 02 | [OfficeCLI pre-flight + .NET dep check](./02-officecli-preflight.md) | Done | 25, 11 | Implemented in `8a8cd80` |
 | 03 | [OfficeCLI smart fallback (skill auto-load)](./03-officecli-smart-fallback.md) | Done | 6, 9, 10, 26, 27 | Implemented in `8a8cd80` |
@@ -27,12 +28,12 @@ done
 | 09 | [Skill intent-based triggers — fixed](./09-skill-intent-triggers.md) | Done | 5, 22, 23, 24 | ROUTING TABLE added to impeccable SKILL.md |
 | 10 | [Skip browser-qa for tiny diffs — ponytail cut](./10-skip-qa-tiny-diffs.md) | Done | 15 | Implemented in `45d02ea` (1 row in ship gate table) |
 | 11 | [Default humanizer + caveman for prose writing](./11-humanizer-default-prose.md) | Done | 26 | humanizer added to skill_triggers (27 keywords) + Quick Reference in SKILL.md + builder/orchestrator prose-default rule |
-| 12 | [Auto-extract docx styleId mapping on first edit](./12-docx-styleid-auto-extract.md) | Done (by skill) | — | Resolved by `document-writing` skill §3 Phase 2 + §6 anti-pattern #1 |
-| 13 | [Numbering safety — never raw-set numbering.xml](./13-numbering-safety.md) | Done (by skill) | — | Resolved by `document-writing` skill §3 Phase 4 + §6 anti-pattern #2 + §9 checklist |
+| 12 | [Auto-extract docx styleId mapping on first edit](./done/12-docx-styleid-auto-extract.md) | Done (by skill) | — | Resolved by `document-writing` skill §3 Phase 2 + §6 anti-pattern #1 |
+| 13 | [Numbering safety — never raw-set numbering.xml](./done/13-numbering-safety.md) | Done (by skill) | — | Resolved by `document-writing` skill §3 Phase 4 + §6 anti-pattern #2 + §9 checklist |
 | 14 | [Subagent lessons persistence via OpenViking](./14-subagent-lessons-persistence.md) | **Done (P0, verified)** | — | Implemented + verified via live test. **CRITICAL FIX**: replaced hallucinated `ov remember` command with real `ov add-memory`. `viking://agent/...` is READ-ONLY. P0 of Issue 18 |
-| 15 | [Cell-by-cell table verification pattern](./15-cell-by-cell-table.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #6 + §9 checklist |
-| 16 | [Sentence length guard against over-correction](./16-sentence-length-guard.md) | Done (by skill) | — | Resolved by `document-writing` skill §5 rule 7 + Issue 11 humanizer |
-| 17 | [SQL code block must contain executable SQL](./17-sql-code-block-content.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #9 + §9 checklist |
+| 15 | [Cell-by-cell table verification pattern](./done/15-cell-by-cell-table.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #6 + §9 checklist |
+| 16 | [Sentence length guard against over-correction](./done/16-sentence-length-guard.md) | Done (by skill) | — | Resolved by `document-writing` skill §5 rule 7 + Issue 11 humanizer |
+| 17 | [SQL code block must contain executable SQL](./done/17-sql-code-block-content.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #9 + §9 checklist |
 | 18 | [Self-Learning via Memory + Dreaming](./18-self-learning-memory-dreaming.md) | New (P0+P1+P2) | — | Source: Anthropic's "Memory and dreaming" talk. P0=Issue 14 (20min). P1=dreaming skill (2h). P2=cross-agent (30min). YAGNI on automation, vector DB, versioning. **Visual memory (v1.5)** = OpenViking VLM (Gemini via 9router) for image indexing, not in v1 |
 
 ## Dependency Graph

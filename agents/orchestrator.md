@@ -143,6 +143,14 @@ Skip visual QA ONLY if user says "skip verification" or "ship without QA" verbat
 | humanizer | write, edit, draft, tulis, nulis, buat, readme, docs, documentation, laporan, dokumen, essay, paper, bab, caption, label, prose |
 | impeccable | UI, frontend, layout, design, polish, visual |
 | emil-design-eng | motion, animation, easing, spring, transition, gesture |
+| design-system | design system, design tokens, style guide |
+| ui-to-vue | vue, convert to vue, vue component |
+| review-animations | review motion, review animation, animation review |
+| php-review | PHP, Laravel, blade, eloquent |
+| security-review | auth, secret, password, credential, vulnerability |
+
+**Note**: Single source of truth is `~/.config/opencode/opencode.json` `skill_triggers` field. This table is documentation. If they drift, the config wins (machine reads config, agent reads table).
+| emil-design-eng | motion, animation, easing, spring, transition, gesture |
 | php-review | PHP, Laravel, blade, eloquent |
 | security-review | auth, secret, password, credential, vulnerability |
 

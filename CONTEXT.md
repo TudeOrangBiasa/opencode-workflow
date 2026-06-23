@@ -22,7 +22,7 @@ Manual step that links or copies repo agents/skills into `~/.config/opencode`. A
 Maintainer note under `.out-of-scope/` explaining a rejected or deferred feature request. Not runtime config and not installed into OpenCode.
 
 **Primitive agent**:
-A narrow, single-responsibility agent — either repo-defined (`agents/*.md`) or a built-in OpenCode primitive used by routing. Examples: repo-defined `planner`, `builder`, `reviewer` and built-in `explore`, `scout`. Primitive agents are always active and part of the routing table. Not to be confused with **On-demand skills**.
+A narrow, single-responsibility agent — either repo-defined (`agents/*.md`) or a built-in OpenCode primitive used by routing. Examples: repo-defined `builder`, `reviewer`, `browser-qa` and built-in `explore`, `scout`. Primitive agents are always active and part of the routing table. Not to be confused with **On-demand skills**.
 
 **On-demand skill**:
 A `SKILL.md` file under `skills/` loaded only when the domain matches. Not an agent — no agent file, no frontmatter `mode`. Loaded via skill tool when the task fits.

@@ -17,7 +17,6 @@ Small set of agents, each with a single narrow responsibility.
 | Agent | Mode | Model Cost | Responsibility |
 |-------|------|-----------|---------------|
 | `orchestrator` | primary | Expensive | Router, planner-in-chief, scope keeper, final synthesizer |
-| `planner` | subagent | Expensive | Read-only planning, issue breakdown, risk ordering |
 | `builder` | subagent | Cheap | Narrow bounded code edits, verification, status report |
 | `reviewer` | subagent | Expensive/Medium | Behavior + Change Health diff review, escalation hints |
 | `browser-qa` | subagent | Expensive (browser) | Browser QA: layout, responsive, console/network, data consistency |
@@ -58,7 +57,7 @@ An agent file is a candidate for skill promotion when:
 
 ### Boundaries
 
-- **Do not promote** `orchestrator`, `planner`, `builder`, `reviewer`, or `browser-qa` — these are routing and execution primitives.
+- **Do not promote** `orchestrator`, `builder`, `reviewer`, or `browser-qa` — these are routing and execution primitives.
 - **Do not promote** skills already well-served by built-in OpenCode agents (`explore`, `scout`).
 
 ## Routing Rules
@@ -125,7 +124,6 @@ For each implementation slice:
 ```
 User Request
   └─ orchestrator
-       ├─ planner (if plan needed)
        ├─ grill-with-docs (if terminology/decisions fuzzy)
        ├─ explore/scout (when direct read/grep insufficient)
        ├─ builder (code changes, sequential)
@@ -154,7 +152,7 @@ Session ID format: `YYYYMMDD-HHMMSS-shortname`.
 | `session_id` | string | yes | Session identifier |
 | `issue_path` | string | no | Path to the issue file, if scoped to one issue |
 | `phase` | string | yes | One of: `plan`, `build`, `verify`, `review`, `checkpoint`, `blocked` |
-| `actor` | string | yes | Which agent or skill: `orchestrator`, `planner`, `builder`, `reviewer`, `verify-evidence` |
+| `actor` | string | yes | Which agent or skill: `orchestrator`, `builder`, `reviewer`, `verify-evidence` |
 | `status` | string | yes | `started`, `passed`, `failed`, `blocked`, `skipped` |
 | `summary` | string | yes | One-line description of what happened |
 | `files_changed` | array | no | File paths modified in this slice |

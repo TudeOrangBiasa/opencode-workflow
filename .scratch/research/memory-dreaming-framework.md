@@ -421,3 +421,45 @@ User says "consolidate memory", "clean up lessons", "dream"
 - [Issue 01: OpenViking memory protocol](../../.scratch/issues/01-openviking-memory-protocol.md)
 - [Issue 14: Subagent lessons persistence](../../.scratch/issues/14-subagent-lessons-persistence.md)
 - `agents/orchestrator.md` — existing Memory Protocol section (lines 9-22)
+
+---
+
+## Addendum: OpenViking VLM Discovery (2026-06-23)
+
+User clarified: their OpenViking setup has TWO backends, not one.
+
+```json
+// /home/todayz/.openviking/ov.conf
+{
+  "embedding": {
+    "provider": "ollama",
+    "model": "qwen3-embedding:0.6b",
+    "api_base": "http://localhost:11434/v1"
+  },
+  "vlm": {
+    "provider": "openai",                              // 9router
+    "model": "gemini/gemini-3.1-flash-lite-preview",
+    "api_base": "http://localhost:20128/v1",
+    "max_concurrent": 32
+  }
+}
+```
+
+**What this means for the self-learning pipeline:**
+
+- **Text path** (already designed): `ov find "<query>"` → qwen 0.6b embeds query + vectors → semantic search
+- **Visual path** (NEW capability, not in v1): `ov add-resource <image>` → Gemini via 9router auto-describes → description indexed → `ov find "screenshot of X"` returns the image
+
+**3 Gemini accounts via 9router** = round-robin for VLM rate-limit safety. The `max_concurrent: 32` setting means OpenViking can fire 32 parallel VLM calls during bulk indexing (e.g., end-of-month dreaming on 200+ screenshots).
+
+**Net effect for self-learning (v1.5, not v1):**
+
+| Phase | Text only (v1) | Text + Visual (v1.5) |
+|-------|----------------|----------------------|
+| Online (Phase 1) | text lessons | text lessons + screenshots (VLM auto-describes) |
+| Dreaming (Phase 2) | text dedup, reconcile | text dedup + visual pattern grouping (VLM similarity) |
+| Recall (Phase 3) | text rules | text rules + reference images ("this is what good looks like") |
+
+**Why YAGNI for v1, extendable for v1.5**: text path is 80% of self-learning value. Visual path is 5x richer but adds complexity. Ship text path first, validate, then add visual.
+
+**Implementation note for future**: the `ov remember` command in P1 of Issue 18 should support `--image <path>` flag. The dreaming skill should call VLM via OpenViking's built-in handling (no separate VLM API call needed from the skill).

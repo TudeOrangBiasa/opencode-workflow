@@ -51,6 +51,7 @@
       // Edit this when adding new auto-loadable skills.
       "skill_triggers": {
         "officecli": ["docx", "pptx", "xlsx", "laporan", "spreadsheet", "presentation"],
+        "document-writing": ["laporan", "dokumen", "docx", "bab", "lanjutkan", "extend", "tambah bab", "new chapter", "laporan akhir", "laporan tugas", "skripsi", "thesis", "academic", "akademik", "bikin laporan"],
         "ponytail": ["review", "audit", "yagni", "over-engineer", "simple", "minimal", "refactor"],
         "diagnose": ["bug", "broken", "error", "crash", "slow", "regression"],
         "tdd": ["implement", "feature", "test-first", "red-green"],

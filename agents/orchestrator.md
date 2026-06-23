@@ -134,6 +134,7 @@ Skip visual QA ONLY if user says "skip verification" or "ship without QA" verbat
 | Skill | Trigger keywords |
 |-------|------------------|
 | officecli | docx, pptx, xlsx, laporan, spreadsheet, presentation |
+| document-writing | laporan, dokumen, docx, bab, lanjutkan, extend, tambah bab, new chapter, skripsi, thesis, academic, akademik |
 | ponytail | review, audit, yagni, over-engineer, simple, minimal, refactor |
 | diagnose | bug, broken, error, crash, slow, regression |
 | tdd | implement, feature, test-first, red-green |

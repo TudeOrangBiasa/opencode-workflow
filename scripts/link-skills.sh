@@ -126,6 +126,7 @@ ACTIVE_SKILLS=(
   skills/productivity/grill-me
   skills/productivity/handoff
   skills/productivity/officecli
+  skills/productivity/document-writing
   skills/productivity/write-a-skill
   skills/personal/eval
   skills/personal/openviking

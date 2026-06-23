@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Chore: cross-references between related skills in misc/ — added 1-line pointers in 5 files (emil-design-eng↔review-animations, backend-patterns→api-design, database-migrations↔database-review) for better discoverability. Audit-driven; no content removed.
+- Feature: `modular-monolith-decisions` skill — architecture decision framework for backend evolution, 6-stage progression (single server → cache+CDN) with pain-driven promotion triggers. Use when designing backend architecture or deciding monolith vs microservices. Extracted from a YouTube teaching video. Companion to existing `modular-monolith-patterns` (HOW to structure → this one covers WHEN to evolve). 2 files: SKILL.md (79 lines) + REFERENCE.md (180 lines). (misc)
 - Feat: Issue 18 P1+P2 complete — `memory-dreaming` skill (95 lines, 2-phase: Review → Present+Merge) + cross-agent memory sharing (orchestrator's `ov find` drops subagent suffix, single broad query covers all namespaces). P0 leftover fix: `agents/orchestrator.md` still used hallucinated `ov remember` (4 sites); replaced with `ov add-memory` + `[tag:...]` prefix. Live test: "consolidate opencode-workflow lessons" → 11 entries, 0 dupes, honest "no action needed". Commit `b7a764d`. Closes Issue 18.
 - Feature: emil-design-eng skill — Emil Kowalski's design engineering for UI animation, easing, springs, gestures (misc)
 - Feature: review-animations skill — review motion/animation code against high craft bar (misc)

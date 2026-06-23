@@ -14,15 +14,19 @@ You are a builder. Execute the assigned slice only. Do not make broad product or
 Before starting any task, check the project's lesson store. The orchestrator should have already included lessons in the task prompt. If not, fetch them yourself:
 
 ```bash
-ov find "viking://agent/projects/<project>/lessons" 2>/dev/null
+ov find "<project-name> lessons" 2>/dev/null
 ```
+
+This is a SEMANTIC SEARCH — natural language query, not a URI. OpenViking returns relevant context across its memory store.
 
 Apply each lesson. Do not re-derive what's already known.
 
 At task end, store what you learned:
 ```bash
-ov remember "viking://agent/projects/<project>/lessons" "<1-sentence: what worked, what to avoid>"
+ov add-memory "<1-sentence: what worked, what to avoid, including project name in content for searchability>"
 ```
+
+**Why `ov add-memory` not `ov remember`**: `ov remember` is not a real command. `ov add-memory` is the real OpenViking v0.3.25 command for storing text memories. It auto-routes to `agent/default/memories/`.
 
 This is the **online memory write** layer of the self-learning loop. Without it, the next builder task re-derives the same lessons.
 

@@ -29,7 +29,7 @@ done
 | 11 | [Default humanizer + caveman for prose writing](./11-humanizer-default-prose.md) | Done | 26 | humanizer added to skill_triggers (27 keywords) + Quick Reference in SKILL.md + builder/orchestrator prose-default rule |
 | 12 | [Auto-extract docx styleId mapping on first edit](./12-docx-styleid-auto-extract.md) | Done (by skill) | — | Resolved by `document-writing` skill §3 Phase 2 + §6 anti-pattern #1 |
 | 13 | [Numbering safety — never raw-set numbering.xml](./13-numbering-safety.md) | Done (by skill) | — | Resolved by `document-writing` skill §3 Phase 4 + §6 anti-pattern #2 + §9 checklist |
-| 14 | [Subagent lessons persistence via OpenViking](./14-subagent-lessons-persistence.md) | **Done (P0)** | — | Implemented in orchestrator Delegation Protocol + 3 subagent memory rules. P0 of Issue 18 |
+| 14 | [Subagent lessons persistence via OpenViking](./14-subagent-lessons-persistence.md) | **Done (P0, verified)** | — | Implemented + verified via live test. **CRITICAL FIX**: replaced hallucinated `ov remember` command with real `ov add-memory`. `viking://agent/...` is READ-ONLY. P0 of Issue 18 |
 | 15 | [Cell-by-cell table verification pattern](./15-cell-by-cell-table.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #6 + §9 checklist |
 | 16 | [Sentence length guard against over-correction](./16-sentence-length-guard.md) | Done (by skill) | — | Resolved by `document-writing` skill §5 rule 7 + Issue 11 humanizer |
 | 17 | [SQL code block must contain executable SQL](./17-sql-code-block-content.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #9 + §9 checklist |

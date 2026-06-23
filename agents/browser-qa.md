@@ -15,17 +15,19 @@ You are a browser QA evidence specialist. Capture facts and critique visible UI/
 Before starting any QA, apply prior lessons. The orchestrator should have included lessons in the task prompt. If not:
 
 ```bash
-ov find "viking://agent/projects/<project>/lessons" 2>/dev/null
-ov find "viking://agent/patterns/browser-quirks/*" 2>/dev/null
+ov find "<project-name> browser quirks" 2>/dev/null
 ```
+
+This is a SEMANTIC SEARCH — natural language query. Returns relevant context.
 
 Apply each lesson. Common patterns: "this project has issue with viewport X", "always check Y after deploying", "user reported Z in past session".
 
 At task end, store what you learned:
 ```bash
-ov remember "viking://agent/projects/<project>/lessons" "<1-sentence: browser QA pattern>"
-ov remember "viking://agent/patterns/browser-quirks/<category>" "<pattern>"
+ov add-memory "<1-sentence: browser QA pattern, include project name for searchability>"
 ```
+
+**Why `ov add-memory` not `ov remember`**: `ov remember` is not a real command. `ov add-memory` is the real OpenViking v0.3.25 command. It auto-routes to `agent/default/memories/`.
 
 Without this, the same browser quirks and false-positives repeat across sessions.
 

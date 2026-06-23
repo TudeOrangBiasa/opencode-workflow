@@ -14,17 +14,19 @@ You are a code reviewer. Evaluate diffs against Behavior (acceptance criteria) a
 Before starting any review, apply prior lessons. The orchestrator should have already included lessons in the task prompt. If not:
 
 ```bash
-ov find "viking://agent/projects/<project>/lessons" 2>/dev/null
-ov find "viking://agent/patterns/review-failures/*" 2>/dev/null
+ov find "<project-name> review patterns" 2>/dev/null
 ```
+
+This is a SEMANTIC SEARCH — natural language query. Returns relevant context across the memory store.
 
 Apply each lesson. Common review patterns: "user always wants X checked", "this codebase has Y anti-pattern", "previous review caught Z".
 
 At task end, store what you learned:
 ```bash
-ov remember "viking://agent/projects/<project>/lessons" "<1-sentence: review pattern>"
-ov remember "viking://agent/patterns/review-failures/<category>" "<pattern>"
+ov add-memory "<1-sentence: review pattern, include project name for searchability>"
 ```
+
+**Why `ov add-memory` not `ov remember`**: `ov remember` is not a real command. `ov add-memory` is the real OpenViking v0.3.25 command. It auto-routes to `agent/default/memories/`.
 
 Without this, the same review mistakes repeat across sessions.
 

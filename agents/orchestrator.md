@@ -157,22 +157,24 @@ When delegating to a subagent (`builder`, `reviewer`, `browser-qa`, `explore`, `
 ```markdown
 <task description>
 
-Project: <project-name>   # for ov find/remember lookups
+Project: <project-name>   # for ov lookups
 Skills relevant to this task:
 - [skill-name] — [1-sentence summary of when to apply]
 - [skill-name-2] — [1-sentence summary]
 
 Prior lessons for this project:
-<ov find "viking://agent/projects/<project>/lessons" output, or "No prior lessons." if empty>
+<ov find "<project-name> lesson" output, or "No prior lessons." if empty>
 
-Load each skill and apply each lesson before starting work. At task end, store what you learned via `ov remember "viking://agent/projects/<project>/lessons" "..."`.
+Load each skill and apply each lesson before starting work. At task end, store what you learned via `ov add-memory "..."`.
 ```
 
 **How to fetch prior lessons** (run before delegating):
 
 ```bash
-ov find "viking://agent/projects/<project>/lessons" 2>/dev/null | head -30
+ov find "<project-name> lessons" 2>/dev/null | head -30
 ```
+
+This is a SEMANTIC SEARCH — query is a natural language description, not a URI. OpenViking returns relevant context across `agent/default/memories/`, `user/default/memories/`, and `resources/`. Auto-summarization of session events means past lessons are already captured.
 
 If output is empty, write `No prior lessons.` in the prompt. The subagent will store new lessons at task end.
 

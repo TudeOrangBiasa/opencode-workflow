@@ -56,6 +56,7 @@
         "tdd": ["implement", "feature", "test-first", "red-green"],
         "verify-evidence": ["ship", "ship it", "done", "is it done", "finish", "finished", "merge", "pr ready", "deploy", "deploy it", "push to prod", "release", "cut release", "tag release", "/ship", "/ship-it", "/yeet"],
         "openviking": ["memory", "remember", "openviking", "store", "retrieve", "start", "begin", "new task", "task", "fix", "implement", "build", "create", "update", "modify", "refactor", "add", "find", "search memory"],
+        "humanizer": ["write", "edit", "draft", "tulis", "nulis", "buat", "readme", "docs", "documentation", "dokumentasi", "laporan", "dokumen", "essay", "paper", "artikel", "bab", "konten", "paragraph", "prose", "narasi", "rangkum", "summarize", "explain", "jelaskan", "caption", "label", "description"],
         "impeccable": [
           "ui", "frontend", "layout", "design", "polish", "visual", "ux",
           "impeccable teach", "impeccable document", "impeccable craft",

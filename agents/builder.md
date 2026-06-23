@@ -26,6 +26,12 @@ Before writing any code:
   - If the slice involves motion/animation, also load `emil-design-eng`.
   - If project uses Vue AND work involves converting screenshots → `ui-to-vue`.
   - Use only the tokens, anti-patterns, and component rules from `design.md`. Never invent hex values, font sizes, or spacing outside the design scale.
+- **For prose writing** (docs, README, reports, articles, captions, labels, paragraphs):
+  - **Default to humanizer + caveman style** — terse, direct, no fluff, no AI slop
+  - Avoid: em dashes, "stands as", rule of three, "pivotal/vibrant/intricate", negative parallelisms, signposting, repetition
+  - If `design.md` exists with prose rules (e.g. academic tone for reports), follow those instead
+  - **DO NOT humanize**: code, SQL, JSON, YAML, commit messages, legal/contracts, identifiers
+  - If unsure whether to humanize, the rule is: if a human reads it for meaning (not for the code to run), humanize
 
 ### 1. Read Before Edit
 

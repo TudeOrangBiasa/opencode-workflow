@@ -26,6 +26,7 @@ done
 | 08 | [Pass skill context in subagent delegations](./08-skill-context-delegation.md) | Done | 7, 8 | Delegation Protocol format added to orchestrator.md |
 | 09 | [Skill intent-based triggers — fixed](./09-skill-intent-triggers.md) | Done | 5, 22, 23, 24 | ROUTING TABLE added to impeccable SKILL.md |
 | 10 | [Skip browser-qa for tiny diffs — ponytail cut](./10-skip-qa-tiny-diffs.md) | Done | 15 | Implemented in `45d02ea` (1 row in ship gate table) |
+| 11 | [Default humanizer + caveman for prose writing](./11-humanizer-default-prose.md) | Done | 26 | humanizer added to skill_triggers (27 keywords) + Quick Reference in SKILL.md + builder/orchestrator prose-default rule |
 
 ## Dependency Graph
 

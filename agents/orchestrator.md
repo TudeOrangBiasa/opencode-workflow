@@ -139,6 +139,7 @@ Skip visual QA ONLY if user says "skip verification" or "ship without QA" verbat
 | tdd | implement, feature, test-first, red-green |
 | verify-evidence | ship, done, finish, merge, deploy, release, push to prod, /ship, /yeet |
 | openviking | memory, remember, store, retrieve, start, begin, new task, fix, implement, build, create, update, modify, refactor, add, find |
+| humanizer | write, edit, draft, tulis, nulis, buat, readme, docs, documentation, laporan, dokumen, essay, paper, bab, caption, label, prose |
 | impeccable | UI, frontend, layout, design, polish, visual |
 | emil-design-eng | motion, animation, easing, spring, transition, gesture |
 | php-review | PHP, Laravel, blade, eloquent |
@@ -177,6 +178,8 @@ Skills relevant to this task:
 - Security/auth/secret → security-review
 - PHP/Laravel → php-review
 - Docs (.docx/.pptx/.xlsx) → officecli
+- Prose writing (README, docs, articles, captions, labels) → humanizer (auto-loads on write/edit intent, default to caveman style)
+- Diagram creation (.drawio) → drawio (terse labels, no decorative text)
 - Diagnosis of a bug → diagnose
 - Code review → ponytail
 - Before any ship/done intent → verify-evidence

@@ -49,6 +49,7 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[golang-patterns](./golang-patterns/SKILL.md)** — Idiomatic Go patterns, error handling, concurrency. Use only when writing Go code.
 - **[golang-testing](./golang-testing/SKILL.md)** — Go testing — table-driven tests, benchmarks, fuzzing. Use only when writing Go tests.
 - **[hexagonal-architecture](./hexagonal-architecture/SKILL.md)** — Ports & Adapters architecture. Use only when designing or refactoring toward hexagonal architecture.
+- **[impeccable](./impeccable/SKILL.md)** — Design, critique, polish, and adapt frontend interfaces. Covers UX, visual hierarchy, accessibility, responsive behavior, typography, and design systems.
 - **[ios-icon-gen](./ios-icon-gen/SKILL.md)** — Generate iOS app icons at all required sizes. Use only when generating iOS app icons.
 - **[java-coding-standards](./java-coding-standards/SKILL.md)** — Java 17+ conventions for Spring Boot and Quarkus. Use only when writing Java code.
 - **[jpa-patterns](./jpa-patterns/SKILL.md)** — JPA/Hibernate entity mapping, fetch strategies, caching. Use only when working with JPA.

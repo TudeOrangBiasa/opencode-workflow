@@ -180,12 +180,19 @@ Skills relevant to this task:
 - PHP/Laravel → php-review
 - Docs (.docx/.pptx/.xlsx) → officecli
 - Prose writing (README, docs, articles, captions, labels) → humanizer (auto-loads on write/edit intent, default to caveman style)
+- Document writing workflow (laporan, skripsi, jurnal, extend docx, find citation) → document-writing (auto-loads; decides pandoc vs officecli; spawns scout for citation finding)
 - Diagram creation (.drawio) → drawio (terse labels, no decorative text)
 - Diagnosis of a bug → diagnose
 - Code review → ponytail
 - Before any ship/done intent → verify-evidence
 
-If no skill matches, write "No specific skill applies" — don't fabricate.
+**Heuristic for spawning subagents** (NOT picking skills):
+- User asks for new citations, references, paper, DOI, Google Scholar, SINTA → spawn **scout**
+- User asks to search for code patterns in repo → spawn **explore**
+- User asks to research external library/API → spawn **scout**
+- User wants browser screenshot / UI verification → spawn **browser-qa**
+
+If no skill or subagent matches, write "No specific skill applies" — don't fabricate.
 
 ## URL Cache + Scout Rate-Limiting (kills 7 exa timeouts + 3 webfetch 404s)
 

@@ -27,6 +27,12 @@ done
 | 09 | [Skill intent-based triggers — fixed](./09-skill-intent-triggers.md) | Done | 5, 22, 23, 24 | ROUTING TABLE added to impeccable SKILL.md |
 | 10 | [Skip browser-qa for tiny diffs — ponytail cut](./10-skip-qa-tiny-diffs.md) | Done | 15 | Implemented in `45d02ea` (1 row in ship gate table) |
 | 11 | [Default humanizer + caveman for prose writing](./11-humanizer-default-prose.md) | Done | 26 | humanizer added to skill_triggers (27 keywords) + Quick Reference in SKILL.md + builder/orchestrator prose-default rule |
+| 12 | [Auto-extract docx styleId mapping on first edit](./12-docx-styleid-auto-extract.md) | New | — | 3x hit, caused 4-session TOC fix. Ponytail: 5-line bash + design.md cache |
+| 13 | [Numbering safety — never raw-set numbering.xml](./13-numbering-safety.md) | New | — | 4x hit, 1x data loss. Ponytail: 1 rule + validate + snapshot |
+| 14 | [Subagent lessons persistence via OpenViking](./14-subagent-lessons-persistence.md) | New | — | 3x user re-typed 11 rules. BIGGEST impact. Ponytail: extend openviking PROTOCOL |
+| 15 | [Cell-by-cell table verification pattern](./15-cell-by-cell-table.md) | New | — | 3x hit, 3-iteration table styling. Ponytail: 1 query + self-review |
+| 16 | [Sentence length guard against over-correction](./16-sentence-length-guard.md) | New | — | 30% sents < 8w. Ponytail: extend humanizer with 15-25 target |
+| 17 | [SQL code block must contain executable SQL](./17-sql-code-block-content.md) | New | — | 3 of 7 SQL blocks were 100% comments. Ponytail: 1 rule + self-review |
 
 ## Dependency Graph
 

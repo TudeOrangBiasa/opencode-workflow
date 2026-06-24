@@ -1,6 +1,6 @@
 ---
 name: dev-workflow
-description: Development workflow for the opencode-workflow repo itself. Walks through adding skills, modifying agents, syncing from upstream, and committing. Auto-loads docs/development.md. Triggers on "add skill to opencode-workflow", "new bucket", "sync from upstream", "update agent", "bump version", or any work that modifies this repo.
+description: Use when develop the opencode-workflow repo itself — add skills, modify agents, sync from upstream, commit changes. Use when user says add skill to opencode-workflow, new bucket, sync from upstream, update agent, bump version, modify this repo.
 ---
 
 # OpenCode Workflow — Development Workflow
@@ -56,6 +56,7 @@ Before any commit:
 2. New symlinks exist in `~/.config/opencode/skills/`
 3. Restart OpenCode, no errors
 4. The skill/agent behaves as expected (test with a small task if UI-affecting)
+5. Clean `.bak-*` files: `find . -name "*.bak-*" -type f -delete` (see [REFERENCE.md](./REFERENCE.md) and [`docs/development.md`](../../docs/development.md#backup--clean-procedure))
 
 ### 5. Commit + push
 

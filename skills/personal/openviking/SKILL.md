@@ -1,6 +1,6 @@
 ---
 name: openviking
-description: Persistent memory for AI agents — store/retrieve context across sessions. Triggers on "memory", "remember", "openviking", "store", "retrieve", "start", "begin", "task", "fix", "implement", "build", "create", "update", "modify", "refactor", "add", "find", "search memory".
+description: Use when persist agent memory across sessions — store, retrieve, find, or update long-term context. Use when user says memory, remember, openviking, store, retrieve, save context, find memory, search memory. Persistent memory for AI agents with namespace routing (user/agent/resources).
 ---
 
 # OpenViking Context Database
@@ -44,91 +44,7 @@ The real commands are:
 For semantic search:
 - `ov find "<query>"` — natural language query, returns ranked results
 
-## Reference
-
-Persistent memory and context management for AI agents.
-
-## Prerequisites
-
-OpenViking server must be running:
-
-```bash
-openviking-server &
-# or via system service
-```
-
-## Core Commands (v0.3.25)
-
-### Store Context
-
-```bash
-# Plain text memory (most common for lessons)
-ov add-memory "Lesson: BAB numbering in officecli — use 'add' with --num-id, never raw-set on numbering.xml"
-
-# File/URL to OpenViking
-ov add-resource /path/to/file.md
-ov add-resource /path/to/folder
-ov add-resource https://example.com/spec.md
-
-# Update existing resource
-ov write "viking://resources/projects/foo/notes.md" --content "new text"
-```
-
-### Retrieve Context
-
-```bash
-# Semantic search (natural language query)
-ov find "dbl-data-management lessons about officecli"
-ov find "browser quirks for mobile viewport"
-
-# Read exact URI
-ov read "viking://resources/projects/foo/notes.md"
-```
-
-### Browse
-
-```bash
-ov ls viking://
-ov tree viking://resources -L 2
-ov status
-```
-
-## URI Scheme (v0.3.25)
-
-```text
-viking://
-├── resources/             # WRITEABLE — project docs, repos, web pages
-│   └── projects/<name>/   # per-project context
-├── user/                  # WRITEABLE — personal preferences, habits
-│   ├── preferences/       # durable user prefs
-│   ├── lessons/           # lessons learned
-│   └── memories/           # including events/YYYY/MM/DD/ (auto-summarized)
-└── agent/                 # READ-ONLY (managed by OpenViking internally)
-    ├── default/memories/  # trajectories, experiences, identity, soul, tools, skills
-    └── patterns/          # agent-learned patterns
-```
-
-**Important**: `viking://agent/...` is READ-ONLY. To add memories, use `ov add-memory` (auto-routes to `agent/default/memories/`) or `ov add-resource` (must be in `resources/` scope).
-
-## Triggers
-
-### Auto (agent fires without asking)
-
-| Trigger | Command | Example |
-|---------|---------|---------|
-| User expresses preference ("gw suka X", "jangan Y") | `ov add-memory "user preference: ..."` | "user prefers terse responses" |
-| User corrects agent ("kok salah lagi") | `ov add-memory "user correction: ..."` | "use caveman style, not polite" |
-| Agent learns significant pattern (3+ confirmations) | `ov add-memory "pattern: ..."` | "circuits break at 0 results × 3" |
-| Session event (auto-summarized) | (OpenViking internal) | `viking://user/default/memories/events/YYYY/MM/DD/` |
-
-### Manual (user triggers)
-
-| Trigger | Command |
-|---------|---------|
-| Session start (continuing prior work) | `ov find "<query>"` |
-| "Remember this" | `ov add-memory "<content>"` |
-| "What do you know about X" | `ov find "<query>"` |
-| New project context | `ov add-resource <path-or-url>` |
+See [REFERENCE.md](REFERENCE.md) for core commands, URI scheme, triggers, and prerequisites.
 
 ## Workflow Rules
 

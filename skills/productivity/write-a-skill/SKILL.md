@@ -12,13 +12,17 @@ description: Create new agent skills with proper structure, progressive disclosu
    - What specific use cases should it handle?
    - Does it need executable scripts or just instructions?
    - Any reference materials to include?
+2. **Classify each requirement as deterministic or judgement**:
+   - **Deterministic** (script work): file ops, table lookup, fixed command sequence, presence checks (`test -f`, env vars, tool installed). These run the same way every time.
+   - **Judgement** (skill work): ambiguous user intent, code-aware decisions, design tradeoffs, qualitative synthesis. These need LLM context.
+   - **Rule of thumb**: if a requirement can be expressed as "If [checkable condition] then [command]", it's deterministic. Extract to a script. The skill only describes the script's purpose and routes the call.
 
-2. **Draft the skill** - create:
+3. **Draft the skill** - create:
    - SKILL.md with concise instructions
    - Additional reference files if content exceeds 500 lines
    - Utility scripts if deterministic operations needed
 
-3. **Review with user** - present draft and ask:
+4. **Review with user** - present draft and ask:
    - Does this cover your use cases?
    - Anything missing or unclear?
    - Should any section be more/less detailed?
@@ -89,13 +93,28 @@ The bad example gives your agent no way to distinguish this from other document 
 
 ## When to Add Scripts
 
+**Default: extract deterministic logic to a script.** The skill stays a thin dispatcher; the script does the work. Pay the cost once at script-write time, not on every LLM call.
+
 Add utility scripts when:
 
-- Operation is deterministic (validation, formatting)
-- Same code would be generated repeatedly
+- Operation is deterministic (validation, formatting, file ops, presence checks)
+- Same code would be generated repeatedly across sessions
 - Errors need explicit handling
+- The skill text contains "If [checkable condition] then [command]" — that line is a script in disguise. Extract it.
 
-Scripts save tokens and improve reliability vs generated code.
+**Anti-pattern to avoid**: writing skill text that says "If `X` exists, do A. If not, do B. If `Y`, do C..." for conditions a shell can test. The LLM re-evaluates this on every call, burning tokens and producing non-deterministic output for what should be deterministic work.
+
+**Examples of deterministic → script:**
+
+| Skill says (anti-pattern) | Should be |
+|---|---|
+| "If `AGENTS.md` exists, edit it. If not, create it." | `test -f AGENTS.md && edit \|\| create` in script |
+| "If `design.md` is present, read it; otherwise ask the user" | Script: emit JSON `{design_md: "path-or-null"}`; skill reads JSON |
+| "Run pandoc with these flags, or with --csl if a CSL file exists" | Script: `discover_format()` returns flag set; pandoc call assembled from that |
+
+**When NOT to script**: judgement-heavy decisions (which approach to take, what design fits the project, how to phrase user-facing copy). Scripts don't have context.
+
+Scripts save tokens and improve reliability vs generated code. The LLM should invoke a script, not re-derive its logic from English prose.
 
 ## When to Split Files
 
@@ -115,3 +134,5 @@ After drafting, verify:
 - [ ] Consistent terminology
 - [ ] Concrete examples included
 - [ ] References one level deep
+- [ ] No "If [checkable condition] then [command]" English if-statements. Every such line has a shell-testable condition → move to script.
+- [ ] Deterministic work (file ops, table lookups, fixed command sequences) lives in `scripts/`, not in skill prose. The skill dispatches; the script executes.

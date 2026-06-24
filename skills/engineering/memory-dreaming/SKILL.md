@@ -1,6 +1,6 @@
 ---
 name: memory-dreaming
-description: Consolidate lessons across sessions — find duplicates, merge, archive stale entries. Auto-loads on "consolidate", "dream", "clean up lessons", "memory hygiene".
+description: Use when consolidate, merge, archive, or clean up OpenViking memory entries. Use when user says consolidate, dream, clean up lessons, memory hygiene, merge duplicates, archive stale. Auto-loads on intent — finds duplicates across sessions, merges, archives stale entries.
 ---
 
 # Memory Dreaming

@@ -1,6 +1,6 @@
 ---
 name: workflow-audit
-description: Audit the opencode-workflow state — read opencode.json, verify symlinks, check repo sync, analyze recent sessions, surface mismatches. Triggers on "audit", "workflow status", "check changes", "verify sync", "what did I change", "opencode config status", "lint workflow".
+description: Use when audit the opencode-workflow state — read opencode.json, verify symlinks, check repo sync, analyze recent sessions, surface mismatches. Use when user says audit, workflow status, check changes, verify sync, what did I change, opencode config status, lint workflow.
 ---
 
 # Workflow Audit

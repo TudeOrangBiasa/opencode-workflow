@@ -1,8 +1,7 @@
 ---
-name: eval
-description: Analyze sessions for agent errors, stuck patterns, scope drift, tool misuse. Creates report in opencode-workflow/.scratch/evals/. Report only. Triggers on "eval session", "what went wrong", "diagnose session".
+++  `\+7name: eval
+description: Use when evaluate a session for AI mistakes, user frustration, repeated errors, or scope drift. Use when user says eval session, what went wrong, diagnose session, session audit, post-mortem. Creates report in opencode-workflow/.scratch/evals/. Report only — never fix directly.
 ---
-
 # Eval
 
 Analyze the current session for agent failures, user frustration, and repeated mistakes. Create an eval report in the opencode-workflow repo. Report only — never fix directly. After report, use `grill-with-docs` or `grill-me` to plan fixes before implementing.
@@ -21,6 +20,7 @@ Analyze the current session for agent failures, user frustration, and repeated m
 Analyze conversation history for these signals:
 
 **User Frustration Signals:**
+
 - Explicit: "wasting token", "sia-sia", "buang token", "boros", "kok gini", "kenapa", "lagi lagi"
 - Implicit: repeated corrections, "sudah gw bilang", "itu tadi", short impatient replies
 - Silence: user stops responding after agent mistakes
@@ -29,23 +29,25 @@ Analyze conversation history for these signals:
 
 Based on OpenHands stuck detector — 5 pattern types:
 
-| Pattern | Threshold | Example |
-|---------|-----------|---------|
-| Repeating Action-Observation | 4+ same result | grep "foo" → 0 results × 4 |
-| Repeating Action-Error | 3+ same error | npm install → ERESOLVE × 3 |
-| Agent Monologue | 3+ messages without progress | explains, explains, explains |
-| Alternating Ping-Pong | 6+ alternating actions | edit A → edit B → edit A |
-| Context Window Errors | memory failure | forgets earlier decisions |
+| Pattern                      | Threshold                    | Example                      |
+| ---------------------------- | ---------------------------- | ---------------------------- |
+| Repeating Action-Observation | 4+ same result               | grep "foo" → 0 results × 4 |
+| Repeating Action-Error       | 3+ same error                | npm install → ERESOLVE × 3 |
+| Agent Monologue              | 3+ messages without progress | explains, explains, explains |
+| Alternating Ping-Pong        | 6+ alternating actions       | edit A → edit B → edit A   |
+| Context Window Errors        | memory failure               | forgets earlier decisions    |
 
 ### 3. Detect Scope Drift
 
 **Heuristic signals:**
+
 - Files changed beyond stated goal
 - Unrelated code modified
 - New dependencies added without user request
 - Cleanup/optimization without asking
 
 **User signals (Indonesian + English):**
+
 - "kok tambah banyak" (why more changes)
 - "itu bukan yang gw minta" (that's not what I asked)
 - "focus" / "fokus" / "stay on track"
@@ -53,28 +55,31 @@ Based on OpenHands stuck detector — 5 pattern types:
 ### 4. Detect Tool Misuse
 
 **Token waste patterns:**
+
 - bash grep when built-in grep available (rtk compresses output)
 - Same file+offset read twice
 - find via bash when glob tool exists
 - head/tail/sed/awk via bash when read/grep tools exist
 
 **Circuit breaker missing:**
+
 - grep/search with 0 results > 3 consecutive times
 - Total grep/search calls > 10 for same task without finding target
 
 **Recovery hierarchy not followed:**
+
 1. Argument repair → 2. Retry with backoff → 3. Tool substitution → 4. Retrieval refresh → 5. Replanning → 6. Graceful degradation → 7. Model escalation → 8. Human escalation
 
 If agent jumps from failure directly to human escalation without trying intermediate steps, flag.
 
 ### 5. Classify Findings
 
-| Dimension | Options |
-|-----------|---------|
-| Severity | HIGH / MEDIUM / LOW |
-| Category | stuck-pattern, scope-drift, tool-misuse, missing-skill, debug-leftover, verification-gap, token-waste, recovery-gap |
-| Repeat | First time / Repeated |
-| Grader | Code-based (deterministic) / Model-based (judgment) / Human |
+| Dimension | Options                                                                                                             |
+| --------- | ------------------------------------------------------------------------------------------------------------------- |
+| Severity  | HIGH / MEDIUM / LOW                                                                                                 |
+| Category  | stuck-pattern, scope-drift, tool-misuse, missing-skill, debug-leftover, verification-gap, token-waste, recovery-gap |
+| Repeat    | First time / Repeated                                                                                               |
+| Grader    | Code-based (deterministic) / Model-based (judgment) / Human                                                         |
 
 ### 6. Create Eval Report
 

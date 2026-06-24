@@ -4,6 +4,10 @@ OpenCode-first agents, skills, and docs for primitive-agent engineering workflow
 
 This repo is for maturing workflow/config locally before anything is installed into `~/.config/opencode`.
 
+### Recent Updates
+
+- **2026-06-24 — Skill quality + drawio wiring**: 18 skill descriptions rewritten to "Use when..." pattern (matches user phrasing English + Indonesian). 11 oversized SKILL.md split into SKILL.md + REFERENCE.md per `write-a-skill` rule (avg 73 lines). `drawio` skill wired in `opencode.json` skill_triggers. Backup + Clean Procedure added to `dev-workflow` skill. AGENTS.md pruned via 3-question filter. See [CHANGELOG](./CHANGELOG.md) for full history.
+
 ### Principles
 
 - **Cheap-first**: cheap models for exploration and execution; expensive models for planning, routing, review.

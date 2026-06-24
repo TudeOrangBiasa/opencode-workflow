@@ -2,13 +2,15 @@
 
 ## [Unreleased]
 
-- Chore: cross-references between related skills in misc/ — added 1-line pointers in 5 files (emil-design-eng↔review-animations, backend-patterns→api-design, database-migrations↔database-review) for better discoverability. Audit-driven; no content removed.
+## [2026-06-24] — Skill quality + drawio wiring
+
 - Feature: skill descriptions rewritten to "Use when..." pattern (17 skills). Trigger vocab now matches user phrasing in English + Indonesian. Closes 2026-06-24 finding: 3 skills (drawio, document-writing, officecli) not loading on natural user phrasing.
 - Refactor: split 11 oversized SKILL.md into SKILL.md (constitution, <100 lines) + REFERENCE.md (detail). Per write-a-skill rule. 3040 lines moved out of SKILL.md. Average SKILL.md size now 73 lines (down from 377).
 - Fix: `drawio` skill wired in `opencode.json` `skill_triggers` (was missing entirely). Triggers on "drawio", "draw.io", "diagram", "flowchart", "erd", "architecture diagram", "visualisasi", "diagram alur". Closes 2026-06-24 finding.
 - Documentation: dev-workflow skill — added Backup + Clean Procedure. New section in `docs/development.md` + cross-refs in SKILL.md (Step 4 verify) + full details in REFERENCE.md. Pattern: backup before edit (`.bak-YYYY-MM-DD`), delete `.bak` before commit.
 - Chore: AGENTS.md audit (3-question filter) — pruned 7 lines from `~/.config/opencode/AGENTS.md` (4 duplicate Work Rules) and `~/Workspace/.../opencode-workflow/AGENTS.md` (3 Out-of-Scope Notes). Protected sections (caveman mode, skill buckets, agent rules, workflow principles) untouched.
 - Chore: remove 3 docs/diagrams/*.drawio (development-workflow-phases, repository-tree, skills-routing-flowchart) — user intentional, not referenced by any active documentation.
+- Chore: cross-references between related skills in misc/ — added 1-line pointers in 5 files (emil-design-eng↔review-animations, backend-patterns→api-design, database-migrations↔database-review) for better discoverability. Audit-driven; no content removed.
 - Feature: `humanizer` skill — remove signs of AI-generated writing from prose. Wikipedia "Signs of AI writing" guide: inflated symbolism, promotional language, superficial -ing analyses, vague attributions, em dash overuse, rule of three, AI vocabulary, passive voice, negative parallelisms, filler phrases, repetition. Auto-loads on prose-writing intent. Moved from local-only to repo. (productivity)
 - Feature: `impeccable` skill — frontend design craft: 20+ sub-commands (design, critique, polish, adapt, colorize, typeset, harden, optimize, distill, clarify, shape, extract, onboard). UX, visual hierarchy, accessibility, responsive behavior, typography, motion, design systems, anti-patterns. Moved from local-only to repo. (misc)
 - Feature: `youtube-transcript` skill — yt-dlp wrapper for clean transcript extraction from YouTube URLs. Zero API fees, no MCP, pure stdlib. SKILL.md covers trigger conditions, workflow, long-video handling, failure modes (429/bot detection/no subs). `scripts/yt-transcript` (110 lines, executable) accepts URL + lang priority (default id,en), supports `-o` for file output. Closes the "agent has only exa+webfetch, no transcript" gap without pulling in Agent-Reach's cookie-based ecosystem. (in-progress, promote to productivity/ when reviewed)

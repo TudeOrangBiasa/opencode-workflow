@@ -68,6 +68,7 @@ Active repo skills:
 - `django-tdd`
 - `django-verification`
 - `docker-patterns`
+- `drawio`
 - `dotnet-patterns`
 - `error-handling`
 - `evm-token-decimals`

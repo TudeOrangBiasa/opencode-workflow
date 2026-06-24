@@ -285,6 +285,55 @@ Before pushing, verify:
 4. **Skill loads**: invoke the skill via `/skill-name` or trigger keyword
 5. **Agent behavior**: run a small task through the agent
 
+## Backup + Clean Procedure
+
+Protect original files before edits. Delete backups after verification — `.bak` files in skill folders get symlinked to `~/.config/opencode/` and leak into `git status`.
+
+### Before editing
+
+Create a timestamped backup in the **same directory** as the file being edited:
+
+```bash
+cp target-file target-file.bak-YYYY-MM-DD
+# Second edit same day:
+cp target-file target-file.bak-YYYY-MM-DD-2
+```
+
+The timestamp links the backup to the session. The `-N` suffix avoids overwriting if multiple edit rounds happen same day.
+
+**Why same directory**: `link-skills.sh` creates symlinks from `~/.config/opencode/skills/*/` into the repo. If you edit a symlinked file and create `.bak` beside it, the backup also lives under the symlink path. Putting `.bak` in `/tmp/` or elsewhere defeats the purpose — it won't shadow `git status`.
+
+### After verification
+
+Before `git add`, delete all `.bak` files:
+
+```bash
+# Delete from repo root
+find . -name "*.bak-*" -type f -delete
+# Also check ~/.config/opencode/ (config backups, not in git, but good hygiene)
+find ~/.config/opencode -name "*.bak-*" -type f -delete 2>/dev/null || true
+```
+
+Add this to your pre-commit checklist.
+
+### Why
+
+- `.bak` files in `skills/*/` are visible at `~/.config/opencode/skills/*/` via symlink
+- They show up in `git status` as untracked files with foreign timestamps
+- Committing them bloats the repo with redundant state
+- Naming inconsistency (.bak-2024-01-01 vs 2024-01-01.bak) makes cleanup scripts unreliable — standardize on **suffix format** (`.bak-YYYY-MM-DD`)
+
+### Naming convention
+
+Always use **suffix format**: `file.bak-YYYY-MM-DD`. Not `file.YYYY-MM-DD.bak`, not `file.bak`.
+
+- `target-file` → `target-file.bak-2026-06-24` ✓
+- `target-file.bak-2026-06-24-2` ✓ (same day, second edit)
+- `target-file.2026-06-24.bak` ✗ (harder to glob: `find . -name "*.bak-*"`)
+- `SKILL.md.bak` ✗ (no date — ambiguous, stale)
+
+Cross-reference: `../skills/personal/dev-workflow/REFERENCE.md`.
+
 ## Local Config vs Template
 
 The actual `opencode.json` (`~/.config/opencode/opencode.json`) is local-only and **never committed** (it may contain API keys). But the routing config (model assignments, permissions, skill triggers, MCP, disabled built-ins) should be shared — otherwise new clones start with defaults and lose your carefully tuned setup.

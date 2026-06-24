@@ -65,6 +65,3 @@ Rules:
 - Start with `verify-evidence` on-demand skill (in `skills/misc/`). Load it for tool-based verification in AFK, high-risk, or evidence-gap scenarios.
 - Promote to dedicated agent only if the skill is used in >50% of sessions and its routing/context cost justifies a separate agent file.
 
-## Out-of-Scope Notes
-
-`.out-of-scope/` contains rejected or intentionally deferred feature requests. It is not runtime config and not part of installation. Use it as maintainer context when similar requests reappear.

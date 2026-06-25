@@ -2,12 +2,47 @@
 
 This repo is developed for OpenCode only. Do not add compatibility surfaces for other agent runtimes unless a task explicitly asks for it.
 
+## Role
+
+opencode-workflow is the **personal dotfiles + workflow pipeline**. It contains:
+
+- The AI agent's core workflow management skills
+- Personal setup scripts (install, hooks, audit)
+- Documentation for project decisions
+- Symlinks to heavy skills that live in their own repos (e.g., `documents-kit-skills/`)
+
+Heavy skills (4+ external deps, fully automates a task, multiple patterns) live in their own repos and integrate via symlinks. See [docs/architecture.md](docs/architecture.md) and [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md).
+
 ## Scope
 
 - Source of truth for OpenCode agents in `agents/`.
-- Source of truth for selected workflow skills in `skills/`.
+- Source of truth for **pipeline-level** skills in `skills/` (write-a-skill, skill-author, dev-workflow, etc.)
 - Documentation for local installation and model routing in `docs/`.
+- Symlinks to external skill packages in `skills/personal/`.
 - Do not edit `~/.config/opencode` while maturing changes here unless the user explicitly asks to install or activate them.
+
+## Skill authoring
+
+All skill writing MUST follow **write-a-skill** principles:
+
+- Description ≤ 1024 chars with "Use when..." triggers
+- SKILL.md ≤ 100 lines (detail in REFERENCE.md)
+- No time-sensitive info (dates, version refs)
+- No "If X then Y" English if-statements — extract to `scripts/`
+- Cross-skill references by name, not absolute path
+- Deterministic work in scripts, not in skill prose
+
+Before creating or modifying a skill, load: **write-a-skill** + **skill-author**.
+
+Project-specific decisions (where to put a skill, portability rules):
+- [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md)
+- [docs/skills/anti-hardcoded-pattern.md](docs/skills/anti-hardcoded-pattern.md)
+
+Enforcement:
+- `scripts/check-portable.sh` — hardcoded path lint
+- `scripts/check-skill-structure.sh` — write-a-skill compliance
+- `scripts/audit-skill.sh <path>` — full single-skill audit
+- `scripts/pre-commit.sh` — runs all before commit (install with `scripts/install-hooks.sh`)
 
 ## Skill Buckets
 

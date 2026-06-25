@@ -7,8 +7,9 @@
 #   opencode-workflow/skills/personal/documents-kit-skills/document-writing  → documents-kit-skills/skills/document-writing
 #   opencode-workflow/skills/personal/documents-kit-skills/drawio            → documents-kit-skills/skills/drawio
 #   opencode-workflow/skills/personal/documents-kit-skills/humanizer         → documents-kit-skills/skills/humanizer
+#   opencode-workflow/skills/personal/documents-kit-skills/officecli         → documents-kit-skills/skills/officecli
 #   opencode-workflow/documents-kit-skills/                 → documents-kit-skills/  (top-level convenience)
-#   ~/.config/opencode/skills/{document-writing,drawio,humanizer}            (re-pointed to package)
+#   ~/.config/opencode/skills/{document-writing,drawio,humanizer,officecli}  (re-pointed to package)
 #
 # Backs up existing skill dirs (if they exist as real dirs, not symlinks) to .scratch/backup/.
 
@@ -69,6 +70,7 @@ mkdir -p "$PACKAGE_DIR"
 # Backup any existing skills in old locations (productivity/, misc/)
 backup_if_exists "$WORKFLOW_DIR/skills/productivity/document-writing"
 backup_if_exists "$WORKFLOW_DIR/skills/productivity/humanizer"
+backup_if_exists "$WORKFLOW_DIR/skills/productivity/officecli"
 backup_if_exists "$WORKFLOW_DIR/skills/misc/drawio"
 
 # Remove broken symlinks in package
@@ -77,7 +79,7 @@ for skill in document-writing drawio humanizer; do
 done
 
 # Create symlinks in package
-for skill in document-writing drawio humanizer; do
+for skill in document-writing drawio humanizer officecli; do
   target="$PACKAGE_DIR/$skill"
   if [[ ! -L "$target" ]]; then
     echo "Package symlink: skills/personal/documents-kit-skills/$skill → $KIT_DIR/skills/$skill"
@@ -88,7 +90,7 @@ done
 # 3. Repoint ~/.config/opencode/skills/ to the new package location
 echo
 echo "=== Re-pointing ~/.config/opencode/skills/ ==="
-for skill in document-writing drawio humanizer; do
+for skill in document-writing drawio humanizer officecli; do
   global_link="$HOME/.config/opencode/skills/$skill"
   if [[ -L "$global_link" ]]; then
     echo "Removing old symlink: $global_link"
@@ -104,7 +106,7 @@ done
 # 4. Verify
 echo
 echo "=== Verify ==="
-for skill in document-writing drawio humanizer; do
+for skill in document-writing drawio humanizer officecli; do
   target="$WORKFLOW_DIR/skills/personal/documents-kit-skills/$skill"
   if [[ -L "$target" && -e "$target" ]]; then
     echo "[OK] $skill → $(readlink "$target")"
@@ -117,7 +119,7 @@ if [[ -L "$TOPLEVEL" && -e "$TOPLEVEL" ]]; then
   echo "[OK] documents-kit-skills → $(readlink "$TOPLEVEL")"
 fi
 
-for skill in document-writing drawio humanizer; do
+for skill in document-writing drawio humanizer officecli; do
   global_link="$HOME/.config/opencode/skills/$skill"
   if [[ -L "$global_link" && -e "$global_link" ]]; then
     echo "[OK] ~/.config/.../$skill → $(readlink "$global_link")"
@@ -134,6 +136,6 @@ echo "Final structure:"
 echo "  $KIT_DIR                    ← source of truth (edit here)"
 echo "    ↓"
 echo "  $WORKFLOW_DIR/documents-kit-skills                    ← top-level convenience"
-echo "  $WORKFLOW_DIR/skills/personal/documents-kit-skills/{X} ← package folder"
+echo "  $WORKFLOW_DIR/skills/personal/documents-kit-skills/{document-writing,drawio,humanizer,officecli} ← package folder"
 echo "    ↓"
 echo "  $HOME/.config/opencode/skills/{X}                    ← OpenCode global"

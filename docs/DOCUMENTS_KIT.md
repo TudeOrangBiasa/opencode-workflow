@@ -14,8 +14,20 @@ Documents-kit-skills lives under `opencode-workflow/skills/personal/documents-ki
 | `skills/personal/documents-kit-skills/document-writing` | `documents-kit-skills/skills/document-writing` | Document orchestrator |
 | `skills/personal/documents-kit-skills/drawio` | `documents-kit-skills/skills/drawio` | Diagram generation |
 | `skills/personal/documents-kit-skills/humanizer` | `documents-kit-skills/skills/humanizer` | Prose anti-AI |
+| `skills/personal/documents-kit-skills/officecli` | `documents-kit-skills/skills/officecli` | docx/pptx/xlsx manipulation (MCP wrapper) |
 | `documents-kit-skills/` (top-level) | `documents-kit-skills/` | Convenience access to full repo |
 | `~/.config/opencode/skills/{X}` | → `opencode-workflow/skills/personal/documents-kit-skills/{X}` | OpenCode global (via package) |
+
+## Why 4 skills (not 3)?
+
+The `document-writing` orchestrator depends on `officecli` for:
+- PATH B workflow (extend existing .docx)
+- Post-conversion fixes (`fix-pandoc-leaks.sh` uses `officecli set` to apply color/indent/font fixes)
+- Validation (`officecli validate` to check schema)
+- Visual verification (`officecli view screenshot` for layout check)
+- Image insertion (`officecli add --type picture` for diagrams)
+
+Without `officecli` in the package, `document-writing` is incomplete.
 
 ## Why symlink under `personal/`?
 
@@ -77,12 +89,13 @@ opencode-workflow/
 ├── skills/personal/documents-kit-skills/   ← package folder
 │   ├── document-writing/                    ← symlink
 │   ├── drawio/                              ← symlink
-│   └── humanizer/                           ← symlink
+│   ├── humanizer/                           ← symlink
+│   └── officecli/                           ← symlink
 └── documents-kit-skills/                    ← top-level convenience symlink
        │
        │ (symlinks in ~/.config/opencode/)
        ▼
-~/.config/opencode/skills/{document-writing,drawio,humanizer}
+~/.config/opencode/skills/{document-writing,drawio,humanizer,officecli}
        │
        ▼
 OpenCode (loads skills from global config)

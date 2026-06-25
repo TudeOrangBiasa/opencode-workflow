@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# setup-documents-kit.sh — Symlink the 3 document-kit-skills into opencode-workflow.
-# Run this once after cloning opencode-workflow, after cloning documents-kit-skills.
+# setup-documents-kit.sh — Symlink documents-kit-skills into opencode-workflow under skills/personal/.
+# Run this once after cloning opencode-workflow (and after cloning documents-kit-skills).
 #
-# Creates symlinks:
-#   opencode-workflow/skills/productivity/document-writing → documents-kit-skills/skills/document-writing
-#   opencode-workflow/skills/productivity/humanizer       → documents-kit-skills/skills/humanizer
-#   opencode-workflow/skills/misc/drawio                  → documents-kit-skills/skills/drawio
-#   opencode-workflow/documents-kit-skills                 → documents-kit-skills/ (top-level convenience)
+# Creates:
+#   opencode-workflow/skills/personal/documents-kit-skills/  (package folder)
+#   opencode-workflow/skills/personal/documents-kit-skills/document-writing  → documents-kit-skills/skills/document-writing
+#   opencode-workflow/skills/personal/documents-kit-skills/drawio            → documents-kit-skills/skills/drawio
+#   opencode-workflow/skills/personal/documents-kit-skills/humanizer         → documents-kit-skills/skills/humanizer
+#   opencode-workflow/documents-kit-skills/                 → documents-kit-skills/  (top-level convenience)
+#   ~/.config/opencode/skills/{document-writing,drawio,humanizer}            (re-pointed to package)
 #
-# Backs up existing skill dirs to .scratch/backup/ if they exist.
+# Backs up existing skill dirs (if they exist as real dirs, not symlinks) to .scratch/backup/.
 
 set -euo pipefail
 
@@ -28,7 +30,7 @@ if [[ ! -d "$KIT_DIR" ]]; then
   exit 1
 fi
 
-# Backup helper
+# Helper: backup if exists as real dir
 backup_if_exists() {
   local path="$1"
   if [[ -d "$path" && ! -L "$path" ]]; then
@@ -41,7 +43,7 @@ backup_if_exists() {
   fi
 }
 
-# Remove existing broken symlinks (target doesn't exist)
+# Helper: remove broken symlink
 remove_broken_link() {
   local path="$1"
   if [[ -L "$path" && ! -e "$path" ]]; then
@@ -50,43 +52,64 @@ remove_broken_link() {
   fi
 }
 
-# 1. Symlink the 3 skills
-SKILLS=(
-  "skills/productivity/document-writing"
-  "skills/productivity/humanizer"
-  "skills/misc/drawio"
-)
-
-for relpath in "${SKILLS[@]}"; do
-  target="$WORKFLOW_DIR/$relpath"
-  src="$KIT_DIR/${relpath#skills/}"
-  remove_broken_link "$target"
-  backup_if_exists "$target"
-  if [[ ! -L "$target" ]]; then
-    echo "Symlinking $relpath → $src"
-    ln -s "$src" "$target"
-  fi
-done
-
-# 2. Top-level symlink for full repo access
+# 1. Top-level convenience symlink
 TOPLEVEL="$WORKFLOW_DIR/documents-kit-skills"
 remove_broken_link "$TOPLEVEL"
 if [[ -d "$TOPLEVEL" && ! -L "$TOPLEVEL" ]]; then
   echo "Warning: $TOPLEVEL exists as a directory, not symlinking"
 elif [[ ! -L "$TOPLEVEL" ]]; then
-  echo "Symlinking documents-kit-skills → $KIT_DIR"
+  echo "Top-level symlink: documents-kit-skills → $KIT_DIR"
   ln -s "$KIT_DIR" "$TOPLEVEL"
 fi
 
-# 3. Verify
+# 2. Package folder: skills/personal/documents-kit-skills/
+PACKAGE_DIR="$WORKFLOW_DIR/skills/personal/documents-kit-skills"
+mkdir -p "$PACKAGE_DIR"
+
+# Backup any existing skills in old locations (productivity/, misc/)
+backup_if_exists "$WORKFLOW_DIR/skills/productivity/document-writing"
+backup_if_exists "$WORKFLOW_DIR/skills/productivity/humanizer"
+backup_if_exists "$WORKFLOW_DIR/skills/misc/drawio"
+
+# Remove broken symlinks in package
+for skill in document-writing drawio humanizer; do
+  remove_broken_link "$PACKAGE_DIR/$skill"
+done
+
+# Create symlinks in package
+for skill in document-writing drawio humanizer; do
+  target="$PACKAGE_DIR/$skill"
+  if [[ ! -L "$target" ]]; then
+    echo "Package symlink: skills/personal/documents-kit-skills/$skill → $KIT_DIR/skills/$skill"
+    ln -s "$KIT_DIR/skills/$skill" "$target"
+  fi
+done
+
+# 3. Repoint ~/.config/opencode/skills/ to the new package location
+echo
+echo "=== Re-pointing ~/.config/opencode/skills/ ==="
+for skill in document-writing drawio humanizer; do
+  global_link="$HOME/.config/opencode/skills/$skill"
+  if [[ -L "$global_link" ]]; then
+    echo "Removing old symlink: $global_link"
+    rm "$global_link"
+  elif [[ -d "$global_link" ]]; then
+    echo "Warning: $global_link exists as directory, skipping"
+    continue
+  fi
+  echo "Creating: $global_link → $PACKAGE_DIR/$skill"
+  ln -s "$PACKAGE_DIR/$skill" "$global_link"
+done
+
+# 4. Verify
 echo
 echo "=== Verify ==="
-for relpath in "${SKILLS[@]}"; do
-  target="$WORKFLOW_DIR/$relpath"
+for skill in document-writing drawio humanizer; do
+  target="$WORKFLOW_DIR/skills/personal/documents-kit-skills/$skill"
   if [[ -L "$target" && -e "$target" ]]; then
-    echo "[OK] $relpath → $(readlink "$target")"
+    echo "[OK] $skill → $(readlink "$target")"
   else
-    echo "[FAIL] $relpath is not a working symlink"
+    echo "[FAIL] $skill is not a working symlink"
   fi
 done
 
@@ -94,8 +117,23 @@ if [[ -L "$TOPLEVEL" && -e "$TOPLEVEL" ]]; then
   echo "[OK] documents-kit-skills → $(readlink "$TOPLEVEL")"
 fi
 
+for skill in document-writing drawio humanizer; do
+  global_link="$HOME/.config/opencode/skills/$skill"
+  if [[ -L "$global_link" && -e "$global_link" ]]; then
+    echo "[OK] ~/.config/.../$skill → $(readlink "$global_link")"
+  fi
+done
+
 echo
 echo "=== Done ==="
 echo "Restart OpenCode to pick up changes."
 echo "Edit documents in: $KIT_DIR"
 echo "Changes propagate to opencode-workflow via symlinks."
+echo
+echo "Final structure:"
+echo "  $KIT_DIR                    ← source of truth (edit here)"
+echo "    ↓"
+echo "  $WORKFLOW_DIR/documents-kit-skills                    ← top-level convenience"
+echo "  $WORKFLOW_DIR/skills/personal/documents-kit-skills/{X} ← package folder"
+echo "    ↓"
+echo "  $HOME/.config/opencode/skills/{X}                    ← OpenCode global"

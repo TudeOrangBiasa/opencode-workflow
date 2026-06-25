@@ -2,21 +2,37 @@
 
 This repo (opencode-workflow) integrates with [documents-kit-skills](https://github.com/your-org/documents-kit-skills) — a separate repo containing 3 coupled skills for AI-assisted document creation.
 
+## Location
+
+Documents-kit-skills lives under `opencode-workflow/skills/personal/documents-kit-skills/` as a **dedicated package** (alongside other personal skills like `ddev/`, `dev-workflow/`, `openviking/`).
+
 ## What is symlinked
 
-| Path in opencode-workflow | Points to | Purpose |
-|---------------------------|-----------|---------|
-| `skills/productivity/document-writing` | `documents-kit-skills/skills/document-writing` | Document orchestrator |
-| `skills/productivity/humanizer` | `documents-kit-skills/skills/humanizer` | Prose anti-AI |
-| `skills/misc/drawio` | `documents-kit-skills/skills/drawio` | Diagram generation |
-| `documents-kit-skills/` (top-level) | `documents-kit-skills/` | Full repo access |
+| Path | Source | Purpose |
+|------|--------|---------|
+| `skills/personal/documents-kit-skills/` (package) | `documents-kit-skills/` (whole repo) | Top-level entry to the package |
+| `skills/personal/documents-kit-skills/document-writing` | `documents-kit-skills/skills/document-writing` | Document orchestrator |
+| `skills/personal/documents-kit-skills/drawio` | `documents-kit-skills/skills/drawio` | Diagram generation |
+| `skills/personal/documents-kit-skills/humanizer` | `documents-kit-skills/skills/humanizer` | Prose anti-AI |
+| `documents-kit-skills/` (top-level) | `documents-kit-skills/` | Convenience access to full repo |
+| `~/.config/opencode/skills/{X}` | → `opencode-workflow/skills/personal/documents-kit-skills/{X}` | OpenCode global (via package) |
 
-## Why symlink?
+## Why symlink under `personal/`?
 
-- **Single source of truth**: documents-kit-skills is the canonical repo for the 3 skills
-- **Auto-propagation**: updates to documents-kit-skills automatically reflect in opencode-workflow
-- **No duplication**: skills aren't copied between repos
+Per the opencode-workflow skill organization:
+- `engineering/` — daily code work
+- `misc/` — kept around but rarely used
+- `personal/` — tied to personal setup (where documents-kit-skills fits)
+- `productivity/` — daily non-code workflow tools
+
+Documents-kit-skills is a personal toolkit — lives under `personal/`.
+
+## Why symlink (not copy / submodule)?
+
+- **Single source of truth**: documents-kit-skills is the canonical repo
+- **Auto-propagation**: edits in documents-kit-skills workspace auto-flow to opencode-workflow
 - **No drift**: skill versions stay in sync across the workspace
+- **No duplication**: skills aren't copied between repos
 
 ## Setup (one-time, after cloning)
 
@@ -32,60 +48,57 @@ cd /path/to/opencode-workflow
 DOCUMENTS_KIT_DIR=/custom/path ./scripts/setup-documents-kit.sh
 ```
 
+The script:
+- Creates the package folder `skills/personal/documents-kit-skills/`
+- Symlinks each of the 3 skills to documents-kit-skills
+- Re-points `~/.config/opencode/skills/X` to the new package location
+- Creates top-level `documents-kit-skills` symlink for convenience
+- Backs up any existing skill dirs to `.scratch/backup/`
+
 ## Updating
 
-To update the skills, just `git pull` in documents-kit-skills. Changes propagate to opencode-workflow automatically via symlinks.
+To update the skills, just `git pull` in documents-kit-skills. Changes propagate everywhere via symlinks.
 
 ```bash
 cd /path/to/documents-kit-skills
 git pull origin main
 # No restart of opencode-workflow needed for symlink changes
-# Restart OpenCode if skill content changed
+# Restart OpenCode if skill content (SKILL.md) changed
 ```
 
 ## Workflow
 
 ```
 documents-kit-skills/  (source of truth)
-       |
-       | (symlinks)
-       v
+       │
+       │ (symlinks via setup script)
+       ▼
 opencode-workflow/
-├── skills/productivity/document-writing  → ─┐
-├── skills/productivity/humanizer        → ─┤
-├── skills/misc/drawio                   → ─┤─── (auto-propagated)
-└── documents-kit-skills/                 → ─┘
-       |
-       | (symlinks from ~/.config/opencode/skills/)
-       v
+├── skills/personal/documents-kit-skills/   ← package folder
+│   ├── document-writing/                    ← symlink
+│   ├── drawio/                              ← symlink
+│   └── humanizer/                           ← symlink
+└── documents-kit-skills/                    ← top-level convenience symlink
+       │
+       │ (symlinks in ~/.config/opencode/)
+       ▼
 ~/.config/opencode/skills/{document-writing,drawio,humanizer}
-       |
-       v
+       │
+       ▼
 OpenCode (loads skills from global config)
 ```
 
-## Backup and Removal
+## Why not git submodule?
 
-The setup script backs up existing skill dirs to `.scratch/backup/` before symlinking. To remove symlinks and restore backups:
-
-```bash
-# Manual removal
-rm skills/productivity/document-writing skills/productivity/humanizer skills/misc/drawio documents-kit-skills
-mv .scratch/backup/document-writing-bak skills/productivity/document-writing
-mv .scratch/backup/humanizer-bak skills/productivity/humanizer
-mv .scratch/backup/drawio-bak skills/misc/drawio
-```
-
-## Why not a git submodule?
-
-Git submodules require explicit init/update commands and add complexity. Symlinks are simpler for local development where the repos live in known locations.
+Submodules require explicit `git submodule update --init --recursive` and add complexity. Symlinks are simpler for local development where the repos live in known locations.
 
 For distributed teams, consider:
-- Git submodules with explicit `git submodule update --init --recursive`
+- Git submodules
 - npm/pip-style package manager
 - Monorepo (single repo, multiple packages)
 
 ## See also
 
 - [documents-kit-skills README](documents-kit-skills/README.md)
-- [ARCHITECTURE.md](documents-kit-skills/docs/ARCHITECTURE.md) — how the 3 skills work together
+- [documents-kit-skills ARCHITECTURE.md](documents-kit-skills/docs/ARCHITECTURE.md) — how the 3 skills work together
+- [AGENTS.md](../AGENTS.md) — opencode-workflow skill organization

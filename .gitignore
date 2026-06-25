@@ -3,7 +3,5 @@
 # Documents Kit Skills — symlinked from separate repo (see docs/DOCUMENTS_KIT.md)
 # These are local symlinks pointing to /home/todayz/Workspace/personal/dev/ai-kit/documents-kit-skills/
 # Re-create with: ./scripts/setup-documents-kit.sh
-skills/productivity/document-writing
-skills/productivity/humanizer
-skills/misc/drawio
+skills/personal/documents-kit-skills/
 documents-kit-skills

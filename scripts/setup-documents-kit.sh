@@ -8,7 +8,6 @@
 #   opencode-workflow/skills/personal/documents-kit-skills/drawio            → documents-kit-skills/skills/drawio
 #   opencode-workflow/skills/personal/documents-kit-skills/humanizer         → documents-kit-skills/skills/humanizer
 #   opencode-workflow/skills/personal/documents-kit-skills/officecli         → documents-kit-skills/skills/officecli
-#   opencode-workflow/documents-kit-skills/                 → documents-kit-skills/  (top-level convenience)
 #   ~/.config/opencode/skills/{document-writing,drawio,humanizer,officecli}  (re-pointed to package)
 #
 # Backs up existing skill dirs (if they exist as real dirs, not symlinks) to .scratch/backup/.
@@ -53,17 +52,7 @@ remove_broken_link() {
   fi
 }
 
-# 1. Top-level convenience symlink
-TOPLEVEL="$WORKFLOW_DIR/documents-kit-skills"
-remove_broken_link "$TOPLEVEL"
-if [[ -d "$TOPLEVEL" && ! -L "$TOPLEVEL" ]]; then
-  echo "Warning: $TOPLEVEL exists as a directory, not symlinking"
-elif [[ ! -L "$TOPLEVEL" ]]; then
-  echo "Top-level symlink: documents-kit-skills → $KIT_DIR"
-  ln -s "$KIT_DIR" "$TOPLEVEL"
-fi
-
-# 2. Package folder: skills/personal/documents-kit-skills/
+# 1. Package folder: skills/personal/documents-kit-skills/
 PACKAGE_DIR="$WORKFLOW_DIR/skills/personal/documents-kit-skills"
 mkdir -p "$PACKAGE_DIR"
 
@@ -115,10 +104,6 @@ for skill in document-writing drawio humanizer officecli; do
   fi
 done
 
-if [[ -L "$TOPLEVEL" && -e "$TOPLEVEL" ]]; then
-  echo "[OK] documents-kit-skills → $(readlink "$TOPLEVEL")"
-fi
-
 for skill in document-writing drawio humanizer officecli; do
   global_link="$HOME/.config/opencode/skills/$skill"
   if [[ -L "$global_link" && -e "$global_link" ]]; then
@@ -135,7 +120,6 @@ echo
 echo "Final structure:"
 echo "  $KIT_DIR                    ← source of truth (edit here)"
 echo "    ↓"
-echo "  $WORKFLOW_DIR/documents-kit-skills                    ← top-level convenience"
 echo "  $WORKFLOW_DIR/skills/personal/documents-kit-skills/{document-writing,drawio,humanizer,officecli} ← package folder"
 echo "    ↓"
 echo "  $HOME/.config/opencode/skills/{X}                    ← OpenCode global"

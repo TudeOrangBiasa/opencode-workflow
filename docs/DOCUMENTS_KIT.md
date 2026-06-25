@@ -15,7 +15,6 @@ Documents-kit-skills lives under `opencode-workflow/skills/personal/documents-ki
 | `skills/personal/documents-kit-skills/drawio` | `documents-kit-skills/skills/drawio` | Diagram generation |
 | `skills/personal/documents-kit-skills/humanizer` | `documents-kit-skills/skills/humanizer` | Prose anti-AI |
 | `skills/personal/documents-kit-skills/officecli` | `documents-kit-skills/skills/officecli` | docx/pptx/xlsx manipulation (MCP wrapper) |
-| `documents-kit-skills/` (top-level) | `documents-kit-skills/` | Convenience access to full repo |
 | `~/.config/opencode/skills/{X}` | → `opencode-workflow/skills/personal/documents-kit-skills/{X}` | OpenCode global (via package) |
 
 ## Why 4 skills (not 3)?
@@ -86,12 +85,11 @@ documents-kit-skills/  (source of truth)
        │ (symlinks via setup script)
        ▼
 opencode-workflow/
-├── skills/personal/documents-kit-skills/   ← package folder
-│   ├── document-writing/                    ← symlink
-│   ├── drawio/                              ← symlink
-│   ├── humanizer/                           ← symlink
-│   └── officecli/                           ← symlink
-└── documents-kit-skills/                    ← top-level convenience symlink
+└── skills/personal/documents-kit-skills/   ← package folder
+    ├── document-writing/                    ← symlink
+    ├── drawio/                              ← symlink
+    ├── humanizer/                           ← symlink
+    └── officecli/                           ← symlink
        │
        │ (symlinks in ~/.config/opencode/)
        ▼
@@ -112,6 +110,6 @@ For distributed teams, consider:
 
 ## See also
 
-- [documents-kit-skills README](documents-kit-skills/README.md)
-- [documents-kit-skills ARCHITECTURE.md](documents-kit-skills/docs/ARCHITECTURE.md) — how the 3 skills work together
+- [documents-kit-skills README](https://github.com/your-org/documents-kit-skills/blob/main/README.md) — main entry to the kit
+- [ARCHITECTURE.md](https://github.com/your-org/documents-kit-skills/blob/main/docs/ARCHITECTURE.md) — how the 4 skills work together
 - [AGENTS.md](../AGENTS.md) — opencode-workflow skill organization

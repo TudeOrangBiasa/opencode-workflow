@@ -17,13 +17,12 @@ set -euo pipefail
 
 SKILLS_DIR="${1:-$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )/skills}"
 
-# Excluded dirs (not skills)
+# Excluded buckets (not skills, or external)
 EXCLUDES=(
   "documents-kit-skills"  # symlink to external package
   "deprecated"            # old skills
   "in-progress"           # WIP skills
   "personal"              # personal skills (may have OS-specific paths)
-  "misc"                  # legacy skills (not actively maintained)
 )
 
 FAIL=0
@@ -45,10 +44,12 @@ while IFS= read -r skill_md; do
   TOTAL=$((TOTAL + 1))
   skill_dir=$(dirname "$skill_md")
 
-  # Check if skill is in an excluded dir
+  # Check if skill is in an excluded bucket (grandparent of SKILL.md = bucket name)
   skip=false
+  skill_grandparent=$(dirname "$(dirname "$skill_md")")
+  bucket=$(basename "$skill_grandparent")
   for excl in "${EXCLUDES[@]}"; do
-    if [[ "$skill_dir" == *"/$excl" || "$skill_dir" == *"/skills/$excl" ]]; then
+    if [[ "$bucket" == "$excl" ]]; then
       skip=true
       break
     fi
@@ -76,7 +77,7 @@ while IFS= read -r skill_md; do
     FAIL=$((FAIL + 1))
     continue
   fi
-  if ! grep -qE "Use when|use when" "$skill_md"; then
+  if ! grep -qE "Use[ a-z]+when|use[ a-z]+when" "$skill_md"; then
     echo "[WARN] $(basename "$skill_dir") - no 'Use when' trigger in description"
     # Warning, not fail
   fi

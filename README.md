@@ -111,3 +111,13 @@ Enforced by `scripts/check-portable.sh` (pre-commit hook).
 ## License
 
 This is personal dotfiles / workflow setup. Not for public distribution as a whole. Individual skills may be extracted for distribution (see extraction criteria).
+
+## Skill compliance
+
+144/147 skills pass write-a-skill compliance. 3 are in `deprecated/` (excluded by design).
+
+Compliance is enforced by:
+- `scripts/check-skill-structure.sh` (pre-commit, runs automatically)
+- `scripts/audit-skill.sh <skill-path>` (manual single-skill audit)
+
+Last full cleanup: 2026-06-26 — 107 violations (P1 file size + P2 missing trigger) fixed via 3 parallel builder subagents. SKILL.md average went from 377 → 27 lines; 98 new REFERENCE.md created. See [AGENTS.md § Maintenance](AGENTS.md#maintenance) for the pattern.

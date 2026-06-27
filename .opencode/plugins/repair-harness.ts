@@ -1,0 +1,193 @@
+import type { Plugin } from "@opencode-ai/plugin"
+
+// ─── Per-tool session stats ─────────────────────────────────────────
+interface ToolStat {
+  totalCalls: number
+  repairCount: number
+  disabled: boolean
+  /** Flag set by before-hook, read by after-hook */
+  lastCallRepaired: boolean
+}
+
+const toolStats = new Map<string, ToolStat>()
+
+const THRESHOLD_RATE = 0.02   // auto-disable if repair rate below 2%
+const THRESHOLD_MIN_CALLS = 100  // minimum calls before considering disable
+
+function getStat(tool: string): ToolStat {
+  let s = toolStats.get(tool)
+  if (!s) {
+    s = { totalCalls: 0, repairCount: 0, disabled: false, lastCallRepaired: false }
+    toolStats.set(tool, s)
+  }
+  return s
+}
+
+// ─── Exported for testing ───────────────────────────────────────────
+export { repairNullDrop, repairJsonString, repairMarkdownString, repairSingleObjectWrap }
+
+// ─── Module-level regex (hoisted — don't recreate per call) ────────
+const ARRAY_HINT = /^(urls|paths|files|items|list|ids|keys|values|args|options|flags|include|exclude|sources|targets|patterns|globs)$/i
+
+// ─── Repair patterns ────────────────────────────────────────────────
+
+/**
+ * Pattern 1 — Null / empty-object drop.
+ * Strips keys whose value is null, undefined, or a bare {}.
+ * Safe for optional params; required params will fail downstream anyway.
+ */
+function repairNullDrop(args: Record<string, unknown>): boolean {
+  let repaired = false
+  for (const [k, v] of Object.entries(args)) {
+    if (
+      v === null ||
+      v === undefined ||
+      (typeof v === "object" && !Array.isArray(v) && Object.keys(v as object).length === 0)
+    ) {
+      delete args[k]
+      repaired = true
+    }
+  }
+  return repaired
+}
+
+/**
+ * Pattern 2 — JSON-string parse.
+ * If a string looks like JSON ({…} or […]) try parsing it.
+ */
+function repairJsonString(args: Record<string, unknown>): boolean {
+  let repaired = false
+  for (const [k, v] of Object.entries(args)) {
+    if (typeof v !== "string") continue
+    const t = v.trim()
+    if (
+      (t.startsWith("{") && t.endsWith("}")) ||
+      (t.startsWith("[") && t.endsWith("]"))
+    ) {
+      try {
+        args[k] = JSON.parse(t)
+        repaired = true
+      } catch {
+        // not valid JSON — leave as-is
+      }
+    }
+  }
+  return repaired
+}
+
+/**
+ * Pattern 3 — Bare-string markdown stripping.
+ * Removes markdown link / inline-code formatting from string args.
+ */
+function repairMarkdownString(args: Record<string, unknown>): boolean {
+  let repaired = false
+  for (const [k, v] of Object.entries(args)) {
+      if (typeof v !== "string") continue
+      let s = v  // TS narrows after typeof guard in for-of
+      const before = s
+      // [text](url) → text
+      s = s.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+      // `code` → code
+      s = s.replace(/`([^`]*)`/g, "$1")
+      if (s !== before) {
+        args[k] = s
+        repaired = true
+      }
+    }
+    return repaired
+  }
+
+  /**
+ * Pattern 4 — Single-object wrap.
+ * If a singular value (not array) is given for a param whose name
+ * suggests it should be an array (pluralised key, "list", "items", "array"),
+ * wrap it in an array.
+ */
+function repairSingleObjectWrap(args: Record<string, unknown>): boolean {
+  let repaired = false
+  for (const [k, v] of Object.entries(args)) {
+    if (v === null || v === undefined) continue
+    if (!Array.isArray(v) && ARRAY_HINT.test(k)) {
+      args[k] = [v]
+      repaired = true
+    }
+  }
+  return repaired
+}
+
+// ─── Plugin hooks ───────────────────────────────────────────────────
+
+const plugin: Plugin = async () => {
+  // Reset stats per session (module is cached, but this runs once per start)
+  toolStats.clear()
+
+  return {
+    /**
+     * BEFORE tool execution — intercept and repair malformed args.
+     */
+    "tool.execute.before": async (input, output) => {
+      const tool = input.tool
+      const args = output.args as Record<string, unknown>
+      if (!args || typeof args !== "object" || Array.isArray(args)) return
+
+      const stat = getStat(tool)
+      // Reset per-call flag (read by after-hook)
+      stat.lastCallRepaired = false
+
+      // Skip repair if auto-disabled (stable tool)
+      if (stat.disabled) return
+
+      let didRepair = false
+
+      // Run all repairs (each must fire independently — no short-circuit)
+      if (repairNullDrop(args)) didRepair = true
+      if (repairJsonString(args)) didRepair = true
+      if (repairMarkdownString(args)) didRepair = true
+      if (repairSingleObjectWrap(args)) didRepair = true
+
+      stat.totalCalls++
+      if (didRepair) {
+        stat.repairCount++
+        stat.lastCallRepaired = true
+      }
+
+      // Auto-disable if repair rate is below threshold and enough calls
+      if (
+        !stat.disabled &&
+        stat.totalCalls >= THRESHOLD_MIN_CALLS &&
+        stat.repairCount / stat.totalCalls < THRESHOLD_RATE
+      ) {
+        stat.disabled = true
+        console.log(
+          `[repair-harness] auto-disabled for "${tool}" ` +
+            `(repair rate ${((stat.repairCount / stat.totalCalls) * 100).toFixed(1)}% ` +
+            `< ${THRESHOLD_RATE * 100}% over ${stat.totalCalls} calls)`
+        )
+      }
+
+      if (didRepair) {
+        console.log(
+          `[repair-harness] repaired "${tool}" call ` +
+            `(total repairs for this tool: ${stat.repairCount}/${stat.totalCalls})`
+        )
+      }
+    },
+
+    /**
+     * AFTER tool execution — append repair hint so model learns.
+     */
+    "tool.execute.after": async (input, output) => {
+      const tool = input.tool
+      const stat = getStat(tool)
+
+      // Only add hint if THIS call was repaired (flag set in before-hook).
+      if (stat.lastCallRepaired && output.output) {
+        // Append a lightweight hint (CommandCode calls this "save them then explain")
+        const hint = `\n\n[repair-hint: fixed malformed args for "${tool}" — check tool schema for correct format]`
+        output.output += hint
+      }
+    },
+  }
+}
+
+export default plugin

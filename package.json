@@ -1,0 +1,29 @@
+{
+  "name": "opencode-workflow",
+  "version": "1.0.0",
+  "description": "> Personal dotfiles + workflow pipeline for OpenCode. Heavy skills (4+ deps, full automation) live in their own repos and integrate via symlinks.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TudeOrangBiasa/opencode-workflow.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TudeOrangBiasa/opencode-workflow/issues"
+  },
+  "homepage": "https://github.com/TudeOrangBiasa/opencode-workflow#readme",
+  "devDependencies": {
+    "@opencode-ai/plugin": "^1.17.11",
+    "@types/bun": "^1.3.14",
+    "@types/node": "^26.0.1"
+  }
+}

@@ -1,15 +1,17 @@
-# OpenCode Workflow Kit
-
-This repo is developed for OpenCode only. Do not add compatibility surfaces for other agent runtimes unless a task explicitly asks for it.
+1. OpenCode Workflow Kit
+2. This repo is developed for OpenCode only. Do not add compatibility surfaces for other agent runtimes unless a task explicitly asks for it.
 
 ## Role
 
 opencode-workflow is the **personal dotfiles + workflow pipeline**. It contains:
 
-- The AI agent's core workflow management skills
-- Personal setup scripts (install, hooks, audit)
-- Documentation for project decisions
-- Symlinks to heavy skills that live in their own repos (e.g., `documents-kit-skills/`)
+The AI agent's core workflow management skills
+
+Personal setup scripts (install, hooks, audit)
+
+Documentation for project decisions
+
+Symlinks to heavy skills that live in their own repos (e.g., `documents-kit-skills/`)
 
 Heavy skills (4+ external deps, fully automates a task, multiple patterns) live in their own repos and integrate via symlinks. See [docs/architecture.md](docs/architecture.md) and [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md).
 
@@ -35,10 +37,12 @@ All skill writing MUST follow **write-a-skill** principles:
 Before creating or modifying a skill, load: **write-a-skill** + **skill-author**.
 
 Project-specific decisions (where to put a skill, portability rules):
+
 - [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md)
 - [docs/skills/anti-hardcoded-pattern.md](docs/skills/anti-hardcoded-pattern.md)
 
 Enforcement:
+
 - `scripts/check-portable.sh` — hardcoded path lint
 - `scripts/check-skill-structure.sh` — write-a-skill compliance
 - `scripts/audit-skill.sh <path>` — full single-skill audit
@@ -100,17 +104,21 @@ Rules:
 - Start with `verify-evidence` on-demand skill (in `skills/misc/`). Load it for tool-based verification in AFK, high-risk, or evidence-gap scenarios.
 - Promote to dedicated agent only if the skill is used in >50% of sessions and its routing/context cost justifies a separate agent file.
 
-## Maintenance
+1. Maintenance
 
 ### Bulk skill cleanup pattern (parallel subagents)
 
 When fixing many skills at once for write-a-skill violations (P1: file size, P2: trigger):
 
-1. Run `scripts/check-skill-structure.sh` to find affected skills
-2. Split the list into 3 batches (~35 skills each)
-3. Spawn 3 `builder` subagents in parallel, one per batch
-4. Each subagent: read SKILL.md → pick split point → create REFERENCE.md → trim SKILL.md → add `Use when` to description if missing → verify
-5. Re-run audit; expect 0 remaining issues for active skills
+Run `scripts/check-skill-structure.sh` to find affected skills
+
+Split the list into 3 batches (~35 skills each)
+
+Spawn 3 `builder` subagents in parallel, one per batch
+
+Each subagent: read SKILL.md → pick split point → create REFERENCE.md → trim SKILL.md → add `Use when` to description if missing → verify
+
+Re-run audit; expect 0 remaining issues for active skills
 
 A single bash script with `sed`/awk can do the same work mechanically but loses context-aware decisions about where to split. Subagents are ~3x slower wall-clock but ~100% correct. Reserve scripts for deterministic ops (e.g., the audit itself), not creative refactors.
 
@@ -121,4 +129,3 @@ A single bash script with `sed`/awk can do the same work mechanically but loses 
 - SKILL.md average: 377 lines → 27 lines; 98 new REFERENCE.md created
 - Done with 3 parallel builder subagents in 3 batches
 - `check-skill-structure.sh` regex updated to `Use[ a-z]+when|use[ a-z]+when` (matches "Use only when", "Use whenever", etc.)
-

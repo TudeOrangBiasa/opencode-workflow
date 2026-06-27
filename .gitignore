@@ -4,3 +4,9 @@
 # These are local symlinks pointing to /home/todayz/Workspace/personal/dev/ai-kit/documents-kit-skills/
 # Re-create with: ./scripts/setup-documents-kit.sh
 skills/personal/documents-kit-skills/
+
+# Dependencies
+node_modules/
+
+# Session artifacts, scratch notes
+.scratch/

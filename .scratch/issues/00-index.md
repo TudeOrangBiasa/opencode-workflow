@@ -35,6 +35,11 @@ done
 | 16 | [Sentence length guard against over-correction](./done/16-sentence-length-guard.md) | Done (by skill) | — | Resolved by `document-writing` skill §5 rule 7 + Issue 11 humanizer |
 | 17 | [SQL code block must contain executable SQL](./done/17-sql-code-block-content.md) | Done (by skill) | — | Resolved by `document-writing` skill §6 anti-pattern #9 + §9 checklist |
 | 18 | [Self-Learning via Memory + Dreaming](./18-self-learning-memory-dreaming.md) | Done (P0+P1+P2) | — | Shipped in `b7a764d`. P1 = `memory-dreaming` skill 95 lines, 2-phase (YAGNI-cut from 4-phase spec). P2 = 1 orchestrator line (broad `ov find` query, covers all subagent namespaces). P0 leftover = `ov remember` hallucination killed in orchestrator (4 sites). **Visual memory (v1.5)** = OpenViking VLM (Gemini via 9router) for image indexing, deferred. Live test: skill correctly returns 11 entries / 0 dupes / honest "no action needed" |
+| 003 | [Design Slop Framework (master)](./done/003-design-slop-framework.md) | **Done (3/3 sub-issues)** | 003a → 003b → 003c | CommandCode /design reverse engineering. 7-surface patterns, taste bootstrap, ban consolidation. All sub-issues executed. |
+| 003a | [CORE — surface + taste](./done/003a-design-slop-core.md) | Done | — | 10/10 AC pass. surface-patterns.md + taste-bootstrap.md created. 7 files edited. |
+| 003b | [SMELL — ban consolidation](./done/003b-design-slop-smell.md) | Done | — | 2/2 AC pass. 3 bans added to SKILL.md. audit.md tells updated. |
+| 002 | [Taste Plugin — auto-learn coding preferences](./done/002-taste-plugin.md) | **Done** | — | taste.ts + taste.test.ts (36/36 pass). Extracts preferences from user messages via 6 regex patterns, stores in OpenViking with confidence scores, injects into system prompt, KL divergence filter for common conventions. |
+| 003c | ~~EMIL — animate delegation~~ | **Done (superseded)** | — | Achieved via restructure: impeccable+emil → /design. animate.md = emil content natively |
 
 ## Dependency Graph
 
@@ -47,6 +52,12 @@ done
 07 (scout)   — independent
 08 (context) — independent
 09 (triggers)— independent
+
+003a → 003b (sequential, surface framework first)
+003c = DONE (superseded by restructure)
+
+PENDING:
+004 (Wiring — depends on 001 + 002 + 003, all done now → unblocked)
 ```
 
 ## Priority Order
@@ -68,3 +79,8 @@ done
 8. Issue 05 — Mandatory QA framework
 9. Issue 10 — Skip QA for tiny diffs
 10. Issue 06 — Stuck-loop detection mechanism
+
+**Phase 5 (design slop, AFK)**:
+11. 003a — Surface framework + taste bootstrap (CORE)
+12. 003b — Ban consolidation (SMELL)
+13. ~~003c~~ — Animate delegation to emil — DONE (superseded by restructure)

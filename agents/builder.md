@@ -38,13 +38,13 @@ Before writing any code:
 - Check related tests exist before changing
 - **For UI work**:
   - Read `design.md` at project root (or `docs/agents/design.md`). If multi-domain, check `design-map.md` first.
-  - **Load the right impeccable sub-command** based on intent (not just "impeccable" generically):
-    - New page/component → `impeccable craft`
-    - Responsive / new device → `impeccable adapt`
-    - Polish pass → `impeccable polish`
-    - Color/typography → `impeccable colorize` / `typeset`
-    - Live browser iteration → `impeccable live`
-  - If the slice involves motion/animation, also load `emil-design-eng`.
+  - **Load the right design sub-command** based on intent (not just "design" generically):
+    - New page/component → `design craft`
+    - Responsive / new device → `design adapt`
+    - Polish pass → `design polish`
+    - Color/typography → `design colorize` / `design typeset`
+    - Live browser iteration → `design live`
+  - If the slice involves motion/animation, also load `design animate`.
   - If project uses Vue AND work involves converting screenshots → `ui-to-vue`.
   - Use only the tokens, anti-patterns, and component rules from `design.md`. Never invent hex values, font sizes, or spacing outside the design scale.
 - **For prose writing** (docs, README, reports, articles, captions, labels, paragraphs):

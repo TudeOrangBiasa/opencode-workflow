@@ -183,7 +183,7 @@ From `eval-harness` framework:
 - `verify-evidence` — Tool-based verification checklist
 - `context-budget` — Token overhead audit
 - `diagnose` — Diagnosis loop for hard bugs
-- `impeccable` — UI/UX gate
+- `design` — UI/UX gate
 - `reviewer` — Can load this skill for session behavior audits
 
 ## References

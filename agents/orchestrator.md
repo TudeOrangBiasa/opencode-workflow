@@ -42,7 +42,7 @@ When `officecli` tool fails, do NOT immediately fall back to bash. Instead:
    - `Path not found: /body/tbl[X]/tr[Y]/tc[Z]/p` → check actual table structure first
    - `Could not load file or assembly 'DocumentFormat.OpenXml.Framework'` → run the pre-flight check (install missing .NET dep), do NOT proceed with .docx work
 3. **Try the corrected command**. Run it 2-3 times with different approaches.
-4. **Only after officecli genuinely fails**: store the pattern in OpenViking and consider a fallback (e.g. impeccable craft for new docx generation, but editing existing docx is a last-resort bash path).
+4. **Only after officecli genuinely fails**: store the pattern in OpenViking and consider a fallback (e.g. design craft for new docx generation, but editing existing docx is a last-resort bash path).
 5. **NEVER** silently fall back to `unzip → sed → python3+lxml` without trying the proper officecli path first. That pattern produced 238 python3 calls in BAB V/VII sessions with corrupted output.
 
 The pre-flight check (in `setup-matt-pocock-skills/SKILL.md`) runs BEFORE delegation. If officecli isn't healthy, the delegation is rejected — better to fail loudly than cascade into 200+ bash calls.
@@ -141,8 +141,7 @@ Skip visual QA ONLY if user says "skip verification" or "ship without QA" verbat
 | verify-evidence | ship, done, finish, merge, deploy, release, push to prod, /ship, /yeet |
 | openviking | memory, remember, store, retrieve, start, begin, new task, fix, implement, build, create, update, modify, refactor, add, find |
 | humanizer | write, edit, draft, tulis, nulis, buat, readme, docs, documentation, laporan, dokumen, essay, paper, bab, caption, label, prose |
-| impeccable | UI, frontend, layout, design, polish, visual |
-| emil-design-eng | motion, animation, easing, spring, transition, gesture |
+| design | UI, frontend, layout, design, polish, visual, motion, animation, easing, spring, transition, gesture |
 | design-system | design system, design tokens, style guide |
 | ui-to-vue | vue, convert to vue, vue component |
 | review-animations | review motion, review animation, animation review |
@@ -150,9 +149,6 @@ Skip visual QA ONLY if user says "skip verification" or "ship without QA" verbat
 | security-review | auth, secret, password, credential, vulnerability |
 
 **Note**: Single source of truth is `~/.config/opencode/opencode.json` `skill_triggers` field. This table is documentation. If they drift, the config wins (machine reads config, agent reads table).
-| emil-design-eng | motion, animation, easing, spring, transition, gesture |
-| php-review | PHP, Laravel, blade, eloquent |
-| security-review | auth, secret, password, credential, vulnerability |
 
 When user mentions or task involves these keywords, load the skill BEFORE delegating. Never delegate a task that needs domain expertise without forwarding that expertise.
 
@@ -195,7 +191,7 @@ Fix the spacing on the pricing page card grid. Tests should pass.
 
 Project: dbl-data-management
 Skills relevant to this task:
-- impeccable craft — UI design quality for product interfaces
+- design craft — UI design quality for product interfaces
 - accessibility — semantic HTML, ARIA, keyboard nav, focus management
 
 Prior lessons for this project:
@@ -207,7 +203,7 @@ Load each skill and apply each lesson before starting work. At task end, store w
 ```
 
 **Heuristic for picking skills**:
-- UI/design work → impeccable + emil-design-eng (if motion)
+- UI/design work → design
 - Security/auth/secret → security-review
 - PHP/Laravel → php-review
 - Docs (.docx/.pptx/.xlsx) → officecli
@@ -259,26 +255,27 @@ When the user asks for research, do NOT spawn multiple parallel `scout` subagent
 
 These rules are pre-flight (in `setup-matt-pocock-skills/SKILL.md` Tool Pre-flight section) and orchestrator-prompt-level enforcement.
 
-## UI Work Protocol (impeccable sub-commands + design.md)
+## UI Work Protocol (design sub-commands + design.md)
 
-impeccable is the canonical UI craft skill. It has 20+ sub-commands — load the right one based on intent, not just "impeccable" generically.
+`design` is the canonical UI craft skill. It has 22 sub-commands — load the right one based on intent, not just "design" generically.
 
 | Intent | Skill / sub-command | What it does |
 |--------|---------------------|--------------|
-| New product/brand context, no DESIGN.md | `impeccable teach` | Gathers context, writes PRODUCT.md + DESIGN.md at project root |
-| Existing app, want to extract design tokens | `impeccable document` | Auto-generates DESIGN.md from screenshots / CSS / codebase |
-| Build new UI (page, component) | `impeccable craft` | Full design process: shape → code → inspect → improve |
-| Adapt UI to new context (responsive!) | `impeccable adapt` | Rethink for new screen size, device, platform |
-| Review existing UI for taste | `impeccable audit` | 5-dimension code quality check, scored 0-4 |
-| Critique existing UI design | `impeccable critique` | Design critique |
-| Polish / final touches | `impeccable polish` | Last-mile quality pass |
-| Make UI more bold or restrained | `impeccable bolder` / `quieter` | Adjust intensity |
-| Color treatment | `impeccable colorize` | Color work |
-| Typography work | `impeccable typeset` | Typography |
-| Performance / quality optimization | `impeccable optimize` | |
-| Robustness | `impeccable harden` | |
-| Motion / animation | `impeccable polish` + `emil-design-eng` | Both for motion taste |
-| Live browser iteration (HMR) | `impeccable live` | Hot-swap variants in browser |
+| New product/brand context, no DESIGN.md | `design teach` | Gathers context, writes PRODUCT.md + DESIGN.md at project root |
+| Existing app, want to extract design tokens | `design document` | Auto-generates DESIGN.md from screenshots / CSS / codebase |
+| Build new UI (page, component) | `design craft` | Full design process: shape → code → inspect → improve |
+| Adapt UI to new context (responsive!) | `design adapt` | Rethink for new screen size, device, platform |
+| Review existing UI for taste | `design audit` | 5-dimension code quality check, scored 0-4 |
+| Critique existing UI design | `design critique` | Design critique |
+| Polish / final touches | `design polish` | Last-mile quality pass |
+| Make UI more bold or restrained | `design bolder` / `quieter` | Adjust intensity |
+| Color treatment | `design colorize` | Color work |
+| Typography work | `design typeset` | Typography |
+| Performance / quality optimization | `design optimize` | |
+| Robustness | `design harden` | |
+| Motion / animation | `design animate` | Emil's Animation Decision Framework, spring, clip-path, gesture |
+| Live browser iteration (HMR) | `design live` | Hot-swap variants in browser |
+| Surface identification | `design surface` | 7 surface patterns before layout |
 | Convert screenshots to Vue | `ui-to-vue` | Only if project uses Vue |
 | Review motion code | `review-animations` | Per-element motion review |
 
@@ -286,13 +283,13 @@ impeccable is the canonical UI craft skill. It has 20+ sub-commands — load the
 
 For any task involving UI:
 
-1. **Identify intent** from the table above. Pick the specific sub-command, not just "impeccable".
+1. **Identify intent** from the table above. Pick the specific sub-command, not just "design".
 2. **Check for design reference**: `design.md` (or `docs/agents/design.md`, or follow `docs/agents/design-map.md` for multi-domain).
 3. **If `design.md` is missing** AND task is non-trivial:
-   - For greenfield / new project → `impeccable teach` first
-   - For existing app with no design doc → `impeccable document` first
-4. **builder** (for new UI): load the chosen impeccable sub-command + read `design.md` + apply tokens
-5. **browser-qa** (for review): load `impeccable audit` for taste checks, `impeccable critique` for design critique
+   - For greenfield / new project → `design teach` first
+   - For existing app with no design doc → `design document` first
+4. **builder** (for new UI): load the chosen `design` sub-command + read `design.md` + apply tokens
+5. **browser-qa** (for review): load `design audit` for taste checks, `design critique` for design critique
 6. **Never delegate UI work without a design reference.** If user pushes back, scaffold a minimal `design.md` first.
 
 ### When to use multiple sub-commands
@@ -302,13 +299,13 @@ For any task involving UI:
 - `craft` + `audit` — build, then quality check
 - `craft` + `adapt` — build desktop, then adapt to mobile
 - `craft` + `live` + `polish` — build, iterate in browser, final polish
+- `surface` + `craft` — identify surface pattern, then build
 
-### Other design skills (use alongside impeccable)
+### Other design skills (use alongside design)
 
-- `emil-design-eng` — motion/animation taste (load with `impeccable polish` for any motion work)
-- `design-system` — generate/audit design systems (alternative to impeccable teach/document for some workflows)
+- `design-system` — generate/audit design systems (alternative to design teach/document for some workflows)
 - `ui-to-vue` — **only if project uses Vue**, convert screenshots to Vue components
-- `review-animations` — review motion code against craft bar (use after any animation work)
+- `review-animations` — review motion code against craft bar (use after design animate work)
 
 ## Primitive Agents
 
@@ -394,10 +391,10 @@ If grep/search returns 0 results for 3 consecutive attempts on the same pattern,
 
 Before any frontend change:
 
-1. Load `impeccable` skill (as rules for UI work)
+1. Load `design` skill (as rules for UI work)
 2. If existing project: extract `design.md` or system design
 3. If fresh project: ask user for design reference OR check existing refs
-4. If mobile: use `impeccable adaptive` for relayout (adaptive, not responsive)
+4. If mobile: use `design adapt` for relayout (adaptive, not responsive)
 5. Then use `browser-qa` with design context from steps 1-4
 
 Do NOT skip step 1-4 and go straight to browser-qa. Code-only verification (`npm run build`, `npm test`) does NOT satisfy UI verification.
@@ -423,7 +420,7 @@ After core fix, ask user before adding cleanup, optimization, or tangential chan
 - After builder completes, load `verify-evidence` skill for tool-based verification against acceptance criteria when changes are non-trivial (behavior, security, data), running in AFK mode, tests are failing or flaky, explicit acceptance criteria were given, or reviewer needs independent evidence. For trivial docs/config changes, inspect diff/output directly and skip verification. Verification counts against context/token budget; if planner+builder+reviewer already consume capacity, mark `unverified` explicitly or ask user for expanded budget.
 - Read-only discovery: use `explore` for local repo truth and `scout` for external docs/dependency truth; parallel only for independent questions.
 - Browser/UI/data QA: use `browser-qa` for responsive layout, spacing, visual breakage, console/network evidence, full-page scroll sweep, and data consistency. Treat as expensive — do not call for trivial checks.
-- Deep design judgement or redesign: invoke `impeccable` after browser QA evidence when polish, adapt, layout, or critique work is needed.
+- Deep design judgement or redesign: invoke `design` after browser QA evidence when polish, adapt, layout, or critique work is needed.
 
 ### Review
 

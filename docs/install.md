@@ -141,7 +141,7 @@ Active repo skills:
 - `handoff`
 - `write-a-skill`
 
-Global-only skills such as `humanizer` and `impeccable` stay in `~/.config/opencode/skills`. Personal repo skills such as `openviking`, `eval`, `ddev`, and `idea-fragments` live under `skills/personal/` and are linked by the default active-skill script. OpenViking is the agent's persistent memory — standard practice, but optional. If `openviking-server` is not running, the workflow continues without it (graceful degradation).
+Global-only skills such as `humanizer` and `design` stay in `~/.config/opencode/skills`. Personal repo skills such as `openviking`, `eval`, `ddev`, and `idea-fragments` live under `skills/personal/` and are linked by the default active-skill script. OpenViking is the agent's persistent memory — standard practice, but optional. If `openviking-server` is not running, the workflow continues without it (graceful degradation).
 
 ## OpenCode Restart
 
@@ -153,7 +153,7 @@ Use [`docs/templates/opencode.primitive-agents.jsonc`](./templates/opencode.prim
 
 - Model assignments per agent (orchestrator, builder, reviewer, browser-qa, scout, etc.)
 - Permission rules (orchestrator can spawn subagents, browser-qa can't edit/bash, etc.)
-- Skill triggers (auto-load keywords for officecli, ponytail, impeccable, emil-design-eng, etc.)
+- Skill triggers (auto-load keywords for officecli, ponytail, design, etc.)
 - Disabled built-ins (`general`, `plan`, `build`)
 - MCP examples (exa, chrome-devtools, openviking, officecli)
 

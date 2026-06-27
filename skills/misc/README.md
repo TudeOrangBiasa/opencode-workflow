@@ -37,7 +37,6 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[django-verification](./django-verification/SKILL.md)** — Django pre-deployment verification loop. Use only when verifying Django projects before PR/deploy.
 - **[docker-patterns](./docker-patterns/SKILL.md)** — Docker Compose, multi-stage builds, networking, volumes, security.
 - **[dotnet-patterns](./dotnet-patterns/SKILL.md)** — C#/.NET patterns, DI, EF Core, Minimal APIs. Use only when building .NET applications.
-- **[emil-design-eng](./emil-design-eng/SKILL.md)** — Emil Kowalski's design engineering philosophy: UI polish, animation decisions, easing curves, spring physics, gesture interactions, and the invisible details that make software feel great.
 - **[error-handling](./error-handling/SKILL.md)** — Error-handling review checklist for typed errors, retries, safe messages, logging, and swallowed exceptions.
 - **[evm-token-decimals](./evm-token-decimals/SKILL.md)** — ERC-20 decimal handling — runtime lookup, chain-aware caching, safe normalization, bridged-token drift.
 - **[fastapi-patterns](./fastapi-patterns/SKILL.md)** — FastAPI project structure, Pydantic v2, DI, auth, testing. Use only when building FastAPI backends.
@@ -49,7 +48,7 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[golang-patterns](./golang-patterns/SKILL.md)** — Idiomatic Go patterns, error handling, concurrency. Use only when writing Go code.
 - **[golang-testing](./golang-testing/SKILL.md)** — Go testing — table-driven tests, benchmarks, fuzzing. Use only when writing Go tests.
 - **[hexagonal-architecture](./hexagonal-architecture/SKILL.md)** — Ports & Adapters architecture. Use only when designing or refactoring toward hexagonal architecture.
-- **[impeccable](./impeccable/SKILL.md)** — Design, critique, polish, and adapt frontend interfaces. Covers UX, visual hierarchy, accessibility, responsive behavior, typography, and design systems.
+- **[design](../engineering/design/SKILL.md)** — Design, critique, polish, and adapt frontend interfaces. Covers UX, visual hierarchy, accessibility, responsive behavior, typography, and design systems.
 - **[ios-icon-gen](./ios-icon-gen/SKILL.md)** — Generate iOS app icons at all required sizes. Use only when generating iOS app icons.
 - **[java-coding-standards](./java-coding-standards/SKILL.md)** — Java 17+ conventions for Spring Boot and Quarkus. Use only when writing Java code.
 - **[jpa-patterns](./jpa-patterns/SKILL.md)** — JPA/Hibernate entity mapping, fetch strategies, caching. Use only when working with JPA.
@@ -86,7 +85,7 @@ Occasional specialist capabilities. Use only when the specific domain appears.
 - **[quarkus-tdd](./quarkus-tdd/SKILL.md)** — Quarkus TDD with REST Assured, Camel testing, JaCoCo. Use only when doing TDD for Quarkus.
 - **[quarkus-verification](./quarkus-verification/SKILL.md)** — Quarkus pre-deployment verification loop. Use only when verifying Quarkus projects before PR/deploy.
 - **[react-patterns](./react-patterns/SKILL.md)** — React 18/19 patterns: hooks, RSC boundaries, Suspense, forms, state management.
-- **[review-animations](./review-animations/SKILL.md)** — Reviews animation and motion code against a high craft bar. Default to flagging; approval is earned. Companion to emil-design-eng.
+- **[review-animations](./review-animations/SKILL.md)** — Reviews animation and motion code against a high craft bar. Default to flagging; approval is earned. Companion to design/animate.md.
 - **[react-performance](./react-performance/SKILL.md)** — React/Next.js performance: waterfalls, bundle size, re-renders, Web Vitals.
 - **[react-testing](./react-testing/SKILL.md)** — React testing with RTL, Vitest, MSW, and axe — behavior-focused component/hook/page tests.
 - **[redis-patterns](./redis-patterns/SKILL.md)** — Redis data structures, caching, distributed locks, rate limiting, pub/sub, streams.

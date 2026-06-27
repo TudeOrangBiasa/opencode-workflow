@@ -105,7 +105,7 @@ Do not become a mega-specialist. If the diff needs deep domain knowledge, say: "
 
 When orchestrator requests session behavior audit (or when review reveals agent behavior issues), load `eval` skill (personal). This evaluates:
 - Tool efficiency (circuit breaker, rtk waste, repeated failures)
-- Skill loading (impeccable, prerequisites, missing skills)
+- Skill loading (design, prerequisites, missing skills)
 - Scope discipline (creep, unrelated changes, debug artifacts)
 - User frustration signals (corrections, silence, explicit complaints)
 
@@ -126,4 +126,4 @@ When orchestrator requests session behavior audit (or when review reveals agent 
 - If pattern repeats 3+ times, flag as systemic
 - If no findings exist, say so and name residual testing gaps
 - **Skill prerequisite check:** If diff uses a repo-aware skill, verify prerequisites were loaded. If not, flag as finding.
-- **UI gate check:** If diff touches frontend (CSS, Blade, JS, component), check if `impeccable` was loaded before change. If not, BLOCK — regardless of browser-qa evidence.
+- **UI gate check:** If diff touches frontend (CSS, Blade, JS, component), check if `design` was loaded before change. If not, BLOCK — regardless of browser-qa evidence.

@@ -10,16 +10,24 @@ export interface Preference {
   observationCount: number
 }
 
+interface SessionState {
+  prefs: Map<string, Preference>
+  project: string
+  /** Track already-persisted memory keys (key = normalized pref text) to avoid redundant `ov add-memory` */
+  persistedKeys: Set<string>
+  lastFlush: number
+}
+
 // ─── Category keywords ───────────────────────────────────────────────
 
 const CATEGORY_KEYWORDS: [string, string][] = [
   ["typescript", "TypeScript"],
-  ["type", "TypeScript"],
+  ["typescript strict", "TypeScript"], // more specific match
   ["export", "Exports"],
   ["import", "Imports"],
-  ["error", "Error Handling"],
+  ["error handling", "Error Handling"],
   ["exception", "Error Handling"],
-  ["test", "Testing"],
+  ["testing", "Testing"],
   ["jest", "Testing"],
   ["vitest", "Testing"],
   ["pnpm", "Package Manager"],
@@ -27,7 +35,7 @@ const CATEGORY_KEYWORDS: [string, string][] = [
   ["yarn", "Package Manager"],
   ["folder", "File Structure"],
   ["directory", "File Structure"],
-  ["architect", "Architecture"],
+  ["architecture", "Architecture"],
   ["component", "Architecture"],
   ["pattern", "Architecture"],
 ]
@@ -48,6 +56,21 @@ const PATTERNS: PatternDef[] = [
   { regex: /(?:^|\s)(?:don'?t|do not|avoid|never)\s+(?:use\s+)?(?<pref>[a-zA-Z][\w\s/-]{2,60}?)(?:\.|,|$| and | or )/im, confidence: 0.60 },
   { regex: /(?:^|\s)(?:use|using)\s+(?<pref>[a-zA-Z][\w\s/-]{2,60}?)(?:\.|,|$| and | or )/im, confidence: 0.70 },
 ]
+
+/** Words that indicate a generic statement, not a meaningful preference. */
+const GENERIC_PREFIXES = new Set([
+  "the", "a", "an", "this", "that", "these", "those", "it", "its", "my", "your", "our",
+  "some", "any", "each", "every", "all", "both", "few", "many", "much", "several",
+])
+
+/** Check if a raw preference is likely a false positive from the generic "use" pattern. */
+function isFalsePositive(text: string): boolean {
+  const firstWord = text.toLowerCase().split(/\s+/)[0]
+  if (GENERIC_PREFIXES.has(firstWord)) return true
+  // "use the sidebar", "use this approach" — generic descriptions
+  if (firstWord === "the" || firstWord === "this" || firstWord === "that") return true
+  return false
+}
 
 // ─── Common conventions (KL divergence filter) ───────────────────────
 
@@ -82,7 +105,8 @@ export function extractPreferences(text: string): Preference[] {
     let raw = match.groups.pref.trim()
     // Strip trailing clauses: "use X in Y" → "use X"
     raw = raw.replace(/\s+(and|or|in|for|with|by|at|on|to)\s+.*$/i, "").trim()
-    if (raw.length < 3 || raw.length > 60) continue
+    if (raw.length < 5 || raw.length > 60) continue // min 5 to filter short fragments
+    if (isFalsePositive(raw)) continue
 
     const key = raw.toLowerCase().replace(/\s+/g, " ")
     if (seen.has(key)) continue
@@ -197,35 +221,73 @@ export async function fetchTastesViaOpenViking(project: string): Promise<Prefere
     .filter((p): p is Preference => p !== null)
 }
 
-/** Persist a single preference to OpenViking. */
-export function persistPreference(project: string, pref: Preference): void {
+/** Persist a single preference to OpenViking. Returns true if persisted. */
+export function persistPreference(project: string, pref: Preference): boolean {
   const tag = `[taste:${project}]`
   const content = `${tag} ${pref.category} — ${pref.text} (confidence: ${pref.confidence.toFixed(2)})`
-  Bun.spawnSync(["ov", "add-memory", content])
+  const { exitCode } = Bun.spawnSync(["ov", "add-memory", content])
+  return exitCode === 0
 }
 
 // ─── Per-session store ───────────────────────────────────────────────
 
-const sessionStore = new Map<string, Map<string, Preference>>()
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000 // 24h
+const MAX_SESSIONS = 50
 const PERSIST_INTERVAL_MS = 60_000
 
-function getSessionPrefs(sessionID: string): Map<string, Preference> {
-  let s = sessionStore.get(sessionID)
-  if (!s) {
-    s = new Map()
-    sessionStore.set(sessionID, s)
+const sessionStore = new Map<string, SessionState>()
+
+function getOrCreateSession(sessionID: string, project: string): SessionState {
+  let state = sessionStore.get(sessionID)
+  if (!state) {
+    // Evict oldest session if at capacity
+    if (sessionStore.size >= MAX_SESSIONS) {
+      const oldest = sessionStore.keys().next().value
+      if (oldest) sessionStore.delete(oldest)
+    }
+    state = { prefs: new Map(), project, persistedKeys: new Set(), lastFlush: 0 }
+    sessionStore.set(sessionID, state)
   }
-  return s
+  return state
 }
 
-function flushPending(project: string, sessionID: string): void {
-  const prefs = sessionStore.get(sessionID)
-  if (!prefs || prefs.size === 0) return
+/**
+ * Flush unsaved preferences to OpenViking.
+ * Only spawns `ov add-memory` for preferences whose normalized key hasn't been persisted yet.
+ */
+function flushPending(sessionID: string): void {
+  const state = sessionStore.get(sessionID)
+  if (!state || state.prefs.size === 0) return
 
-  const sorted = [...prefs.values()].sort((a, b) => b.confidence - a.confidence)
+  const sorted = [...state.prefs.values()].sort((a, b) => b.confidence - a.confidence)
   const filtered = applyKLFilter(sorted)
+
+  let persistedCount = 0
   for (const pref of filtered) {
-    persistPreference(project, pref)
+    const key = pref.text.toLowerCase().replace(/\s+/g, " ")
+    // Skip if already persisted (dedup)
+    if (state.persistedKeys.has(key)) continue
+    const ok = persistPreference(state.project, pref)
+    if (ok) {
+      state.persistedKeys.add(key)
+      persistedCount++
+    }
+  }
+
+  state.lastFlush = Date.now()
+
+  if (persistedCount > 0) {
+    console.log(`[taste] persisted ${persistedCount} new preference(s) for ${sessionID}`)
+  }
+}
+
+/** Remove stale sessions (older than TTL). */
+function evictStaleSessions(): void {
+  const cutoff = Date.now() - SESSION_TTL_MS
+  for (const [sid, state] of sessionStore.entries()) {
+    if (state.lastFlush > 0 && state.lastFlush < cutoff) {
+      sessionStore.delete(sid)
+    }
   }
 }
 
@@ -235,16 +297,13 @@ let flushTimer: ReturnType<typeof setInterval> | null = null
 
 // ─── Plugin ──────────────────────────────────────────────────────────
 
-const plugin: Plugin = async (input: PluginInput) => {
-  const project = input.directory.split("/").pop() || "unknown"
-
-  // Start periodic flush to OpenViking
+const plugin: Plugin = async (_input: PluginInput) => {
+  // Start periodic flush + eviction timer
   if (!flushTimer) {
     flushTimer = setInterval(() => {
-      for (const [sid, _prefs] of sessionStore.entries()) {
-        if (_prefs.size === 0) continue
-        flushPending(project, sid)
-        console.log(`[taste] flushed ${_prefs.size} preferences for ${sid}`)
+      evictStaleSessions()
+      for (const [sid] of sessionStore.entries()) {
+        flushPending(sid)
       }
     }, PERSIST_INTERVAL_MS)
   }
@@ -264,11 +323,12 @@ const plugin: Plugin = async (input: PluginInput) => {
       if (text.length < 10) return
 
       const sessionID = (msgInput.sessionID as string) || "default"
-      const prefs = getSessionPrefs(sessionID)
+      const project = ((msgInput.directory as string) || "").split("/").pop() || "unknown"
+      const state = getOrCreateSession(sessionID, project)
 
       const extracted = extractPreferences(text)
       for (const pref of extracted) {
-        mergePreference(prefs, pref)
+        mergePreference(state.prefs, pref)
       }
     },
 
@@ -280,13 +340,14 @@ const plugin: Plugin = async (input: PluginInput) => {
       output: { system: string[] },
     ) => {
       const sessionID = (_input.sessionID as string) || "default"
-      const prefs = getSessionPrefs(sessionID)
-      if (prefs.size === 0) return
+      const state = sessionStore.get(sessionID)
+      if (!state || state.prefs.size === 0) return
 
-      const formatted = formatPreferences([...prefs.values()])
+      const formatted = formatPreferences([...state.prefs.values()])
       if (!formatted) return
 
-      // Inject into system[0] (same pattern as lesson-injector)
+      // Guard: system[0] might be undefined (e.g., first call with empty array)
+      if (!output.system[0]) output.system[0] = ""
       output.system[0] += "\n\n" + formatted
     },
   }

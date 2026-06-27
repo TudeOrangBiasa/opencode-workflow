@@ -20,6 +20,8 @@ This skill is a router. When `design` loads, identify the user's intent and load
 | Adapt existing UI to a new context/screen | [reference/adapt.md](reference/adapt.md) | `design adapt` |
 | Live browser iteration / HMR | [reference/live.md](reference/live.md) | `design live` |
 | Add motion / animation | [reference/animate.md](reference/animate.md) | `design animate` |
+| Identify surface pattern before layout | [reference/surface-patterns.md](reference/surface-patterns.md) | `design surface` |
+| Generate tokens from minimal input (no DESIGN.md) | [reference/taste-bootstrap.md](reference/taste-bootstrap.md) | `design taste-bootstrap` |
 | Color treatment | [reference/colorize.md](reference/colorize.md) | `design colorize` |
 | Make bolder | [reference/bolder.md](reference/bolder.md) | `design bolder` |
 | Make quieter | [reference/quieter.md](reference/quieter.md) | `design quieter` |

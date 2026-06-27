@@ -58,17 +58,16 @@
         "verify-evidence": ["ship", "ship it", "done", "is it done", "finish", "finished", "merge", "pr ready", "deploy", "deploy it", "push to prod", "release", "cut release", "tag release", "/ship", "/ship-it", "/yeet"],
         "openviking": ["memory", "remember", "openviking", "store", "retrieve", "start", "begin", "new task", "task", "fix", "implement", "build", "create", "update", "modify", "refactor", "add", "find", "search memory"],
         "humanizer": ["write", "edit", "draft", "tulis", "nulis", "buat", "readme", "docs", "documentation", "dokumentasi", "laporan", "dokumen", "essay", "paper", "artikel", "bab", "konten", "paragraph", "prose", "narasi", "rangkum", "summarize", "explain", "jelaskan", "caption", "label", "description"],
-        "impeccable": [
+        "design": [
           "ui", "frontend", "layout", "design", "polish", "visual", "ux",
-          "impeccable teach", "impeccable document", "impeccable craft",
-          "impeccable audit", "impeccable critique", "impeccable adapt",
-          "impeccable live", "impeccable polish", "impeccable bolder",
-          "impeccable quieter", "impeccable colorize", "impeccable optimize",
-          "impeccable harden", "impeccable typeset", "impeccable delight",
-          "impeccable distill", "impeccable clarify", "impeccable shape",
-          "impeccable extract", "impeccable onboard", "impeccable overdrive"
+          "design craft", "design teach", "design document", "design audit",
+          "design critique", "design adapt", "design live", "design polish",
+          "design bolder", "design quieter", "design colorize", "design typeset",
+          "design optimize", "design harden", "design animate", "design delight",
+          "design distill", "design clarify", "design shape", "design extract",
+          "design surface", "design taste-bootstrap",
+          "motion", "animation", "easing", "spring", "transition", "gesture"
         ],
-        "emil-design-eng": ["motion", "animation", "easing", "spring", "transition", "gesture"],
         "design-system": ["design system", "design tokens", "style guide"],
         "ui-to-vue": ["vue", "convert to vue", "vue component"],
         "review-animations": ["review motion", "review animation", "animation review"],

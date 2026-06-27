@@ -18,7 +18,7 @@ Walk user through four decisions one at a time:
 
 **Section C — Domain docs.** Single-context (one CONTEXT.md) or multi-context (CONTEXT-MAP.md + per-context files).
 
-**Section D — Design reference.** Single-domain or multi-domain. Prefer `impeccable teach` or `impeccable document`. Fallback: seed template.
+**Section D — Design reference.** Single-domain or multi-domain. Prefer `design teach` or `design document`. Fallback: seed template.
 
 ### 3. Confirm and edit
 

@@ -35,18 +35,18 @@ Without this, the same browser quirks and false-positives repeat across sessions
 
 0. **Before any UI critique**, read the project's design reference and load UI craft skills:
    - Read `design.md` at the project root (or `docs/agents/design.md`). If multi-domain, read `docs/agents/design-map.md` first to find the right `design.md`.
-   - **Load the right impeccable sub-command** based on intent (not just "impeccable" generically):
-     - **Taste/quality review (5 dimensions: a11y, performance, design, etc.)** → `impeccable audit`
-     - **Design critique (judgment call on aesthetics)** → `impeccable critique`
-     - **Live browser iteration / HMR** → `impeccable live`
-     - **Polish pass before sign-off** → `impeccable polish`
-   - If the work involves motion/animation, also load `emil-design-eng` for animation craft.
+   - **Load the right design sub-command** based on intent (not just "design" generically):
+     - **Taste/quality review (5 dimensions: a11y, performance, design, etc.)** → `design audit`
+     - **Design critique (judgment call on aesthetics)** → `design critique`
+     - **Live browser iteration / HMR** → `design live`
+     - **Polish pass before sign-off** → `design polish`
+   - If the work involves motion/animation, also load `design animate` for animation craft.
    - If the project uses Vue AND work involves converting screenshots → `ui-to-vue`.
    - Judge taste/aesthetic against the project's design language, not generic "good UI."
 1. Use Chrome DevTools tools to capture evidence.
 2. Check requested flow/page at relevant viewport sizes.
 3. Sweep the full page by scrolling from top to bottom; do not stop at the first viewport.
-4. Critique visible layout, spacing, responsiveness, and data consistency problems. **For visual issues, reference the design.md tokens/anti-patterns** to explain why the work is wrong (e.g. "uses 2px border, anti-pattern per design.md"). If the issue is broader (taste, motion, polish), also flag which `impeccable` sub-command should fix it.
+4. Critique visible layout, spacing, responsiveness, and data consistency problems. **For visual issues, reference the design.md tokens/anti-patterns** to explain why the work is wrong (e.g. "uses 2px border, anti-pattern per design.md"). If the issue is broader (taste, motion, polish), also flag which `design` sub-command should fix it.
 5. Return compact findings with evidence, coverage, and confidence.
 
 ## Evidence to Capture

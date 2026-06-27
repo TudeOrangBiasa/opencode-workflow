@@ -22,7 +22,7 @@ For full process details and templates, see [REFERENCE.md](REFERENCE.md).
 | [Issue Tracker](REFERENCE.md#section-a--issue-tracker)           | GitHub vs GitLab vs Local vs Other         |
 | [Triage Labels](REFERENCE.md#section-b--triage-label-vocabulary) | Five canonical role labels                 |
 | [Domain Docs](REFERENCE.md#section-c--domain-docs)               | Single vs multi-context                    |
-| [Design Reference](REFERENCE.md#section-d--design-reference)     | Single vs multi-domain, impeccable         |
+| [Design Reference](REFERENCE.md#section-d--design-reference)     | Single vs multi-domain, design              |
 | [Write](REFERENCE.md#4-write)                                    | AGENTS.md block + docs files               |
 | [Pre-flight](REFERENCE.md#tool-pre-flight-checks)                | OfficeCLI, chrome-devtools, exa rate limit |
 

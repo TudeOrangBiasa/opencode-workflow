@@ -15,3 +15,4 @@ Skills I use daily for code work.
 - **[review](./review/SKILL.md)** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
 - **[ponytail](./ponytail/SKILL.md)** — Forces the laziest solution that actually works. YAGNI → stdlib → native → one line → minimum. Levels: lite/full/ultra. Companion skills: review, audit, debt, gain, help. From [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail).
 - **[memory-dreaming](./memory-dreaming/SKILL.md)** — Consolidate lessons across sessions — find duplicates, merge, archive stale entries. 2-phase pipeline. Trigger: consolidate, dream, clean up lessons, memory hygiene.
+- **[design](./design/SKILL.md)** — Full-stack design skill for frontend interfaces. 22 sub-commands (craft, shape, audit, critique, adapt, animate, etc.). Merges former impeccable + emil-design-eng skills. Motion authority via emil's Animation Decision Framework.

@@ -54,7 +54,7 @@ ACTIVE_SKILLS=(
   skills/misc/django-verification
   skills/misc/docker-patterns
   skills/misc/dotnet-patterns
-  skills/misc/emil-design-eng
+  skills/engineering/design
   skills/misc/error-handling
   skills/misc/evm-token-decimals
   skills/misc/fastapi-patterns

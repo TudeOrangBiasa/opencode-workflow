@@ -1,7 +1,7 @@
 import type { Plugin, PluginInput } from "@opencode-ai/plugin"
 import { ovFindJson } from "./ov-helper"
 
-// ─── SessionCache — per-session with TTL ────────────────────────────
+// SessionCache with TTL
 
 interface CacheEntry {
   lessons: string[]
@@ -30,13 +30,13 @@ export const SessionCache = {
   },
 }
 
-// ─── Query building ─────────────────────────────────────────────────
+// Query building
 
 export function buildQuery(project: string): string {
   return "lessons for " + project
 }
 
-// ─── Format lessons ─────────────────────────────────────────────────
+// Format lessons
 
 const MAX_LESSONS = 5
 
@@ -46,7 +46,7 @@ export function formatLessons(lessons: string[]): string {
   return `## Past Lessons\n${items}`
 }
 
-// ─── Inject lessons into system prompt (single message) ────────────
+// Inject into system prompt
 
 export function injectLessons(system: string[], formatted: string): void {
   if (!formatted) return
@@ -54,7 +54,7 @@ export function injectLessons(system: string[], formatted: string): void {
   system[0] += "\n\n" + formatted
 }
 
-// ─── fetchAndInject — full pipeline with cache + error handling ─────
+// fetchAndInject
 
 const CACHE_TTL_MS = 30 * 60 * 1000 // 30 minutes
 
@@ -92,7 +92,7 @@ export async function fetchAndInjectLessons(
   return true
 }
 
-// ─── Production lesson finder via OpenViking CLI ────────────────────
+// Lesson finder via OpenViking
 
 export async function findLessonsViaOpenViking(query: string): Promise<string[]> {
   const parsed = await ovFindJson(["ov", "find", query, "-n", "5", "-o", "json"])
@@ -108,7 +108,7 @@ export async function findLessonsViaOpenViking(query: string): Promise<string[]>
   return lessons
 }
 
-// ─── Plugin hook ────────────────────────────────────────────────────
+// Plugin hook
 
 const plugin: Plugin = async (input: PluginInput) => {
   const project = input.directory.split("/").pop() || "unknown"

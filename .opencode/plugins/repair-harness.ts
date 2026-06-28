@@ -1,17 +1,12 @@
 import type { Plugin } from "@opencode-ai/plugin"
 
-/** Repair harness — intercepts malformed tool args and fixes them before execution.
- *
- * 4 deterministic patterns: null drop, JSON parse, markdown strip, array wrap.
- * Auto-disables per-tool when repair rate is stable. Use REPAIR_HARNESS=off to disable globally.
- */
+/** Intercepts malformed tool args. 4 patterns: null drop, JSON parse, markdown strip, array wrap. */
 
-// ─── Per-tool session stats ─────────────────────────────────────────
+// Per-tool session stats
 interface ToolStat {
   totalCalls: number
   repairCount: number
   disabled: boolean
-  /** Flag set by before-hook, read by after-hook */
   lastCallRepaired: boolean
 }
 
@@ -39,33 +34,27 @@ function getStat(sessionID: string, tool: string): ToolStat {
   return s
 }
 
-// ─── Kill switch — env var disables all repair logic ─────────────────
+// Kill switch
 
-/** Kill switch: REPAIR_HARNESS=off|disable|0|false disables all repair.
- * Default: enabled. Useful for debugging or when a repair is causing issues.
- * @returns true if the harness should run, false if it should no-op
- */
+/** Kill switch: REPAIR_HARNESS=off|disable|0|false disables all repair. */
 function isHarnessEnabled(): boolean {
   return !["off", "disable", "0", "false"].includes(
     (process.env.REPAIR_HARNESS || "").toLowerCase()
   )
 }
 
-// ─── Exported for testing ───────────────────────────────────────────
+// Exported for testing
 export { repairNullDrop, repairJsonString, repairMarkdownString, repairSingleObjectWrap, isHarnessEnabled, getStat }
 
-// ─── Module-level regex (hoisted — don't recreate per call) ────────
+// Module-level regex (hoisted)
 const ARRAY_HINT = /^(urls|paths|files|items|ids|include|exclude|patterns|globs|sources|targets)$/i
 
-// Bootstrap trap: use char code for backtick.
-// Pattern 3 strips BT pairs from markdown. If this file ever gets
-// rewritten via write tool, literal backticks in regex source are
-// destroyed. String.fromCharCode(96) survives the round-trip.
+// Bootstrap trap: String.fromCharCode(96) avoids backtick destruction
+// when pattern 3 rewrites this file via write tool.
 const BT = String.fromCharCode(96)
 
-// Pattern 3 regex constants (hoisted)
 const MD_LINK = /\[([^\]]*)\]\([^)]*\)/g
-// Negative lookbehind/lookahead skips triple-backtick fences
+// Skip triple-backtick fences
 const MD_CODE = new RegExp(
   "(?<!" + BT + ")" + BT + "([^" + BT + "]{1,200}?)" + BT + "(?!" + BT + ")",
   "g"
@@ -77,22 +66,17 @@ const DISK_WRITE_TOOLS = new Set([
   "writeFile", "write_file", "fs_write", "put_file",
 ])
 
-// Pattern 2 whitelist — only parse JSON under keys likely to hold JSON payloads
+// Pattern 2 whitelist
 const JSON_LIKELY_KEYS = new Set([
   "config", "data", "payload", "body", "params", "input",
   "metadata", "spec", "schema", "json", "args_object",
 ])
 
-// Pattern 2 size guard — skip strings above this length to avoid wasted parse
 const MAX_JSON_PARSE_LENGTH = 10_000
 
 // ─── Repair patterns ────────────────────────────────────────────────
 
-/**
- * Pattern 1 — Null / empty-object drop.
- * Strips keys whose value is null, undefined, or a bare {}.
- * Safe for optional params; required params will fail downstream anyway.
- */
+/** Pattern 1 — Strip null, undefined, or bare {}. */
 function repairNullDrop(args: Record<string, unknown>): boolean {
   let repaired = false
   for (const [k, v] of Object.entries(args)) {
@@ -108,11 +92,7 @@ function repairNullDrop(args: Record<string, unknown>): boolean {
   return repaired
 }
 
-/**
- * Pattern 2 — JSON-string parse.
- * Only parses whitelisted keys, skips large strings, and requires
- * the parsed result to be an object or array (not a primitive).
- */
+/** Pattern 2 — Parse JSON strings under whitelisted keys. */
 function repairJsonString(args: Record<string, unknown>): boolean {
   let repaired = false
   for (const [k, v] of Object.entries(args)) {
@@ -137,11 +117,7 @@ function repairJsonString(args: Record<string, unknown>): boolean {
   return repaired
 }
 
-/**
- * Pattern 3 — Bare-string markdown stripping.
- * Removes markdown link / inline-code formatting from string args.
- * Uses hoisted MD_LINK and MD_CODE constants (see bootstrap trap note above).
- */
+/** Pattern 3 — Strip markdown link/code formatting from strings. */
 function repairMarkdownString(args: Record<string, unknown>): boolean {
   let repaired = false
   for (const [k, v] of Object.entries(args)) {
@@ -158,12 +134,7 @@ function repairMarkdownString(args: Record<string, unknown>): boolean {
   return repaired
 }
 
-/**
- * Pattern 4 — Single-object wrap.
- * If a singular value (not array) is given for a param whose name
- * suggests it should be an array (pluralised key, "list", "items", "array"),
- * wrap it in an array.
- */
+/** Pattern 4 — Wrap singular values in array for plural-hinted keys. */
 function repairSingleObjectWrap(args: Record<string, unknown>): boolean {
   let repaired = false
   for (const [k, v] of Object.entries(args)) {
@@ -176,21 +147,18 @@ function repairSingleObjectWrap(args: Record<string, unknown>): boolean {
   return repaired
 }
 
-// ─── Session ID helper for logging ──────────────────────────────────
+// Session ID helper
 function shortSessionId(input: { sessionID?: string }): string {
   return input.sessionID ? input.sessionID.slice(0, 8) : "no_session"
 }
 
-// ─── Plugin hooks ───────────────────────────────────────────────────
+// Plugin hooks
 
 const plugin: Plugin = async () => {
   // Reset stats per session (module is cached, but this runs once per start)
   toolStats.clear()
 
   return {
-    /**
-     * BEFORE tool execution — intercept and repair malformed args.
-     */
     "tool.execute.before": async (input, output) => {
       const shortId = shortSessionId(input)
       try {
@@ -223,7 +191,7 @@ const plugin: Plugin = async () => {
           stat.lastCallRepaired = true
         }
 
-        // Auto-disable if repair rate is below threshold and enough calls
+
         if (
           !stat.disabled &&
           stat.totalCalls >= THRESHOLD_MIN_CALLS &&
@@ -248,9 +216,6 @@ const plugin: Plugin = async () => {
       }
     },
 
-    /**
-     * AFTER tool execution — append repair hint so model learns.
-     */
     "tool.execute.after": async (input, output) => {
       const shortId = shortSessionId(input)
       try {
@@ -262,7 +227,7 @@ const plugin: Plugin = async () => {
         if (stat.lastCallRepaired && typeof output.output === "string") {
           const trimmed = output.output.trimStart()
           if (trimmed.startsWith("{") || trimmed.startsWith("[")) return
-          // Append a lightweight hint (CommandCode calls this "save them then explain")
+          // Append repair hint
           const hint = `\n\n[repair-hint: fixed malformed args for "${tool}" — check tool schema for correct format]`
           output.output += hint
         }

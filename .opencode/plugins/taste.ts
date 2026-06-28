@@ -1,7 +1,7 @@
 import type { Plugin, PluginInput } from "@opencode-ai/plugin"
 import { ovFindJson } from "./ov-helper"
 
-// ─── Types ───────────────────────────────────────────────────────────
+// Types
 
 export interface Preference {
   text: string
@@ -14,12 +14,12 @@ export interface Preference {
 interface SessionState {
   prefs: Map<string, Preference>
   project: string
-  /** Track already-persisted memory keys (key = normalized pref text) to avoid redundant `ov add-memory` */
+  /** Skip redundant ov add-memory */
   persistedKeys: Set<string>
   lastFlush: number
 }
 
-// ─── Category keywords ───────────────────────────────────────────────
+// Category keywords
 
 const CATEGORY_KEYWORDS: [string, string][] = [
   ["typescript", "TypeScript"],
@@ -41,7 +41,7 @@ const CATEGORY_KEYWORDS: [string, string][] = [
   ["pattern", "Architecture"],
 ]
 
-// ─── Preference extraction patterns ──────────────────────────────────
+// Extraction patterns
 
 interface Pattern {
   regex: RegExp
@@ -58,10 +58,7 @@ const PATTERNS: Pattern[] = [
   { regex: /(?:^|\s)(?:use|using)\s+(?<pref>[a-zA-Z][\w\s/-]{2,60}?)(?:\.|,|$| and | or )/im, confidence: 0.70 },
 ]
 
-/** Words that indicate a generic statement, not a meaningful preference.
- * Note: "any" intentionally excluded so the TS "any" type can be captured
- * from negative patterns like "don't use any".
- */
+/** Generic words skip. "any" intentionally excluded — TS "any" captured via negative patterns. */
 const GENERIC_PREFIXES = new Set([
   "the", "a", "an", "this", "that", "these", "those", "it", "its", "my", "your", "our",
   "some", "each", "every", "all", "both", "few", "many", "much", "several",
@@ -73,7 +70,7 @@ function isFalsePositive(text: string): boolean {
   return GENERIC_PREFIXES.has(firstWord)
 }
 
-// ─── Common conventions (KL divergence filter) ───────────────────────
+// KL divergence filter
 
 const COMMON_CONVENTIONS = new Set([
   "strict mode", "type imports", "named exports",
@@ -83,7 +80,7 @@ const COMMON_CONVENTIONS = new Set([
   "immutable state", "early return", "guard clause", "error boundaries",
 ])
 
-// ─── Pure functions (testable) ───────────────────────────────────────
+
 
 /** Infer a category from preference text. */
 export function inferCategory(text: string): string {
@@ -172,7 +169,7 @@ export function formatPreferences(prefs: Preference[]): string {
   return `## Learned Preferences\n${items}\n\n*Preferences auto-learned from your instructions.*`
 }
 
-// ─── OpenViking persistence ──────────────────────────────────────────
+// OpenViking persistence
 
 interface OvFindResult {
   ok: boolean
@@ -210,7 +207,7 @@ export async function fetchTastesViaOpenViking(project: string): Promise<Prefere
     .filter((p): p is Preference => p !== null)
 }
 
-/** Persist a single preference to OpenViking. Returns true if persisted. */
+/** Persist single preference to OpenViking. */
 export async function persistPreference(project: string, pref: Preference): Promise<boolean> {
   const tag = "[taste:" + project + "]"
   const content = tag + " " + pref.category + " — " + pref.text + " (confidence: " + pref.confidence.toFixed(2) + ")"
@@ -219,7 +216,7 @@ export async function persistPreference(project: string, pref: Preference): Prom
   return exitCode === 0
 }
 
-// ─── Per-session store ───────────────────────────────────────────────
+// Per-session store
 
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000 // 24h
 const MAX_SESSIONS = 50
@@ -241,10 +238,7 @@ function getOrCreateSession(sessionID: string, project: string): SessionState {
   return state
 }
 
-/**
- * Flush unsaved preferences to OpenViking.
- * Only spawns `ov add-memory` for preferences whose normalized key hasn't been persisted yet.
- */
+/** Flush new preferences to OpenViking (skips already-persisted). */
 async function flushPending(sessionID: string): Promise<void> {
   const state = sessionStore.get(sessionID)
   if (!state || state.prefs.size === 0) return
@@ -281,11 +275,11 @@ function evictStaleSessions(): void {
   }
 }
 
-// ─── Module-level flush timer ────────────────────────────────────────
+// Module-level flush timer
 
 let flushTimer: ReturnType<typeof setInterval> | null = null
 
-// ─── Plugin ──────────────────────────────────────────────────────────
+// Plugin
 
 const plugin: Plugin = async (_input: PluginInput) => {
   // Start periodic flush + eviction timer
@@ -299,10 +293,6 @@ const plugin: Plugin = async (_input: PluginInput) => {
   }
 
   return {
-    /**
-     * Extract explicit preferences from user messages.
-     * "use named exports", "prefer pnpm", "we use strict mode", etc.
-     */
     "chat.message": async (
       msgInput: Record<string, unknown>,
       _output: Record<string, unknown>,
@@ -322,9 +312,6 @@ const plugin: Plugin = async (_input: PluginInput) => {
       }
     },
 
-    /**
-     * Inject learned preferences into system prompt before LLM calls.
-     */
     "experimental.chat.system.transform": async (
       _input: Record<string, unknown>,
       output: { system: string[] },
@@ -336,7 +323,6 @@ const plugin: Plugin = async (_input: PluginInput) => {
       const formatted = formatPreferences([...state.prefs.values()])
       if (!formatted) return
 
-      // Guard: system[0] might be undefined (e.g., first call with empty array)
       if (!output.system[0]) output.system[0] = ""
       output.system[0] += "\n\n" + formatted
     },

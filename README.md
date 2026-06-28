@@ -15,6 +15,11 @@ This repo is the **personal AI workflow setup**:
 
 ```
 opencode-workflow/                              (this repo)
+├── .opencode/plugins/                          (active OpenCode plugins)
+│   ├── repair-harness.ts       (tool call repair — 4 patterns)
+│   ├── taste.ts                (preference extraction → OpenViking)
+│   ├── lesson-injector.ts      (past-lesson injection into system prompt)
+│   └── ov-helper.ts            (shared ov CLI wrapper)
 ├── skills/                                     (pipeline + symlinks)
 │   ├── engineering/                             (pipeline skills)
 │   ├── personal/documents-kit-skills/           (symlink to external)
@@ -96,6 +101,19 @@ Enforced by `scripts/check-portable.sh` (pre-commit hook).
 | `pre-commit.sh` | Run all checks before commit |
 | `install-hooks.sh` | Install pre-commit hook |
 | `setup-documents-kit.sh` | Create documents-kit symlinks |
+
+## OpenCode Plugins (`.opencode/plugins/`)
+
+Runtime plugins that intercept OpenCode hooks for reliability and personalization:
+
+| Plugin | Tests | Lines | Role |
+|--------|-------|-------|------|
+| `repair-harness` | 85 | 237 | Intercepts malformed tool args, fixes via 4 deterministic patterns (null drop, JSON parse, markdown strip, array wrap). Auto-disables per-tool when repair rate stabilizes. Kill switch: `REPAIR_HARNESS=off`. |
+| `taste` | 34 | 330 | Extracts user preferences from messages (patterns, convention, category) and persists to OpenViking via `ov add-memory`. KL divergence filter for common conventions. |
+| `lesson-injector` | 21 | 111 | Fetches past lessons via `ov find` and injects into system prompt. Session cache with 30-min TTL. |
+| `ov-helper` | — | 32 | Shared `ovFindJson()` helper — async `Bun.spawn` wrapper for `ov find -o json`. |
+
+All plugins pass **140 tests** (0 fail), **tsc --noEmit clean** (0 errors). Developed via TDD + ponytail across 13 issues (19–31). Per-issue atomic commits.
 
 ## Reference
 

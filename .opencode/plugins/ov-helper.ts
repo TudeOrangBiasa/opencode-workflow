@@ -1,13 +1,13 @@
-// ─── Shared ov CLI helper ───────────────────────────────────────────
+// Shared ov CLI helper
 
-/** Standard return shape from ov find -o json. */
+/** ov find -o json result shape. */
 export interface OvFindResult {
   uri: string
   abstract: string
   score: number
 }
 
-/** Raw response from ov find includes a status wrapper. */
+/** ov find response with ok wrapper. */
 interface OvFindResponse {
   ok: boolean
   result: {
@@ -16,9 +16,7 @@ interface OvFindResponse {
   }
 }
 
-/** Run ov find asynchronously and parse JSON output.
- * Returns empty array on non-zero exit, parse failure, or !ok response.
- */
+/** Run ov find and parse JSON output. Returns null on failure. */
 export async function ovFindJson(args: string[]): Promise<OvFindResponse | null> {
   const proc = Bun.spawn(args)
   const exitCode = await proc.exited

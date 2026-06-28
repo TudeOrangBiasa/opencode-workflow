@@ -378,23 +378,6 @@ describe("Issue 20 - Triple backtick protection", () => {
   })
 })
 
-describe("Safety: session prefix in logs", () => {
-  it("log includes short session ID when sessionID present", async () => {
-    const spy = spyOn(console, "log")
-    try {
-      const hooks = await (plugin as any)({})
-      const input = { tool: "test-tool-6", sessionID: "abc12345-deadbeef", callID: "test-call-6" }
-      await hooks["tool.execute.before"](input, { args: { path: null } })
-      const found = spy.mock.calls.some((call) =>
-        typeof call[0] === "string" && call[0].includes("abc12345")
-      )
-      expect(found).toBe(true)
-    } finally {
-      spy.mockRestore()
-    }
-  })
-})
-
 // ─── Issue 23: Session isolation for toolStats ────────────────────────
 
 describe("Session isolation", () => {

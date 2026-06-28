@@ -199,13 +199,6 @@ const plugin: Plugin = async () => {
               `< ${THRESHOLD_RATE * 100}% over ${stat.totalCalls} calls)`
           )
         }
-
-        if (didRepair) {
-          console.log(
-            `[repair-harness ${shortId}] repaired "${tool}" call ` +
-              `(total repairs for this tool: ${stat.repairCount}/${stat.totalCalls})`
-          )
-        }
       } catch (err) {
         console.error("[repair-harness " + shortId + "] before-hook error:", err)
       }

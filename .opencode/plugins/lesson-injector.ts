@@ -31,9 +31,8 @@ export const SessionCache = {
 
 // ─── Query building ─────────────────────────────────────────────────
 
-export function buildQuery(project: string, agent?: string): string {
-  const prefix = agent ? `${agent} lessons` : "lessons"
-  return `${prefix} for ${project}`
+export function buildQuery(project: string): string {
+  return "lessons for " + project
 }
 
 // ─── Format lessons ─────────────────────────────────────────────────

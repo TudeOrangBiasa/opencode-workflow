@@ -50,10 +50,6 @@ describe("buildQuery", () => {
   it("builds generic project query", () => {
     expect(buildQuery("my-project")).toBe("lessons for my-project")
   })
-
-  it("builds agent-specific query", () => {
-    expect(buildQuery("my-project", "builder")).toBe("builder lessons for my-project")
-  })
 })
 
 // ─── Format lessons ─────────────────────────────────────────────────

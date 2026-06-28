@@ -23,8 +23,15 @@ function getStat(tool: string): ToolStat {
   return s
 }
 
+// ─── Kill switch — env var disables all repair logic ─────────────────
+function isHarnessEnabled(): boolean {
+  return !["off", "disable", "0", "false"].includes(
+    (process.env.REPAIR_HARNESS || "").toLowerCase()
+  )
+}
+
 // ─── Exported for testing ───────────────────────────────────────────
-export { repairNullDrop, repairJsonString, repairMarkdownString, repairSingleObjectWrap }
+export { repairNullDrop, repairJsonString, repairMarkdownString, repairSingleObjectWrap, isHarnessEnabled }
 
 // ─── Module-level regex (hoisted — don't recreate per call) ────────
 const ARRAY_HINT = /^(urls|paths|files|items|list|ids|keys|values|args|options|flags|include|exclude|sources|targets|patterns|globs)$/i
@@ -115,6 +122,11 @@ function repairSingleObjectWrap(args: Record<string, unknown>): boolean {
   return repaired
 }
 
+// ─── Session ID helper for logging ──────────────────────────────────
+function shortSessionId(input: { sessionID?: string }): string {
+  return input.sessionID ? input.sessionID.slice(0, 8) : "no_session"
+}
+
 // ─── Plugin hooks ───────────────────────────────────────────────────
 
 const plugin: Plugin = async () => {
@@ -126,50 +138,56 @@ const plugin: Plugin = async () => {
      * BEFORE tool execution — intercept and repair malformed args.
      */
     "tool.execute.before": async (input, output) => {
-      const tool = input.tool
-      const args = output.args as Record<string, unknown>
-      if (!args || typeof args !== "object" || Array.isArray(args)) return
+      const shortId = shortSessionId(input)
+      try {
+        if (!isHarnessEnabled()) return
+        const tool = input.tool
+        const args = output.args as Record<string, unknown>
+        if (!args || typeof args !== "object" || Array.isArray(args)) return
 
-      const stat = getStat(tool)
-      // Reset per-call flag (read by after-hook)
-      stat.lastCallRepaired = false
+        const stat = getStat(tool)
+        // Reset per-call flag (read by after-hook)
+        stat.lastCallRepaired = false
 
-      // Skip repair if auto-disabled (stable tool)
-      if (stat.disabled) return
+        // Skip repair if auto-disabled (stable tool)
+        if (stat.disabled) return
 
-      let didRepair = false
+        let didRepair = false
 
-      // Run all repairs (each must fire independently — no short-circuit)
-      if (repairNullDrop(args)) didRepair = true
-      if (repairJsonString(args)) didRepair = true
-      if (repairMarkdownString(args)) didRepair = true
-      if (repairSingleObjectWrap(args)) didRepair = true
+        // Run all repairs (each must fire independently — no short-circuit)
+        if (repairNullDrop(args)) didRepair = true
+        if (repairJsonString(args)) didRepair = true
+        if (repairMarkdownString(args)) didRepair = true
+        if (repairSingleObjectWrap(args)) didRepair = true
 
-      stat.totalCalls++
-      if (didRepair) {
-        stat.repairCount++
-        stat.lastCallRepaired = true
-      }
+        stat.totalCalls++
+        if (didRepair) {
+          stat.repairCount++
+          stat.lastCallRepaired = true
+        }
 
-      // Auto-disable if repair rate is below threshold and enough calls
-      if (
-        !stat.disabled &&
-        stat.totalCalls >= THRESHOLD_MIN_CALLS &&
-        stat.repairCount / stat.totalCalls < THRESHOLD_RATE
-      ) {
-        stat.disabled = true
-        console.log(
-          `[repair-harness] auto-disabled for "${tool}" ` +
-            `(repair rate ${((stat.repairCount / stat.totalCalls) * 100).toFixed(1)}% ` +
-            `< ${THRESHOLD_RATE * 100}% over ${stat.totalCalls} calls)`
-        )
-      }
+        // Auto-disable if repair rate is below threshold and enough calls
+        if (
+          !stat.disabled &&
+          stat.totalCalls >= THRESHOLD_MIN_CALLS &&
+          stat.repairCount / stat.totalCalls < THRESHOLD_RATE
+        ) {
+          stat.disabled = true
+          console.log(
+            `[repair-harness ${shortId}] auto-disabled for "${tool}" ` +
+              `(repair rate ${((stat.repairCount / stat.totalCalls) * 100).toFixed(1)}% ` +
+              `< ${THRESHOLD_RATE * 100}% over ${stat.totalCalls} calls)`
+          )
+        }
 
-      if (didRepair) {
-        console.log(
-          `[repair-harness] repaired "${tool}" call ` +
-            `(total repairs for this tool: ${stat.repairCount}/${stat.totalCalls})`
-        )
+        if (didRepair) {
+          console.log(
+            `[repair-harness ${shortId}] repaired "${tool}" call ` +
+              `(total repairs for this tool: ${stat.repairCount}/${stat.totalCalls})`
+          )
+        }
+      } catch (err) {
+        console.error("[repair-harness " + shortId + "] before-hook error:", err)
       }
     },
 
@@ -177,14 +195,22 @@ const plugin: Plugin = async () => {
      * AFTER tool execution — append repair hint so model learns.
      */
     "tool.execute.after": async (input, output) => {
-      const tool = input.tool
-      const stat = getStat(tool)
+      const shortId = shortSessionId(input)
+      try {
+        if (!isHarnessEnabled()) return
+        const tool = input.tool
+        const stat = getStat(tool)
 
-      // Only add hint if THIS call was repaired (flag set in before-hook).
-      if (stat.lastCallRepaired && output.output) {
-        // Append a lightweight hint (CommandCode calls this "save them then explain")
-        const hint = `\n\n[repair-hint: fixed malformed args for "${tool}" — check tool schema for correct format]`
-        output.output += hint
+        // Only add hint if THIS call was repaired (flag set in before-hook).
+        if (stat.lastCallRepaired && typeof output.output === "string") {
+          const trimmed = output.output.trimStart()
+          if (trimmed.startsWith("{") || trimmed.startsWith("[")) return
+          // Append a lightweight hint (CommandCode calls this "save them then explain")
+          const hint = `\n\n[repair-hint: fixed malformed args for "${tool}" — check tool schema for correct format]`
+          output.output += hint
+        }
+      } catch (err) {
+        console.error("[repair-harness " + shortId + "] after-hook error:", err)
       }
     },
   }

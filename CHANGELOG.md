@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- Feat: full bundle documents-kit-skills — 4 skills (document-writing, drawio, humanizer, officecli) + scholar-paper-mcp MCP server (15 tools) + tools/ glue scripts (8 entries) symlinked into workflow. MCP registered in opencode.json. Docs updated.
 - Fix: repair-harness after-hook removal — hint text no longer leaks into chat. 3 tests removed.
 - Fix: repair-harness silence per-repair `console.log` — reduces chat noise. 1 test removed.
 - Fix: taste.test.ts pre-existing failures (min length 5→3, remove "any" from GENERIC_PREFIXES).

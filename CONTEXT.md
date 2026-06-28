@@ -21,6 +21,9 @@ Manual step that links or copies repo agents/skills into `~/.config/opencode`. A
 **Out-of-scope note**:
 Maintainer note under `.out-of-scope/` explaining a rejected or deferred feature request. Not runtime config and not installed into OpenCode.
 
+**Plugin**:
+A TypeScript module under `.opencode/plugins/` that intercepts OpenCode hooks (tool execution, chat messages). Runs on every call to the hooked event, unlike **On-demand skills**. Examples: `repair-harness` (tool arg repair), `taste` (preference extraction), `lesson-injector` (past-lesson injection).
+
 **Primitive agent**:
 A narrow, single-responsibility agent — either repo-defined (`agents/*.md`) or a built-in OpenCode primitive used by routing. Examples: repo-defined `builder`, `reviewer`, `browser-qa` and built-in `explore`, `scout`. Primitive agents are always active and part of the routing table. Not to be confused with **On-demand skills**.
 
@@ -52,6 +55,7 @@ Durable summary (changes, verification evidence, version bump, changelog, migrat
 - **Activation** installs selected repo assets into local OpenCode config
 - **Out-of-scope notes** preserve product/development decisions
 - A **Primitive agent** is always active; an **On-demand skill** loads only when triggered
+- A **Plugin** hooks into runtime events; an **On-demand skill** is loaded only when the domain matches
 - **Verification evidence** is collected by `verify-evidence` skill and consumed by `reviewer` — reviewer remains the judgment gate
 - `reviewer` is the review gate; `verify-evidence` provides independent evidence, not a separate active agent
 - An **Artifact repo** excludes env/secrets; a `public_html` symlink points at the **Public artifact** only

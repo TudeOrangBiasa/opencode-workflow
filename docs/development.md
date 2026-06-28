@@ -49,7 +49,8 @@ opencode-workflow/
 ├── docs/                      # documentation (workflow, models, install, dev)
 ├── scripts/
 │   └── link-skills.sh         # symlink active skills to ~/.config/opencode/skills
-├── .opencode/                 # local config template (commit history reference)
+├── .opencode/                 # local config + plugins
+│   └── plugins/               # OpenCode runtime plugins (TS source, symlinked)
 ├── CHANGELOG.md               # user-facing changes
 ├── AGENTS.md                  # repo rules
 ├── README.md                  # user-facing

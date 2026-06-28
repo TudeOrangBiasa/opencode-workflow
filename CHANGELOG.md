@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+- Fix: repair-harness after-hook removal — hint text no longer leaks into chat. 3 tests removed.
+- Fix: repair-harness silence per-repair `console.log` — reduces chat noise. 1 test removed.
+- Fix: taste.test.ts pre-existing failures (min length 5→3, remove "any" from GENERIC_PREFIXES).
+- Refactor: 13 issues (19-31) via TDD + ponytail — repair-harness (4 patterns, kill switch, session isolation, tool whitelist, shared helper), taste (preference extraction → OpenViking), lesson-injector (past-lesson injection, session cache).
+- Cleanup: ponytail doc blocks across 4 plugin files (-93/+42 lines).
+- Cleanup: remove stale `planner` reference from `.out-of-scope/agent-boundaries.md`.
+- Wire: ov-helper.ts — shared `ovFindJson()` async helper extracted from taste + lesson-injector.
+
 ## [2026-06-24] — Skill quality + drawio wiring
 
 - Feature: skill descriptions rewritten to "Use when..." pattern (17 skills). Trigger vocab now matches user phrasing in English + Indonesian. Closes 2026-06-24 finding: 3 skills (drawio, document-writing, officecli) not loading on natural user phrasing.

@@ -7,7 +7,6 @@ Do not add a new primitive agent unless it has a durable boundary that cannot be
 ## Current Primitive Agents
 
 - `orchestrator` — route, scope, synthesize
-- `planner` — read-only planning
 - `builder` — bounded edits and self-verification
 - `reviewer` — Behavior + Change Health review gate
 - `browser-qa` — runtime browser/UI evidence

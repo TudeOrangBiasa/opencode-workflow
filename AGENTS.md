@@ -19,6 +19,8 @@ Heavy skills (4+ external deps, fully automates a task, multiple patterns) live 
 
 - Source of truth for OpenCode agents in `agents/`.
 - Source of truth for **pipeline-level** skills in `skills/` (write-a-skill, skill-author, dev-workflow, etc.)
+- Source of truth for OpenCode plugins in `.opencode/plugins/` (repair-harness, taste, lesson-injector, ov-helper).
+- Project boundaries in `.out-of-scope/` — what this repo does NOT do (see [boundary notes](../.out-of-scope/README.md)).
 - Documentation for local installation and model routing in `docs/`.
 - Symlinks to external skill packages in `skills/personal/`.
 - Do not edit `~/.config/opencode` while maturing changes here unless the user explicitly asks to install or activate them.
@@ -104,7 +106,7 @@ Rules:
 - Start with `verify-evidence` on-demand skill (in `skills/misc/`). Load it for tool-based verification in AFK, high-risk, or evidence-gap scenarios.
 - Promote to dedicated agent only if the skill is used in >50% of sessions and its routing/context cost justifies a separate agent file.
 
-1. Maintenance
+## Maintenance
 
 ### Bulk skill cleanup pattern (parallel subagents)
 

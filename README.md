@@ -42,6 +42,12 @@ opencode-workflow/                              (this repo)
 │   ├── skills/extraction-criteria.md
 │   ├── skills/anti-hardcoded-pattern.md
 │   └── integrations/documents-kit.md
+├── .out-of-scope/                              (boundary notes — what repo does NOT do)
+│   ├── agent-boundaries.md
+│   ├── orchestration-boundaries.md
+│   ├── skill-placement-boundaries.md
+│   ├── docs-and-research-boundaries.md
+│   └── ...
 └── AGENTS.md / README.md       (entry points)
 ```
 
@@ -108,17 +114,18 @@ Runtime plugins that intercept OpenCode hooks for reliability and personalizatio
 
 | Plugin | Tests | Lines | Role |
 |--------|-------|-------|------|
-| `repair-harness` | 85 | 237 | Intercepts malformed tool args, fixes via 4 deterministic patterns (null drop, JSON parse, markdown strip, array wrap). Auto-disables per-tool when repair rate stabilizes. Kill switch: `REPAIR_HARNESS=off`. |
-| `taste` | 34 | 330 | Extracts user preferences from messages (patterns, convention, category) and persists to OpenViking via `ov add-memory`. KL divergence filter for common conventions. |
-| `lesson-injector` | 21 | 111 | Fetches past lessons via `ov find` and injects into system prompt. Session cache with 30-min TTL. |
-| `ov-helper` | — | 32 | Shared `ovFindJson()` helper — async `Bun.spawn` wrapper for `ov find -o json`. |
+| `repair-harness` | 81 | 209 | Intercepts malformed tool args, fixes via 4 deterministic patterns (null drop, JSON parse, markdown strip, array wrap). Auto-disables per-tool when repair rate stabilizes. Kill switch: `REPAIR_HARNESS=off`. |
+| `taste` | 34 | 332 | Extracts user preferences from messages (patterns, convention, category) and persists to OpenViking via `ov add-memory`. KL divergence filter for common conventions. |
+| `lesson-injector` | 21 | 129 | Fetches past lessons via `ov find` and injects into system prompt. Session cache with 30-min TTL. |
+| `ov-helper` | — | 30 | Shared `ovFindJson()` helper — async `Bun.spawn` wrapper for `ov find -o json`. |
 
-All plugins pass **140 tests** (0 fail), **tsc --noEmit clean** (0 errors). Developed via TDD + ponytail across 13 issues (19–31). Per-issue atomic commits.
+All plugins pass **136 tests** (0 fail), **tsc --noEmit clean** (0 errors). Developed via TDD + ponytail across 13 issues (19–31). Per-issue atomic commits.
 
 ## Reference
 
 - [AGENTS.md](AGENTS.md) — agent-facing context (rules, conventions)
 - [docs/architecture.md](docs/architecture.md) — overall layout
+- [.out-of-scope/](.out-of-scope/README.md) — boundary decisions (what this repo does NOT do)
 - [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md) — when to extract
 - [docs/skills/anti-hardcoded-pattern.md](docs/skills/anti-hardcoded-pattern.md) — portability
 - [docs/integrations/documents-kit.md](docs/integrations/documents-kit.md) — example integration

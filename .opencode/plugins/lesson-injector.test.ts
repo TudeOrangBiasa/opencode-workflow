@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "bun:test"
-import { SessionCache, buildQuery, formatLessons, injectLessons, fetchAndInjectLessons } from "./lesson-injector.ts"
+import { describe, it, expect, beforeEach, afterEach, spyOn } from "bun:test"
+import plugin, { SessionCache, buildQuery, formatLessons, injectLessons, fetchAndInjectLessons } from "./lesson-injector.ts"
 
 // ─── SessionCache ────────────────────────────────────────────────────
 
@@ -22,13 +22,11 @@ describe("SessionCache", () => {
 
   it("miss on stale entry", () => {
     SessionCache.set("sess-1", ["old lesson"])
-    // TTL = 0 → any entry is stale
     expect(SessionCache.get("sess-1", 0)).toBeUndefined()
   })
 
   it("hit on fresh entry within TTL", () => {
     SessionCache.set("sess-1", ["fresh lesson"])
-    // TTL very large → entry is still fresh
     expect(SessionCache.get("sess-1", 999_999_999)).toEqual(["fresh lesson"])
   })
 
@@ -101,6 +99,13 @@ describe("injectLessons", () => {
     injectLessons(system, "")
     expect(system).toEqual(["original"])
   })
+
+  it("empty system array does not produce 'undefined' string", () => {
+    const system: string[] = []
+    injectLessons(system, "## Past Lessons\n- test")
+    expect(system[0]).not.toContain("undefined")
+    expect(system[0]).toBeDefined()
+  })
 })
 
 // ─── fetchAndInjectLessons (full pipeline) ──────────────────────────
@@ -127,7 +132,6 @@ describe("fetchAndInjectLessons", () => {
 
     await fetchAndInjectLessons("sess-cache", "my-app", SessionCache, system, mockFetch)
 
-    // Track calls
     let callCount = 0
     const trackingFetch = async (_q: string) => { callCount++; return ["should not be called"] }
     system[0] = "base prompt"
@@ -169,3 +173,53 @@ describe("fetchAndInjectLessons", () => {
     expect(capturedQuery).toBe("lessons for my-project")
   })
 })
+
+// ─── Plugin factory ──────────────────────────────────────────────────
+
+describe("plugin factory", () => {
+  let spawnSpy: ReturnType<typeof spyOn>
+
+  beforeEach(() => {
+    spawnSpy = spyOn(Bun, "spawnSync")
+    spawnSpy.mockImplementation(() => {
+      return {
+        stdout: Buffer.from(
+          JSON.stringify({ ok: true, result: { memories: [], resources: [] } })
+        ),
+        stderr: Buffer.from(""),
+        exitCode: 0,
+      }
+    })
+  })
+
+  afterEach(() => {
+    spawnSpy.mockRestore()
+  })
+
+  it("captures project from directory", async () => {
+    const inst = await plugin({ directory: "/path/to/MyProject" } as any)
+    const out = { system: ["base"] }
+    await (inst["experimental.chat.system.transform"] as any)({ sessionID: "test" } as any, out)
+    const calls = spawnSpy.mock.calls
+    expect(calls.length).toBeGreaterThan(0)
+    const query = calls[0][0][2]
+    expect(query).toContain("MyProject")
+  })
+
+  it("different factory calls get different project values", async () => {
+    const inst1 = await plugin({ directory: "/path/to/ProjAlpha" } as any)
+    const inst2 = await plugin({ directory: "/path/to/ProjBeta" } as any)
+
+    const out1 = { system: ["base"] }
+    const out2 = { system: ["base"] }
+
+    await (inst1["experimental.chat.system.transform"] as any)({ sessionID: "s1" } as any, out1)
+    await (inst2["experimental.chat.system.transform"] as any)({ sessionID: "s2" } as any, out2)
+
+    const queries = spawnSpy.mock.calls.map((c: any) => c[0][2])
+    expect(queries[0]).toContain("ProjAlpha")
+    expect(queries[1]).toContain("ProjBeta")
+    expect(queries[0]).not.toBe(queries[1])
+  })
+})
+

@@ -50,6 +50,7 @@ export function formatLessons(lessons: string[]): string {
 
 export function injectLessons(system: string[], formatted: string): void {
   if (!formatted) return
+  if (!system[0]) system[0] = ""
   system[0] += "\n\n" + formatted
 }
 
@@ -130,16 +131,14 @@ export async function findLessonsViaOpenViking(query: string): Promise<string[]>
 
 // ─── Plugin hook ────────────────────────────────────────────────────
 
-let pluginProject = "unknown"
-
 const plugin: Plugin = async (input: PluginInput) => {
-  pluginProject = input.directory.split("/").pop() || pluginProject
+  const project = input.directory.split("/").pop() || "unknown"
 
   return {
     "experimental.chat.system.transform": async (_input, output) => {
       await fetchAndInjectLessons(
         _input.sessionID || "global",
-        pluginProject,
+        project,
         SessionCache,
         output.system,
         findLessonsViaOpenViking,

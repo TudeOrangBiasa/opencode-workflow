@@ -193,6 +193,62 @@ describe("Pattern 4 — Single-object wrap", () => {
   })
 })
 
+describe("Pattern 4 — ARRAY_HINT tightening", () => {
+  it("does NOT wrap args (singular string)", () => {
+    const args = { args: "--debug" }
+    expect(repairSingleObjectWrap(args)).toBe(false)
+    expect(typeof args.args).toBe("string")
+    expect(Array.isArray(args.args)).toBe(false)
+  })
+  it("does NOT wrap args (object)", () => {
+    const args = { args: { key: "val" } }
+    expect(repairSingleObjectWrap(args)).toBe(false)
+    expect(typeof args.args).toBe("object")
+    expect(Array.isArray(args.args)).toBe(false)
+  })
+  it("does NOT wrap options", () => {
+    const args = { options: { verbose: true } }
+    expect(repairSingleObjectWrap(args)).toBe(false)
+    expect(Array.isArray(args.options)).toBe(false)
+  })
+  it("does NOT wrap flags", () => {
+    const args = { flags: "-rf" }
+    expect(repairSingleObjectWrap(args)).toBe(false)
+  })
+  it("does NOT wrap list (paginated record)", () => {
+    const args = { list: { page: 1 } }
+    expect(repairSingleObjectWrap(args)).toBe(false)
+  })
+  it("does NOT wrap keys", () => {
+    const args = { keys: "id" }
+    expect(repairSingleObjectWrap(args)).toBe(false)
+  })
+  it("does NOT wrap values", () => {
+    const args = { values: "42" }
+    expect(repairSingleObjectWrap(args)).toBe(false)
+  })
+  it("DOES wrap urls", () => {
+    const args = { urls: "https://x.com" }
+    expect(repairSingleObjectWrap(args)).toBe(true)
+  })
+  it("DOES wrap include", () => {
+    const args = { include: "*.ts" }
+    expect(repairSingleObjectWrap(args)).toBe(true)
+  })
+  it("DOES wrap exclude", () => {
+    const args = { exclude: "node_modules" }
+    expect(repairSingleObjectWrap(args)).toBe(true)
+  })
+  it("DOES wrap patterns", () => {
+    const args = { patterns: "TODO" }
+    expect(repairSingleObjectWrap(args)).toBe(true)
+  })
+  it("DOES wrap globs", () => {
+    const args = { globs: "*.md" }
+    expect(repairSingleObjectWrap(args)).toBe(true)
+  })
+})
+
 // ═══ Issue 19: P0 safety ══════════════════════════════════════════════
 
 describe("Safety: before-hook try/catch", () => {

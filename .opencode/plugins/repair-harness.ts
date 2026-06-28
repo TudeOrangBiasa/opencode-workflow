@@ -34,7 +34,7 @@ function isHarnessEnabled(): boolean {
 export { repairNullDrop, repairJsonString, repairMarkdownString, repairSingleObjectWrap, isHarnessEnabled }
 
 // ─── Module-level regex (hoisted — don't recreate per call) ────────
-const ARRAY_HINT = /^(urls|paths|files|items|list|ids|keys|values|args|options|flags|include|exclude|sources|targets|patterns|globs)$/i
+const ARRAY_HINT = /^(urls|paths|files|items|ids|include|exclude|patterns|globs|sources|targets)$/i
 
 // Bootstrap trap: use char code for backtick.
 // Pattern 3 strips BT pairs from markdown. If this file ever gets

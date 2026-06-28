@@ -7,7 +7,6 @@ interface ToolStat {
   totalCalls: number
   repairCount: number
   disabled: boolean
-  lastCallRepaired: boolean
 }
 
 const toolStats = new Map<string, Map<string, ToolStat>>()
@@ -28,7 +27,7 @@ function getStat(sessionID: string, tool: string): ToolStat {
   }
   let s = sessionMap.get(tool)
   if (!s) {
-    s = { totalCalls: 0, repairCount: 0, disabled: false, lastCallRepaired: false }
+    s = { totalCalls: 0, repairCount: 0, disabled: false }
     sessionMap.set(tool, s)
   }
   return s
@@ -168,8 +167,6 @@ const plugin: Plugin = async () => {
         if (!args || typeof args !== "object" || Array.isArray(args)) return
 
         const stat = getStat(input.sessionID || "_no_session", tool)
-        // Reset per-call flag (read by after-hook)
-        stat.lastCallRepaired = false
 
         // Skip repair if auto-disabled (stable tool)
         if (stat.disabled) return
@@ -188,9 +185,7 @@ const plugin: Plugin = async () => {
         stat.totalCalls++
         if (didRepair) {
           stat.repairCount++
-          stat.lastCallRepaired = true
         }
-
 
         if (
           !stat.disabled &&
@@ -213,26 +208,6 @@ const plugin: Plugin = async () => {
         }
       } catch (err) {
         console.error("[repair-harness " + shortId + "] before-hook error:", err)
-      }
-    },
-
-    "tool.execute.after": async (input, output) => {
-      const shortId = shortSessionId(input)
-      try {
-        if (!isHarnessEnabled()) return
-        const tool = input.tool
-        const stat = getStat(input.sessionID || "_no_session", tool)
-
-        // Only add hint if THIS call was repaired (flag set in before-hook).
-        if (stat.lastCallRepaired && typeof output.output === "string") {
-          const trimmed = output.output.trimStart()
-          if (trimmed.startsWith("{") || trimmed.startsWith("[")) return
-          // Append repair hint
-          const hint = `\n\n[repair-hint: fixed malformed args for "${tool}" — check tool schema for correct format]`
-          output.output += hint
-        }
-      } catch (err) {
-        console.error("[repair-harness " + shortId + "] after-hook error:", err)
       }
     },
   }

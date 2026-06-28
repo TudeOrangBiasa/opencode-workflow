@@ -263,44 +263,6 @@ describe("Safety: before-hook try/catch", () => {
   })
 })
 
-describe("Safety: after-hook try/catch", () => {
-  it("catches thrown error in after-hook gracefully", async () => {
-    const hooks = await (plugin as any)({})
-    const input = { tool: "test-tool-2", sessionID: "test-session-2", callID: "test-call-2", args: {} }
-    // First call before-hook to set lastCallRepaired = true
-    const beforeOut = { args: { path: null } }
-      await hooks["tool.execute.before"](input, beforeOut)
-    // After-hook with non-writable output property (output.output += hint throws)
-    const afterOutput: any = { title: "", metadata: null }
-    Object.defineProperty(afterOutput, "output", {
-      value: "some text",
-      writable: false,
-    })
-      await hooks["tool.execute.after"](input, afterOutput)
-    expect(true).toBe(true)
-  })
-})
-
-describe("Safety: type-safe after-hook", () => {
-  it("does not append hint to JSON-shaped output", async () => {
-    const hooks = await (plugin as any)({})
-    const input = { tool: "test-tool-3", sessionID: "test-session-3", callID: "test-call-3", args: {} }
-      await hooks["tool.execute.before"](input, { args: { path: null } })
-    const afterOutput: any = { output: JSON.stringify({ status: "ok" }), title: "", metadata: null }
-      await hooks["tool.execute.after"](input, afterOutput)
-    expect(afterOutput.output).toBe(JSON.stringify({ status: "ok" }))
-  })
-
-  it("does not crash on non-string output", async () => {
-    const hooks = await (plugin as any)({})
-    const input = { tool: "test-tool-4", sessionID: "test-session-4", callID: "test-call-4", args: {} }
-      await hooks["tool.execute.before"](input, { args: { path: null } })
-    const afterOutput: any = { output: undefined, title: "", metadata: null }
-      await hooks["tool.execute.after"](input, afterOutput)
-    expect(afterOutput.output).toBeUndefined()
-  })
-})
-
 describe("Safety: kill switch", () => {
   it("returns false when REPAIR_HARNESS=off", () => {
     process.env.REPAIR_HARNESS = "off"

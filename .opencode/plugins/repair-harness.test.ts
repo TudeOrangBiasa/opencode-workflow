@@ -45,10 +45,10 @@ describe("Pattern 1 — Null drop", () => {
 })
 
 describe("Pattern 2 — JSON-string parse", () => {
-  it("parses JSON array string", () => {
-    const args = { urls: '["/a", "/b"]' }
+  it("parses JSON array string (whitelisted key)", () => {
+    const args = { data: '["/a", "/b"]' }
     expect(repairJsonString(args)).toBe(true)
-    expect(Array.isArray(args.urls)).toBe(true)
+    expect(Array.isArray(args.data)).toBe(true)
   })
 
   it("parses JSON object string", () => {
@@ -71,6 +71,64 @@ describe("Pattern 2 — JSON-string parse", () => {
   it("skips non-string", () => {
     const args = { depth: 3 }
     expect(repairJsonString(args)).toBe(false)
+  })
+})
+
+describe("Pattern 2 — key whitelist (Issue 21)", () => {
+  const nonJsonKeys = ["content", "oldString", "newString", "command", "pattern", "url", "text", "description"]
+  const jsonStr = JSON.stringify({ foo: "bar" })
+  for (const key of nonJsonKeys) {
+    it("does NOT parse " + key + " param", () => {
+      const args: Record<string, unknown> = {}
+      args[key] = jsonStr
+      expect(repairJsonString(args)).toBe(false)
+      expect(typeof args[key]).toBe("string")
+    })
+  }
+
+  const jsonKeys = ["config", "data", "payload", "body", "params", "input", "metadata", "spec", "schema", "json", "args_object"]
+  for (const key of jsonKeys) {
+    it("parses " + key + " param", () => {
+      const args: Record<string, unknown> = {}
+      args[key] = JSON.stringify({ key: "val" })
+      expect(repairJsonString(args)).toBe(true)
+      expect((args[key] as { key: string }).key).toBe("val")
+    })
+  }
+})
+
+describe("Pattern 2 — size guard (Issue 21)", () => {
+  it("skips strings > 10KB", () => {
+    const big = '{"a":1,"x":"' + "y".repeat(11_000) + '"}'
+    const args = { config: big }
+    expect(repairJsonString(args)).toBe(false)
+    expect(typeof args.config).toBe("string")
+  })
+})
+
+describe("Pattern 2 — strict type (Issue 21)", () => {
+  it("does not assign primitive result", () => {
+    const args = { config: "42" }
+    expect(repairJsonString(args)).toBe(false)
+    expect(args.config).toBe("42")
+  })
+
+  it("does not assign null result", () => {
+    const args = { config: "null" }
+    expect(repairJsonString(args)).toBe(false)
+    expect(args.config).toBe("null")
+  })
+
+  it("parses object result", () => {
+    const args: Record<string, unknown> = { config: '{"a":1}' }
+    expect(repairJsonString(args)).toBe(true)
+    expect(args.config as unknown as { a: number }).toEqual({ a: 1 })
+  })
+
+  it("parses array result", () => {
+    const args: Record<string, unknown> = { data: "[1,2,3]" }
+    expect(repairJsonString(args)).toBe(true)
+    expect(args.data as unknown as number[]).toEqual([1, 2, 3])
   })
 })
 

@@ -56,6 +56,15 @@ const DISK_WRITE_TOOLS = new Set([
   "writeFile", "write_file", "fs_write", "put_file",
 ])
 
+// Pattern 2 whitelist — only parse JSON under keys likely to hold JSON payloads
+const JSON_LIKELY_KEYS = new Set([
+  "config", "data", "payload", "body", "params", "input",
+  "metadata", "spec", "schema", "json", "args_object",
+])
+
+// Pattern 2 size guard — skip strings above this length to avoid wasted parse
+const MAX_JSON_PARSE_LENGTH = 10_000
+
 // ─── Repair patterns ────────────────────────────────────────────────
 
 /**
@@ -80,19 +89,24 @@ function repairNullDrop(args: Record<string, unknown>): boolean {
 
 /**
  * Pattern 2 — JSON-string parse.
- * If a string looks like JSON ({…} or […]) try parsing it.
+ * Only parses whitelisted keys, skips large strings, and requires
+ * the parsed result to be an object or array (not a primitive).
  */
 function repairJsonString(args: Record<string, unknown>): boolean {
   let repaired = false
   for (const [k, v] of Object.entries(args)) {
     if (typeof v !== "string") continue
+    if (v.length > MAX_JSON_PARSE_LENGTH) continue
+    if (!JSON_LIKELY_KEYS.has(k)) continue
     const t = v.trim()
     if (
       (t.startsWith("{") && t.endsWith("}")) ||
       (t.startsWith("[") && t.endsWith("]"))
     ) {
       try {
-        args[k] = JSON.parse(t)
+        const parsed = JSON.parse(t)
+        if (typeof parsed !== "object" || parsed === null) continue
+        args[k] = parsed
         repaired = true
       } catch {
         // not valid JSON — leave as-is

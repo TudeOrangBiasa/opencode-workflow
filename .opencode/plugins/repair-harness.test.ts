@@ -446,7 +446,6 @@ describe("Session isolation", () => {
     expect(statB.totalCalls).toBe(0)
     expect(statB.repairCount).toBe(0)
     expect(statB.disabled).toBe(false)
-    expect(statB.firstRepairLogged).toBe(false)
   })
 
   it("tool disabled in A is not disabled in B", () => {
@@ -456,13 +455,6 @@ describe("Session isolation", () => {
     statA.disabled = true
     const statB = getStat("sessionB2", "grep")
     expect(statB.disabled).toBe(false)
-  })
-
-  it("firstRepairLogged resets per session", () => {
-    const statA = getStat("sessionA3", "grep")
-    statA.firstRepairLogged = true
-    const statB = getStat("sessionB3", "grep")
-    expect(statB.firstRepairLogged).toBe(false)
   })
 
   it("hook passes sessionID correctly", async () => {

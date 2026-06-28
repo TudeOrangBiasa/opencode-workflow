@@ -7,8 +7,6 @@ interface ToolStat {
   disabled: boolean
   /** Flag set by before-hook, read by after-hook */
   lastCallRepaired: boolean
-  /** Tracks per-session first-repair log state */
-  firstRepairLogged: boolean
 }
 
 const toolStats = new Map<string, Map<string, ToolStat>>()
@@ -29,7 +27,7 @@ function getStat(sessionID: string, tool: string): ToolStat {
   }
   let s = sessionMap.get(tool)
   if (!s) {
-    s = { totalCalls: 0, repairCount: 0, disabled: false, lastCallRepaired: false, firstRepairLogged: false }
+    s = { totalCalls: 0, repairCount: 0, disabled: false, lastCallRepaired: false }
     sessionMap.set(tool, s)
   }
   return s

@@ -5,6 +5,7 @@ import plugin, {
   repairMarkdownString,
   repairSingleObjectWrap,
   isHarnessEnabled,
+  getStat,
 } from "./repair-harness.ts"
 describe("Pattern 1 — Null drop", () => {
   it("drops null value", () => {
@@ -429,5 +430,56 @@ describe("Safety: session prefix in logs", () => {
     } finally {
       spy.mockRestore()
     }
+  })
+})
+
+// ─── Issue 23: Session isolation for toolStats ────────────────────────
+
+describe("Session isolation", () => {
+  it("session A and B have independent stats", () => {
+    const statA = getStat("sessionA", "grep")
+    for (let i = 0; i < 100; i++) {
+      statA.totalCalls++
+      statA.repairCount++
+    }
+    const statB = getStat("sessionB", "grep")
+    expect(statB.totalCalls).toBe(0)
+    expect(statB.repairCount).toBe(0)
+    expect(statB.disabled).toBe(false)
+    expect(statB.firstRepairLogged).toBe(false)
+  })
+
+  it("tool disabled in A is not disabled in B", () => {
+    const statA = getStat("sessionA2", "grep")
+    statA.totalCalls = 100
+    statA.repairCount = 1
+    statA.disabled = true
+    const statB = getStat("sessionB2", "grep")
+    expect(statB.disabled).toBe(false)
+  })
+
+  it("firstRepairLogged resets per session", () => {
+    const statA = getStat("sessionA3", "grep")
+    statA.firstRepairLogged = true
+    const statB = getStat("sessionB3", "grep")
+    expect(statB.firstRepairLogged).toBe(false)
+  })
+
+  it("hook passes sessionID correctly", async () => {
+    const hooks = await (plugin as any)({})
+    const input = { tool: "grep", sessionID: "sessionX", callID: "test-call" }
+    await hooks["tool.execute.before"](input, { args: { path: null } })
+    const stat = getStat("sessionX", "grep")
+    expect(stat.totalCalls).toBe(1)
+    expect(stat.repairCount).toBe(1)
+  })
+
+  it("hook falls back to _no_session when sessionID missing", async () => {
+    const hooks = await (plugin as any)({})
+    const input = { tool: "grep", sessionID: "", callID: "test-call" }
+    await hooks["tool.execute.before"](input, { args: { path: null } })
+    const stat = getStat("_no_session", "grep")
+    expect(stat.totalCalls).toBe(1)
+    expect(stat.repairCount).toBe(1)
   })
 })

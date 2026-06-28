@@ -7,18 +7,25 @@ interface ToolStat {
   disabled: boolean
   /** Flag set by before-hook, read by after-hook */
   lastCallRepaired: boolean
+  /** Tracks per-session first-repair log state */
+  firstRepairLogged: boolean
 }
 
-const toolStats = new Map<string, ToolStat>()
+const toolStats = new Map<string, Map<string, ToolStat>>()
 
 const THRESHOLD_RATE = 0.02   // auto-disable if repair rate below 2%
 const THRESHOLD_MIN_CALLS = 100  // minimum calls before considering disable
 
-function getStat(tool: string): ToolStat {
-  let s = toolStats.get(tool)
+function getStat(sessionID: string, tool: string): ToolStat {
+  let sessionMap = toolStats.get(sessionID)
+  if (!sessionMap) {
+    sessionMap = new Map()
+    toolStats.set(sessionID, sessionMap)
+  }
+  let s = sessionMap.get(tool)
   if (!s) {
-    s = { totalCalls: 0, repairCount: 0, disabled: false, lastCallRepaired: false }
-    toolStats.set(tool, s)
+    s = { totalCalls: 0, repairCount: 0, disabled: false, lastCallRepaired: false, firstRepairLogged: false }
+    sessionMap.set(tool, s)
   }
   return s
 }
@@ -31,7 +38,7 @@ function isHarnessEnabled(): boolean {
 }
 
 // ─── Exported for testing ───────────────────────────────────────────
-export { repairNullDrop, repairJsonString, repairMarkdownString, repairSingleObjectWrap, isHarnessEnabled }
+export { repairNullDrop, repairJsonString, repairMarkdownString, repairSingleObjectWrap, isHarnessEnabled, getStat }
 
 // ─── Module-level regex (hoisted — don't recreate per call) ────────
 const ARRAY_HINT = /^(urls|paths|files|items|ids|include|exclude|patterns|globs|sources|targets)$/i
@@ -178,7 +185,7 @@ const plugin: Plugin = async () => {
         const args = output.args as Record<string, unknown>
         if (!args || typeof args !== "object" || Array.isArray(args)) return
 
-        const stat = getStat(tool)
+        const stat = getStat(input.sessionID || "_no_session", tool)
         // Reset per-call flag (read by after-hook)
         stat.lastCallRepaired = false
 
@@ -235,7 +242,7 @@ const plugin: Plugin = async () => {
       try {
         if (!isHarnessEnabled()) return
         const tool = input.tool
-        const stat = getStat(tool)
+        const stat = getStat(input.sessionID || "_no_session", tool)
 
         // Only add hint if THIS call was repaired (flag set in before-hook).
         if (stat.lastCallRepaired && typeof output.output === "string") {

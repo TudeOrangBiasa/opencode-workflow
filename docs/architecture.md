@@ -29,35 +29,50 @@ opencode-workflow is the **personal dotfiles + workflow pipeline**. It contains:
 ```
 opencode-workflow/
 ├── skills/
-│   ├── engineering/        ← pipeline skills (write-a-skill, dev-workflow, etc.)
-│   ├── personal/           ← personal skills + symlinks to documents-kit-skills/
+│   ├── engineering/          ← pipeline skills (write-a-skill, dev-workflow, etc.)
+│   ├── personal/             ← personal skills + symlinks to documents-kit-skills/
 │   │   └── documents-kit-skills/   ← symlink to external package
 │   │       ├── document-writing/    (symlink)
 │   │       ├── drawio/              (symlink)
 │   │       ├── humanizer/           (symlink)
 │   │       └── officecli/           (symlink)
 │   └── ...
-├── scripts/                ← check-portable, check-skill-structure, audit-skill, pre-commit
-├── docs/                    ← architecture, extraction-criteria, anti-hardcoded-pattern, integrations
-├── .git/hooks/pre-commit    ← installed by scripts/install-hooks.sh
-└── AGENTS.md / README.md    ← entry points
+├── tools/                    ← symlinks to documents-kit-skills glue scripts
+│   ├── officecli_helper.py   (symlink)
+│   ├── pandoc_citeproc.py    (symlink)
+│   ├── scholar_bibtex.py     (symlink)
+│   ├── asset-validator.sh    (symlink)
+│   ├── doc-audit-pipeline.sh (symlink)
+│   ├── pdf-from-docx.sh      (symlink)
+│   ├── __init__.py           (symlink)
+│   └── tests/                (symlink)
+├── scripts/                  ← check-portable, check-skill-structure, audit-skill, pre-commit
+├── docs/                     ← architecture, extraction-criteria, anti-hardcoded-pattern, integrations
+├── .git/hooks/pre-commit     ← installed by scripts/install-hooks.sh
+└── AGENTS.md / README.md     ← entry points
 ```
 
 ## How integration works
 
-External skill packages integrate via symlinks:
+External skill packages integrate via symlinks + MCP registration:
 
 ```
 documents-kit-skills/                              (source of truth)
   ↓ symlinks
-opencode-workflow/skills/personal/documents-kit-skills/   (package folder)
+opencode-workflow/skills/personal/documents-kit-skills/   (package folder — 4 skills)
   ↓ symlinks
 ~/.config/opencode/skills/                          (OpenCode global)
-  ↓
-OpenCode loads skill content from global config
+
+documents-kit-skills/tools/                         (source of truth)
+  ↓ symlinks
+opencode-workflow/tools/                            (glue scripts)
+
+scholar-paper-mcp/                                  (peer dep, cloned separately)
+  ↓ MCP registration in ~/.config/opencode/opencode.json
+OpenCode loads 15 scholar tools at startup
 ```
 
-Setup: `scripts/setup-documents-kit.sh` creates the symlink chain. See [integrations/documents-kit.md](integrations/documents-kit.md).
+Setup: `scripts/setup-documents-kit.sh` creates the skill + tools symlink chain. scholar-paper-mcp cloned and MCP-registered separately. See [integrations/documents-kit.md](integrations/documents-kit.md).
 
 ## When to extract a skill
 

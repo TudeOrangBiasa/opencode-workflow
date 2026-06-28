@@ -92,7 +92,22 @@ for skill in document-writing drawio humanizer officecli; do
   ln -s "$PACKAGE_DIR/$skill" "$global_link"
 done
 
-# 4. Verify
+# 4. Tools symlinks (if --tools flag or --all)
+if [[ "${SETUP_TOOLS:-true}" == "true" ]]; then
+  echo
+  echo "=== Symlinking tools/ ==="
+  TOOLS_DIR="$WORKFLOW_DIR/tools"
+  mkdir -p "$TOOLS_DIR"
+  for tool in __init__.py officecli_helper.py pandoc_citeproc.py scholar_bibtex.py asset-validator.sh doc-audit-pipeline.sh pdf-from-docx.sh tests; do
+    target="$TOOLS_DIR/$tool"
+    if [[ ! -L "$target" && ! -d "$target" ]]; then
+      echo "  tools/$tool → $KIT_DIR/tools/$tool"
+      ln -s "$KIT_DIR/tools/$tool" "$target"
+    fi
+  done
+fi
+
+# 5. Verify
 echo
 echo "=== Verify ==="
 for skill in document-writing drawio humanizer officecli; do
@@ -111,6 +126,10 @@ for skill in document-writing drawio humanizer officecli; do
   fi
 done
 
+if [[ -d "$WORKFLOW_DIR/tools" ]]; then
+  echo "[OK] tools/ directory exists with $(ls -1 "$WORKFLOW_DIR/tools" | wc -l) entries"
+fi
+
 echo
 echo "=== Done ==="
 echo "Restart OpenCode to pick up changes."
@@ -123,3 +142,7 @@ echo "    ↓"
 echo "  $WORKFLOW_DIR/skills/personal/documents-kit-skills/{document-writing,drawio,humanizer,officecli} ← package folder"
 echo "    ↓"
 echo "  $HOME/.config/opencode/skills/{X}                    ← OpenCode global"
+echo
+echo "  $KIT_DIR/tools/           ← source of truth"
+echo "    ↓"
+echo "  $WORKFLOW_DIR/tools/      ← glue scripts"

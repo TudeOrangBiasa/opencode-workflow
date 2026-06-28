@@ -483,3 +483,26 @@ describe("Session isolation", () => {
     expect(stat.repairCount).toBe(1)
   })
 })
+
+// ═══ Issue 26: toolStats memory bound ──────────────────────────────────
+
+describe("Issue 26 — toolStats memory bound", () => {
+  it("evicts oldest when at MAX_SESSIONS", () => {
+    const PREFIX = "i26a-"
+    for (let i = 0; i < 100; i++) {
+      getStat(PREFIX + i, "t").totalCalls = i + 1
+    }
+    getStat(PREFIX + "overflow", "t")
+    const check = getStat(PREFIX + "0", "t")
+    expect(check.totalCalls).toBe(0)
+  })
+
+  it("does NOT evict when re-accessing existing session", () => {
+    const PREFIX = "i26b-"
+    for (let i = 0; i < 100; i++) {
+      getStat(PREFIX + i, "t").totalCalls = i + 1
+    }
+    const check = getStat(PREFIX + "0", "t")
+    expect(check.totalCalls).toBe(1)
+  })
+})

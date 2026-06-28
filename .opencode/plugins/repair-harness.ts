@@ -12,11 +12,16 @@ interface ToolStat {
 }
 
 const toolStats = new Map<string, Map<string, ToolStat>>()
+const MAX_SESSIONS = 100
 
 const THRESHOLD_RATE = 0.02   // auto-disable if repair rate below 2%
 const THRESHOLD_MIN_CALLS = 100  // minimum calls before considering disable
 
 function getStat(sessionID: string, tool: string): ToolStat {
+  if (toolStats.size >= MAX_SESSIONS && !toolStats.has(sessionID)) {
+    const oldest = toolStats.keys().next().value
+    if (oldest) toolStats.delete(oldest)
+  }
   let sessionMap = toolStats.get(sessionID)
   if (!sessionMap) {
     sessionMap = new Map()

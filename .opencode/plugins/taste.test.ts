@@ -6,7 +6,6 @@ import {
   applyKLFilter,
   formatPreferences,
   parsePreferenceMemory,
-  buildTasteQuery,
 } from "./taste.ts"
 import type { Preference } from "./taste.ts"
 
@@ -257,14 +256,3 @@ describe("parsePreferenceMemory", () => {
   })
 })
 
-// ─── buildTasteQuery ─────────────────────────────────────────────────
-
-describe("buildTasteQuery", () => {
-  it("builds query with project name", () => {
-    expect(buildTasteQuery("my-app")).toBe("taste:my-app coding preference")
-  })
-
-  it("handles project with special chars", () => {
-    expect(buildTasteQuery("my-app-2")).toBe("taste:my-app-2 coding preference")
-  })
-})

@@ -42,12 +42,12 @@ const CATEGORY_KEYWORDS: [string, string][] = [
 
 // ─── Preference extraction patterns ──────────────────────────────────
 
-interface PatternDef {
+interface Pattern {
   regex: RegExp
   confidence: number
 }
 
-const PATTERNS: PatternDef[] = [
+const PATTERNS: Pattern[] = [
   // More specific patterns first (checked before generic "use")
   { regex: /(?:^|\s)always\s+(?:use\s+)?(?<pref>[a-zA-Z][\w\s/-]{2,60}?)(?:\.|,|$| and | or )/im, confidence: 0.85 },
   { regex: /convention\s+(?:is|here)\s+(?<pref>[a-zA-Z][\w\s/-]{2,60}?)(?:\.|,|$)/im, confidence: 0.90 },
@@ -69,10 +69,7 @@ const GENERIC_PREFIXES = new Set([
 /** Check if a raw preference is likely a false positive from the generic "use" pattern. */
 function isFalsePositive(text: string): boolean {
   const firstWord = text.toLowerCase().split(/\s+/)[0]
-  if (GENERIC_PREFIXES.has(firstWord)) return true
-  // "use the sidebar", "use this approach" — generic descriptions
-  if (firstWord === "the" || firstWord === "this" || firstWord === "that") return true
-  return false
+  return GENERIC_PREFIXES.has(firstWord)
 }
 
 // ─── Common conventions (KL divergence filter) ───────────────────────
@@ -128,17 +125,18 @@ export function extractPreferences(text: string): Preference[] {
 }
 
 /** Merge a new observation into the store. */
+const DECAY_MS = 7 * 24 * 60 * 60 * 1000
+
 export function mergePreference(
   store: Map<string, Preference>,
   pref: Preference,
-  decayMs = 7 * 24 * 60 * 60 * 1000,
 ): void {
   const key = pref.text.toLowerCase().replace(/\s+/g, " ")
   const existing = store.get(key)
 
   if (existing) {
     const age = Date.now() - existing.lastObserved
-    const recencyBoost = Math.max(0, 1 - age / decayMs)
+    const recencyBoost = Math.max(0, 1 - age / DECAY_MS)
     existing.confidence = Math.min(1, existing.confidence * 0.6 + pref.confidence * 0.3 + recencyBoost * 0.1)
     existing.lastObserved = Date.now()
     existing.observationCount++
@@ -183,10 +181,6 @@ interface OvFindResult {
   }
 }
 
-export function buildTasteQuery(project: string): string {
-  return `taste:${project} coding preference`
-}
-
 /** Parse stored memory back into Preference. */
 export function parsePreferenceMemory(abstract: string): Preference | null {
   // Format: "[taste:project] Category — text (confidence: 0.85)"
@@ -206,7 +200,7 @@ export function parsePreferenceMemory(abstract: string): Preference | null {
 /** Fetch stored preferences from OpenViking. */
 export async function fetchTastesViaOpenViking(project: string): Promise<Preference[]> {
   const proc = Bun.spawn([
-    "ov", "find", buildTasteQuery(project), "-n", "10", "-o", "json",
+    "ov", "find", String.fromCharCode(96) + "taste:" + project + " coding preference" + String.fromCharCode(96), "-n", "10", "-o", "json",
   ])
   const exitCode = await proc.exited
   if (exitCode !== 0) return []

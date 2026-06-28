@@ -57,10 +57,13 @@ const PATTERNS: PatternDef[] = [
   { regex: /(?:^|\s)(?:use|using)\s+(?<pref>[a-zA-Z][\w\s/-]{2,60}?)(?:\.|,|$| and | or )/im, confidence: 0.70 },
 ]
 
-/** Words that indicate a generic statement, not a meaningful preference. */
+/** Words that indicate a generic statement, not a meaningful preference.
+ * Note: "any" intentionally excluded so the TS "any" type can be captured
+ * from negative patterns like "don't use any".
+ */
 const GENERIC_PREFIXES = new Set([
   "the", "a", "an", "this", "that", "these", "those", "it", "its", "my", "your", "our",
-  "some", "any", "each", "every", "all", "both", "few", "many", "much", "several",
+  "some", "each", "every", "all", "both", "few", "many", "much", "several",
 ])
 
 /** Check if a raw preference is likely a false positive from the generic "use" pattern. */
@@ -105,7 +108,7 @@ export function extractPreferences(text: string): Preference[] {
     let raw = match.groups.pref.trim()
     // Strip trailing clauses: "use X in Y" → "use X"
     raw = raw.replace(/\s+(and|or|in|for|with|by|at|on|to)\s+.*$/i, "").trim()
-    if (raw.length < 5 || raw.length > 60) continue // min 5 to filter short fragments
+    if (raw.length < 3 || raw.length > 60) continue // min 3 to allow short keywords (pnpm, any, js, etc.)
     if (isFalsePositive(raw)) continue
 
     const key = raw.toLowerCase().replace(/\s+/g, " ")

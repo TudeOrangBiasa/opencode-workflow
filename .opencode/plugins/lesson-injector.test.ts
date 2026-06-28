@@ -180,15 +180,21 @@ describe("plugin factory", () => {
   let spawnSpy: ReturnType<typeof spyOn>
 
   beforeEach(() => {
-    spawnSpy = spyOn(Bun, "spawnSync")
+    spawnSpy = spyOn(Bun, "spawn")
     spawnSpy.mockImplementation(() => {
+      const stdoutData = JSON.stringify({ ok: true, result: { memories: [], resources: [] } })
       return {
-        stdout: Buffer.from(
-          JSON.stringify({ ok: true, result: { memories: [], resources: [] } })
-        ),
-        stderr: Buffer.from(""),
-        exitCode: 0,
-      }
+        exited: Promise.resolve(0),
+        stdout: new ReadableStream({
+          start(controller) {
+            controller.enqueue(new TextEncoder().encode(stdoutData))
+            controller.close()
+          },
+        }),
+        stderr: new ReadableStream({
+          start(controller) { controller.close() },
+        }),
+      } as any
     })
   })
 

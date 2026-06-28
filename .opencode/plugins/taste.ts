@@ -205,14 +205,16 @@ export function parsePreferenceMemory(abstract: string): Preference | null {
 
 /** Fetch stored preferences from OpenViking. */
 export async function fetchTastesViaOpenViking(project: string): Promise<Preference[]> {
-  const { stdout, exitCode } = Bun.spawnSync([
+  const proc = Bun.spawn([
     "ov", "find", buildTasteQuery(project), "-n", "10", "-o", "json",
   ])
+  const exitCode = await proc.exited
   if (exitCode !== 0) return []
 
+  const stdout = await new Response(proc.stdout).text()
   let parsed: OvFindResult
   try {
-    parsed = JSON.parse(stdout.toString())
+    parsed = JSON.parse(stdout)
   } catch {
     return []
   }
@@ -225,10 +227,11 @@ export async function fetchTastesViaOpenViking(project: string): Promise<Prefere
 }
 
 /** Persist a single preference to OpenViking. Returns true if persisted. */
-export function persistPreference(project: string, pref: Preference): boolean {
-  const tag = `[taste:${project}]`
-  const content = `${tag} ${pref.category} — ${pref.text} (confidence: ${pref.confidence.toFixed(2)})`
-  const { exitCode } = Bun.spawnSync(["ov", "add-memory", content])
+export async function persistPreference(project: string, pref: Preference): Promise<boolean> {
+  const tag = "[taste:" + project + "]"
+  const content = tag + " " + pref.category + " — " + pref.text + " (confidence: " + pref.confidence.toFixed(2) + ")"
+  const proc = Bun.spawn(["ov", "add-memory", content])
+  const exitCode = await proc.exited
   return exitCode === 0
 }
 
@@ -258,7 +261,7 @@ function getOrCreateSession(sessionID: string, project: string): SessionState {
  * Flush unsaved preferences to OpenViking.
  * Only spawns `ov add-memory` for preferences whose normalized key hasn't been persisted yet.
  */
-function flushPending(sessionID: string): void {
+async function flushPending(sessionID: string): Promise<void> {
   const state = sessionStore.get(sessionID)
   if (!state || state.prefs.size === 0) return
 
@@ -270,7 +273,7 @@ function flushPending(sessionID: string): void {
     const key = pref.text.toLowerCase().replace(/\s+/g, " ")
     // Skip if already persisted (dedup)
     if (state.persistedKeys.has(key)) continue
-    const ok = persistPreference(state.project, pref)
+    const ok = await persistPreference(state.project, pref)
     if (ok) {
       state.persistedKeys.add(key)
       persistedCount++
@@ -280,7 +283,7 @@ function flushPending(sessionID: string): void {
   state.lastFlush = Date.now()
 
   if (persistedCount > 0) {
-    console.log(`[taste] persisted ${persistedCount} new preference(s) for ${sessionID}`)
+    console.log("[taste] persisted " + persistedCount + " new preference(s) for " + sessionID)
   }
 }
 
@@ -306,7 +309,7 @@ const plugin: Plugin = async (_input: PluginInput) => {
     flushTimer = setInterval(() => {
       evictStaleSessions()
       for (const [sid] of sessionStore.entries()) {
-        flushPending(sid)
+        void flushPending(sid)
       }
     }, PERSIST_INTERVAL_MS)
   }

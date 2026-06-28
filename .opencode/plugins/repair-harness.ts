@@ -1,5 +1,11 @@
 import type { Plugin } from "@opencode-ai/plugin"
 
+/** Repair harness — intercepts malformed tool args and fixes them before execution.
+ *
+ * 4 deterministic patterns: null drop, JSON parse, markdown strip, array wrap.
+ * Auto-disables per-tool when repair rate is stable. Use REPAIR_HARNESS=off to disable globally.
+ */
+
 // ─── Per-tool session stats ─────────────────────────────────────────
 interface ToolStat {
   totalCalls: number
@@ -34,6 +40,11 @@ function getStat(sessionID: string, tool: string): ToolStat {
 }
 
 // ─── Kill switch — env var disables all repair logic ─────────────────
+
+/** Kill switch: REPAIR_HARNESS=off|disable|0|false disables all repair.
+ * Default: enabled. Useful for debugging or when a repair is causing issues.
+ * @returns true if the harness should run, false if it should no-op
+ */
 function isHarnessEnabled(): boolean {
   return !["off", "disable", "0", "false"].includes(
     (process.env.REPAIR_HARNESS || "").toLowerCase()

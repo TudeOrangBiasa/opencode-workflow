@@ -36,6 +36,26 @@ export { repairNullDrop, repairJsonString, repairMarkdownString, repairSingleObj
 // ─── Module-level regex (hoisted — don't recreate per call) ────────
 const ARRAY_HINT = /^(urls|paths|files|items|list|ids|keys|values|args|options|flags|include|exclude|sources|targets|patterns|globs)$/i
 
+// Bootstrap trap: use char code for backtick.
+// Pattern 3 strips BT pairs from markdown. If this file ever gets
+// rewritten via write tool, literal backticks in regex source are
+// destroyed. String.fromCharCode(96) survives the round-trip.
+const BT = String.fromCharCode(96)
+
+// Pattern 3 regex constants (hoisted)
+const MD_LINK = /\[([^\]]*)\]\([^)]*\)/g
+// Negative lookbehind/lookahead skips triple-backtick fences
+const MD_CODE = new RegExp(
+  "(?<!" + BT + ")" + BT + "([^" + BT + "]{1,200}?)" + BT + "(?!" + BT + ")",
+  "g"
+)
+
+// Tools that write content to disk — skip pattern 3 to preserve code
+const DISK_WRITE_TOOLS = new Set([
+  "write", "edit", "create", "replace", "patch", "applyDiff",
+  "writeFile", "write_file", "fs_write", "put_file",
+])
+
 // ─── Repair patterns ────────────────────────────────────────────────
 
 /**
@@ -85,26 +105,25 @@ function repairJsonString(args: Record<string, unknown>): boolean {
 /**
  * Pattern 3 — Bare-string markdown stripping.
  * Removes markdown link / inline-code formatting from string args.
+ * Uses hoisted MD_LINK and MD_CODE constants (see bootstrap trap note above).
  */
 function repairMarkdownString(args: Record<string, unknown>): boolean {
   let repaired = false
   for (const [k, v] of Object.entries(args)) {
-      if (typeof v !== "string") continue
-      let s = v  // TS narrows after typeof guard in for-of
-      const before = s
-      // [text](url) → text
-      s = s.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-      // `code` → code
-      s = s.replace(/`([^`]*)`/g, "$1")
-      if (s !== before) {
-        args[k] = s
-        repaired = true
-      }
+    if (typeof v !== "string") continue
+    let s = v
+    const before = s
+    s = s.replace(MD_LINK, "$1")
+    s = s.replace(MD_CODE, "$1")
+    if (s !== before) {
+      args[k] = s
+      repaired = true
     }
-    return repaired
   }
+  return repaired
+}
 
-  /**
+/**
  * Pattern 4 — Single-object wrap.
  * If a singular value (not array) is given for a param whose name
  * suggests it should be an array (pluralised key, "list", "items", "array"),
@@ -157,7 +176,10 @@ const plugin: Plugin = async () => {
         // Run all repairs (each must fire independently — no short-circuit)
         if (repairNullDrop(args)) didRepair = true
         if (repairJsonString(args)) didRepair = true
-        if (repairMarkdownString(args)) didRepair = true
+        // Skip pattern 3 for disk-write tools (bootstrap trap guard)
+        if (!DISK_WRITE_TOOLS.has(tool)) {
+          if (repairMarkdownString(args)) didRepair = true
+        }
         if (repairSingleObjectWrap(args)) didRepair = true
 
         stat.totalCalls++

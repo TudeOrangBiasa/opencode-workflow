@@ -242,6 +242,65 @@ describe("Safety: kill switch", () => {
   })
 })
 
+// ═══ Issue 20: Pattern 3 opt-in via tool whitelist ════════════════════
+
+// Bootstrap trap: avoid hooks[hookName pattern. Use intermediate
+// variable to separate bracket access from function call.
+
+describe("Issue 20 - Pattern 3 tool whitelist", () => {
+  var BT = String.fromCharCode(96)
+  var diskWriteTools = ["write", "edit", "create", "replace", "patch", "applyDiff"]
+  for (var di = 0; di < diskWriteTools.length; di++) {
+    ;(function (toolName) {
+      it("skips " + toolName + " tool", async () => {
+        var hooks = await (plugin as any)({})
+        var input = { tool: toolName, sessionID: "i20-test", callID: "i20-call" }
+        var contentArg = "use " + BT + "foo" + BT
+        var output = { args: { content: contentArg } }
+        var hookName = "tool.execute.before"
+        var fn = hooks[hookName]
+        await fn(input, output)
+        expect(output.args.content).toBe(contentArg)
+      })
+    })(diskWriteTools[di])
+  }
+
+  var safeTools = ["chat", "ask", "webfetch"]
+  for (var si = 0; si < safeTools.length; si++) {
+    ;(function (toolName) {
+      it("runs for " + toolName + " tool", async () => {
+        var hooks = await (plugin as any)({})
+        var input = { tool: toolName, sessionID: "i20-test", callID: "i20-call" }
+        var contentArg = "use " + BT + "foo" + BT
+        var output = { args: { content: contentArg } }
+        var hookName = "tool.execute.before"
+        var fn = hooks[hookName]
+        await fn(input, output)
+        expect(output.args.content).toBe("use foo")
+      })
+    })(safeTools[si])
+  }
+})
+
+describe("Issue 20 - Triple backtick protection", () => {
+  it("does not corrupt triple backtick code fence", () => {
+    var BT = String.fromCharCode(96)
+    var fence = BT + BT + BT + "\nts\nconst x = 1\n" + BT + BT + BT
+    var args = { content: fence }
+    expect(repairMarkdownString(args)).toBe(false)
+    expect(args.content).toBe(fence)
+  })
+
+  it("still strips single backtick pairs", () => {
+    var BT = String.fromCharCode(96)
+    var input = "use " + BT + "foo" + BT
+    var expected = "use foo"
+    var args = { content: input }
+    expect(repairMarkdownString(args)).toBe(true)
+    expect(args.content).toBe(expected)
+  })
+})
+
 describe("Safety: session prefix in logs", () => {
   it("log includes short session ID when sessionID present", async () => {
     const spy = spyOn(console, "log")

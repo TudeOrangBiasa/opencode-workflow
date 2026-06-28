@@ -1,4 +1,5 @@
 import type { Plugin, PluginInput } from "@opencode-ai/plugin"
+import { ovFindJson } from "./ov-helper"
 
 // ─── SessionCache — per-session with TTL ────────────────────────────
 
@@ -93,32 +94,9 @@ export async function fetchAndInjectLessons(
 
 // ─── Production lesson finder via OpenViking CLI ────────────────────
 
-interface OvFindResult {
-  ok: boolean
-  result: {
-    memories: { score: number; abstract: string }[]
-    resources: { score: number; abstract: string }[]
-  }
-}
-
 export async function findLessonsViaOpenViking(query: string): Promise<string[]> {
-  const proc = Bun.spawn(["ov", "find", query, "-n", "5", "-o", "json"])
-  const exitCode = await proc.exited
-  if (exitCode !== 0) {
-    console.warn("[lesson-injector] ov find exited with code " + exitCode)
-    return []
-  }
-
-  const stdout = await new Response(proc.stdout).text()
-  let parsed: OvFindResult
-  try {
-    parsed = JSON.parse(stdout)
-  } catch {
-    console.warn("[lesson-injector] failed to parse ov find output")
-    return []
-  }
-
-  if (!parsed.ok) return []
+  const parsed = await ovFindJson(["ov", "find", query, "-n", "5", "-o", "json"])
+  if (!parsed || !parsed.ok) return []
 
   const items = [...parsed.result.memories, ...parsed.result.resources]
   const lessons = items

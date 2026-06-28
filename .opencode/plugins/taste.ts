@@ -1,4 +1,5 @@
 import type { Plugin, PluginInput } from "@opencode-ai/plugin"
+import { ovFindJson } from "./ov-helper"
 
 // ─── Types ───────────────────────────────────────────────────────────
 
@@ -199,20 +200,9 @@ export function parsePreferenceMemory(abstract: string): Preference | null {
 
 /** Fetch stored preferences from OpenViking. */
 export async function fetchTastesViaOpenViking(project: string): Promise<Preference[]> {
-  const proc = Bun.spawn([
-    "ov", "find", String.fromCharCode(96) + "taste:" + project + " coding preference" + String.fromCharCode(96), "-n", "10", "-o", "json",
-  ])
-  const exitCode = await proc.exited
-  if (exitCode !== 0) return []
-
-  const stdout = await new Response(proc.stdout).text()
-  let parsed: OvFindResult
-  try {
-    parsed = JSON.parse(stdout)
-  } catch {
-    return []
-  }
-  if (!parsed.ok) return []
+  const query = String.fromCharCode(96) + "taste:" + project + " coding preference" + String.fromCharCode(96)
+  const parsed = await ovFindJson(["ov", "find", query, "-n", "10", "-o", "json"])
+  if (!parsed || !parsed.ok) return []
 
   return parsed.result.memories
     .filter((m) => m.score >= 0.45)

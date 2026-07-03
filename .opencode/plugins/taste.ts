@@ -282,6 +282,8 @@ let flushTimer: ReturnType<typeof setInterval> | null = null
 // Plugin
 
 const plugin: Plugin = async (_input: PluginInput) => {
+  const project = (_input.directory || "").split("/").pop() || "unknown"
+
   // Start periodic flush + eviction timer
   if (!flushTimer) {
     flushTimer = setInterval(() => {
@@ -295,15 +297,14 @@ const plugin: Plugin = async (_input: PluginInput) => {
   return {
     "chat.message": async (
       msgInput: Record<string, unknown>,
-      _output: Record<string, unknown>,
+      output: { message: { role?: string; content?: string }; parts: unknown[] },
     ) => {
-      const message = msgInput.message as { role?: string; content?: string } | undefined
+      const message = output.message
       if (!message || message.role !== "user") return
       const text = message.content || ""
       if (text.length < 10) return
 
       const sessionID = (msgInput.sessionID as string) || "default"
-      const project = ((msgInput.directory as string) || "").split("/").pop() || "unknown"
       const state = getOrCreateSession(sessionID, project)
 
       const extracted = extractPreferences(text)

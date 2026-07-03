@@ -225,3 +225,105 @@ describe("plugin factory", () => {
   })
 })
 
+// ─── Hook-level: spawn, inject, cache ────────────────────────────────
+
+describe("experimental.chat.system.transform hook", () => {
+  let spawnSpy: ReturnType<typeof spyOn>
+
+  beforeEach(() => {
+    SessionCache.clear()
+    spawnSpy = spyOn(Bun, "spawn").mockImplementation(() => {
+      const stdoutData = JSON.stringify({
+        ok: true,
+        result: {
+          memories: [
+            { score: 0.9, abstract: "use pnpm for package management" },
+            { score: 0.8, abstract: "prefer vitest over jest" },
+          ],
+          resources: [],
+        },
+      })
+      return {
+        exited: Promise.resolve(0),
+        stdout: new ReadableStream({
+          start(controller) {
+            controller.enqueue(new TextEncoder().encode(stdoutData))
+            controller.close()
+          },
+        }),
+        stderr: new ReadableStream({
+          start(controller) { controller.close() },
+        }),
+      } as any
+    })
+  })
+
+  afterEach(() => {
+    spawnSpy.mockRestore()
+  })
+
+  it("calls ov find via Bun.spawn and injects lessons into output.system", async () => {
+    const inst = await plugin({ directory: "/path/MyProject" } as any)
+    const output = { system: ["base prompt"] }
+    await (inst["experimental.chat.system.transform"] as any)(
+      { sessionID: "hook-test-spawn", model: {} } as any,
+      output,
+    )
+
+    expect(spawnSpy).toHaveBeenCalledTimes(1)
+    const cmdArgs = spawnSpy.mock.calls[0][0] as string[]
+    expect(cmdArgs[0]).toBe("ov")
+    expect(cmdArgs[1]).toBe("find")
+    expect(cmdArgs[2]).toContain("MyProject")
+
+    expect(output.system[0]).toContain("## Past Lessons")
+    expect(output.system[0]).toContain("use pnpm")
+    expect(output.system[0]).toContain("prefer vitest")
+  })
+
+  it("uses cache on second call (no additional spawn)", async () => {
+    const inst = await plugin({ directory: "/path/MyProject" } as any)
+    const output1 = { system: ["first"] }
+    await (inst["experimental.chat.system.transform"] as any)(
+      { sessionID: "hook-test-cache", model: {} } as any,
+      output1,
+    )
+    const firstSpawnCount = spawnSpy.mock.calls.length
+
+    const output2 = { system: ["second"] }
+    await (inst["experimental.chat.system.transform"] as any)(
+      { sessionID: "hook-test-cache", model: {} } as any,
+      output2,
+    )
+
+    expect(spawnSpy.mock.calls.length).toBe(firstSpawnCount) // no new spawn
+    expect(output2.system[0]).toContain("use pnpm")
+  })
+
+  it("handles gracefully when ov find returns no results", async () => {
+    spawnSpy.mockRestore()
+    spawnSpy = spyOn(Bun, "spawn").mockImplementation(() => ({
+      exited: Promise.resolve(0),
+      stdout: new ReadableStream({
+        start(controller) {
+          const data = JSON.stringify({ ok: true, result: { memories: [], resources: [] } })
+          controller.enqueue(new TextEncoder().encode(data))
+          controller.close()
+        },
+      }),
+      stderr: new ReadableStream({
+        start(controller) { controller.close() },
+      }),
+    } as any))
+
+    const inst = await plugin({ directory: "/path/EmptyProject" } as any)
+    const output = { system: ["base prompt"] }
+    await (inst["experimental.chat.system.transform"] as any)(
+      { sessionID: "hook-test-empty", model: {} } as any,
+      output,
+    )
+
+    expect(output.system).toEqual(["base prompt"]) // unchanged
+  })
+})
+

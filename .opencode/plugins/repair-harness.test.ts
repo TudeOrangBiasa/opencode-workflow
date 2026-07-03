@@ -1,4 +1,4 @@
-import { describe, it, expect, spyOn } from "bun:test"
+import { describe, it, expect, spyOn, beforeEach, afterEach } from "bun:test"
 import plugin, {
   repairNullDrop,
   repairJsonString,
@@ -441,5 +441,139 @@ describe("Issue 26 — toolStats memory bound", () => {
     }
     const check = getStat(PREFIX + "0", "t")
     expect(check.totalCalls).toBe(1)
+  })
+})
+
+// ═══ Edge cases: output.args ──────────────────────────────────────────
+
+describe("before-hook: output.args edge cases", () => {
+  var hooksCache: any = null
+  var bHook: any = null
+
+  beforeEach(async () => {
+    hooksCache = await (plugin as any)({})
+    bHook = hooksCache["tool.execute.before"]
+  })
+
+  it("handles null args gracefully", async () => {
+    await bHook({ tool: "grep", sessionID: "args-null", callID: "c1" }, { args: null })
+    expect(true).toBe(true) // no throw
+  })
+
+  it("handles undefined args gracefully", async () => {
+    await bHook({ tool: "grep", sessionID: "args-undef", callID: "c2" }, { args: undefined })
+    expect(true).toBe(true)
+  })
+
+  it("handles array args gracefully", async () => {
+    await bHook({ tool: "grep", sessionID: "args-arr", callID: "c3" }, { args: ["a", "b"] })
+    expect(true).toBe(true)
+  })
+
+  it("handles primitive args gracefully", async () => {
+    await bHook({ tool: "grep", sessionID: "args-prim", callID: "c4" }, { args: "hello" })
+    expect(true).toBe(true)
+  })
+
+  it("handles missing args gracefully", async () => {
+    await bHook({ tool: "grep", sessionID: "args-miss", callID: "c5" }, {} as any)
+    expect(true).toBe(true)
+  })
+})
+
+// ═══ End-to-end mutation ─────────────────────────────────────────────
+
+describe("before-hook: end-to-end args mutation", () => {
+  it("mutates output.args for null drop", async () => {
+    const hooks = await (plugin as any)({})
+    const input = { tool: "grep", sessionID: "e2e-1", callID: "c1" }
+    const output = { args: { path: "/x", mode: null, extra: undefined } }
+    await hooks["tool.execute.before"](input, output)
+    expect("mode" in output.args).toBe(false)
+    expect("extra" in output.args).toBe(false)
+    expect(output.args.path).toBe("/x")
+  })
+
+  it("mutates output.args for JSON parse", async () => {
+    const hooks = await (plugin as any)({})
+    const input = { tool: "grep", sessionID: "e2e-2", callID: "c2" }
+    const output: any = { args: { data: '["/a", "/b"]' } }
+    await hooks["tool.execute.before"](input, output)
+    expect(Array.isArray(output.args.data)).toBe(true)
+    expect(output.args.data).toEqual(["/a", "/b"])
+  })
+
+  it("mutates output.args for markdown strip", async () => {
+    const hooks = await (plugin as any)({})
+    const input = { tool: "grep", sessionID: "e2e-3", callID: "c3" }
+    const output = { args: { path: "`code` here" } }
+    await hooks["tool.execute.before"](input, output)
+    expect(output.args.path).toBe("code here")
+  })
+
+  it("mutates output.args for single-object wrap", async () => {
+    const hooks = await (plugin as any)({})
+    const input = { tool: "grep", sessionID: "e2e-4", callID: "c4" }
+    const output = { args: { urls: "https://example.com" } }
+    await hooks["tool.execute.before"](input, output)
+    expect(Array.isArray(output.args.urls)).toBe(true)
+    expect(output.args.urls[0]).toBe("https://example.com")
+  })
+})
+
+// ═══ Auto-disable behavior ──────────────────────────────────────────
+
+describe("before-hook: auto-disable", () => {
+  it("disables tool after 100+ calls with low repair rate", async () => {
+    const hooks = await (plugin as any)({})
+    const input = { tool: "autodisable-tool", sessionID: "autodisable", callID: "ad" }
+    const cleanArgs = { args: { path: "/clean", depth: 3 } }
+
+    // 99 clean calls (no repair)
+    for (let i = 0; i < 99; i++) {
+      await hooks["tool.execute.before"](input, cleanArgs)
+    }
+
+    // 1 more = total 100, repair rate = 0% → should disable
+    await hooks["tool.execute.before"](input, cleanArgs)
+
+    const stat = getStat("autodisable", "autodisable-tool")
+    expect(stat.disabled).toBe(true)
+    expect(stat.totalCalls).toBe(100)
+    expect(stat.repairCount).toBe(0)
+  })
+
+  it("does NOT disable when repair rate >= 2%", async () => {
+    const hooks = await (plugin as any)({})
+    const input = { tool: "keep-enabled-tool", sessionID: "keep-enabled", callID: "ke" }
+
+    // 98 clean + 2 repair = 100 total, rate = 2%
+    for (let i = 0; i < 98; i++) {
+      await hooks["tool.execute.before"](input, { args: { path: "/clean", depth: 3 } })
+    }
+    await hooks["tool.execute.before"](input, { args: { path: null } }) // repair 1
+    await hooks["tool.execute.before"](input, { args: { path: null } }) // repair 2
+
+    const stat = getStat("keep-enabled", "keep-enabled-tool")
+    expect(stat.disabled).toBe(false)
+    expect(stat.totalCalls).toBe(100)
+    expect(stat.repairCount).toBe(2)
+  })
+
+  it("disabled tool skips repair (no-op)", async () => {
+    // Create plugin first so toolStats is fresh, then force-disable
+    const hooks = await (plugin as any)({})
+    const stat = getStat("already-disabled", "disabled-tool")
+    stat.disabled = true
+    stat.totalCalls = 100
+    stat.repairCount = 0
+
+    const input = { tool: "disabled-tool", sessionID: "already-disabled", callID: "ad2" }
+    const output = { args: { path: null } }
+    await hooks["tool.execute.before"](input, output)
+
+    // args unchanged because tool is disabled; totalCalls not incremented
+    expect(output.args.path).toBeNull()
+    expect(stat.totalCalls).toBe(100)
   })
 })

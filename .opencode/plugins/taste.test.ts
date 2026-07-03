@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "bun:test"
-import {
+import plugin, {
   extractPreferences,
   mergePreference,
   inferCategory,
@@ -253,6 +253,73 @@ describe("parsePreferenceMemory", () => {
 
   it("returns null for empty string", () => {
     expect(parsePreferenceMemory("")).toBeNull()
+  })
+})
+
+// ─── Plugin hooks ────────────────────────────────────────────────────
+
+describe("chat.message hook", () => {
+  it("extracts preferences from a user message", async () => {
+    const inst = await plugin({ directory: "/project/test-app" } as any)
+    const msgInput = { sessionID: "taste-chat-1", agent: "default" }
+    const output = { message: { role: "user" as const, content: "prefer pnpm over npm" }, parts: [] }
+
+    await (inst["chat.message"] as any)(msgInput, output)
+
+    // Now check system prompt gets the preference injected
+    const sysOutput = { system: ["base prompt"] }
+    await (inst["experimental.chat.system.transform"] as any)(
+      { sessionID: "taste-chat-1", model: {} } as any,
+      sysOutput,
+    )
+    expect(sysOutput.system[0]).toContain("## Learned Preferences")
+    expect(sysOutput.system[0]).toContain("pnpm")
+  })
+
+  it("ignores non-user messages", async () => {
+    const inst = await plugin({ directory: "/project/test-app" } as any)
+    const msgInput = { sessionID: "taste-chat-2", agent: "default" }
+    const output = { message: { role: "assistant" as const, content: "prefer pnpm" }, parts: [] }
+
+    await (inst["chat.message"] as any)(msgInput, output)
+
+    const sysOutput = { system: ["base"] }
+    await (inst["experimental.chat.system.transform"] as any)(
+      { sessionID: "taste-chat-2", model: {} } as any,
+      sysOutput,
+    )
+    expect(sysOutput.system[0]).toBe("base") // no injection
+  })
+
+  it("ignores short messages (< 10 chars)", async () => {
+    const inst = await plugin({ directory: "/project/test-app" } as any)
+    const msgInput = { sessionID: "taste-chat-3", agent: "default" }
+    const output = { message: { role: "user" as const, content: "ok" }, parts: [] }
+
+    await (inst["chat.message"] as any)(msgInput, output)
+
+    const sysOutput = { system: ["base"] }
+    await (inst["experimental.chat.system.transform"] as any)(
+      { sessionID: "taste-chat-3", model: {} } as any,
+      sysOutput,
+    )
+    expect(sysOutput.system[0]).toBe("base") // no injection
+  })
+
+  it("injecting preferences does not crash when system array is empty", async () => {
+    const inst = await plugin({ directory: "/project/test-app" } as any)
+    const msgInput = { sessionID: "taste-chat-4", agent: "default" }
+    const output = { message: { role: "user" as const, content: "always use strict TypeScript" }, parts: [] }
+
+    await (inst["chat.message"] as any)(msgInput, output)
+
+    const sysOutput = { system: [] as string[] }
+    await (inst["experimental.chat.system.transform"] as any)(
+      { sessionID: "taste-chat-4", model: {} } as any,
+      sysOutput,
+    )
+    expect(sysOutput.system.length).toBe(1)
+    expect(sysOutput.system[0]).toContain("## Learned Preferences")
   })
 })
 

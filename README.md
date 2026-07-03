@@ -27,8 +27,8 @@ opencode-workflow/                              (this repo)
 │   │   ├── drawio/            (symlink)
 │   │   ├── humanizer/         (symlink)
 │   │   └── officecli/         (symlink)
-│   ├── productivity/  (legacy)
-│   ├── misc/         (legacy)
+│   ├── productivity/                             (daily non-code workflow tools)
+│   ├── misc/                                      (specialist domains: frontend, backend, languages, workflow, security, ml, mobile, devops)
 │   └── ...
 ├── scripts/                                    (check, audit, install)
 │   ├── check-portable.sh      (hardcoded path lint)
@@ -74,9 +74,13 @@ chmod +x scripts/*.sh
 
 1. Decide: pipeline-level (here) or extractable (own repo)? See [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md).
 2. Load: **write-a-skill** + **skill-author**
-3. Create `skills/{category}/skill-name/` with `SKILL.md` (≤100 lines) + optional `REFERENCE.md`
-4. Run `./scripts/audit-skill.sh skills/path/to/skill` to verify
-5. Pre-commit hook catches hardcoded paths + structural issues
+3. Pick the right bucket:
+   - `skills/engineering/` — pipeline/daily code-work skills
+   - `skills/misc/<domain>/` — specialist skills grouped by domain (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`)
+4. Create `skills/<bucket>/skill-name/` with `SKILL.md` (≤100 lines) + optional `REFERENCE.md`
+5. Update the bucket `README.md` (and `skills/misc/README.md` for misc sub-domains)
+6. Run `./scripts/audit-skill.sh skills/path/to/skill` to verify
+7. Pre-commit hook catches hardcoded paths + structural issues
 
 ## When to extract a skill
 
@@ -139,7 +143,7 @@ This is personal dotfiles / workflow setup. Not for public distribution as a who
 
 ## Skill compliance
 
-144/147 skills pass write-a-skill compliance. 3 are in `deprecated/` (excluded by design).
+126/146 skills pass write-a-skill compliance. 20 are in external/personal directories (excluded by design). 0 failed.
 
 Compliance is enforced by:
 - `scripts/check-skill-structure.sh` (pre-commit, runs automatically)

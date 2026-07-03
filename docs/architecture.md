@@ -28,8 +28,22 @@ opencode-workflow is the **personal dotfiles + workflow pipeline**. It contains:
 
 ```
 opencode-workflow/
+├── .opencode/plugins/        ← runtime plugins loaded by OpenCode
+│   ├── repair-harness.ts     ← tool-call repair (4 patterns, kill switch, auto-disable)
+│   ├── taste.ts              ← preference extraction → OpenViking
+│   ├── lesson-injector.ts    ← past-lesson injection into system prompt
+│   └── ov-helper.ts          ← shared ov CLI wrapper
 ├── skills/
 │   ├── engineering/          ← pipeline skills (write-a-skill, dev-workflow, etc.)
+│   ├── misc/                 ← specialist domain skills
+│   │   ├── backend/
+│   │   ├── devops/
+│   │   ├── frontend/
+│   │   ├── languages/
+│   │   ├── ml/
+│   │   ├── mobile/
+│   │   ├── security/
+│   │   └── workflow/
 │   ├── personal/             ← personal skills + symlinks to documents-kit-skills/
 │   │   └── documents-kit-skills/   ← symlink to external package
 │   │       ├── document-writing/    (symlink)
@@ -90,10 +104,14 @@ See [skills/extraction-criteria.md](skills/extraction-criteria.md) for the full 
 ## How to add a new skill
 
 1. Decide: pipeline-level (here) or extractable (own repo)? See above.
-2. If here: create `skills/{category}/skill-name/` with `SKILL.md` + optional `REFERENCE.md`
-3. If external: create repo with same structure, integrate via symlink
-4. Run `./scripts/audit-skill.sh skills/path/to/skill` to verify
-5. Run `./scripts/install-hooks.sh` if not already done
+2. If here, pick the right bucket:
+   - `engineering/` — pipeline/daily code-work skills
+   - `misc/<domain>/` — specialist skills grouped by domain (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`)
+3. Create `skills/{bucket}/skill-name/` with `SKILL.md` + optional `REFERENCE.md`
+4. If external: create repo with same structure, integrate via symlink
+5. Run `./scripts/audit-skill.sh skills/path/to/skill` to verify
+6. Run `./scripts/install-hooks.sh` if not already done
+7. Update the bucket `README.md` (and `skills/misc/README.md` for misc sub-domains)
 
 ## Reference
 

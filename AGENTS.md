@@ -56,7 +56,7 @@ Skills are organized into bucket folders under `skills/`:
 
 - `engineering/` — daily code work.
 - `productivity/` — daily non-code workflow tools.
-- `misc/` — kept around but rarely used.
+- `misc/` — specialist domain skills, grouped into sub-directories (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`).
 - `personal/` — tied to personal setup, not promoted.
 - `in-progress/` — drafts not ready to ship.
 - `deprecated/` — no longer active.

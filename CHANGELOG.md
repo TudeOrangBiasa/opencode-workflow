@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+- Refactor: reorganize `skills/misc/` into 8 domain sub-directories: `frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`. Reverted earlier move of workflow skills into `engineering/`/`productivity/`; all 103 specialist skills now live under `misc/<domain>/`. Updated `skills/misc/README.md` with grouped lists and `docs/architecture.md` layout.
+- Fix: `.opencode/plugins/taste.ts` `chat.message` hook was reading `message` from the wrong argument and `directory` from the wrong input. Now reads `output.message` per SDK and captures `project` from the plugin factory input.
+- Improvement: `.opencode/plugins/ov-helper.ts` now captures stderr and logs warnings on non-zero exit or invalid JSON while keeping the public interface unchanged.
+- Test: TDD coverage expansion across all plugins — added 23 tests (159 total pass, 0 fail). New coverage: `ov-helper` error paths, `taste` hook behavior, `repair-harness` edge cases and auto-disable, `lesson-injector` system-transform hook.
+- Docs: updated `docs/architecture.md` to show `.opencode/plugins/`, `misc/<domain>/` sub-directories, and the new add-skill workflow. Updated `README.md` tree and skill-count line.
+
 ## [2026-06-28] — documents-kit-skills full bundle + plugin polish
 
 - Feat: full bundle documents-kit-skills — 4 skills (document-writing, drawio, humanizer, officecli) + scholar-paper-mcp MCP server (15 tools) + tools/ glue scripts (8 entries) symlinked into workflow. MCP registered in opencode.json. Docs updated.

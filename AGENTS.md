@@ -57,7 +57,7 @@ Skills are organized into bucket folders under `skills/`:
 - `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-prd, to-issues, triage), `design/` (design, grill-with-docs, improve-codebase-architecture), `quality/` (review, tdd, diagnose, ponytail), `workflow/` (prototype, memory-dreaming, setup-matt-pocock-skills, skill-author, zoom-out).
 - `productivity/` — daily non-code workflow tools.
 - `misc/` — specialist domain skills, grouped into sub-directories (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`).
-- `personal/` — tied to personal setup, not promoted.
+- `personal/` — tied to personal setup, not promoted. Has 3 sub-areas: `documents-kit-skills/` (symlinked package, 10 skills), `workflow/` (dev-workflow, eval, idea-fragments, workflow-audit), `tools/` (ddev, openviking).
 - `in-progress/` — drafts not ready to ship.
 - `deprecated/` — no longer active.
 

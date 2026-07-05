@@ -1,148 +1,210 @@
 #!/usr/bin/env bash
-# setup-documents-kit.sh — Symlink documents-kit-skills into opencode-workflow under skills/personal/.
-# Run this once after cloning opencode-workflow (and after cloning documents-kit-skills).
+# setup-documents-kit.sh — Symlink documents-kit-skills into opencode-workflow.
+# Run once after cloning both repos.
 #
 # Creates:
-#   opencode-workflow/skills/personal/documents-kit-skills/  (package folder)
-#   opencode-workflow/skills/personal/documents-kit-skills/document-writing  → documents-kit-skills/skills/document-writing
-#   opencode-workflow/skills/personal/documents-kit-skills/drawio            → documents-kit-skills/skills/drawio
-#   opencode-workflow/skills/personal/documents-kit-skills/humanizer         → documents-kit-skills/skills/humanizer
-#   opencode-workflow/skills/personal/documents-kit-skills/officecli         → documents-kit-skills/skills/officecli
-#   ~/.config/opencode/skills/{document-writing,drawio,humanizer,officecli}  (re-pointed to package)
+#   skills/personal/documents-kit-skills/<skill>  → documents-kit-skills/skills/<skill>  (10 skills)
+#   ~/.config/opencode/skills/<skill>              → package folder (10 skills)
+#   tools/<tool>                                   → documents-kit-skills/tools/<tool>    (14 + tests/)
+#   documents-kit/{templates,presets,diagrams,examples}/  → source (when SETUP_ASSETS=1)
 #
-# Backs up existing skill dirs (if they exist as real dirs, not symlinks) to .scratch/backup/.
+# Env flags:
+#   DOCUMENTS_KIT_DIR   — path to source repo (default: ~/Workspace/.../documents-kit-skills)
+#   SETUP_TOOLS         — set to false to skip tools/  (default: true)
+#   SETUP_ASSETS        — set to false to skip documents-kit/ assets (default: true)
 
 set -euo pipefail
 
 WORKFLOW_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 KIT_DIR="${DOCUMENTS_KIT_DIR:-/home/todayz/Workspace/personal/dev/ai-kit/documents-kit-skills}"
 
-echo "=== Setup documents-kit-skills symlinks ==="
+echo "=== Setup documents-kit-skills ==="
 echo "Workflow: $WORKFLOW_DIR"
 echo "Kit:      $KIT_DIR"
 echo
 
-# Check kit dir exists
 if [[ ! -d "$KIT_DIR" ]]; then
   echo "Error: documents-kit-skills not found at $KIT_DIR"
-  echo "Clone it first:"
-  echo "  git clone <repo-url> $KIT_DIR"
+  echo "Clone it first: git clone <repo-url> $KIT_DIR"
   exit 1
 fi
 
-# Helper: backup if exists as real dir
-backup_if_exists() {
-  local path="$1"
-  if [[ -d "$path" && ! -L "$path" ]]; then
-    local backup_dir="$WORKFLOW_DIR/.scratch/backup/$(basename "$path")-bak"
-    echo "Backing up $path → $backup_dir"
-    mkdir -p "$(dirname "$backup_dir")"
-    mv "$path" "$backup_dir"
-  elif [[ -L "$path" ]]; then
-    echo "Already symlinked: $path"
-  fi
-}
+ALL_SKILLS=(document-format document-writing documents-kit drawio humanizer officecli pdf-export report-to-deck scaffold-doc storytelling)
 
-# Helper: remove broken symlink
-remove_broken_link() {
-  local path="$1"
-  if [[ -L "$path" && ! -e "$path" ]]; then
-    echo "Removing broken symlink: $path"
-    rm "$path"
-  fi
-}
+ALL_TOOLS=(__init__.py asset-validator.sh doc-audit-pipeline.sh documents_kit.py export_pdf.py fetch_drawio_template.py new_document.py officecli_helper.py officecli_numbering.py pandoc_citeproc.py pdf-from-docx.sh report_to_deck.py scholar_bibtex.py storytelling_pptx.py tests)
 
-# 1. Package folder: skills/personal/documents-kit-skills/
+# ---- Skills package ----
 PACKAGE_DIR="$WORKFLOW_DIR/skills/personal/documents-kit-skills"
 mkdir -p "$PACKAGE_DIR"
 
-# Backup any existing skills in old locations (productivity/, misc/)
-backup_if_exists "$WORKFLOW_DIR/skills/productivity/document-writing"
-backup_if_exists "$WORKFLOW_DIR/skills/productivity/humanizer"
-backup_if_exists "$WORKFLOW_DIR/skills/productivity/officecli"
-backup_if_exists "$WORKFLOW_DIR/skills/misc/drawio"
-
-# Remove broken symlinks in package
-for skill in document-writing drawio humanizer; do
-  remove_broken_link "$PACKAGE_DIR/$skill"
-done
-
-# Create symlinks in package
-for skill in document-writing drawio humanizer officecli; do
+echo "=== Package: skills/personal/documents-kit-skills/ ==="
+for skill in "${ALL_SKILLS[@]}"; do
   target="$PACKAGE_DIR/$skill"
+  if [[ -L "$target" && ! -e "$target" ]]; then
+    echo "  Remove broken: $skill"
+    rm "$target"
+  fi
   if [[ ! -L "$target" ]]; then
-    echo "Package symlink: skills/personal/documents-kit-skills/$skill → $KIT_DIR/skills/$skill"
+    echo "  $skill → $KIT_DIR/skills/$skill"
     ln -s "$KIT_DIR/skills/$skill" "$target"
+  else
+    echo "  [ok] $skill"
   fi
 done
 
-# 3. Repoint ~/.config/opencode/skills/ to the new package location
+# ---- Global config symlinks ----
 echo
-echo "=== Re-pointing ~/.config/opencode/skills/ ==="
-for skill in document-writing drawio humanizer officecli; do
+echo "=== ~/.config/opencode/skills/ ==="
+for skill in "${ALL_SKILLS[@]}"; do
   global_link="$HOME/.config/opencode/skills/$skill"
-  if [[ -L "$global_link" ]]; then
-    echo "Removing old symlink: $global_link"
+  if [[ -L "$global_link" && ! -e "$global_link" ]]; then
+    echo "  Remove broken: $skill"
     rm "$global_link"
-  elif [[ -d "$global_link" ]]; then
-    echo "Warning: $global_link exists as directory, skipping"
+  fi
+  if [[ -d "$global_link" && ! -L "$global_link" ]]; then
+    echo "  [skip real dir] $skill"
     continue
   fi
-  echo "Creating: $global_link → $PACKAGE_DIR/$skill"
-  ln -s "$PACKAGE_DIR/$skill" "$global_link"
+  if [[ ! -e "$global_link" ]]; then
+    echo "  $skill → $PACKAGE_DIR/$skill"
+    ln -s "$PACKAGE_DIR/$skill" "$global_link"
+  else
+    echo "  [ok] $skill"
+  fi
 done
 
-# 4. Tools symlinks (if --tools flag or --all)
+# ---- Tools ----
 if [[ "${SETUP_TOOLS:-true}" == "true" ]]; then
   echo
-  echo "=== Symlinking tools/ ==="
+  echo "=== tools/ ==="
   TOOLS_DIR="$WORKFLOW_DIR/tools"
   mkdir -p "$TOOLS_DIR"
-  for tool in __init__.py officecli_helper.py pandoc_citeproc.py scholar_bibtex.py asset-validator.sh doc-audit-pipeline.sh pdf-from-docx.sh tests; do
+  for tool in "${ALL_TOOLS[@]}"; do
     target="$TOOLS_DIR/$tool"
-    if [[ ! -L "$target" && ! -d "$target" ]]; then
-      echo "  tools/$tool → $KIT_DIR/tools/$tool"
+    if [[ -L "$target" && ! -e "$target" ]]; then
+      echo "  Remove broken: $tool"
+      rm "$target"
+    fi
+    if [[ ! -e "$target" ]]; then
+      echo "  $tool → $KIT_DIR/tools/$tool"
       ln -s "$KIT_DIR/tools/$tool" "$target"
+    else
+      echo "  [ok] $tool"
     fi
   done
 fi
 
-# 5. Verify
+# ---- Assets (templates, presets, diagrams, examples) ----
+if [[ "${SETUP_ASSETS:-true}" == "true" ]]; then
+  echo
+  echo "=== documents-kit/ assets ==="
+  ASSETS_DIR="$WORKFLOW_DIR/documents-kit"
+
+  # Templates
+  mkdir -p "$ASSETS_DIR/templates"
+  for tdir in paper presentation report thesis; do
+    target="$ASSETS_DIR/templates/$tdir"
+    if [[ -L "$target" && ! -e "$target" ]]; then rm "$target"; fi
+    if [[ ! -e "$target" ]]; then
+      echo "  templates/$tdir → $KIT_DIR/templates/$tdir"
+      ln -s "$KIT_DIR/templates/$tdir" "$target"
+    fi
+  done
+
+  # Presets
+  mkdir -p "$ASSETS_DIR/presets"
+  for preset in hackathon-energetic.json material-light.json storytelling_fallback.json; do
+    target="$ASSETS_DIR/presets/$preset"
+    if [[ -L "$target" && ! -e "$target" ]]; then rm "$target"; fi
+    if [[ ! -e "$target" ]]; then
+      echo "  presets/$preset → $KIT_DIR/presets/$preset"
+      ln -s "$KIT_DIR/presets/$preset" "$target"
+    fi
+  done
+  # presets/drawio-styles/
+  target="$ASSETS_DIR/presets/drawio-styles"
+  if [[ -L "$target" && ! -e "$target" ]]; then rm "$target"; fi
+  if [[ ! -e "$target" ]]; then
+    echo "  presets/drawio-styles → $KIT_DIR/presets/drawio-styles"
+    ln -s "$KIT_DIR/presets/drawio-styles" "$target"
+  fi
+
+  # Diagrams
+  mkdir -p "$ASSETS_DIR/diagrams"
+  for dfile in "$KIT_DIR"/diagrams/*; do
+    fname=$(basename "$dfile")
+    target="$ASSETS_DIR/diagrams/$fname"
+    if [[ -L "$target" && ! -e "$target" ]]; then rm "$target"; fi
+    if [[ ! -e "$target" ]]; then
+      echo "  diagrams/$fname → $dfile"
+      ln -s "$dfile" "$target"
+    fi
+  done
+
+  # Examples
+  mkdir -p "$ASSETS_DIR/examples"
+  for efile in "$KIT_DIR"/examples/*; do
+    fname=$(basename "$efile")
+    target="$ASSETS_DIR/examples/$fname"
+    if [[ -L "$target" && ! -e "$target" ]]; then rm "$target"; fi
+    if [[ ! -e "$target" ]]; then
+      echo "  examples/$fname → $efile"
+      ln -s "$efile" "$target"
+    fi
+  done
+fi
+
+# ---- Verify ----
 echo
 echo "=== Verify ==="
-for skill in document-writing drawio humanizer officecli; do
-  target="$WORKFLOW_DIR/skills/personal/documents-kit-skills/$skill"
+errors=0
+
+for skill in "${ALL_SKILLS[@]}"; do
+  target="$PACKAGE_DIR/$skill"
   if [[ -L "$target" && -e "$target" ]]; then
-    echo "[OK] $skill → $(readlink "$target")"
+    echo "[OK] package/$skill → $(readlink "$target")"
   else
-    echo "[FAIL] $skill is not a working symlink"
+    echo "[FAIL] package/$skill"
+    errors=$((errors + 1))
   fi
 done
 
-for skill in document-writing drawio humanizer officecli; do
+for skill in "${ALL_SKILLS[@]}"; do
   global_link="$HOME/.config/opencode/skills/$skill"
   if [[ -L "$global_link" && -e "$global_link" ]]; then
-    echo "[OK] ~/.config/.../$skill → $(readlink "$global_link")"
+    echo "[OK] global/$skill → $(readlink "$global_link")"
+  else
+    echo "[FAIL] global/$skill"
+    errors=$((errors + 1))
   fi
 done
 
 if [[ -d "$WORKFLOW_DIR/tools" ]]; then
-  echo "[OK] tools/ directory exists with $(ls -1 "$WORKFLOW_DIR/tools" | wc -l) entries"
+  count=$(ls -1 "$WORKFLOW_DIR/tools" | wc -l)
+  echo "[OK] tools/ ($count entries)"
+fi
+
+if [[ -d "$ASSETS_DIR" ]]; then
+  for sub in templates presets diagrams examples; do
+    count=$(ls -1 "$ASSETS_DIR/$sub" 2>/dev/null | wc -l)
+    echo "[OK] documents-kit/$sub/ ($count entries)"
+  done
+fi
+
+# Check for broken symlinks
+broken=$(find "$HOME/.config/opencode/skills" -maxdepth 1 -type l ! -exec test -e {} \; -print 2>/dev/null)
+if [[ -n "$broken" ]]; then
+  echo "[WARN] Broken global symlinks:"
+  echo "$broken"
 fi
 
 echo
-echo "=== Done ==="
+if [[ $errors -eq 0 ]]; then
+  echo "=== Done (0 errors) ==="
+else
+  echo "=== Done ($errors errors) ==="
+  exit 1
+fi
+
 echo "Restart OpenCode to pick up changes."
 echo "Edit documents in: $KIT_DIR"
-echo "Changes propagate to opencode-workflow via symlinks."
-echo
-echo "Final structure:"
-echo "  $KIT_DIR                    ← source of truth (edit here)"
-echo "    ↓"
-echo "  $WORKFLOW_DIR/skills/personal/documents-kit-skills/{document-writing,drawio,humanizer,officecli} ← package folder"
-echo "    ↓"
-echo "  $HOME/.config/opencode/skills/{X}                    ← OpenCode global"
-echo
-echo "  $KIT_DIR/tools/           ← source of truth"
-echo "    ↓"
-echo "  $WORKFLOW_DIR/tools/      ← glue scripts"

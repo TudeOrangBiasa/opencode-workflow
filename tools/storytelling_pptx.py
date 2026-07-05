@@ -1,0 +1,1 @@
+/home/todayz/Workspace/personal/dev/ai-kit/documents-kit-skills/tools/storytelling_pptx.py

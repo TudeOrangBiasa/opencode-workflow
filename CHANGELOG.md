@@ -8,6 +8,8 @@
 - Test: TDD coverage expansion across all plugins — added 23 tests (159 total pass, 0 fail). New coverage: `ov-helper` error paths, `taste` hook behavior, `repair-harness` edge cases and auto-disable, `lesson-injector` system-transform hook.
 - Docs: updated `docs/architecture.md` to show `.opencode/plugins/`, `misc/<domain>/` sub-directories, and the new add-skill workflow. Updated `README.md` tree and skill-count line.
 - Refactor: reorganize `skills/engineering/` into 4 sub-directories: `planning` (to-prd, to-issues, triage), `design` (design, grill-with-docs, improve-codebase-architecture), `quality` (review, tdd, diagnose, ponytail), `workflow` (prototype, memory-dreaming, setup-matt-pocock-skills, skill-author, zoom-out). `ponytail/` retains its existing sub-dirs. Updated `skills/engineering/README.md`, `README.md` tree, `docs/architecture.md` layout, and `AGENTS.md` Skill Buckets. 15 symlinks re-pointed in `~/.config/opencode/skills/`.
+- Refactor: reorganize `skills/personal/` into 2 sub-directories: `workflow/` (dev-workflow, eval, idea-fragments, workflow-audit) and `tools/` (ddev, openviking). `documents-kit-skills/` stays at root. 6 symlinks re-pointed in `~/.config/opencode/skills/`.
+- Improvement: documents-kit-skills integration now symlinks the full surface — 10 skills (was 4), 15 tools (was 8), plus `documents-kit/{templates,presets,diagrams,examples}/` assets. New `scripts/setup-documents-kit.sh` handles all categories with `SETUP_ASSETS=1` (default true) for the assets section. 6 new global symlinks created in `~/.config/opencode/skills/` for previously-missing skills (document-format, documents-kit, pdf-export, report-to-deck, scaffold-doc, storytelling).
 
 ## [2026-06-28] — documents-kit-skills full bundle + plugin polish
 

@@ -34,7 +34,7 @@ opencode-workflow/
 │   ├── lesson-injector.ts    ← past-lesson injection into system prompt
 │   └── ov-helper.ts          ← shared ov CLI wrapper
 ├── skills/
-│   ├── engineering/          ← pipeline skills (write-a-skill, dev-workflow, etc.)
+│   ├── engineering/          ← pipeline skills (sub-dirs: planning, design, quality, workflow)
 │   │   ├── planning/         ← to-prd, to-issues, triage
 │   │   ├── design/           ← design, grill-with-docs, improve-codebase-architecture
 │   │   ├── quality/          ← review, tdd, diagnose, ponytail
@@ -49,20 +49,40 @@ opencode-workflow/
 │   │   ├── security/
 │   │   └── workflow/
 │   ├── personal/             ← personal skills + symlinks to documents-kit-skills/
-│   │   └── documents-kit-skills/   ← symlink to external package
-│   │       ├── document-writing/    (symlink)
-│   │       ├── drawio/              (symlink)
-│   │       ├── humanizer/           (symlink)
-│   │       └── officecli/           (symlink)
+│   │   ├── documents-kit-skills/   ← symlink package (10 skills)
+│   │   │   ├── document-format/    (symlink)
+│   │   │   ├── document-writing/   (symlink)
+│   │   │   ├── documents-kit/      (symlink)
+│   │   │   ├── drawio/             (symlink)
+│   │   │   ├── humanizer/          (symlink)
+│   │   │   ├── officecli/          (symlink)
+│   │   │   ├── pdf-export/         (symlink)
+│   │   │   ├── report-to-deck/     (symlink)
+│   │   │   ├── scaffold-doc/       (symlink)
+│   │   │   └── storytelling/       (symlink)
+│   │   ├── workflow/         ← dev-workflow, eval, idea-fragments, workflow-audit
+│   │   └── tools/            ← ddev, openviking
 │   └── ...
-├── tools/                    ← symlinks to documents-kit-skills glue scripts
+├── documents-kit/            ← symlinks to documents-kit-skills assets
+│   ├── templates/            ← paper, presentation, report, thesis
+│   ├── presets/              ← drawio-styles, hackathon-energetic.json, material-light.json, storytelling_fallback.json
+│   ├── diagrams/             ← architecture, aws-3-tier, c4-context, erd, flowchart, microservices, network, org-chart, sequence, uml-class, venn, bpmn, …
+│   └── examples/
+├── tools/                    ← symlinks to documents-kit-skills glue scripts (15 entries)
+│   ├── __init__.py           (symlink)
 │   ├── officecli_helper.py   (symlink)
+│   ├── officecli_numbering.py (symlink)
 │   ├── pandoc_citeproc.py    (symlink)
 │   ├── scholar_bibtex.py     (symlink)
+│   ├── documents_kit.py      (symlink)
+│   ├── export_pdf.py         (symlink)
+│   ├── new_document.py       (symlink)
+│   ├── fetch_drawio_template.py (symlink)
+│   ├── report_to_deck.py     (symlink)
+│   ├── storytelling_pptx.py  (symlink)
 │   ├── asset-validator.sh    (symlink)
 │   ├── doc-audit-pipeline.sh (symlink)
 │   ├── pdf-from-docx.sh      (symlink)
-│   ├── __init__.py           (symlink)
 │   └── tests/                (symlink)
 ├── scripts/                  ← check-portable, check-skill-structure, audit-skill, pre-commit
 ├── docs/                     ← architecture, extraction-criteria, anti-hardcoded-pattern, integrations
@@ -77,20 +97,24 @@ External skill packages integrate via symlinks + MCP registration:
 ```
 documents-kit-skills/                              (source of truth)
   ↓ symlinks
-opencode-workflow/skills/personal/documents-kit-skills/   (package folder — 4 skills)
+opencode-workflow/skills/personal/documents-kit-skills/   (package folder — 10 skills)
   ↓ symlinks
 ~/.config/opencode/skills/                          (OpenCode global)
 
 documents-kit-skills/tools/                         (source of truth)
   ↓ symlinks
-opencode-workflow/tools/                            (glue scripts)
+opencode-workflow/tools/                            (15 glue scripts)
+
+documents-kit-skills/{templates,presets,diagrams,examples}/   (source of truth)
+  ↓ symlinks
+opencode-workflow/documents-kit/{...}/              (assets)
 
 scholar-paper-mcp/                                  (peer dep, cloned separately)
   ↓ MCP registration in ~/.config/opencode/opencode.json
 OpenCode loads 15 scholar tools at startup
 ```
 
-Setup: `scripts/setup-documents-kit.sh` creates the skill + tools symlink chain. scholar-paper-mcp cloned and MCP-registered separately. See [integrations/documents-kit.md](integrations/documents-kit.md).
+Setup: `scripts/setup-documents-kit.sh` creates the skill + tools + assets symlink chain (`SETUP_ASSETS=1` enables the assets section, default true). scholar-paper-mcp cloned and MCP-registered separately. See [integrations/documents-kit.md](integrations/documents-kit.md).
 
 ## When to extract a skill
 
@@ -111,6 +135,7 @@ See [skills/extraction-criteria.md](skills/extraction-criteria.md) for the full 
 2. If here, pick the right bucket:
    - `engineering/` — pipeline/daily code-work skills (sub-dirs: `planning/`, `design/`, `quality/`, `workflow/`)
    - `misc/<domain>/` — specialist skills grouped by domain (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`)
+   - `personal/workflow/` or `personal/tools/` — personal workflow or tool skills (not promoted in top-level reference)
 3. Create `skills/{bucket}/skill-name/` with `SKILL.md` + optional `REFERENCE.md`
 4. If external: create repo with same structure, integrate via symlink
 5. Run `./scripts/audit-skill.sh skills/path/to/skill` to verify

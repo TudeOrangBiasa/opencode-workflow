@@ -26,22 +26,56 @@ opencode-workflow/                              (this repo)
 │   │   ├── design/                              (UI design, architecture review, grilling)
 │   │   ├── quality/                             (review, TDD, diagnose, ponytail)
 │   │   └── workflow/                            (prototype, memory, setup, skill-author, zoom-out)
-│   ├── personal/documents-kit-skills/           (symlink to external)
-│   │   ├── document-writing/  (symlink)
-│   │   ├── drawio/            (symlink)
-│   │   ├── humanizer/         (symlink)
-│   │   └── officecli/         (symlink)
+│   ├── personal/documents-kit-skills/           (symlink to external, 10 skills)
+│   │   ├── document-format/        (symlink)
+│   │   ├── document-writing/       (symlink)
+│   │   ├── documents-kit/          (symlink)
+│   │   ├── drawio/                 (symlink)
+│   │   ├── humanizer/              (symlink)
+│   │   ├── officecli/              (symlink)
+│   │   ├── pdf-export/             (symlink)
+│   │   ├── report-to-deck/         (symlink)
+│   │   ├── scaffold-doc/           (symlink)
+│   │   └── storytelling/           (symlink)
+│   ├── personal/workflow/                         (personal workflow skills)
+│   │   ├── dev-workflow/
+│   │   ├── eval/
+│   │   ├── idea-fragments/
+│   │   └── workflow-audit/
+│   ├── personal/tools/                            (personal tools)
+│   │   ├── ddev/
+│   │   └── openviking/
 │   ├── productivity/                             (daily non-code workflow tools)
 │   ├── misc/                                      (specialist domains: frontend, backend, languages, workflow, security, ml, mobile, devops)
 │   └── ...
+├── documents-kit/                               (symlinks to documents-kit-skills assets)
+│   ├── templates/    (paper, presentation, report, thesis)
+│   ├── presets/      (drawio-styles, hackathon-energetic, material-light, storytelling-fallback)
+│   ├── diagrams/     (architecture, aws-3-tier, c4-context, erd, flowchart, microservices, network, org-chart, sequence, uml-class, venn, bpmn, …)
+│   └── examples/
 ├── scripts/                                    (check, audit, install)
 │   ├── check-portable.sh      (hardcoded path lint)
 │   ├── check-skill-structure.sh (write-a-skill compliance)
 │   ├── audit-skill.sh         (single-skill audit)
 │   ├── pre-commit.sh          (runs all before commit)
-│   ├── install-hooks.sh       (installs pre-commit)
-│   └── setup-documents-kit.sh (creates symlink chain)
-├── docs/                                       (project decisions)
+│   ├── install-hooks.sh       (installs pre-commit hook)
+│   └── setup-documents-kit.sh (creates documents-kit symlinks)
+├── tools/                                      (symlinks to documents-kit-skills glue scripts)
+│   ├── __init__.py
+│   ├── officecli_helper.py
+│   ├── officecli_numbering.py
+│   ├── pandoc_citeproc.py
+│   ├── scholar_bibtex.py
+│   ├── documents_kit.py
+│   ├── export_pdf.py
+│   ├── new_document.py
+│   ├── fetch_drawio_template.py
+│   ├── report_to_deck.py
+│   ├── storytelling_pptx.py
+│   ├── asset-validator.sh
+│   ├── doc-audit-pipeline.sh
+│   ├── pdf-from-docx.sh
+│   └── tests/
 │   ├── architecture.md        (overall layout)
 │   ├── skills/extraction-criteria.md
 │   ├── skills/anti-hardcoded-pattern.md
@@ -67,7 +101,7 @@ chmod +x scripts/*.sh
 # Install pre-commit hook (catches hardcoded paths + bad structure)
 ./scripts/install-hooks.sh
 
-# Set up documents-kit-skills (4 coupled skills for document creation)
+# Set up documents-kit-skills (10 skills + 15 tools + templates/presets/diagrams/examples assets)
 ./scripts/setup-documents-kit.sh
 
 # Audit any skill

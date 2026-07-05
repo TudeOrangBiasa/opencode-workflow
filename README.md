@@ -22,6 +22,10 @@ opencode-workflow/                              (this repo)
 │   └── ov-helper.ts            (shared ov CLI wrapper)
 ├── skills/                                     (pipeline + symlinks)
 │   ├── engineering/                             (pipeline skills)
+│   │   ├── planning/                            (PRD, issues, triage)
+│   │   ├── design/                              (UI design, architecture review, grilling)
+│   │   ├── quality/                             (review, TDD, diagnose, ponytail)
+│   │   └── workflow/                            (prototype, memory, setup, skill-author, zoom-out)
 │   ├── personal/documents-kit-skills/           (symlink to external)
 │   │   ├── document-writing/  (symlink)
 │   │   ├── drawio/            (symlink)
@@ -75,7 +79,7 @@ chmod +x scripts/*.sh
 1. Decide: pipeline-level (here) or extractable (own repo)? See [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md).
 2. Load: **write-a-skill** + **skill-author**
 3. Pick the right bucket:
-   - `skills/engineering/` — pipeline/daily code-work skills
+   - `skills/engineering/` — pipeline/daily code-work skills (with sub-dirs: `planning/`, `design/`, `quality/`, `workflow/`)
    - `skills/misc/<domain>/` — specialist skills grouped by domain (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`)
 4. Create `skills/<bucket>/skill-name/` with `SKILL.md` (≤100 lines) + optional `REFERENCE.md`
 5. Update the bucket `README.md` (and `skills/misc/README.md` for misc sub-domains)

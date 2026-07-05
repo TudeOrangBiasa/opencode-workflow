@@ -54,7 +54,7 @@ Enforcement:
 
 Skills are organized into bucket folders under `skills/`:
 
-- `engineering/` — daily code work.
+- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-prd, to-issues, triage), `design/` (design, grill-with-docs, improve-codebase-architecture), `quality/` (review, tdd, diagnose, ponytail), `workflow/` (prototype, memory-dreaming, setup-matt-pocock-skills, skill-author, zoom-out).
 - `productivity/` — daily non-code workflow tools.
 - `misc/` — specialist domain skills, grouped into sub-directories (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`).
 - `personal/` — tied to personal setup, not promoted.

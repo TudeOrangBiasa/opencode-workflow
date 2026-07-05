@@ -75,22 +75,9 @@ Occasional specialist capabilities organized by domain. Use only when the specif
 - **[rust-patterns](./languages/rust-patterns/SKILL.md)** — Idiomatic Rust patterns, ownership, error handling. Use only when writing Rust code.
 - **[rust-testing](./languages/rust-testing/SKILL.md)** — Rust testing with rstest, mockall, proptest, coverage. Use only when writing Rust tests.
 
-## Workflow (14)
+## Data (1)
 
-- **[ai-regression-testing](./workflow/ai-regression-testing/SKILL.md)** — Regression testing for AI-assisted dev — sandbox-mode API testing, AI blind-spot patterns. Use only when AI agents modified API routes or after bug fixes.
-- **[architecture-decision-records](./workflow/architecture-decision-records/SKILL.md)** — Capture architectural decisions as structured ADRs — context, alternatives, rationale, consequences.
-- **[canary-watch](./workflow/canary-watch/SKILL.md)** — Post-deploy monitoring for deployed URLs — HTTP status, console errors, static assets, performance, API health, SSE streams.
-- **[codebase-onboarding](./workflow/codebase-onboarding/SKILL.md)** — Analyze unfamiliar codebases and generate structured onboarding guides — architecture map, key entry points, conventions.
-- **[context-budget](./workflow/context-budget/SKILL.md)** — Audit OpenCode context overhead across agents, skills, MCP servers, and repo instructions.
-- **[data-scraper-agent](./workflow/data-scraper-agent/SKILL.md)** — Build AI-powered data collection agents for public sources — scrapes on schedule, enriches with free-tier LLM, stores to Notion/Sheets/Supabase.
-- **[deep-research](./workflow/deep-research/SKILL.md)** — Multi-source deep research using web search MCP — searches, synthesizes, delivers cited reports with source attribution.
-- **[deployment-patterns](./workflow/deployment-patterns/SKILL.md)** — Deployment workflows — strategies (rolling, blue-green, canary), Docker multi-stage builds, CI/CD pipelines, health checks, rollback.
-- **[git-workflow](./workflow/git-workflow/SKILL.md)** — Git branching strategies, commit conventions, merge vs rebase, PR workflow, conflict resolution, release management.
-- **[github-ops](./workflow/github-ops/SKILL.md)** — GitHub operations — issue triage, PR management, CI/CD debugging, release management, security monitoring via gh CLI.
-- **[production-audit](./workflow/production-audit/SKILL.md)** — Local-evidence production readiness audit — security, data integrity, operations, payments, UX.
-- **[search-first](./workflow/search-first/SKILL.md)** — Research-before-coding for external dependency, integration, or custom utility decisions. Searches npm/PyPI, MCP servers, GitHub, web. Decision matrix: adopt → extend → compose → build.
-- **[team-handoff-quality](./workflow/team-handoff-quality/SKILL.md)** — Team-ready handoff checklist for changes, verification evidence, version bump decisions, changelog entries, migration notes, rollback notes, next-owner actions.
-- **[verify-evidence](./workflow/verify-evidence/SKILL.md)** — Tool-based verification checklist for acceptance criteria, test evidence, stuck-loop detection, and AFK/high-risk review.
+- **[data-scraper-agent](./data/data-scraper-agent/SKILL.md)** — Build AI-powered data collection agents for public sources — scrapes on schedule, enriches with free-tier LLM, stores to Notion/Sheets/Supabase.
 
 ## Security (6)
 

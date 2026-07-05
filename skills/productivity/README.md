@@ -2,6 +2,7 @@
 
 General workflow tools, not code-specific.
 
+- **[deep-research](./deep-research/SKILL.md)** — Multi-source deep research using web search MCP — searches, synthesizes, delivers cited reports with source attribution.
 - **[grill-me](./grill-me/SKILL.md)** — Get relentlessly interviewed about a plan or design until every branch of the decision tree is resolved.
 - **[handoff](./handoff/SKILL.md)** — Compact the current conversation into a handoff document so another agent can continue the work.
 - **[humanizer](./humanizer/SKILL.md)** — Remove signs of AI-generated writing from text. Uses Wikipedia's "Signs of AI writing" guide.

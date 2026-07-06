@@ -31,7 +31,16 @@ export async function ovFindJson(args: string[]): Promise<OvFindResponse | null>
     return null
   }
   try {
-    return JSON.parse(stdout) as OvFindResponse
+    // ov CLI prefixes stdout with a "cmd: ..." informational line; the JSON
+    // payload follows on the next line. Locate the first '{' to skip the
+    // preamble before parsing.
+    const jsonStart = stdout.indexOf("{")
+    if (jsonStart < 0) {
+      const label = `"${args.slice(0, 3).join(" ")}${args.length > 3 ? " …" : ""}`
+      console.warn(`[ov-helper] ${label} no JSON object in stdout`)
+      return null
+    }
+    return JSON.parse(stdout.slice(jsonStart)) as OvFindResponse
   } catch {
     const label = `"${args.slice(0, 3).join(" ")}${args.length > 3 ? " …" : ""}"`
     console.warn(`[ov-helper] ${label} invalid JSON response`)

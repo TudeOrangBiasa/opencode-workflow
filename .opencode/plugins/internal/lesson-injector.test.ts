@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, spyOn } from "bun:test"
-import plugin, { SessionCache, buildQuery, formatLessons, injectLessons, fetchAndInjectLessons } from "./lesson-injector.ts"
+import plugin from "../lesson-injector.ts"
+import { SessionCache, buildQuery, formatLessons, injectLessons, fetchAndInjectLessons } from "../internal/lesson-injector-helpers.ts"
 
 // ─── SessionCache ────────────────────────────────────────────────────
 
@@ -324,6 +325,17 @@ describe("experimental.chat.system.transform hook", () => {
     )
 
     expect(output.system).toEqual(["base prompt"]) // unchanged
+  })
+})
+
+// ─── Regression: no named exports at module level ────────────────────
+// OpenCode v1.17.13's getLegacyPlugins iterates Object.values(mod) and
+// calls each export as a Plugin. Named helpers crash the loader.
+
+describe("plugin module exports", () => {
+  it("has no named runtime exports (only default)", async () => {
+    const mod = await import("../lesson-injector.ts")
+    expect(Object.keys(mod)).toEqual(["default"])
   })
 })
 

@@ -6,7 +6,7 @@ import plugin, {
   repairSingleObjectWrap,
   isHarnessEnabled,
   getStat,
-} from "./repair-harness.ts"
+} from "../repair-harness.ts"
 describe("Pattern 1 — Null drop", () => {
   it("drops null value", () => {
     const args: Record<string, unknown> = { path: "/foo/bar", mode: null, depth: 5 }

@@ -1,13 +1,14 @@
 import { describe, it, expect, beforeEach } from "bun:test"
-import plugin, {
+import plugin from "../taste.ts"
+import {
   extractPreferences,
   mergePreference,
   inferCategory,
   applyKLFilter,
   formatPreferences,
   parsePreferenceMemory,
-} from "./taste.ts"
-import type { Preference } from "./taste.ts"
+} from "../internal/taste-helpers.ts"
+import type { Preference } from "../internal/taste-helpers.ts"
 
 // ─── inferCategory ───────────────────────────────────────────────────
 
@@ -320,6 +321,21 @@ describe("chat.message hook", () => {
     )
     expect(sysOutput.system.length).toBe(1)
     expect(sysOutput.system[0]).toContain("## Learned Preferences")
+  })
+})
+
+// ─── Regression: no named exports at module level ────────────────────
+// OpenCode v1.17.13's getLegacyPlugins iterates Object.values(mod) and
+// calls each export as a Plugin. Named helpers crash the loader.
+
+describe("plugin module exports", () => {
+  it("has no named runtime exports (only default)", async () => {
+    const mod = await import("../taste.ts")
+    const keys = Object.keys(mod)
+    // Preference is a type-only export — erased at runtime
+    // only "default" should remain
+    const runtimeKeys = keys.filter((k) => k !== "Preference")
+    expect(runtimeKeys).toEqual(["default"])
   })
 })
 

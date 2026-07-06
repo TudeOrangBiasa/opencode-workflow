@@ -1,12 +1,13 @@
 import { describe, it, expect, spyOn, beforeEach, afterEach } from "bun:test"
-import plugin, {
+import plugin from "../repair-harness.ts"
+import {
   repairNullDrop,
   repairJsonString,
   repairMarkdownString,
   repairSingleObjectWrap,
   isHarnessEnabled,
   getStat,
-} from "../repair-harness.ts"
+} from "./repair-harness-helpers"
 describe("Pattern 1 — Null drop", () => {
   it("drops null value", () => {
     const args: Record<string, unknown> = { path: "/foo/bar", mode: null, depth: 5 }
@@ -575,5 +576,18 @@ describe("before-hook: auto-disable", () => {
     // args unchanged because tool is disabled; totalCalls not incremented
     expect(output.args.path).toBeNull()
     expect(stat.totalCalls).toBe(100)
+  })
+})
+
+// ═══ Regression: no named exports at module level ────────────────────
+// OpenCode v1.17.13's getLegacyPlugins iterates Object.values(mod) and
+// calls each export as a Plugin. Named helpers crash the loader.
+
+describe("plugin module exports", () => {
+  it("has only default export (no named runtime exports)", async () => {
+    const mod = await import("../repair-harness.ts")
+    const vals = Object.values(mod)
+    expect(vals.length).toBe(1)
+    expect(typeof vals[0]).toBe("function")
   })
 })

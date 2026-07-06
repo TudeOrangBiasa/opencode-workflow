@@ -26,33 +26,26 @@ opencode-workflow/                              (this repo)
 │   │   ├── design/                              (UI design, architecture review, grilling)
 │   │   ├── quality/                             (review, TDD, diagnose, ponytail)
 │   │   └── workflow/                            (prototype, memory, setup, skill-author, zoom-out)
-│   ├── personal/documents-kit-skills/           (symlink to external, 10 skills)
-│   │   ├── document-format/        (symlink)
-│   │   ├── document-writing/       (symlink)
-│   │   ├── documents-kit/          (symlink)
-│   │   ├── drawio/                 (symlink)
-│   │   ├── humanizer/              (symlink)
-│   │   ├── officecli/              (symlink)
-│   │   ├── pdf-export/             (symlink)
-│   │   ├── report-to-deck/         (symlink)
-│   │   ├── scaffold-doc/           (symlink)
-│   │   └── storytelling/           (symlink)
-│   ├── personal/workflow/                         (personal workflow skills)
+│   ├── personal/workflow/                       (personal workflow skills)
 │   │   ├── dev-workflow/
 │   │   ├── eval/
 │   │   ├── idea-fragments/
 │   │   └── workflow-audit/
-│   ├── personal/tools/                            (personal tools)
+│   ├── personal/tools/                          (personal tools)
 │   │   ├── ddev/
 │   │   └── openviking/
-│   ├── productivity/                             (daily non-code workflow tools)
-│   ├── misc/                                      (specialist domains: frontend, backend, languages, workflow, security, ml, mobile, devops)
+│   ├── productivity/                            (daily non-code workflow tools)
+│   │   └── documents-kit/                       (sub-package: 10 sub-skills + 15 tools + assets)
+│   │       ├── SKILL.md                         (package entry skill)
+│   │       ├── REFERENCE.md
+│   │       ├── skills/                          (10 sub-skills, symlinks)
+│   │       ├── tools/                           (15 glue scripts, symlinks)
+│   │       ├── templates/                       (paper, presentation, report, thesis)
+│   │       ├── presets/                         (drawio-styles, hackathon-energetic, material-light, storytelling-fallback)
+│   │       ├── diagrams/                        (architecture, aws-3-tier, c4-context, erd, …)
+│   │       └── examples/
+│   ├── misc/                                    (specialist domains: frontend, backend, languages, security, ml, mobile, devops, data)
 │   └── ...
-├── documents-kit/                               (symlinks to documents-kit-skills assets)
-│   ├── templates/    (paper, presentation, report, thesis)
-│   ├── presets/      (drawio-styles, hackathon-energetic, material-light, storytelling-fallback)
-│   ├── diagrams/     (architecture, aws-3-tier, c4-context, erd, flowchart, microservices, network, org-chart, sequence, uml-class, venn, bpmn, …)
-│   └── examples/
 ├── scripts/                                    (check, audit, install)
 │   ├── check-portable.sh      (hardcoded path lint)
 │   ├── check-skill-structure.sh (write-a-skill compliance)
@@ -60,22 +53,7 @@ opencode-workflow/                              (this repo)
 │   ├── pre-commit.sh          (runs all before commit)
 │   ├── install-hooks.sh       (installs pre-commit hook)
 │   └── setup-documents-kit.sh (creates documents-kit symlinks)
-├── tools/                                      (symlinks to documents-kit-skills glue scripts)
-│   ├── __init__.py
-│   ├── officecli_helper.py
-│   ├── officecli_numbering.py
-│   ├── pandoc_citeproc.py
-│   ├── scholar_bibtex.py
-│   ├── documents_kit.py
-│   ├── export_pdf.py
-│   ├── new_document.py
-│   ├── fetch_drawio_template.py
-│   ├── report_to_deck.py
-│   ├── storytelling_pptx.py
-│   ├── asset-validator.sh
-│   ├── doc-audit-pipeline.sh
-│   ├── pdf-from-docx.sh
-│   └── tests/
+├── docs/                                       (architecture, extraction criteria, anti-hardcoded, integrations)
 │   ├── architecture.md        (overall layout)
 │   ├── skills/extraction-criteria.md
 │   ├── skills/anti-hardcoded-pattern.md
@@ -101,7 +79,7 @@ chmod +x scripts/*.sh
 # Install pre-commit hook (catches hardcoded paths + bad structure)
 ./scripts/install-hooks.sh
 
-# Set up documents-kit-skills (10 skills + 15 tools + templates/presets/diagrams/examples assets)
+# Set up documents-kit (10 sub-skills + 15 tools + templates/presets/diagrams/examples assets)
 ./scripts/setup-documents-kit.sh
 
 # Audit any skill
@@ -114,6 +92,7 @@ chmod +x scripts/*.sh
 2. Load: **write-a-skill** + **skill-author**
 3. Pick the right bucket:
    - `skills/engineering/` — pipeline/daily code-work skills (with sub-dirs: `planning/`, `design/`, `quality/`, `workflow/`)
+   - `skills/productivity/` — non-code workflow tools (documents, research, handoffs, skill authoring)
    - `skills/misc/<domain>/` — specialist skills grouped by domain (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`)
 4. Create `skills/<bucket>/skill-name/` with `SKILL.md` (≤100 lines) + optional `REFERENCE.md`
 5. Update the bucket `README.md` (and `skills/misc/README.md` for misc sub-domains)
@@ -181,7 +160,7 @@ This is personal dotfiles / workflow setup. Not for public distribution as a who
 
 ## Skill compliance
 
-126/146 skills pass write-a-skill compliance. 20 are in external/personal directories (excluded by design). 0 failed.
+133/147 skills pass write-a-skill compliance. 14 are in personal/in-progress/deprecated directories (excluded by design). 0 failed.
 
 Compliance is enforced by:
 - `scripts/check-skill-structure.sh` (pre-commit, runs automatically)

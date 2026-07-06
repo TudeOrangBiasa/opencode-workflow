@@ -3,15 +3,16 @@
 # Run once after cloning both repos.
 #
 # Creates:
-#   skills/personal/documents-kit-skills/<skill>  → documents-kit-skills/skills/<skill>  (10 skills)
-#   ~/.config/opencode/skills/<skill>              → package folder (10 skills)
-#   tools/<tool>                                   → documents-kit-skills/tools/<tool>    (14 + tests/)
-#   documents-kit/{templates,presets,diagrams,examples}/  → source (when SETUP_ASSETS=1)
+#   skills/productivity/documents-kit/skills/<skill>  → documents-kit-skills/skills/<skill>  (10 skills)
+#   ~/.config/opencode/skills/<skill>                  → package folder (10 skills)
+#   ~/.config/opencode/skills/documents-kit            → package entry skill
+#   skills/productivity/documents-kit/tools/<tool>     → documents-kit-skills/tools/<tool>    (14 + tests/)
+#   skills/productivity/documents-kit/{templates,presets,diagrams,examples}/ → source (when SETUP_ASSETS=1)
 #
 # Env flags:
 #   DOCUMENTS_KIT_DIR   — path to source repo (default: ~/Workspace/.../documents-kit-skills)
 #   SETUP_TOOLS         — set to false to skip tools/  (default: true)
-#   SETUP_ASSETS        — set to false to skip documents-kit/ assets (default: true)
+#   SETUP_ASSETS        — set to false to skip assets (default: true)
 
 set -euo pipefail
 
@@ -34,10 +35,10 @@ ALL_SKILLS=(document-format document-writing documents-kit drawio humanizer offi
 ALL_TOOLS=(__init__.py asset-validator.sh doc-audit-pipeline.sh documents_kit.py export_pdf.py fetch_drawio_template.py new_document.py officecli_helper.py officecli_numbering.py pandoc_citeproc.py pdf-from-docx.sh report_to_deck.py scholar_bibtex.py storytelling_pptx.py tests)
 
 # ---- Skills package ----
-PACKAGE_DIR="$WORKFLOW_DIR/skills/personal/documents-kit-skills"
+PACKAGE_DIR="$WORKFLOW_DIR/skills/productivity/documents-kit/skills"
 mkdir -p "$PACKAGE_DIR"
 
-echo "=== Package: skills/personal/documents-kit-skills/ ==="
+echo "=== Package: skills/productivity/documents-kit/skills/ ==="
 for skill in "${ALL_SKILLS[@]}"; do
   target="$PACKAGE_DIR/$skill"
   if [[ -L "$target" && ! -e "$target" ]]; then
@@ -73,11 +74,21 @@ for skill in "${ALL_SKILLS[@]}"; do
   fi
 done
 
+# Package entry symlink (documents-kit → skills/productivity/documents-kit/)
+entry_link="$HOME/.config/opencode/skills/documents-kit"
+package_entry="$WORKFLOW_DIR/skills/productivity/documents-kit"
+if [[ ! -e "$entry_link" ]]; then
+  echo "  documents-kit (entry) → $package_entry"
+  ln -s "$package_entry" "$entry_link"
+else
+  echo "  [ok] documents-kit (entry)"
+fi
+
 # ---- Tools ----
 if [[ "${SETUP_TOOLS:-true}" == "true" ]]; then
   echo
   echo "=== tools/ ==="
-  TOOLS_DIR="$WORKFLOW_DIR/tools"
+  TOOLS_DIR="$WORKFLOW_DIR/skills/productivity/documents-kit/tools"
   mkdir -p "$TOOLS_DIR"
   for tool in "${ALL_TOOLS[@]}"; do
     target="$TOOLS_DIR/$tool"
@@ -98,7 +109,7 @@ fi
 if [[ "${SETUP_ASSETS:-true}" == "true" ]]; then
   echo
   echo "=== documents-kit/ assets ==="
-  ASSETS_DIR="$WORKFLOW_DIR/documents-kit"
+  ASSETS_DIR="$WORKFLOW_DIR/skills/productivity/documents-kit"
 
   # Templates
   mkdir -p "$ASSETS_DIR/templates"
@@ -131,15 +142,19 @@ if [[ "${SETUP_ASSETS:-true}" == "true" ]]; then
 
   # Diagrams
   mkdir -p "$ASSETS_DIR/diagrams"
-  for dfile in "$KIT_DIR"/diagrams/*; do
-    fname=$(basename "$dfile")
-    target="$ASSETS_DIR/diagrams/$fname"
-    if [[ -L "$target" && ! -e "$target" ]]; then rm "$target"; fi
-    if [[ ! -e "$target" ]]; then
-      echo "  diagrams/$fname → $dfile"
-      ln -s "$dfile" "$target"
-    fi
-  done
+  if [[ -d "$KIT_DIR/diagrams" ]]; then
+    for dfile in "$KIT_DIR"/diagrams/*; do
+      fname=$(basename "$dfile")
+      target="$ASSETS_DIR/diagrams/$fname"
+      if [[ -L "$target" && ! -e "$target" ]]; then rm "$target"; fi
+      if [[ ! -e "$target" ]]; then
+        echo "  diagrams/$fname → $dfile"
+        ln -s "$dfile" "$target"
+      fi
+    done
+  else
+    echo "  [skip] diagrams/ — source dir not found at $KIT_DIR/diagrams"
+  fi
 
   # Examples
   mkdir -p "$ASSETS_DIR/examples"
@@ -179,17 +194,25 @@ for skill in "${ALL_SKILLS[@]}"; do
   fi
 done
 
-if [[ -d "$WORKFLOW_DIR/tools" ]]; then
-  count=$(ls -1 "$WORKFLOW_DIR/tools" | wc -l)
+# Verify package entry symlink
+entry_link="$HOME/.config/opencode/skills/documents-kit"
+if [[ -L "$entry_link" && -e "$entry_link" ]]; then
+  echo "[OK] global/documents-kit (entry) → $(readlink "$entry_link")"
+else
+  echo "[FAIL] global/documents-kit (entry)"
+  errors=$((errors + 1))
+fi
+
+if [[ -d "$WORKFLOW_DIR/skills/productivity/documents-kit/tools" ]]; then
+  count=$(ls -1 "$WORKFLOW_DIR/skills/productivity/documents-kit/tools" | wc -l)
   echo "[OK] tools/ ($count entries)"
 fi
 
-if [[ -d "$ASSETS_DIR" ]]; then
-  for sub in templates presets diagrams examples; do
-    count=$(ls -1 "$ASSETS_DIR/$sub" 2>/dev/null | wc -l)
-    echo "[OK] documents-kit/$sub/ ($count entries)"
-  done
-fi
+ASSETS_DIR="$WORKFLOW_DIR/skills/productivity/documents-kit"
+for sub in templates presets diagrams examples; do
+  count=$(ls -1 "$ASSETS_DIR/$sub" 2>/dev/null | wc -l)
+  echo "[OK] $sub/ ($count entries)"
+done
 
 # Check for broken symlinks
 broken=$(find "$HOME/.config/opencode/skills" -maxdepth 1 -type l ! -exec test -e {} \; -print 2>/dev/null)

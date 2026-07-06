@@ -1,42 +1,59 @@
 # Engineering
 
-Skills I use daily for code work, organized into 4 sub-directories:
+Daily code-work skills — planning, design, quality, and workflow management.
 
-## planning/
+## When to use
 
-- **[to-prd](./planning/to-prd/SKILL.md)** — Turn the current conversation context into a PRD and publish it to the configured project issue tracker.
-- **[to-issues](./planning/to-issues/SKILL.md)** — Break any plan, spec, or PRD into independently-grabbable issue slices for the configured tracker, defaulting to local markdown issues.
-- **[triage](./planning/triage/SKILL.md)** — Triage issues through a state machine of triage roles.
+You are building, reviewing, testing, diagnosing, deploying, or planning code projects. This bucket is the daily driver for any code task.
 
-## design/
+## Boundary with sibling buckets
 
-- **[architecture-decision-records](./design/architecture-decision-records/SKILL.md)** — Capture architectural decisions as structured ADRs — context, alternatives, rationale, consequences.
-- **[design](./design/SKILL.md)** — Full-stack design skill for frontend interfaces. 22 sub-commands (craft, shape, audit, critique, adapt, animate, etc.). Merges former impeccable + emil-design-eng skills. Motion authority via emil's Animation Decision Framework.
-- **[grill-with-docs](./design/grill-with-docs/SKILL.md)** — Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates `CONTEXT.md` and ADRs inline.
-- **[improve-codebase-architecture](./design/improve-codebase-architecture/SKILL.md)** — Find deepening opportunities in a codebase, informed by the domain language in `CONTEXT.md` and the decisions in `docs/adr/`.
+**Engineering** covers pipeline/code-work skills used daily: planning features, designing architecture, reviewing PRs, TDD, debugging, CI/CD. Use **Productivity** for non-code workflow tools (documents, research, handoffs). Use **Misc** for specialist domain skills (frameworks, databases, languages) — skills you load only when working in that specific tech. Use **Personal** for setup-specific tools tied to this machine. If a skill affects code output quality but isn't domain-specific, it belongs in Engineering.
 
-## quality/
+## Structure
 
-- **[ai-regression-testing](./quality/ai-regression-testing/SKILL.md)** — Regression testing for AI-assisted dev — sandbox-mode API testing, AI blind-spot patterns. Use only when AI agents modified API routes or after bug fixes.
-- **[diagnose](./quality/diagnose/SKILL.md)** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
-- **[ponytail](./quality/ponytail/SKILL.md)** — Forces the laziest solution that actually works. YAGNI → stdlib → native → one line → minimum. Levels: lite/full/ultra. Companion skills: [audit](./quality/ponytail/audit/SKILL.md), [debt](./quality/ponytail/debt/SKILL.md), [gain](./quality/ponytail/gain/SKILL.md), [help](./quality/ponytail/help/SKILL.md), [review](./quality/ponytail/review/SKILL.md). From [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail).
-- **[production-audit](./quality/production-audit/SKILL.md)** — Local-evidence production readiness audit — security, data integrity, operations, payments, UX.
-- **[review](./quality/review/SKILL.md)** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
-- **[tdd](./quality/tdd/SKILL.md)** — Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
-- **[team-handoff-quality](./quality/team-handoff-quality/SKILL.md)** — Team-ready handoff checklist for changes, verification evidence, version bump decisions, changelog entries, migration notes, rollback notes, next-owner actions.
-- **[verify-evidence](./quality/verify-evidence/SKILL.md)** — Tool-based verification checklist for acceptance criteria, test evidence, stuck-loop detection, and AFK/high-risk review.
+4 sub-directories:
 
-## workflow/
+- **planning/** — turning conversation into artifacts (PRDs, issues, triage)
+- **design/** — architecture and UI design decisions
+- **quality/** — review, test, diagnose, audit, verify
+- **workflow/** — meta-workflow: prototyping, memory, setup, skill-authoring
 
-- **[canary-watch](./workflow/canary-watch/SKILL.md)** — Post-deploy monitoring for deployed URLs — HTTP status, console errors, static assets, performance, API health, SSE streams.
-- **[codebase-onboarding](./workflow/codebase-onboarding/SKILL.md)** — Analyze unfamiliar codebases and generate structured onboarding guides — architecture map, key entry points, conventions.
-- **[context-budget](./workflow/context-budget/SKILL.md)** — Audit OpenCode context overhead across agents, skills, MCP servers, and repo instructions.
-- **[deployment-patterns](./workflow/deployment-patterns/SKILL.md)** — Deployment workflows — strategies (rolling, blue-green, canary), Docker multi-stage builds, CI/CD pipelines, health checks, rollback.
-- **[git-workflow](./workflow/git-workflow/SKILL.md)** — Git branching strategies, commit conventions, merge vs rebase, PR workflow, conflict resolution, release management.
-- **[github-ops](./workflow/github-ops/SKILL.md)** — GitHub operations — issue triage, PR management, CI/CD debugging, release management, security monitoring via gh CLI.
-- **[memory-dreaming](./workflow/memory-dreaming/SKILL.md)** — Consolidate lessons across sessions — find duplicates, merge, archive stale entries. 2-phase pipeline. Trigger: consolidate, dream, clean up lessons, memory hygiene.
-- **[prototype](./workflow/prototype/SKILL.md)** — Build a throwaway prototype to flesh out a design — either a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route.
-- **[search-first](./workflow/search-first/SKILL.md)** — Research-before-coding for external dependency, integration, or custom utility decisions. Searches npm/PyPI, MCP servers, GitHub, web. Decision matrix: adopt → extend → compose → build.
-- **[setup-matt-pocock-skills](./workflow/setup-matt-pocock-skills/SKILL.md)** — Scaffold the per-repo config (issue tracker, triage label vocabulary, domain doc layout) that the other engineering skills consume.
-- **[skill-author](./workflow/skill-author/SKILL.md)** — Meta-skill for creating new skills.
-- **[zoom-out](./workflow/zoom-out/SKILL.md)** — Tell the agent to zoom out and give broader context or a higher-level perspective on an unfamiliar section of code.
+### planning/
+
+- **to-prd** — Turn current conversation context into a PRD and publish it to the configured project issue tracker.
+- **to-issues** — Break any plan, spec, or PRD into independently-grabbable issue slices for the configured tracker, defaulting to local markdown issues.
+- **triage** — Triage issues through a state machine of triage roles.
+
+### design/
+
+- **architecture-decision-records** — Capture architectural decisions as structured ADRs — context, alternatives, rationale, consequences.
+- **design** — Full-stack design skill for frontend interfaces. 22 sub-commands (craft, shape, audit, critique, adapt, animate, etc.). Merges former impeccable + emil-design-eng skills.
+- **grill-with-docs** — Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline.
+- **improve-codebase-architecture** — Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/.
+
+### quality/
+
+- **ai-regression-testing** — Regression testing for AI-assisted dev — sandbox-mode API testing, AI blind-spot patterns.
+- **diagnose** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
+- **ponytail** — Forces the laziest solution that actually works. YAGNI → stdlib → native → one line → minimum. Levels: lite/full/ultra. Companion skills: audit, debt, gain, help, review.
+- **production-audit** — Local-evidence production readiness audit — security, data integrity, operations, payments, UX.
+- **review** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
+- **tdd** — Test-driven development with a red-green-refactor loop.
+- **team-handoff-quality** — Team-ready handoff checklist for changes, verification evidence, version bump, changelog, migration notes.
+- **verify-evidence** — Tool-based verification checklist for acceptance criteria, test evidence, stuck-loop detection, and AFK/high-risk review.
+
+### workflow/
+
+- **canary-watch** — Post-deploy monitoring for deployed URLs — HTTP status, console errors, static assets, performance, API health, SSE streams.
+- **codebase-onboarding** — Analyze unfamiliar codebases and generate structured onboarding guides.
+- **context-budget** — Audit OpenCode context overhead across agents, skills, MCP servers, and repo instructions.
+- **deployment-patterns** — Deployment workflows — strategies, Docker multi-stage, CI/CD, health checks, rollback.
+- **git-workflow** — Git branching strategies, commit conventions, merge vs rebase, PR workflow, conflict resolution.
+- **github-ops** — GitHub operations — issue triage, PR management, CI/CD debugging, release management, security monitoring.
+- **memory-dreaming** — Consolidate lessons across sessions — find duplicates, merge, archive stale entries.
+- **prototype** — Build a throwaway prototype to flesh out a design — terminal app or UI variations.
+- **search-first** — Research-before-coding for external dependency, integration, or custom utility decisions.
+- **setup-matt-pocock-skills** — Scaffold the per-repo config (issue tracker, triage labels, domain docs) that other engineering skills consume.
+- **skill-author** — Meta-skill for creating new skills.
+- **zoom-out** — Tell the agent to zoom out and give broader context on an unfamiliar section of code.

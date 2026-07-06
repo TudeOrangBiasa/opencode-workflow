@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Refactor: consolidate documents-kit from `skills/personal/documents-kit-skills/` + `tools/` + `documents-kit/` into `skills/productivity/documents-kit/` with package entry SKILL.md/REFERENCE.md. 10 sub-skills, 15 tools, 4 asset directories moved. Global symlinks re-pointed. Setup script updated.
+- Docs: rewrite all 6 bucket READMEs (engineering, productivity, misc, personal, in-progress, deprecated) as context maps with header/when-to-use/boundary/structure/index format. Updated top-level README.md tree, docs/architecture.md layout, and AGENTS.md skill buckets.
 - Refactor: reorganize `skills/misc/` into 8 domain sub-directories: `frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`. Reverted earlier move of workflow skills into `engineering/`/`productivity/`; all 103 specialist skills now live under `misc/<domain>/`. Updated `skills/misc/README.md` with grouped lists and `docs/architecture.md` layout.
 - Fix: `.opencode/plugins/taste.ts` `chat.message` hook was reading `message` from the wrong argument and `directory` from the wrong input. Now reads `output.message` per SDK and captures `project` from the plugin factory input.
 - Improvement: `.opencode/plugins/ov-helper.ts` now captures stderr and logs warnings on non-zero exit or invalid JSON while keeping the public interface unchanged.

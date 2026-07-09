@@ -160,10 +160,10 @@ This is personal dotfiles / workflow setup. Not for public distribution as a who
 
 ## Skill compliance
 
-133/147 skills pass write-a-skill compliance. 14 are in personal/in-progress/deprecated directories (excluded by design). 0 failed.
+115/135 skills pass write-a-skill compliance. 20 are in personal/in-progress/deprecated directories (excluded by design). 0 failed.
+
+Last skill merge: 2026-07-09 — 32 framework + language skills merged into 10 (net -22). 6 generic skills recategorized from misc/ to engineering/. SKILL.md average: 27 lines. See [AGENTS.md § Maintenance](AGENTS.md#maintenance) for the pattern.
 
 Compliance is enforced by:
 - `scripts/check-skill-structure.sh` (pre-commit, runs automatically)
 - `scripts/audit-skill.sh <skill-path>` (manual single-skill audit)
-
-Last full cleanup: 2026-06-26 — 107 violations (P1 file size + P2 missing trigger) fixed via 3 parallel builder subagents. SKILL.md average went from 377 → 27 lines; 98 new REFERENCE.md created. See [AGENTS.md § Maintenance](AGENTS.md#maintenance) for the pattern.

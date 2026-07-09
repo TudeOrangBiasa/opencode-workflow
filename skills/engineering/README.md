@@ -29,16 +29,20 @@ You are building, reviewing, testing, diagnosing, deploying, or planning code pr
 
 - **architecture-decision-records** — Capture architectural decisions as structured ADRs — context, alternatives, rationale, consequences.
 - **design** — Full-stack design skill for frontend interfaces. 22 sub-commands (craft, shape, audit, critique, adapt, animate, etc.). Merges former impeccable + emil-design-eng skills.
+- **design-system** — Generate, audit, or review design systems for visual consistency (moved from misc/frontend/).
 - **grill-with-docs** — Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline.
 - **improve-codebase-architecture** — Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/.
 
 ### quality/
 
 - **ai-regression-testing** — Regression testing for AI-assisted dev — sandbox-mode API testing, AI blind-spot patterns.
+- **click-path-audit** — Trace button click paths for sequential-undo, race, stale-closure, dead-path bugs (moved from misc/frontend/).
 - **diagnose** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
+- **error-handling** — Error-handling review checklist for typed errors, retries, safe messages (moved from misc/backend/).
 - **ponytail** — Forces the laziest solution that actually works. YAGNI → stdlib → native → one line → minimum. Levels: lite/full/ultra. Companion skills: audit, debt, gain, help, review.
 - **production-audit** — Local-evidence production readiness audit — security, data integrity, operations, payments, UX.
 - **review** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
+- **security-review** — Security review checklist for auth, input handling, secrets, PII (moved from misc/security/).
 - **tdd** — Test-driven development with a red-green-refactor loop.
 - **team-handoff-quality** — Team-ready handoff checklist for changes, verification evidence, version bump, changelog, migration notes.
 - **verify-evidence** — Tool-based verification checklist for acceptance criteria, test evidence, stuck-loop detection, and AFK/high-risk review.

@@ -7,7 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:plugins": "bun build .opencode/plugins/taste.ts .opencode/plugins/lesson-injector.ts --outdir .opencode/plugins/out --target node --format esm --external @opencode-ai/plugin",
+    "test:plugins": "bun test ./.opencode/plugins/internal/*.test.ts",
+    "test": "bun test ./.opencode/plugins/internal/*.test.ts"
   },
   "repository": {
     "type": "git",

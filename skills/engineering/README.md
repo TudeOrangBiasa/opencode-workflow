@@ -39,7 +39,8 @@ You are building, reviewing, testing, diagnosing, deploying, or planning code pr
 - **click-path-audit** — Trace button click paths for sequential-undo, race, stale-closure, dead-path bugs (moved from misc/frontend/).
 - **diagnose** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
 - **error-handling** — Error-handling review checklist for typed errors, retries, safe messages (moved from misc/backend/).
-- **ponytail** — Forces the laziest solution that actually works. YAGNI → stdlib → native → one line → minimum. Levels: lite/full/ultra. Companion skills: audit, debt, gain, help, review.
+- **ponytail** — Forces the laziest solution that actually works (npm plugin, auto-injects on every turn). `/ponytail [lite|full|ultra|off]`. Companion: `/ponytail-review`, `/ponytail-audit`, `/ponytail-debt`, `/ponytail-help`, `/ponytail-gain`.
+- **ponytail-gain** — One-shot scoreboard: ponytail's measured impact (less code, less cost, faster). `/ponytail-gain`. Restored from git history; not in npm package.
 - **production-audit** — Local-evidence production readiness audit — security, data integrity, operations, payments, UX.
 - **review** — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
 - **security-review** — Security review checklist for auth, input handling, secrets, PII (moved from misc/security/).

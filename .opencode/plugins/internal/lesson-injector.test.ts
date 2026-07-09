@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, spyOn } from "bun:test"
 import plugin from "../lesson-injector.ts"
 import { SessionCache, buildQuery, formatLessons, injectLessons, fetchAndInjectLessons } from "../internal/lesson-injector-helpers.ts"
+import * as ovHelper from "./ov-helper.ts"
 
 // ─── SessionCache ────────────────────────────────────────────────────
 
@@ -174,39 +175,26 @@ describe("fetchAndInjectLessons", () => {
 // ─── Plugin factory ──────────────────────────────────────────────────
 
 describe("plugin factory", () => {
-  let spawnSpy: ReturnType<typeof spyOn>
+  let execSpy: ReturnType<typeof spyOn>
 
   beforeEach(() => {
-    spawnSpy = spyOn(Bun, "spawn")
-    spawnSpy.mockImplementation(() => {
-      const stdoutData = JSON.stringify({ ok: true, result: { memories: [], resources: [] } })
-      return {
-        exited: Promise.resolve(0),
-        stdout: new ReadableStream({
-          start(controller) {
-            controller.enqueue(new TextEncoder().encode(stdoutData))
-            controller.close()
-          },
-        }),
-        stderr: new ReadableStream({
-          start(controller) { controller.close() },
-        }),
-      } as any
-    })
+    execSpy = spyOn(ovHelper, "execOv").mockImplementation(async () => ({
+      stdout: JSON.stringify({ ok: true, result: { memories: [], resources: [] } }),
+      stderr: "",
+    }))
   })
 
   afterEach(() => {
-    spawnSpy.mockRestore()
+    execSpy.mockRestore()
   })
 
   it("captures project from directory", async () => {
     const inst = await plugin({ directory: "/path/to/MyProject" } as any)
     const out = { system: ["base"] }
     await (inst["experimental.chat.system.transform"] as any)({ sessionID: "test" } as any, out)
-    const calls = spawnSpy.mock.calls
-    expect(calls.length).toBeGreaterThan(0)
-    const query = calls[0][0][2]
-    expect(query).toContain("MyProject")
+    expect(execSpy).toHaveBeenCalled()
+    const args = execSpy.mock.calls[0][0] as string[]
+    expect(args.join(" ")).toContain("MyProject")
   })
 
   it("different factory calls get different project values", async () => {
@@ -219,22 +207,21 @@ describe("plugin factory", () => {
     await (inst1["experimental.chat.system.transform"] as any)({ sessionID: "s1" } as any, out1)
     await (inst2["experimental.chat.system.transform"] as any)({ sessionID: "s2" } as any, out2)
 
-    const queries = spawnSpy.mock.calls.map((c: any) => c[0][2])
-    expect(queries[0]).toContain("ProjAlpha")
-    expect(queries[1]).toContain("ProjBeta")
-    expect(queries[0]).not.toBe(queries[1])
+    const argsList = execSpy.mock.calls.map((c: any) => c[0] as string[])
+    expect(argsList[0].join(" ")).toContain("ProjAlpha")
+    expect(argsList[1].join(" ")).toContain("ProjBeta")
+    expect(argsList[0][2]).not.toBe(argsList[1][2])
   })
 })
 
 // ─── Hook-level: spawn, inject, cache ────────────────────────────────
 
 describe("experimental.chat.system.transform hook", () => {
-  let spawnSpy: ReturnType<typeof spyOn>
+  let execSpy: ReturnType<typeof spyOn>
 
-  beforeEach(() => {
-    SessionCache.clear()
-    spawnSpy = spyOn(Bun, "spawn").mockImplementation(() => {
-      const stdoutData = JSON.stringify({
+  function mockOvWithLessons() {
+    execSpy = spyOn(ovHelper, "execOv").mockImplementation(async () => ({
+      stdout: JSON.stringify({
         ok: true,
         result: {
           memories: [
@@ -243,27 +230,21 @@ describe("experimental.chat.system.transform hook", () => {
           ],
           resources: [],
         },
-      })
-      return {
-        exited: Promise.resolve(0),
-        stdout: new ReadableStream({
-          start(controller) {
-            controller.enqueue(new TextEncoder().encode(stdoutData))
-            controller.close()
-          },
-        }),
-        stderr: new ReadableStream({
-          start(controller) { controller.close() },
-        }),
-      } as any
-    })
+      }),
+      stderr: "",
+    }))
+  }
+
+  beforeEach(() => {
+    SessionCache.clear()
+    mockOvWithLessons()
   })
 
   afterEach(() => {
-    spawnSpy.mockRestore()
+    execSpy.mockRestore()
   })
 
-  it("calls ov find via Bun.spawn and injects lessons into output.system", async () => {
+  it("calls ov find via execOv and injects lessons into output.system", async () => {
     const inst = await plugin({ directory: "/path/MyProject" } as any)
     const output = { system: ["base prompt"] }
     await (inst["experimental.chat.system.transform"] as any)(
@@ -271,25 +252,25 @@ describe("experimental.chat.system.transform hook", () => {
       output,
     )
 
-    expect(spawnSpy).toHaveBeenCalledTimes(1)
-    const cmdArgs = spawnSpy.mock.calls[0][0] as string[]
-    expect(cmdArgs[0]).toBe("ov")
-    expect(cmdArgs[1]).toBe("find")
-    expect(cmdArgs[2]).toContain("MyProject")
+    expect(execSpy).toHaveBeenCalledTimes(1)
+    const args = execSpy.mock.calls[0][0] as string[]
+    expect(args[0]).toBe("ov")
+    expect(args[1]).toBe("find")
+    expect(args.join(" ")).toContain("MyProject")
 
     expect(output.system[0]).toContain("## Past Lessons")
     expect(output.system[0]).toContain("use pnpm")
     expect(output.system[0]).toContain("prefer vitest")
   })
 
-  it("uses cache on second call (no additional spawn)", async () => {
+  it("uses cache on second call (no additional exec)", async () => {
     const inst = await plugin({ directory: "/path/MyProject" } as any)
     const output1 = { system: ["first"] }
     await (inst["experimental.chat.system.transform"] as any)(
       { sessionID: "hook-test-cache", model: {} } as any,
       output1,
     )
-    const firstSpawnCount = spawnSpy.mock.calls.length
+    const firstCallCount = execSpy.mock.calls.length
 
     const output2 = { system: ["second"] }
     await (inst["experimental.chat.system.transform"] as any)(
@@ -297,25 +278,16 @@ describe("experimental.chat.system.transform hook", () => {
       output2,
     )
 
-    expect(spawnSpy.mock.calls.length).toBe(firstSpawnCount) // no new spawn
+    expect(execSpy.mock.calls.length).toBe(firstCallCount) // no new exec
     expect(output2.system[0]).toContain("use pnpm")
   })
 
   it("handles gracefully when ov find returns no results", async () => {
-    spawnSpy.mockRestore()
-    spawnSpy = spyOn(Bun, "spawn").mockImplementation(() => ({
-      exited: Promise.resolve(0),
-      stdout: new ReadableStream({
-        start(controller) {
-          const data = JSON.stringify({ ok: true, result: { memories: [], resources: [] } })
-          controller.enqueue(new TextEncoder().encode(data))
-          controller.close()
-        },
-      }),
-      stderr: new ReadableStream({
-        start(controller) { controller.close() },
-      }),
-    } as any))
+    execSpy.mockRestore()
+    execSpy = spyOn(ovHelper, "execOv").mockImplementation(async () => ({
+      stdout: JSON.stringify({ ok: true, result: { memories: [], resources: [] } }),
+      stderr: "",
+    }))
 
     const inst = await plugin({ directory: "/path/EmptyProject" } as any)
     const output = { system: ["base prompt"] }

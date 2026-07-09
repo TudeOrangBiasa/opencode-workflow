@@ -1,4 +1,5 @@
 // Helper functions for taste plugin — exported for testing
+import { spawn } from "node:child_process"
 import { ovFindJson } from "./ov-helper"
 
 // Types
@@ -195,7 +196,9 @@ export async function fetchTastesViaOpenViking(project: string): Promise<Prefere
 export async function persistPreference(project: string, pref: Preference): Promise<boolean> {
   const tag = "[taste:" + project + "]"
   const content = tag + " " + pref.category + " — " + pref.text + " (confidence: " + pref.confidence.toFixed(2) + ")"
-  const proc = Bun.spawn(["ov", "add-memory", content])
-  const exitCode = await proc.exited
-  return exitCode === 0
+  return new Promise((resolve) => {
+    const child = spawn("ov", ["add-memory", content])
+    child.on("close", (code) => resolve(code === 0))
+    child.on("error", () => resolve(false))
+  })
 }

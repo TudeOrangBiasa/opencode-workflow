@@ -1,3 +1,13 @@
+# Plugin compiled output (taste.ts, lesson-injector.ts → .js)
+.opencode/plugins/out/
+
+# Machine-specific symlinks to npm package skills
+/skills/engineering/quality/ponytail
+/skills/engineering/quality/ponytail-audit
+/skills/engineering/quality/ponytail-debt
+/skills/engineering/quality/ponytail-help
+/skills/engineering/quality/ponytail-review
+
 # Sandbox — temporary workspace, not for main branch
 
 # Documents Kit Skills — symlinked from separate repo (see docs/DOCUMENTS_KIT.md)

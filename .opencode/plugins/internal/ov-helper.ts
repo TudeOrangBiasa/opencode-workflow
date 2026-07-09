@@ -1,5 +1,7 @@
 // Shared ov CLI helper
 
+import { spawn } from "node:child_process"
+
 /** ov find -o json result shape. */
 export interface OvFindResult {
   uri: string
@@ -16,18 +18,34 @@ interface OvFindResponse {
   }
 }
 
+/** Wrapped spawn for testability. Exported so tests can spyOn it. */
+export async function execOv(args: string[]): Promise<{ stdout: string; stderr: string }> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(args[0], args.slice(1))
+    let stdout = ""
+    let stderr = ""
+    child.stdout?.on("data", (chunk: Buffer) => { stdout += chunk.toString() })
+    child.stderr?.on("data", (chunk: Buffer) => { stderr += chunk.toString() })
+    child.on("close", (code) => {
+      if (code === 0) resolve({ stdout, stderr })
+      else reject(new Error(`exit ${code}: ${stderr}`))
+    })
+    child.on("error", reject)
+  })
+}
+
 /** Run ov find and parse JSON output. Returns null on failure. */
 export async function ovFindJson(args: string[]): Promise<OvFindResponse | null> {
-  const proc = Bun.spawn(args)
-  const [exitCode, stdout, stderr] = await Promise.all([
-    proc.exited,
-    new Response(proc.stdout).text(),
-    new Response(proc.stderr).text(),
-  ])
-  if (exitCode !== 0) {
+  let stdout: string
+  let stderr: string
+  try {
+    const result = await execOv(args)
+    stdout = result.stdout
+    stderr = result.stderr
+  } catch (err: unknown) {
     const label = `"${args.slice(0, 3).join(" ")}${args.length > 3 ? " …" : ""}"`
-    const msg = stderr.trim() || "(no stderr)"
-    console.warn(`[ov-helper] ${label} failed (exit ${exitCode}): ${msg}`)
+    const msg = err instanceof Error ? err.message : "(unknown error)"
+    console.warn(`[ov-helper] ${label} failed: ${msg}`)
     return null
   }
   try {

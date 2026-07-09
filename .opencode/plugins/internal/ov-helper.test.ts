@@ -1,27 +1,16 @@
 import { describe, it, expect, spyOn, afterEach } from "bun:test"
-import { ovFindJson } from "./ov-helper.ts"
+import * as ovHelper from "./ov-helper.ts"
 
-function makeSpawn(overrides: Partial<{
-  exitCode: number
-  stdout: string
+function makeMockExecOv(overrides: Partial<{
   stderr: string
-}>): any {
-  const { exitCode = 0, stdout = "", stderr = "" } = overrides
-  return {
-    exited: Promise.resolve(exitCode),
-    stdout: new ReadableStream({
-      start(controller) {
-        if (stdout) controller.enqueue(new TextEncoder().encode(stdout))
-        controller.close()
-      },
-    }),
-    stderr: new ReadableStream({
-      start(controller) {
-        if (stderr) controller.enqueue(new TextEncoder().encode(stderr))
-        controller.close()
-      },
-    }),
-  }
+  stdout: string
+}>): (...args: string[]) => Promise<{ stdout: string; stderr: string }> {
+  const { stdout = "", stderr = "" } = overrides
+  return async () => ({ stdout, stderr })
+}
+
+function makeMockExecOvThrow(msg: string): (...args: string[]) => Promise<never> {
+  return async () => { throw new Error(msg) }
 }
 
 describe("ovFindJson", () => {
@@ -32,38 +21,38 @@ describe("ovFindJson", () => {
   })
 
   it("returns parsed result on success", async () => {
-    const spy = spyOn(Bun, "spawn").mockImplementation(() =>
-      makeSpawn({
+    const spy = spyOn(ovHelper, "execOv").mockImplementation(
+      makeMockExecOv({
         stdout: JSON.stringify({ ok: true, result: { memories: [], resources: [] } }),
       })
     )
-    const result = await ovFindJson(["ov", "find", "test"])
+    const result = await ovHelper.ovFindJson(["ov", "find", "test"])
     expect(result).not.toBeNull()
     expect(result!.ok).toBe(true)
     spy.mockRestore()
   })
 
-  it("returns null on non-zero exit and logs warning", async () => {
-    const spy = spyOn(Bun, "spawn").mockImplementation(() =>
-      makeSpawn({ exitCode: 1, stderr: "connection refused" })
+  it("returns null on exec error (e.g. non-zero exit) and logs warning", async () => {
+    const spy = spyOn(ovHelper, "execOv").mockImplementation(
+      makeMockExecOvThrow("exit 1: connection refused")
     )
     warn = spyOn(console, "warn").mockImplementation(() => {})
 
-    const result = await ovFindJson(["ov", "find", "bad-query"])
+    const result = await ovHelper.ovFindJson(["ov", "find", "bad-query"])
     expect(result).toBeNull()
     expect(warn).toHaveBeenCalledTimes(1)
-    expect(warn.mock.calls[0][0]).toContain("failed (exit 1)")
+    expect(warn.mock.calls[0][0]).toContain("failed")
     expect(warn.mock.calls[0][0]).toContain("connection refused")
     spy.mockRestore()
   })
 
   it("returns null on invalid JSON and logs warning", async () => {
-    const spy = spyOn(Bun, "spawn").mockImplementation(() =>
-      makeSpawn({ stdout: "{not: json}" })
+    const spy = spyOn(ovHelper, "execOv").mockImplementation(
+      makeMockExecOv({ stdout: "{not: json}" })
     )
     warn = spyOn(console, "warn").mockImplementation(() => {})
 
-    const result = await ovFindJson(["ov", "find", "bad-json"])
+    const result = await ovHelper.ovFindJson(["ov", "find", "bad-json"])
     expect(result).toBeNull()
     expect(warn).toHaveBeenCalledTimes(1)
     expect(warn.mock.calls[0][0]).toContain("invalid JSON")
@@ -71,12 +60,12 @@ describe("ovFindJson", () => {
   })
 
   it("returns null on empty stdout and logs warning", async () => {
-    const spy = spyOn(Bun, "spawn").mockImplementation(() =>
-      makeSpawn({ stdout: "" })
+    const spy = spyOn(ovHelper, "execOv").mockImplementation(
+      makeMockExecOv({ stdout: "" })
     )
     warn = spyOn(console, "warn").mockImplementation(() => {})
 
-    const result = await ovFindJson(["ov", "find", "empty"])
+    const result = await ovHelper.ovFindJson(["ov", "find", "empty"])
     expect(result).toBeNull()
     expect(warn).toHaveBeenCalledTimes(1)
     expect(warn.mock.calls[0][0]).toContain("no JSON object")
@@ -85,22 +74,22 @@ describe("ovFindJson", () => {
 
   it("strips 'cmd:' preamble line and parses JSON", async () => {
     const json = JSON.stringify({ ok: true, result: { memories: [], resources: [] } })
-    const spy = spyOn(Bun, "spawn").mockImplementation(() =>
-      makeSpawn({ stdout: `cmd: ov find --uri= -n 5 "test"\n${json}` })
+    const spy = spyOn(ovHelper, "execOv").mockImplementation(
+      makeMockExecOv({ stdout: `cmd: ov find --uri= -n 5 "test"\n${json}` })
     )
-    const result = await ovFindJson(["ov", "find", "test"])
+    const result = await ovHelper.ovFindJson(["ov", "find", "test"])
     expect(result).not.toBeNull()
     expect(result!.ok).toBe(true)
     spy.mockRestore()
   })
 
   it("returns null when stdout has no JSON object", async () => {
-    const spy = spyOn(Bun, "spawn").mockImplementation(() =>
-      makeSpawn({ stdout: "cmd: ov find\n" })
+    const spy = spyOn(ovHelper, "execOv").mockImplementation(
+      makeMockExecOv({ stdout: "cmd: ov find\n" })
     )
     warn = spyOn(console, "warn").mockImplementation(() => {})
 
-    const result = await ovFindJson(["ov", "find", "no-json"])
+    const result = await ovHelper.ovFindJson(["ov", "find", "no-json"])
     expect(result).toBeNull()
     expect(warn).toHaveBeenCalledTimes(1)
     expect(warn.mock.calls[0][0]).toContain("no JSON object")

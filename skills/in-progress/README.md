@@ -16,4 +16,5 @@ Standalone skill drafts, organized by readiness. No sub-directories.
 
 ### Active drafts
 
+- **claude-handoff** — Skill for handoff between Claude Code sessions (upstream in-progress).
 - **youtube-transcript** — YouTube transcript extraction (yt-dlp wrapper + skill). Promote to productivity/ when reviewed.

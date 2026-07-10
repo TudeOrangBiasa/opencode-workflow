@@ -35,12 +35,22 @@ Query tracker and present three buckets (oldest first): Unlabeled, needs-triage,
 
 ## Needs-info Template
 
-```
+```markdown
 ## Triage Notes
-**What we've established so far:** [captured work]
-**What we still need from you (@reporter):** [specific actionable questions]
+
+**What we've established so far:**
+
+- point 1
+- point 2
+
+**What we still need from you (@reporter):**
+
+- question 1
+- question 2
 ```
+
+Capture everything resolved during grilling under "established so far" so the work isn't lost. Questions must be specific and actionable, not "please provide more info".
 
 ## Resuming previous session
 
-Read prior triage notes, check if reporter answered, present updated picture.
+Read prior triage notes (if they exist), check whether the reporter has answered any outstanding questions, and present an updated picture before continuing. Don't re-ask resolved questions.

@@ -22,10 +22,10 @@ opencode-workflow/                              (this repo)
 │   └── ov-helper.ts            (shared ov CLI wrapper)
 ├── skills/                                     (pipeline + symlinks)
 │   ├── engineering/                             (pipeline skills)
-│   │   ├── planning/                            (PRD, issues, triage)
-│   │   ├── design/                              (UI design, architecture review, grilling)
-│   │   ├── quality/                             (review, TDD, diagnose, ponytail)
-│   │   └── workflow/                            (prototype, memory, setup, skill-author, zoom-out)
+│   │   ├── planning/                            (wayfinder, to-spec, to-tickets, triage, ask-matt)
+│   │   ├── design/                              (codebase-design, domain-modeling, design, grill-with-docs)
+│   │   ├── quality/                             (code-review, diagnosing-bugs, tdd, ponytail, verify-evidence)
+│   │   └── workflow/                            (implement, research, resolving-merge-conflicts, prototype, memory, skill-author)
 │   ├── personal/workflow/                       (personal workflow skills)
 │   │   ├── dev-workflow/
 │   │   ├── eval/
@@ -55,6 +55,8 @@ opencode-workflow/                              (this repo)
 │   └── setup-documents-kit.sh (creates documents-kit symlinks)
 ├── docs/                                       (architecture, extraction criteria, anti-hardcoded, integrations)
 │   ├── architecture.md        (overall layout)
+│   ├── engineering/            (18 reference docs per skill — code-review, tdd, wayfinder, etc.)
+│   ├── productivity/           (5 reference docs — grilling, handoff, writing-great-skills, etc.)
 │   ├── skills/extraction-criteria.md
 │   ├── skills/anti-hardcoded-pattern.md
 │   └── integrations/documents-kit.md
@@ -160,7 +162,7 @@ This is personal dotfiles / workflow setup. Not for public distribution as a who
 
 ## Skill compliance
 
-115/135 skills pass write-a-skill compliance. 20 are in personal/in-progress/deprecated directories (excluded by design). 0 failed.
+125/150 skills pass write-a-skill compliance. 25 in personal/in-progress/deprecated (excluded by design). 0 failed.
 
 Last skill merge: 2026-07-09 — 32 framework + language skills merged into 10 (net -22). 6 generic skills recategorized from misc/ to engineering/. SKILL.md average: 27 lines. See [AGENTS.md § Maintenance](AGENTS.md#maintenance) for the pattern.
 

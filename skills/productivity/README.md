@@ -34,6 +34,7 @@ Package entry for the documents-kit-skills ecosystem. Includes 10 sub-skills, 15
 ### Standalone skills
 
 - **deep-research** — Multi-source deep research using web search MCP — searches, synthesizes, delivers cited reports with source attribution.
-- **grill-me** — Get relentlessly interviewed about a plan or design until every branch of the decision tree is resolved.
-- **handoff** — Compact the current conversation into a handoff document so another agent can continue the work.
+- **grill-me** — A relentless interview to sharpen a plan or design.
+- **handoff** — Compact the current conversation into a handoff document for another agent to pick up.
 - **write-a-skill** — Create new skills with proper structure, progressive disclosure, and bundled resources.
+- **writing-great-skills** — Reference for writing great skills with glossary of skill-writing terminology.

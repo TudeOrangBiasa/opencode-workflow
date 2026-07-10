@@ -1,7 +1,8 @@
 ---
 name: handoff
-description: Use when hand off current conversation to another agent — compact context into a handoff document. Use when user says handoff, hand off, transfer context, pass to another agent, context compaction.
+description: Compact the conversation into a handoff document for another agent. Use when user says handoff, hand off, transfer context, pass to another agent, context compaction.
 argument-hint: "What will the next session be used for?"
+disable-model-invocation: true
 ---
 
 Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.

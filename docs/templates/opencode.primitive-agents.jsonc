@@ -42,7 +42,7 @@
           "*": "deny",
           "builder": "allow",
           "reviewer": "allow",
-          "browser-qa": "allow",
+          "validator": "allow",
           "explore": "allow",
           "scout": "allow"
         }
@@ -92,7 +92,7 @@
       }
     },
 
-    "browser-qa": {
+    "validator": {
       "mode": "subagent",
       "model": "opencode/mimo-v2.5-free",
       "permission": {
@@ -141,7 +141,7 @@
       "enabled": true
     },
 
-    // Browser/runtime evidence. Required for browser-qa full-page sweeps, console/network checks, screenshots.
+    // Browser/runtime evidence. Required for validator full-page sweeps, console/network checks, screenshots.
     "chrome-devtools": {
       "type": "local",
       "command": [

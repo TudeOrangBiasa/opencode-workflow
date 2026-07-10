@@ -37,7 +37,7 @@ opencode-workflow/
 ├── agents/                    # Source of truth for OpenCode agent files (symlinked)
 │   ├── orchestrator.md        # primary router
 │   ├── builder.md             # code edits
-│   ├── browser-qa.md          # visual QA
+│   ├── validator.md            # QA + validation
 │   └── reviewer.md            # audit/security
 ├── skills/
 │   ├── engineering/           # daily code work — promoted

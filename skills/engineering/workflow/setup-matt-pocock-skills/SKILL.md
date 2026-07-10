@@ -12,7 +12,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Issue tracker** — where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels** — the strings used for the five canonical triage roles
 - **Domain docs** — where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
-- **Design reference** — `design.md` with tokens, anti-patterns, and component rules that builder, browser-qa, and reviewer load before any UI work
+- **Design reference** — `design.md` with tokens, anti-patterns, and component rules that builder, reviewer, and validator load before any UI work
 
 For full process details and templates, see [REFERENCE.md](REFERENCE.md).
 
@@ -56,7 +56,7 @@ Why: missing .NET deps cascade into 100+ bash workarounds per session (unzip →
 
 ### Browser-QA re-snapshot (chrome-devtools)
 
-If the project uses `browser-qa` with chrome-devtools MCP, add this to the same preflight doc:
+If the project uses `validator` with chrome-devtools MCP, add this to the same preflight doc:
 
 ```markdown
 ## Browser-QA re-snapshot rule

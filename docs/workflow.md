@@ -19,7 +19,7 @@ Small set of agents, each with a single narrow responsibility.
 | `orchestrator` | primary | Expensive | Router, planner-in-chief, scope keeper, final synthesizer |
 | `builder` | subagent | Cheap | Narrow bounded code edits, verification, status report |
 | `reviewer` | subagent | Expensive/Medium | Behavior + Change Health diff review, escalation hints |
-| `browser-qa` | subagent | Expensive (browser) | Browser QA: layout, responsive, console/network, data consistency |
+| `validator` | subagent | Free/cheap | Browser QA + multimodal validation: layout, responsive, console/network, data consistency, screenshots |
 | `explore` (built-in) | — | Cheap | Built-in OpenCode read-only discovery agent |
 | `scout` (built-in) | — | Cheap | Built-in OpenCode external docs / dependency / upstream source research |
 
@@ -52,12 +52,12 @@ An agent file is a candidate for skill promotion when:
 | PHP/Laravel review | `skills/misc/php-review/` | Language-specific, on-demand |
 | Database review | `skills/misc/database-review/` | Topic-specific, bundles SQL patterns |
 | Architecture review | `skills/engineering/improve-codebase-architecture/` | Existing Matt skill covers it better |
-| E2E testing | `skills/engineering/tdd/` + `browser-qa` | Test creation and browser evidence already covered |
+| E2E testing | `skills/engineering/tdd/` + `validator` | Test creation and browser evidence already covered |
 | Verify evidence | `skills/misc/verify-evidence/` | Tool-based verification checklist |
 
 ### Boundaries
 
-- **Do not promote** `orchestrator`, `builder`, `reviewer`, or `browser-qa` — these are routing and execution primitives.
+- **Do not promote** `orchestrator`, `builder`, `reviewer`, or `validator` — these are routing and execution primitives.
 - **Do not promote** skills already well-served by built-in OpenCode agents (`explore`, `scout`).
 
 ## Routing Rules
@@ -70,7 +70,7 @@ Use the cheapest reliable context source. Do not spawn subagents for work one di
 | OpenViking | Prior decisions, memories, user preferences, agent patterns, project context (if running) | Current local-file truth |
 | `explore` | Current working tree discovery, symbols, flows, file maps | External library docs |
 | `scout` | External docs, dependency source, upstream API behavior | Local repo search |
-| `browser-qa` | Runtime UI/browser truth | Static code exploration |
+| `validator` | Runtime UI/browser truth + multimodal validation | Static code exploration |
 
 ### Decision Order
 
@@ -78,7 +78,7 @@ Use the cheapest reliable context source. Do not spawn subagents for work one di
 2. Continuation or "what did we decide": search OpenViking first if running; otherwise continue with local files.
 3. Current repo unknowns: use built-in `explore`.
 4. External dependency docs or upstream source: use built-in `scout`.
-5. UI/runtime behavior: use `browser-qa`.
+5. UI/runtime behavior: use `validator`.
 
 ### Explore Prompt Contract
 
@@ -128,7 +128,7 @@ User Request
        ├─ explore/scout (when direct read/grep insufficient)
        ├─ builder (code changes, sequential)
        ├─ verify-evidence (on-demand skill, loaded for verification)
-       ├─ browser-qa (browser evidence, token-heavy)
+       ├─ validator (browser + multimodal evidence)
        └─ reviewer (diff review using verification evidence)
   └─ report to user
 ```

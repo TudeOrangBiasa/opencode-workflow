@@ -87,14 +87,14 @@ Change Health: pass | issues
 Verification reviewed: [commands/evidence]
 
 ## Follow-up
-- [browser-qa | improve-codebase-architecture | future specialist skill | none]
+- [validator | improve-codebase-architecture | future specialist skill | none]
 ```
 
 ## Rules
 
 - Read-only. Never edit.
-- Max 2 review subagents by default; max 3 total if `browser-qa` is needed.
+- Max 2 review subagents by default; max 3 total if `validator` is needed.
 - No nested subagents.
-- Do not run browser checks inside this skill. Recommend `browser-qa` for runtime UI/data evidence.
+- Do not run browser checks inside this skill. Recommend `validator` for runtime UI/data evidence.
 - Do not turn this into a full architecture audit. Recommend `/improve-codebase-architecture` for broad structural friction.
 - Verdict: `block` for behavior blockers, security/data-integrity risk, or serious Change Health regression; `warning` for non-blocking issues or missing verification; `approve` only when residual gaps are named.

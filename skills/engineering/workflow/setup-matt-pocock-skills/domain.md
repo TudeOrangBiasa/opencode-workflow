@@ -2,7 +2,7 @@
 
 ## What this file is
 
-The project's **design taste reference** — concrete design tokens, anti-patterns, and component rules that AI agents (builder, browser-qa, reviewer) load before any UI work. Captures the "why" behind visual decisions so agents produce work that matches the existing design language.
+The project's **design taste reference** — concrete design tokens, anti-patterns, and component rules that AI agents (builder, reviewer, validator) load before any UI work. Captures the "why" behind visual decisions so agents produce work that matches the existing design language.
 
 This file is the consumer rule: every UI-touching skill/agent reads this before generating or critiquing code.
 
@@ -34,7 +34,7 @@ If multi-domain (e.g. monorepo with separate frontend/backend, or multiple produ
 ## Consumer rules
 
 - **builder** — reads `design.md` before any UI generation. Applies tokens, avoids anti-patterns, follows component rules.
-- **browser-qa** — reads `design.md` before UI critique. Judges taste against the project's design language, not generic "good UI."
+- **validator** — reads `design.md` before UI critique. Judges against project's design language.
 - **reviewer** — references `design.md` when reviewing UI changes for design consistency.
 - **scout** — references design tokens when researching external UI patterns to match style.
 

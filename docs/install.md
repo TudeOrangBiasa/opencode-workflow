@@ -151,8 +151,8 @@ OpenCode loads config, agents, skills, and plugins at startup. Quit and restart 
 
 Use [`docs/templates/opencode.primitive-agents.jsonc`](./templates/opencode.primitive-agents.jsonc) as the canonical config template for `~/.config/opencode/opencode.json`. It includes:
 
-- Model assignments per agent (orchestrator, builder, reviewer, browser-qa, scout, etc.)
-- Permission rules (orchestrator can spawn subagents, browser-qa can't edit/bash, etc.)
+- Model assignments per agent (orchestrator, builder, reviewer, validator, scout, etc.)
+- Permission rules (orchestrator can spawn subagents, validator can't edit/bash, etc.)
 - Skill triggers (auto-load keywords for officecli, ponytail, design, etc.)
 - Disabled built-ins (`general`, `plan`, `build`)
 - MCP examples (exa, chrome-devtools, openviking, officecli)

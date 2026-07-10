@@ -1,6 +1,6 @@
 # Design Reference (Seed Template)
 
-This is a starter template for the project's `design.md`. The setup-matt-pocock-skills skill scaffolds this on first run; agents (builder, browser-qa, reviewer) read it before any UI work.
+This is a starter template for the project's `design.md`. The setup-matt-pocock-skills skill scaffolds this on first run; agents (builder, reviewer, validator) read it before any UI work.
 
 ## Design Principles
 
@@ -81,7 +81,7 @@ This is a starter template for the project's `design.md`. The setup-matt-pocock-
 
 ## Notes
 
-- This file is read by builder, browser-qa, and reviewer before any UI work
+- This file is read by builder, reviewer, and validator before any UI work
 - Edit this file when adding new tokens or component patterns
 - Browser-qa uses this to judge taste/aesthetic, not generic "good UI"
 - If multi-domain (e.g. admin vs. public site), create per-domain `design.md` files and point to them from a `design-map.md` at the project root

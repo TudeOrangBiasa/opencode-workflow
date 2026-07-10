@@ -9,7 +9,7 @@ Do not add a new primitive agent unless it has a durable boundary that cannot be
 - `orchestrator` — route, scope, synthesize
 - `builder` — bounded edits and self-verification
 - `reviewer` — Behavior + Change Health review gate
-- `browser-qa` — runtime browser/UI evidence
+- `validator` — runtime browser/UI evidence + multimodal validation
 - built-in `explore` — local repo discovery
 - built-in `scout` — external docs/dependency/upstream source research
 
@@ -17,7 +17,7 @@ Do not add a new primitive agent unless it has a durable boundary that cannot be
 
 - Specialist agents for PHP, database, security, Laravel, React, Docker, API design, etc.
 - `verifier` as a primitive agent for now.
-- Separate E2E agent while `tdd` + `browser-qa` cover test creation and browser evidence.
+- Separate E2E agent while `tdd` + `validator` cover test creation and browser evidence.
 - Architecture-review agent while `improve-codebase-architecture` exists.
 - Duplicate custom `explore` or `scout` agents.
 

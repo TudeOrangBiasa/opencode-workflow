@@ -28,7 +28,7 @@ Candidate model families:
 
 ## Browser / Multimodal Tier
 
-Use for `browser-qa`. Browser QA is separate because screenshots, DOM snapshots, page sweeps, and console/network evidence are token-heavy. Do not route browser work to models that cannot handle visual/browser evidence well.
+Use for `validator`. Screenshots, DOM snapshots, page sweeps, and console/network evidence. Do not route browser work to models that cannot handle visual/browser evidence well.
 
 Candidate model families:
 

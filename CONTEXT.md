@@ -25,7 +25,7 @@ Maintainer note under `.out-of-scope/` explaining a rejected or deferred feature
 A TypeScript module under `.opencode/plugins/` that intercepts OpenCode hooks (tool execution, chat messages). Runs on every call to the hooked event, unlike **On-demand skills**. Examples: `repair-harness` (tool arg repair), `taste` (preference extraction), `lesson-injector` (past-lesson injection).
 
 **Primitive agent**:
-A narrow, single-responsibility agent — either repo-defined (`agents/*.md`) or a built-in OpenCode primitive used by routing. Examples: repo-defined `builder`, `reviewer`, `browser-qa` and built-in `explore`, `scout`. Primitive agents are always active and part of the routing table. Not to be confused with **On-demand skills**.
+A narrow, single-responsibility agent — either repo-defined (`agents/*.md`) or a built-in OpenCode primitive used by routing. Examples: repo-defined `builder`, `reviewer`, `validator` and built-in `explore`, `scout`. Primitive agents are always active and part of the routing table. Not to be confused with **On-demand skills**.
 
 **On-demand skill**:
 A `SKILL.md` file under `skills/` loaded only when the domain matches. Not an agent — no agent file, no frontmatter `mode`. Loaded via skill tool when the task fits.

@@ -66,7 +66,17 @@ Key triggers: officecli, document-writing, ponytail, diagnose, tdd, verify-evide
 
 ## Verification Gate (before ship/done/merge/deploy)
 
-Load `verify-evidence` skill. Walk checklist:
+**Mandatory.** MUST load `verify-evidence` before reporting done. No exceptions.
+
+If blocked (skill unavailable), document why and get user approval to proceed.
+
+After builder report STATUS=DONE, auto-load verify-evidence before reporting to user.
+
+If `.scratch/evals/` has reports, cross-reference eval findings against current change (self-improvement pipeline — see `docs/engineering/self-improvement-pipeline.md`).
+
+**No bypass**: Only user can override this gate. Orchestrator cannot self-bypass.
+
+Walk checklist:
 1. Identify changes via `git diff --name-only`
 2. UI changes → spawn **validator** (require screenshot evidence)
 3. Doc changes → `officecli view screenshot`

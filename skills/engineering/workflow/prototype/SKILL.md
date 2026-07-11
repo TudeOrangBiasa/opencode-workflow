@@ -24,6 +24,9 @@ The two branches produce very different artifacts — getting this wrong wastes 
 4. **Skip the polish.** No tests, no error handling beyond what makes the prototype _runnable_, no abstractions. The point is to learn something fast and then delete it.
 5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.
 6. **Delete or absorb when done.** When the prototype has answered its question, either delete it or fold the validated decision into the real code — don't leave it rotting in the repo.
+7. **Research timebox**: Max 2 hours research before building. Research doc ≤200 lines in one file. Research beyond that requires building first.
+8. **Concept commitment gate**: Before pivoting, list what existing code can be salvaged. Must build prototype before pivot decision.
+9. **Pivot protocol**: Validate current direction before switching. Max 1 concept after 1 day research.
 
 ## When done
 

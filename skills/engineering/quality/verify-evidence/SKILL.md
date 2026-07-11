@@ -20,9 +20,13 @@ Load this skill when orchestrator or reviewer needs independent evidence. Do not
 - No acceptance criteria AND no high-risk/AFK/reviewer evidence need exists
 - Review is purely style/naming suggestions
 
-## Eval Pattern Integration
+## Self-Improvement Pipeline Integration
 
-If `.scratch/evals/eval-agent-error-patterns.md` exists, cross-reference verification evidence against known agent error patterns. Flag any pattern violations as part of the evidence report.
+Part of [self-improvement pipeline](https://github.com/TudeOrangBiasa/opencode-workflow/blob/main/docs/engineering/self-improvement-pipeline.md).
+
+Before verifying, scan `.scratch/evals/` for findings matching current change's `target` or `category`. Flag if CRITICAL/HIGH findings exist for same skill — verify fixes applied. Escalate to BLOCKED if same finding repeats 2+ times.
+
+**Memory protocol**: After gate, store `ov add-memory "[workflow:verify] <change>: <status>, <N> eval patterns checked"`.
 
 ## Evidence Mapping
 

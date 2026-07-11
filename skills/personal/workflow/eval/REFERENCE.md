@@ -70,7 +70,7 @@ If agent jumps from failure directly to human escalation without trying intermed
 | Dimension | Options                                                                                                             |
 | --------- | ------------------------------------------------------------------------------------------------------------------- |
 | Severity  | HIGH / MEDIUM / LOW                                                                                                 |
-| Category  | stuck-pattern, scope-drift, tool-misuse, missing-skill, debug-leftover, verification-gap, token-waste, recovery-gap |
+| Category  | stuck-pattern, scope-drift, tool-misuse, verification-gap, debug-leftover, scope-misunderstanding, other |
 | Repeat    | First time / Repeated                                                                                               |
 | Grader    | Code-based (deterministic) / Model-based (judgment) / Human                                                         |
 
@@ -99,64 +99,103 @@ Next steps:
 
 Never fix directly. Always plan first.
 
-## Output Format
+## Output Format — YAML Frontmatter + Markdown
+
+Every eval report uses YAML frontmatter for machine parsing + markdown body for human reading.
+
+### Schema
+
+```yaml
+---
+session:
+  id: "<YYYY-MM-DD>-<short-slug>"       # unique, filename-friendly
+  date: YYYY-MM-DD
+  project: <project-name>
+  model: <model-id>
+  summary: "<one-line what user tried to do>"
+
+findings:
+  - severity: HIGH | MEDIUM | LOW
+    category: stuck-pattern | scope-drift | tool-misuse | verification-gap | debug-leftover | scope-misunderstanding | other
+    target: <agent-name-or-skill-name>   # which agent/skill needs fixing
+    repeat: first | repeated
+    grader: code-based | model-based | human
+    verdict: fail | warn | pass
+    summary: "<short finding name>"
+    evidence: "<raw what happened — quotes, timestamps, commit hashes>"
+    impact: "<token waste, user frustration, broken output>"
+    fix: "<actionable suggestion>"
+    fix_applied:                         # optional, fill when healing happens
+      date: YYYY-MM-DD
+      result: resolved | partial | failed
+
+metrics:
+  pass_at_1: <0.0-1.0>
+  total_tasks: <int>
+  correct_first_try: <int>
+
+next_steps:
+  - "<step 1>"
+  - "<step 2>"
+---
+```
+
+### Categories (enum)
+
+| Category | When |
+|----------|------|
+| `stuck-pattern` | Repeated action-observation, action-error, agent monologue, ping-pong |
+| `scope-drift` | Files beyond stated goal, unrelated changes, user said "focus/fokus" |
+| `tool-misuse` | bash grep over built-in, read same file twice, circuit breaker missing |
+| `verification-gap` | Bugs shipped without check, silent failures, review caught post-ship |
+| `debug-leftover` | AI slop comments, missing docstrings, debug artifacts |
+| `scope-misunderstanding` | Agent built wrong thing, misread requirements |
+| `other` | Doesn't fit above |
+
+### Verdict Per Finding
+
+| Verdict | Meaning |
+|---------|---------|
+| `fail` | Must fix before next session |
+| `warn` | Should fix, not blocking |
+| `pass` | Acceptable, note for history |
+
+### Example Report
 
 ```markdown
-# Session Eval: <name>
+---
+session:
+  id: "2026-07-10-skills-recategorization"
+  date: 2026-07-10
+  project: opencode-workflow
+  model: deepseek-v4-flash-free
+  summary: "Skills recategorization and pipeline planning"
 
-**Date:** YYYY-MM-DD
-**Model:** <model>
-**Workspace:** <where user was working>
-**Session summary:** <what user was trying to do>
+findings:
+  - severity: MEDIUM
+    category: tool-misuse
+    target: orchestrator
+    repeat: first
+    grader: model-based
+    verdict: warn
+    summary: "Spawned reviewer before loading eval"
+    evidence: "Spawned reviewer subagent without first running eval skill — reviewer checked .scratch/evals/ independently and found 0 files, corrected sequencing"
+    impact: "Minor — reviewer caught it anyway"
+    fix: "Load eval before reviewer to check data state"
 
-## Stuck Patterns Detected
+metrics:
+  pass_at_1: 0.85
+  total_tasks: 13
+  correct_first_try: 11
 
-| Pattern | Type | Count | Evidence |
-|---------|------|-------|----------|
-| grep loop | Repeating Action-Observation | 47 | grep "foo" → 0 results × 47 |
+next_steps:
+  - "Review this report"
+  - "Load grill-with-docs for fix planning"
+---
 
-## Scope Drift
+# Session Eval: Skills Recategorization
 
-| Signal | Type | Evidence |
-|--------|------|----------|
-| Unrelated files changed | Heuristic | 3 files beyond stated goal |
-| User said "fokus" | User signal | Turn 15 |
-
-## Tool Misuse
-
-| Pattern | Impact | Evidence |
-|---------|--------|----------|
-| bash grep instead of built-in | Token waste | 20 calls, raw stdout |
-| No circuit breaker | Token waste | 47 × 0 results |
-
-## Findings
-
-### [SEVERITY] <finding-name>
-- **Category:** stuck-pattern / scope-drift / tool-misuse / etc.
-- **Evidence:** <what happened>
-- **Impact:** <token waste, user frustration, broken output>
-- **Grader:** code-based / model-based / human
-- **Repeat:** first / repeated
-
-## Metrics
-
-| Finding | Severity | Category | Repeat | Verdict |
-|---------|----------|----------|--------|---------|
-| ... | HIGH | stuck-pattern | first | 🔴 |
-
-**pass@1:** X%
-
-## Self-Healing Log
-
-| Date | Finding | Fix Attempted | Result |
-|------|---------|---------------|--------|
-| | | | |
-
-## Next Steps
-
-1. Review this report
-2. Load `grill-with-docs` or `grill-me` to plan fixes
-3. Apply fixes to agents/skills after planning
+[Detailed narrative markdown body — context, patterns, observations, lessons learned.]
 ```
 
 ## Grader Types

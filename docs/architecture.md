@@ -73,14 +73,15 @@ opencode-workflow/
 
 ## How integration works
 
-External skill packages integrate via symlinks + MCP registration:
+External skill packages integrate via symlinks + MCP registration. All config MUST go through `opencode-workflow` first, never direct to `~/.config/opencode/`.
 
 ```
 documents-kit-skills/                              (source of truth)
   ↓ symlinks
 opencode-workflow/skills/productivity/documents-kit/skills/   (package — 10 sub-skills)
-  ↓ symlinks
-~/.config/opencode/skills/                          (OpenCode global)
+  ↓ link-skills.sh (preserves bucket path)
+~/.config/opencode/skills/productivity/documents-kit/skills/  (OpenCode path)
+  ↓ loaded via skill_triggers + opencode.json paths
 
 documents-kit-skills/tools/                         (source of truth)
   ↓ symlinks
@@ -91,16 +92,14 @@ documents-kit-skills/{templates,presets,diagrams,examples}/   (source of truth)
   ↓ symlinks
 opencode-workflow/skills/productivity/documents-kit/{...}/    (assets)
 
-skilly/productivity/documents-kit/                  (package entry)
-  ↓ symlink
-~/.config/opencode/skills/documents-kit              (global entry)
-
 scholar-paper-mcp/                                  (peer dep, cloned separately)
-  ↓ MCP registration in ~/.config/opencode/opencode.json
-OpenCode loads 15 scholar tools at startup
+  ↓ MCP registration in opencode-workflow install docs
+  ↓ → ~/.config/opencode/opencode.json
 ```
 
-Setup: `scripts/setup-documents-kit.sh` creates the skill + tools + assets symlink chain (`SETUP_ASSETS=1` enables the assets section, default true). scholar-paper-mcp cloned and MCP-registered separately. See [integrations/documents-kit.md](integrations/documents-kit.md).
+OpenCode scans 1 level deep per path. `opencode.json` defines multiple leaf paths matching bucket structure (one per sub-bucket with skills). `link-skills.sh` manages this on install/update. See [AGENTS.md](../AGENTS.md) for the full policy.
+
+Setup: `scripts/setup-documents-kit.sh` creates the skill + tools + assets symlink chain (`SETUP_ASSETS=1` enables the assets section, default true). scholar-paper-mcp cloned and MCP-registered separately. `scripts/link-skills.sh` then creates the categorized symlinks in `~/.config/opencode/`. See [integrations/documents-kit.md](integrations/documents-kit.md).
 
 ## When to extract a skill
 

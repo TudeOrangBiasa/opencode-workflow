@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+- Feat(scripts): link-skills.sh rewrite — auto-discover 133 skills across 16 leaf buckets, nested bucket symlinks (not flat), generate opencode.json leaf paths, detect package-entry conflicts (engineering/design, documents-kit). 151 stale flat symlinks removed.
+- Feat(skills): apply ticket-003 prototype skill (timebox, commitment gate, pivot protocol), ticket-005 builder (Boundary Test section, null protocol), ticket-006 orchestrator (mandatory verify-evidence gate), ticket-007 aggregate-eval.sh (YAML frontmatter parser, priority list, JSON output).
+- Docs: AGENTS.md + docs/architecture.md — skill integration flow (`external → opencode-workflow → ~/.config/opencode/`) + deployment (multiple leaf paths, bucket preservation via link-skills.sh).
+- Docs: add self-improvement pipeline doc, ADR-0003 (skills recategorization + memory protocol), SKILLS-MAP.md scratch registry.
+- Chore: verify-evidence REFERENCE.md with 5 test scenarios.
+- Refactor(agents): simplify architecture — delegasi routing murni. `browser-qa` → `validator` (broader scope: browser QA + multimodal). Orchestrator 514→111 lines (80% trim, skill details ejected). Builder 125→85 lines. Reviewer 129→62 lines. Template `opencode.primitive-agents.jsonc` updated. All docs/scripts references updated. Commits `352eb51` + `47f4841`.
 - Refactor: consolidate documents-kit from `skills/personal/documents-kit-skills/` + `tools/` + `documents-kit/` into `skills/productivity/documents-kit/` with package entry SKILL.md/REFERENCE.md. 10 sub-skills, 15 tools, 4 asset directories moved. Global symlinks re-pointed. Setup script updated.
 - Docs: rewrite all 6 bucket READMEs (engineering, productivity, misc, personal, in-progress, deprecated) as context maps with header/when-to-use/boundary/structure/index format. Updated top-level README.md tree, docs/architecture.md layout, and AGENTS.md skill buckets.
 - Refactor: reorganize `skills/misc/` into 8 domain sub-directories: `frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`. Reverted earlier move of workflow skills into `engineering/`/`productivity/`; all 103 specialist skills now live under `misc/<domain>/`. Updated `skills/misc/README.md` with grouped lists and `docs/architecture.md` layout.

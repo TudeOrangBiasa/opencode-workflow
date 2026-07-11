@@ -28,3 +28,11 @@ Use this skill when the user wants to know:
 | [Session Activity](REFERENCE.md#4-recent-session-activity) | DB query, pain patterns |
 | [Output Format](REFERENCE.md#5-output-format) | Markdown report template |
 | [Rules](REFERENCE.md#rules) | Read-only, live state, specific, actionable |
+
+## Self-Improvement Pipeline Integration
+
+Part of [self-improvement pipeline](https://github.com/TudeOrangBiasa/opencode-workflow/blob/main/docs/engineering/self-improvement-pipeline.md).
+
+Audit findings feed into eval aggregation. Run before eval to provide repo health context for session scoring.
+
+**Memory protocol**: After audit, store `ov add-memory "[workflow:audit] <date>: <key findings, drift count>"`.

@@ -14,3 +14,11 @@ Analyze the current session for agent failures, user frustration, and repeated m
 - User wants to capture lessons learned
 
 See [REFERENCE.md](REFERENCE.md) for detailed content: examples, patterns, anti-patterns, and reference tables.
+
+## Self-Improvement Pipeline Integration
+
+Part of [self-improvement pipeline](https://github.com/TudeOrangBiasa/opencode-workflow/blob/main/docs/engineering/self-improvement-pipeline.md).
+
+Eval reports feed into aggregate → verify-evidence gate → skill fix cycle. Use YAML frontmatter format (see REFERENCE.md). Set `findings[].target` to the exact skill/agent name so verify-evidence can cross-reference.
+
+**Memory protocol**: After creating report, store `ov add-memory "[workflow:eval] <session-id>: <key findings, severity count>"`.

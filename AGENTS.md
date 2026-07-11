@@ -87,6 +87,37 @@ Rules:
 - OpenCode loads config, agents, and skills at startup; restart required after activation.
 - Do not store secrets or provider keys in this repo.
 
+### Skill integration flow
+
+```
+external skills repo → opencode-workflow/skills/<bucket>/<leaf>/<skill>
+                    → ~/.config/opencode/skills/<bucket>/<leaf>/<skill>
+                    → loaded by OpenCode via skill_triggers
+```
+
+All config changes (paths, triggers, MCP, plugins) MUST go through `opencode-workflow` first, never edited directly in `~/.config/opencode/`. See [docs/architecture.md](docs/architecture.md) for full details.
+
+### Skills deployment to ~/.config/opencode/
+
+`scripts/link-skills.sh` creates symlinks that preserve the bucket category structure, not flat:
+
+```
+~/.config/opencode/skills/
+├── engineering/quality/diagnose/         → repo/engineering/quality/diagnose/
+├── engineering/workflow/prototype/       → repo/engineering/workflow/prototype/
+├── productivity/documents-kit/skills/drawio/  → external symlink via repo/
+├── personal/workflow/eval/              → repo/personal/workflow/eval/
+└── misc/frontend/accessibility/         → repo/misc/frontend/accessibility/
+```
+
+OpenCode scans 1 level deep per configured path. To match the bucket structure, `opencode.json` uses multiple leaf paths — one per sub-bucket that contains skills. `link-skills.sh` manages this automatically on install/update.
+
+When adding a new external skill package:
+1. Symlink it into `opencode-workflow/skills/<bucket>/<leaf>/`
+2. Add `skill_triggers` entry to `opencode-workflow`'s agent config
+3. Add MCP/plugin wiring to `opencode-workflow`'s install docs
+4. Run `scripts/link-skills.sh` to update `~/.config/opencode/`
+
 ## Workflow Principles
 
 - **Cheap-first**: prefer cheap models for exploration and execution; reserve expensive models for planning, routing, review.

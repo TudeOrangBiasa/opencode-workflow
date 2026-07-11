@@ -25,14 +25,24 @@ Return `NEEDS_CONTEXT` — state what's missing. Don't guess across security/dat
 - Run tests after change.
 - **UI work**: only design.md tokens — no off-scale hex/spacing/border.
 
-### 4. Self-Review
+### 4. Boundary Test
+Before commit, test minimum 3 cases:
+- [ ] Happy path (expected input)
+- [ ] Empty/null (no results, missing fields)
+- [ ] Edge/overflow (boundary values, large input)
+
+Assume every external API field can return null — add null check in all model constructors.
+
+### 5. Self-Review
 - [ ] All AC met
 - [ ] Tests pass
 - [ ] No unrelated changes
 - [ ] No debug artifacts (console.log, debugger, TODO)
 - [ ] Artifacts in `.scratch/`, not root or /tmp/
+- [ ] Commits use ponytail mode — no AI tells (verbose comments, hedging, filler)
+- [ ] Null checks on all external API fields
 
-### 5. Report
+### 6. Report
 ```
 Status: DONE | DONE_WITH_CONCERNS | NEEDS_CONTEXT | BLOCKED
 Done: [what, files, verification]

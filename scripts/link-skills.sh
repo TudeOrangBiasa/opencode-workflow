@@ -1,172 +1,179 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Links only the active workflow skills to ~/.config/opencode/skills.
+# link-skills.sh — Deploy skills from repo to ~/.config/opencode/skills/
+# preserving bucket structure. Generates opencode.json paths list.
+#
+# Usage:
+#   ./scripts/link-skills.sh                    # apply symlinks
+#   ./scripts/link-skills.sh --paths            # only print paths, no changes
+#   ./scripts/link-skills.sh --dry-run          # show what would change
+#   ./scripts/link-skills.sh --help             # this message
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$HOME/.config/opencode/skills"
+MODE="${1:-apply}"
 
-ACTIVE_SKILLS=(
-  skills/engineering/diagnose
-  skills/engineering/grill-with-docs
-  skills/engineering/triage
-  skills/engineering/improve-codebase-architecture
-  skills/engineering/setup-matt-pocock-skills
-  skills/engineering/tdd
-  skills/engineering/to-issues
-  skills/engineering/to-prd
-  skills/engineering/zoom-out
-  skills/engineering/prototype
-  skills/engineering/review
-  skills/engineering/ponytail
-  skills/misc/accessibility
-  skills/misc/ai-regression-testing
-  skills/misc/android-clean-architecture
-  skills/misc/angular-developer
-  skills/misc/api-connector-builder
-  skills/misc/api-design
-  skills/misc/architecture-decision-records
-  skills/misc/backend-patterns
-  skills/misc/bun-runtime
-  skills/misc/canary-watch
-  skills/misc/click-path-audit
-  skills/misc/clickhouse-io
-  skills/misc/codebase-onboarding
-  skills/misc/coding-standards
-  skills/misc/compose-multiplatform-patterns
-  skills/misc/context-budget
-  skills/misc/cpp-coding-standards
-  skills/misc/cpp-testing
-  skills/misc/csharp-testing
-  skills/misc/dart-flutter-patterns
-  skills/misc/drawio
-  skills/misc/data-scraper-agent
-  skills/misc/database-migrations
-  skills/misc/database-review
-  skills/misc/deep-research
-  skills/misc/defi-amm-security
-  skills/misc/deployment-patterns
-  skills/misc/design-system
-  skills/misc/django-celery
-  skills/misc/django-patterns
-  skills/misc/django-security
-  skills/misc/django-tdd
-  skills/misc/django-verification
-  skills/misc/docker-patterns
-  skills/misc/dotnet-patterns
-  skills/engineering/design
-  skills/misc/error-handling
-  skills/misc/evm-token-decimals
-  skills/misc/fastapi-patterns
-  skills/misc/flox-environments
-  skills/misc/flutter-dart-code-review
-  skills/misc/fsharp-testing
-  skills/misc/git-workflow
-  skills/misc/github-ops
-  skills/misc/golang-patterns
-  skills/misc/golang-testing
-  skills/misc/hexagonal-architecture
-  skills/misc/ios-icon-gen
-  skills/misc/java-coding-standards
-  skills/misc/jpa-patterns
-  skills/misc/kotlin-coroutines-flows
-  skills/misc/kotlin-exposed-patterns
-  skills/misc/kotlin-ktor-patterns
-  skills/misc/kotlin-patterns
-  skills/misc/kotlin-testing
-  skills/misc/kubernetes-patterns
-  skills/misc/laravel-patterns
-  skills/misc/laravel-security
-  skills/misc/laravel-verification
-  skills/misc/mcp-server-patterns
-  skills/misc/mysql-patterns
-  skills/misc/modular-monolith-patterns
-  skills/misc/nestjs-patterns
-  skills/misc/nextjs-turbopack
-  skills/misc/nodejs-keccak256
-  skills/misc/nuxt4-patterns
-  skills/misc/perl-patterns
-  skills/misc/perl-security
-  skills/misc/perl-testing
-  skills/misc/php-review
-  skills/misc/postgres-patterns
-  skills/misc/prediction-market-risk-review
-  skills/misc/prisma-patterns
-  skills/misc/production-audit
-  skills/misc/python-patterns
-  skills/misc/python-testing
-  skills/misc/pytorch-patterns
-  skills/misc/quarkus-patterns
-  skills/misc/quarkus-security
-  skills/misc/quarkus-tdd
-  skills/misc/quarkus-verification
-  skills/misc/react-patterns
-  skills/misc/react-performance
-  skills/misc/react-testing
-  skills/misc/redis-patterns
-  skills/misc/review-animations
-  skills/misc/rust-patterns
-  skills/misc/rust-testing
-  skills/misc/search-first
-  skills/misc/security-bounty-hunter
-  skills/misc/security-review
-  skills/misc/shared-hosting-deployment
-  skills/misc/springboot-patterns
-  skills/misc/springboot-security
-  skills/misc/springboot-tdd
-  skills/misc/springboot-verification
-  skills/misc/swift-actor-persistence
-  skills/misc/swift-concurrency-6-2
-  skills/misc/swift-protocol-di-testing
-  skills/misc/swiftui-patterns
-  skills/misc/team-handoff-quality
-  skills/misc/ui-to-vue
-  skills/misc/verify-evidence
-  skills/misc/vite-patterns
-  skills/productivity/grill-me
-  skills/productivity/handoff
-  skills/productivity/officecli
-  skills/productivity/document-writing
-  skills/productivity/write-a-skill
-  skills/personal/eval
-  skills/personal/openviking
-  skills/personal/ddev
-  skills/personal/idea-fragments
-  skills/personal/dev-workflow
-  skills/personal/workflow-audit
-)
+case "$MODE" in
+  --help) sed -n '3,13p' "$0"; exit 0 ;;
+  --paths) MODE=paths ;;
+  --dry-run) MODE=dry ;;
+esac
 
-# If the destination is a symlink that resolves into this repo, we'd end up
-# writing the per-skill symlinks back into the repo's own skills/ tree. Detect
-# and bail out instead of polluting the working copy.
-if [ -L "$DEST" ]; then
-  resolved="$(readlink -f "$DEST")"
-  case "$resolved" in
-    "$REPO"|"$REPO"/*)
-      echo "error: $DEST is a symlink into this repo ($resolved)." >&2
-      echo "Remove it (rm \"$DEST\") and re-run; the script will recreate it as a real dir." >&2
-      exit 1
-      ;;
-  esac
+echo "=== link-skills.sh ==="
+echo "  repo: $REPO/skills"
+echo "  dest: $DEST"
+echo ""
+
+# ---------------------------------------------------------------
+# Discover all skills
+# ---------------------------------------------------------------
+
+SKILLS=()
+
+# Real SKILL.md files
+while IFS= read -r -d '' sk; do
+  dir="$(dirname "$sk")"
+  rel="${dir#$REPO/skills/}"
+  case "$rel" in deprecated/*|in-progress/*) continue ;; esac
+  SKILLS+=("$rel")
+done < <(find "$REPO/skills" -name SKILL.md -print0)
+
+# Symlinked dirs with SKILL.md (external skills)
+while IFS= read -r -d '' symdir; do
+  rel="${symdir#$REPO/skills/}"
+  case "$rel" in deprecated/*|in-progress/*) continue ;; esac
+  [ -f "$symdir/SKILL.md" ] && SKILLS+=("$rel")
+done < <(find "$REPO/skills" -type l -xtype d -print0)
+
+# Deduplicate
+SKILLS=($(printf "%s\n" "${SKILLS[@]}" | sort -u))
+
+echo "Discovered ${#SKILLS[@]} skills"
+echo ""
+
+# ---------------------------------------------------------------
+# Compute all leaf buckets
+# ---------------------------------------------------------------
+
+ALL_BUCKETS=()
+for skill in "${SKILLS[@]}"; do
+  ALL_BUCKETS+=("$(dirname "$skill")")
+done
+UNIQ_BUCKETS=($(printf "%s\n" "${ALL_BUCKETS[@]}" | sort -u))
+
+# ---------------------------------------------------------------
+# Detect package-entry conflicts:
+# A skill conflicts if its target path would be a parent dir of any bucket.
+# e.g. engineering/design is a skill AND engineering/design/arch-dec-records is a skill
+#      → target $DEST/engineering/design/ is parent of $DEST/engineering/design/arch-dec-records/
+# ---------------------------------------------------------------
+
+CONFLICT=()
+for skill in "${SKILLS[@]}"; do
+  target="$DEST/$(dirname "$skill")/$(basename "$skill")"
+  conflict=0
+  for bucket in "${UNIQ_BUCKETS[@]}"; do
+    bucket_path="$DEST/$bucket"
+    # Check if bucket path is a subdirectory of the skill target
+    case "$bucket_path/" in
+      "$target/"*) conflict=1; break ;;
+    esac
+  done
+  CONFLICT+=("$conflict")
+done
+
+# ---------------------------------------------------------------
+# Print opencode.json paths
+# ---------------------------------------------------------------
+
+if [ "$MODE" = "paths" ] || [ "$MODE" = "dry" ] || [ "$MODE" = "apply" ]; then
+  echo "--- opencode.json paths (add to skills.paths) ---"
+  echo ""
+
+  ACTIVE_BUCKETS=()
+  for i in "${!SKILLS[@]}"; do
+    [ "${CONFLICT[$i]}" = "1" ] && continue
+    ACTIVE_BUCKETS+=("$(dirname "${SKILLS[$i]}")")
+  done
+
+  while IFS= read -r b; do
+    echo "  \"$DEST/$b\""
+  done < <(printf "%s\n" "${ACTIVE_BUCKETS[@]}" | sort -u)
+
+  count="$(printf "%s\n" "${ACTIVE_BUCKETS[@]}" | sort -u | wc -l | tr -d ' ')"
+  echo ""
+  echo "Total: $count paths"
+  echo ""
 fi
 
-mkdir -p "$DEST"
+[ "$MODE" = "paths" ] && exit 0
 
-for relative in "${ACTIVE_SKILLS[@]}"; do
-  src="$REPO/$relative"
-  name="$(basename "$src")"
-  target="$DEST/$name"
+# ---------------------------------------------------------------
+# Clean old flat symlinks that conflict with new nested structure
+# ---------------------------------------------------------------
 
-  if [ ! -f "$src/SKILL.md" ]; then
-    echo "error: missing $src/SKILL.md" >&2
-    exit 1
-  fi
+echo "Cleaning flat symlinks..."
 
-  if [ -e "$target" ] && [ ! -L "$target" ]; then
-    echo "error: $target exists and is not a symlink" >&2
-    exit 1
-  fi
-
-  ln -sfn "$src" "$target"
-  echo "linked $name -> $src"
+# Collect names of skills that have a non-root bucket (need nesting)
+FLAT_NAMES=()
+for i in "${!SKILLS[@]}"; do
+  [ "${CONFLICT[$i]}" = "1" ] && continue
+  bucket="$(dirname "${SKILLS[$i]}")"
+  [ "$bucket" = "." ] && continue
+  FLAT_NAMES+=("$(basename "${SKILLS[$i]}")")  # name only
 done
+
+for item in "$DEST"/*/; do
+  [ -L "$item" ] || continue
+  name="$(basename "$item")"
+  for n in "${FLAT_NAMES[@]}"; do
+    if [ "$n" = "$name" ]; then
+      if [ "$MODE" = "dry" ]; then
+        echo "  [DRY] rm -f $item"
+      else
+        rm -f "$item"
+        echo "  removed flat $name"
+      fi
+      break
+    fi
+  done
+done
+
+echo ""
+
+# ---------------------------------------------------------------
+# Create bucket-preserving symlinks
+# ---------------------------------------------------------------
+
+echo "Creating symlinks..."
+
+CREATED=0
+SKIPPED=0
+for i in "${!SKILLS[@]}"; do
+  skill="${SKILLS[$i]}"
+  bucket="$(dirname "$skill")"
+  name="$(basename "$skill")"
+  src="$REPO/skills/$skill"
+  target="$DEST/$bucket/$name"
+
+  [ ! -d "$src" ] && [ ! -L "$src" ] && continue
+
+  if [ "${CONFLICT[$i]}" = "1" ]; then
+    echo "  SKIP (package entry/conflict): $skill"
+    SKIPPED=$((SKIPPED + 1))
+    continue
+  fi
+
+  if [ "$MODE" = "dry" ]; then
+    echo "  [DRY] mkdir -p $DEST/$bucket && ln -sfn $src $target"
+  else
+    mkdir -p "$DEST/$bucket"
+    ln -sfn "$src" "$target"
+    echo "  $bucket/$name"
+    CREATED=$((CREATED + 1))
+  fi
+done
+
+echo ""
+echo "Done: $CREATED symlinks, $SKIPPED skipped (package entry conflicts)"

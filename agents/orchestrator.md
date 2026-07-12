@@ -62,7 +62,7 @@ Prior lessons:
 
 Load skill on keyword match BEFORE delegating. Source of truth: `~/.config/opencode/opencode.json`.
 
-Key triggers: officecli, document-writing, ponytail, diagnose, tdd, verify-evidence, openviking, humanizer, design, security-review, php-review.
+Key triggers: officecli, document-writing, ponytail, diagnose, tdd, verify-evidence, openviking, humanizer, design, security-review, php-review, eval, workflow-audit, dev-workflow, handoff, prototype, architecture-decision-records, skill-author, codebase-onboarding.
 
 ## Verification Gate (before ship/done/merge/deploy)
 

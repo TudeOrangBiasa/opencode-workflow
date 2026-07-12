@@ -40,6 +40,7 @@ done
 | 003b | [SMELL — ban consolidation](./done/003b-design-slop-smell.md) | Done | — | 2/2 AC pass. 3 bans added to SKILL.md. audit.md tells updated. |
 | 002 | [Taste Plugin — auto-learn coding preferences](./done/002-taste-plugin.md) | **Done** | — | taste.ts + taste.test.ts (36/36 pass). Extracts preferences from user messages via 6 regex patterns, stores in OpenViking with confidence scores, injects into system prompt, KL divergence filter for common conventions. |
 | 003c | ~~EMIL — animate delegation~~ | **Done (superseded)** | — | Achieved via restructure: impeccable+emil → /design. animate.md = emil content natively |
+| 20 | [Setup-matt-pocock-skills revamp for meta-repo](./20-setup-matt-pocock-revamp.md) | **Done** | A→D→C→B→E | setup-matt-pocock-skills SKILL.md+REFERENCE.md revamp with meta-repo mode, AGENTS.md block, triage labels senior scheme, domain/design split, bucket README links |
 
 ## Dependency Graph
 

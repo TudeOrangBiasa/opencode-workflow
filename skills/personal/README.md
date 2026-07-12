@@ -19,15 +19,15 @@ You are working on the opencode-workflow repo itself (editing agents, skills, co
 
 ### workflow/
 
-- **dev-workflow** — Development workflow for the opencode-workflow repo itself. Adding skills, modifying agents, syncing from upstream, committing.
-- **eval** — Analyze sessions for agent errors, stuck patterns, scope drift, tool misuse. Creates report in .scratch/evals/. Report only.
-- **idea-fragments** — Mine raw project, hackathon, MVP, and domain-discovery idea fragments before planning or prototyping.
-- **workflow-audit** — Audit opencode-workflow state — read opencode.json, verify symlinks, check repo sync, analyze recent sessions, surface mismatches.
+- [dev-workflow](dev-workflow/SKILL.md) — Development workflow for the opencode-workflow repo itself. Adding skills, modifying agents, syncing from upstream, committing.
+- [eval](eval/SKILL.md) — Analyze sessions for agent errors, stuck patterns, scope drift, tool misuse. Creates report in .scratch/evals/. Report only.
+- [idea-fragments](idea-fragments/SKILL.md) — Mine raw project, hackathon, MVP, and domain-discovery idea fragments before planning or prototyping.
+- [workflow-audit](workflow-audit/SKILL.md) — Audit opencode-workflow state — read opencode.json, verify symlinks, check repo sync, analyze recent sessions, surface mismatches.
 
 ### tools/
 
-- **ddev** — DDEV command workflow for PHP/Laravel projects where PHP is not run baremetal.
-- **openviking** — Persistent memory for AI agents — store/retrieve context across sessions.
+- [ddev](ddev/SKILL.md) — DDEV command workflow for PHP/Laravel projects where PHP is not run baremetal.
+- [openviking](openviking/SKILL.md) — Persistent memory for AI agents — store/retrieve context across sessions.
 
 ## Notes
 

@@ -1,13 +1,23 @@
 # Triage Labels
 
-Canonical triage roles for local markdown issue flow.
+Canonical triage roles mapped to actual label strings.
 
-| Role | Meaning |
-| --- | --- |
-| `needs-triage` | New issue. Needs classification and scope check. |
-| `needs-info` | Blocked on missing user/product/domain information. |
-| `ready-for-planning` | Clear enough to plan, not ready for implementation. |
-| `ready-for-afk` | Has scope, acceptance criteria, and verification commands. |
-| `done` | Completed and verified. |
+| Role (canonical) | Label | Meaning |
+|---|---|---|
+| needs classification | `triage` | New issue. Needs maintainer evaluation |
+| missing info | `awaiting-author` | Blocked on reporter for more information |
+| ready for execution | `spec-ready` | Fully specified, AC clear, ready to implement |
+| needs human decision | `needs-decision` | Requires architect/PM judgment, not code |
+| completed + verified | `delivered` | Shipped and verified. Terminal state |
+| declined | `wontfix` | Will not be actioned |
 
-Use these role names in issue frontmatter or status sections. Map them to external tracker labels only when a project provides that mapping.
+Use `triage` label strings in issue frontmatter or calls. The triage skills reads from this mapping — canonical → actual label.
+
+## State Transitions
+
+```
+unlabeled → triage → awaiting-author → triage (when info arrives)
+                   → spec-ready → delivered
+                   → needs-decision → spec-ready or wontfix
+                   → wontfix
+```

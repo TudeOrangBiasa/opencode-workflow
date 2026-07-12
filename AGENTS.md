@@ -87,6 +87,32 @@ Rules:
 - OpenCode loads config, agents, and skills at startup; restart required after activation.
 - Do not store secrets or provider keys in this repo.
 
+## Agent skills
+
+- [Issue Tracker](docs/agents/issue-tracker.md) — local markdown issue layout
+- [Triage Labels](docs/agents/triage-labels.md) — canonical role labels
+- [Domain Docs](docs/agents/domain.md) — domain language + CONTEXT.md rules
+- [Design Reference](docs/agents/design.md) — design tokens, anti-patterns, component rules
+- [Invocation Rules](docs/agents/invocation.md) — model-invoked vs user-invoked skills
+- [Writing Docs](docs/agents/writing-docs.md) — publishing skill docs to aihero.dev
+
+### Delegation protocol
+
+When delegating work to a subagent, always pass:
+1. Task description + acceptance criteria
+2. Relevant skills from `## Agent skills` above
+3. Prior lessons from `ov find`
+4. End instruction: "Store learnings via `ov add-memory`"
+
+### Pre-flight checks
+
+Before delegating tool-dependent work, verify:
+- OfficeCLI: `.docx`/`.pptx`/`.xlsx` work → `officecli --version`
+- Browser QA: UI validation → chrome-devtools MCP connected
+- Web search: research → exa MCP rate limit (max 10/session)
+- Drawing: diagrams → drawio desktop CLI
+- Memory: OpenViking health check
+
 ### Skill integration flow
 
 ```

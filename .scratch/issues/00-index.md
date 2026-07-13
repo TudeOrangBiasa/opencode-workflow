@@ -50,13 +50,18 @@ done
 
 | # | Title | Type | Status |
 |---|-------|------|--------|
-| 24 | [Hashline Edit — Spec](inbox/24-hashline-edit-spec.md) | Spec | Inbox |
-| 25 | [Hashline Edit — Tickets (a-d)](inbox/25-hashline-edit-tickets.md) | Tickets | Inbox |
 | 26 | [Advisor Judge Runtime — Spec](inbox/26-advisor-judge-spec.md) | Spec | Inbox |
 | 27 | [Advisor Judge Runtime — Tickets (a-d)](inbox/27-advisor-judge-tickets.md) | Tickets | Inbox |
 | 28 | [Skill Triggers Optimization — Spec](inbox/28-skill-triggers-optimization-spec.md) | Spec | Inbox |
 | 29 | [Skill Triggers Optimization — Tickets (a-e)](inbox/29-skill-triggers-tickets.md) | Tickets | Inbox |
-| 30 | [Fix Design Categorization](inbox/30-design-categorization-ticket.md) | Fix | Inbox |
+| 30 | [Fix Design Categorization](inbox/30-design-categorization-ticket.md) | Fix | Done ✅ |
+
+## Archived / YAGNI
+
+| # | Title | Type | Status |
+|---|-------|------|--------|
+| 24 | [Hashline Edit — Spec](done/24-hashline-edit-spec.md) | Spec | YAGNI — token savings not worth TS impl cost |
+| 25 | [Hashline Edit — Tickets](done/25-hashline-edit-tickets.md) | Tickets | YAGNI — same as #24 |
 
 ## Dependency Graph
 
@@ -82,30 +87,26 @@ PENDING:
 ## New Issue Dependencies
 
 ```
-30 (design fix) — independent, can do anytime
-     │
-24 → 25 (hashline: spec → tickets) — sequential
-     │
+30 (design fix) — DONE ✓
+24 → 25 (hashline) — YAGNI, archived
+
 26 → 27 (advisor judge: spec → tickets) — sequential
-     │
 28 → 29 (triggers: spec → tickets) — sequential
      │
-     └── All 3 independent of each other. Can parallelize.
+     └── Both independent of each other. Can parallelize.
 ```
 
 ## Priority Order (New Issues)
 
-**Phase 0 (quick fix)**:
-30. Fix design categorization — 5 min, unblocks confusion
+**Phase 0 (done)**:
+30. Fix design categorization ✅
+24 → 25. Hashline Edit — YAGNI, archived
 
 **Phase 1 (high impact, low risk)**:
 26 → 27. Advisor Judge Runtime — solves reviewer pain, auto-quality gate
 
 **Phase 2 (medium impact)**:
 28 → 29. Skill Triggers Optimization — cleaner triggers, less false positives
-
-**Phase 3 (nice to have)**:
-24 → 25. Hashline Edit — token savings but needs TypeScript implementation
 
 **Phase 1 (verify existing, low risk)**:
 1. Issue 01 — verify OpenViking protocol works

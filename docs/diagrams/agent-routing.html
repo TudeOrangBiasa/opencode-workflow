@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OpenCode Agent Routing</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, sans-serif; padding: 20px; }
+  h1 { color: #4A90D9; }
+  h2 { color: #8E44AD; margin-top: 30px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .gaps { background: #2d1b1b; border: 1px solid #ff4444; border-radius: 8px; padding: 15px; margin: 20px 0; }
+  .gaps h3 { color: #ff6666; margin: 0 0 10px; }
+  .gaps li { margin: 5px 0; }
+  .legend { font-size: 12px; color: #999; margin-top: 10px; }
+  .mermaid { background: #16213e; padding: 20px; border-radius: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>OpenCode Agent Routing</h1>
+  <p>Current flow + proposed advisor judge integration. Gaps highlighted in red.</p>
+
+  <div class="mermaid">
+graph TB
+    subgraph USER["User"]
+        REQ["Request / Feedback"]
+    end
+
+    subgraph PLANNER["Planner (primary · cheap model)"]
+        P["Plan approach&#10;Heuristic table&#10;Pre-flight checks&#10;Delegation protocol&#10;Verification gate&#10;Cost controls&#10;Stuck detection"]
+    end
+
+    subgraph BUILD["Builder (subagent · CHEAP)"]
+        B["Read context&#10;Implement (smallest safe)&#10;Verify (AC + edges)&#10;Self-review&#10;Report: DONE / BLOCKED"]
+    end
+
+    subgraph REV["Reviewer (subagent · medium)"]
+        R["3 modes: Quick / Standard / Deep&#10;Code review (Behavior + Health)&#10;Browser QA (screenshots)&#10;Escalate to skills&#10;Verdict: Approve / Block"]
+    end
+
+    subgraph ADV_CUR["Advisor (current — passive)"]
+        AC["Architecture advice&#10;Design critique&#10;Tradeoff analysis&#10;On-demand only&#10;⚡ Passive, no judgment"]
+    end
+
+    subgraph ADV_PROP["Advisor (proposed — proactive)"]
+        style ADV_PROP stroke:#00FF00,stroke-width:2,stroke-dasharray: 5 5
+        AP["① Pre-flight: validate plan scope&#10;② In-line judge: quality check&#10;③ Post-session: eval (existing)&#10;Delivery: approve / needs-review&#10;needs-fix / scope-drift"]
+    end
+
+    subgraph BUILTIN["Built-in Agents"]
+        EXPLORE["Explore (cheap)&#10;Codebase discovery"]
+        SCOUT["Scout (free)&#10;External research"]
+    end
+
+    subgraph MEMORY["Memory & Skills"]
+        OV["OpenViking&#10;Persistent memory&#10;Store/retrieve/search"]
+        SKILLS["Skills&#10;engineering/&#10;productivity/&#10;misc/ personal/"]
+    end
+
+    REQ --> P
+    P -->|"delegate task"| B
+    B -->|"report DONE/BLOCKED"| P
+    P -->|"step 5: review"| R
+    P --> EXPLORE
+    P --> SCOUT
+
+    P -.->|"ov find / add-memory"| OV
+    B -.->|"ov add-memory"| OV
+    R -.-> OV
+
+    P -.->|"load on keyword match"| SKILLS
+    B -.->|"load domain skills"| SKILLS
+    R -.->|"load security/php review"| SKILLS
+
+    P -.->|"① pre-flight (proposed)"| AP
+    B -.->|"② in-line judge (proposed)"| AP
+    AP -.->|"needs-review &#10;→ auto-spawn"| R
+    AP -.->|"needs-fix &#10;→ re-route"| B
+  </div>
+
+  <div class="gaps">
+    <h3>⚡ Current Gaps</h3>
+    <ol>
+      <li><strong>Advisor passive</strong> — on-demand only, no automatic quality gate</li>
+      <li><strong>No in-line judge</strong> — builder output goes straight to reviewer without quality check</li>
+      <li><strong>No context drift detection</strong> — builder can drift from original scope undetected</li>
+      <li><strong>Step 4+5 overlap</strong> — verify-evidence + reviewer both check AC (redundant)</li>
+      <li><strong>No skip-reviewer criteria</strong> — every task runs reviewer even typo/docs</li>
+      <li><strong>Max 3 subagents</strong> — planner + builder + reviewer = 3. Adding advisor = 4 (breaks rule)</li>
+      <li><strong>No explore/scout in workflow steps</strong> — steps mention only builder/reviewer</li>
+    </ol>
+  </div>
+
+  <h2>Proposed Advisor Judge Flow</h2>
+  <div class="mermaid">
+graph LR
+    START["Builder finishes"] --> JUDGE{"Advisor in-line judge"}
+    JUDGE -->|"approve"| REVIEWER["Planner runs reviewer (step 5)"]
+    JUDGE -->|"needs-fix"| BUILDER["Re-route to builder with notes"]
+    JUDGE -->|"scope-drift"| ALERT["Alert user, pause"]
+    JUDGE -->|"needs-review"| AUTO["Auto-spawn reviewer&#10;(skip planner step)"]
+    REVIEWER -->|"approve"| DONE["✅ Delivery"]
+    REVIEWER -->|"block"| BUILDER
+    AUTO -->|"findings"| DONE
+  </div>
+
+  <div class="legend">
+    <p><strong>Legend:</strong> Solid = current flow. Dashed = proposed flow. Red = gap. Green = proposed change.</p>
+  </div>
+</div>
+<script>mermaid.initialize({startOnLoad:true,theme:'dark',themeVariables:{primaryColor:'#4A90D9',primaryTextColor:'#fff',primaryBorderColor:'#2C6FB5',lineColor:'#666',secondaryColor:'#2d3748',tertiaryColor:'#1a202c'}});</script>
+</body>
+</html>

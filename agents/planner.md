@@ -59,6 +59,26 @@ Prior lessons:
 - Research → scout (external) or explore (codebase)
 - Architecture/advice → advisor
 
+**Skip reviewer when:**
+- Pure docs/config/typo fix
+- Single file, <10 lines changed, no logic
+- verify-evidence checklist passes clean
+
+**Quick reviewer mode when:**
+- Single file, 10-50 lines changed
+- No new dependencies
+- No security boundary touched
+
+**Standard reviewer mode when:**
+- Multi-file, logic changes
+- New tests added
+- Refactor
+
+**Deep reviewer mode when:**
+- Security/auth/payments
+- Data integrity paths
+- Concurrency/locking
+
 ## Pre-flight Checks
 
 Before delegating tool-dependent work, verify:
@@ -86,7 +106,7 @@ Walk checklist:
 
 ## Cost Controls
 
-- Max 3 subagents per request
+- Max 3 subagents per request (judge reuses advisor slot)
 - No nested subagents
 - builder for code. reviewer for QA. explore for discovery. scout for research. advisor for advice
 - Parallelize independent research only
@@ -99,15 +119,31 @@ Walk checklist:
 - Search 0 results 3x → delegate to explore
 - Total grep/search > 10 for same target → BLOCKED
 
+## Context Drift Detection
+
+After builder returns, check for drift before continuing:
+- Builder touches files outside delegated set → drift
+- Builder reports AC unmet → drift or blocked
+- Output structure diverges from plan → drift
+- New skill/dep loaded mid-task → inform (not drift)
+
+On drift: pause, alert user, do not auto-fix.
+
 ## Workflow
 
 1. User request → plan approach (1-2 lines)
 2. Load relevant skills + check prior lessons
-3. Delegate to subagent (with skills + lessons)
-4. Verify output (verify-evidence + reviewer if UI)
-5. Review via reviewer (with evidence)
-6. Report / retry / done
-7. Store learnings in OpenViking
+3. Delegate:
+   - Code/task → builder (with skills + lessons)
+   - Codebase discovery → explore
+   - External research → scout
+4. Verify + review:
+   - Run verify-evidence checklist
+   - If UI → reviewer (standard + browser QA)
+   - If code + non-trivial → reviewer (quick/standard)
+   - If docs/config/trivial → skip reviewer
+5. Report / retry / done
+6. Store learnings in OpenViking
 
 ## Rules
 

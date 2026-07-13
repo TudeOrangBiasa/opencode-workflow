@@ -41,6 +41,22 @@ done
 | 002 | [Taste Plugin — auto-learn coding preferences](./done/002-taste-plugin.md) | **Done** | — | taste.ts + taste.test.ts (36/36 pass). Extracts preferences from user messages via 6 regex patterns, stores in OpenViking with confidence scores, injects into system prompt, KL divergence filter for common conventions. |
 | 003c | ~~EMIL — animate delegation~~ | **Done (superseded)** | — | Achieved via restructure: impeccable+emil → /design. animate.md = emil content natively |
 | 20 | [Setup-matt-pocock-skills revamp for meta-repo](./20-setup-matt-pocock-revamp.md) | **Done** | A→D→C→B→E | setup-matt-pocock-skills SKILL.md+REFERENCE.md revamp with meta-repo mode, AGENTS.md block, triage labels senior scheme, domain/design split, bucket README links |
+| 19 | [Taste + Lesson-Injector Plugins — Archived](./done/19-taste-lesson-injector-plugins.md) | **Archived** | — | Both plugins tested, TS→JS compile + runtime instability. Taste KL divergence filter unreliable. Lesson-injector redundant with `ov find` + `memory-dreaming`. Removed from opencode.json |
+| 21 | [Design Skill Merge P1 — Foundation](./21-design-skill-merge-p1.md) | **Done** | — | SKILL.md routing, merged design laws, bans, Emil animate, truthful completion, scope gate, persona mode |
+| 22 | [Design Skill Merge P2 — New Tools](./22-design-skill-merge-p2.md) | **Done** | — | 15 new ref files: checkup/smell/review/deslop/motion/interaction/responsive/voice/access |
+| 23 | [Design Skill Merge P3 — Integration](./23-design-skill-merge-p3.md) | **Done** | — | Report workflow, auto-handoff, brief sufficiency, persona enforce |
+
+## Pending Issues
+
+| # | Title | Type | Status |
+|---|-------|------|--------|
+| 24 | [Hashline Edit — Spec](inbox/24-hashline-edit-spec.md) | Spec | Inbox |
+| 25 | [Hashline Edit — Tickets (a-d)](inbox/25-hashline-edit-tickets.md) | Tickets | Inbox |
+| 26 | [Advisor Judge Runtime — Spec](inbox/26-advisor-judge-spec.md) | Spec | Inbox |
+| 27 | [Advisor Judge Runtime — Tickets (a-d)](inbox/27-advisor-judge-tickets.md) | Tickets | Inbox |
+| 28 | [Skill Triggers Optimization — Spec](inbox/28-skill-triggers-optimization-spec.md) | Spec | Inbox |
+| 29 | [Skill Triggers Optimization — Tickets (a-e)](inbox/29-skill-triggers-tickets.md) | Tickets | Inbox |
+| 30 | [Fix Design Categorization](inbox/30-design-categorization-ticket.md) | Fix | Inbox |
 
 ## Dependency Graph
 
@@ -57,11 +73,39 @@ done
 003a → 003b (sequential, surface framework first)
 003c = DONE (superseded by restructure)
 
+21 → 22 → 23 (sequential, design skill merge phases)
+
 PENDING:
 004 (Wiring — depends on 001 + 002 + 003, all done now → unblocked)
 ```
 
-## Priority Order
+## New Issue Dependencies
+
+```
+30 (design fix) — independent, can do anytime
+     │
+24 → 25 (hashline: spec → tickets) — sequential
+     │
+26 → 27 (advisor judge: spec → tickets) — sequential
+     │
+28 → 29 (triggers: spec → tickets) — sequential
+     │
+     └── All 3 independent of each other. Can parallelize.
+```
+
+## Priority Order (New Issues)
+
+**Phase 0 (quick fix)**:
+30. Fix design categorization — 5 min, unblocks confusion
+
+**Phase 1 (high impact, low risk)**:
+26 → 27. Advisor Judge Runtime — solves reviewer pain, auto-quality gate
+
+**Phase 2 (medium impact)**:
+28 → 29. Skill Triggers Optimization — cleaner triggers, less false positives
+
+**Phase 3 (nice to have)**:
+24 → 25. Hashline Edit — token savings but needs TypeScript implementation
 
 **Phase 1 (verify existing, low risk)**:
 1. Issue 01 — verify OpenViking protocol works

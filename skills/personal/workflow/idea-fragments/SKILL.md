@@ -72,7 +72,7 @@ When the user wants to move from fragments to execution, route to existing workf
 
 - `grill-me` — stress-test the idea.
 - `prototype` — make a throwaway playable version or UI options.
-- `to-prd` — turn a chosen idea into a product requirement.
-- `to-issues` — split a PRD/plan into implementation slices.
+- `to-spec` — turn a chosen idea into a specification.
+- `to-tickets` — split a PRD/plan into implementation slices.
 
 Curriculum, learning-material, or workshop design should be handled by a separate future skill, not this one.

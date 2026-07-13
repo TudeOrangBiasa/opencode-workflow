@@ -16,14 +16,14 @@ Small set of agents, each with a single narrow responsibility.
 
 | Agent | Mode | Model Cost | Responsibility |
 |-------|------|-----------|---------------|
-| `orchestrator` | primary | Expensive | Router, planner-in-chief, scope keeper, final synthesizer |
+| `planner` | primary | Expensive | Plans approach, routes work, quality gates, scope keeper. Never implements |
 | `builder` | subagent | Cheap | Narrow bounded code edits, verification, status report |
-| `reviewer` | subagent | Expensive/Medium | Behavior + Change Health diff review, escalation hints |
-| `validator` | subagent | Free/cheap | Browser QA + multimodal validation: layout, responsive, console/network, data consistency, screenshots |
+| `reviewer` | subagent | Medium | Code review + browser QA. Merged: diffs + Chrome DevTools evidence |
+| `advisor` | subagent | Expensive | Consultation, architecture advice, design critique. Read-only |
 | `explore` (built-in) | — | Cheap | Built-in OpenCode read-only discovery agent |
 | `scout` (built-in) | — | Cheap | Built-in OpenCode external docs / dependency / upstream source research |
 
-**Verifier**: No dedicated primitive agent. Start with `verify-evidence` on-demand skill (in `skills/misc/`). Promote to dedicated agent only if the skill is used in >50% of sessions and its routing/context cost justifies a separate agent file.
+**Verifier**: No dedicated agent. `reviewer` handles verification (code + browser). Use `verify-evidence` skill for tool-based evidence when needed.
 
 ### Design Rules
 

@@ -22,7 +22,7 @@ Load this skill when orchestrator or reviewer needs independent evidence. Do not
 
 ## Self-Improvement Pipeline Integration
 
-Part of [self-improvement pipeline](https://github.com/TudeOrangBiasa/opencode-workflow/blob/main/docs/engineering/self-improvement-pipeline.md).
+Part of [self-improvement pipeline](docs/engineering/self-improvement-pipeline.md).
 
 Before verifying, scan `.scratch/evals/` for findings matching current change's `target` or `category`. Flag if CRITICAL/HIGH findings exist for same skill — verify fixes applied. Escalate to BLOCKED if same finding repeats 2+ times.
 

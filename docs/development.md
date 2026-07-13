@@ -35,10 +35,10 @@ git log origin/main..HEAD
 ```
 opencode-workflow/
 ├── agents/                    # Source of truth for OpenCode agent files (symlinked)
-│   ├── orchestrator.md        # primary router
+│   ├── planner.md             # primary router
 │   ├── builder.md             # code edits
-│   ├── validator.md            # QA + validation
-│   └── reviewer.md            # audit/security
+│   ├── reviewer.md            # code review + browser QA
+│   └── advisor.md             # consultation, architecture
 ├── skills/
 │   ├── engineering/           # daily code work — promoted
 │   ├── productivity/          # daily non-code work — promoted

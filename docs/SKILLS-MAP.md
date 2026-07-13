@@ -25,7 +25,7 @@ Categories for cross-agent lesson sharing:
 - document-writing
 - humanizer
 - drawio
-- diagnose
+- diagnosing-bugs
 - php-review
 - security-review
 - ponytail
@@ -66,8 +66,6 @@ Categories for cross-agent lesson sharing:
 ### engineering/planning
 
 - ask-matt 
-- to-prd
-- to-issues
 - to-spec
 - to-tickets
 - triage
@@ -99,7 +97,7 @@ Categories for cross-agent lesson sharing:
 - ponytail-gain (npm plugin)
 - ponytail-help (npm plugin)
 - production-audit
-- review
+- code-review
 - security-review
 - tdd
 - team-handoff-quality

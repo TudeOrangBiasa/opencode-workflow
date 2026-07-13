@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- **Refactor(agents): simplify to 4 agents.** `orchestrator` → `planner` (primary). `reviewer` + `validator` merged → `reviewer` (code + browser QA). `advisor` added. `orchestrator` + `validator` disabled. Models: planner/advisor qwen3.7-plus, reviewer mimo-v2.5-free, builder flash-free, explore/scout deepseek-v4-flash. compaction model pin removed.
+- **Quality(agents):** planner.md (pre-flight, error patterns), builder.md (fix refs, verify section), advisor.md (prior lessons, output format). All stale "Orchestrator" refs removed.
+- **Cleanup:** remove `.opencode/plugins/`, `.deprecated/`, `.issues/`, `sandbox/`. Move `.out-of-scope/` → `.scratch/out-of-scope/`.
+- **Docs:** update workflow.md, development.md, install.md, models.md, templates, boundary docs, issue-tracker.md. Add context map to AGENTS.md. Fix README.md paths.
 - Feat(scripts): link-skills.sh rewrite — auto-discover 133 skills across 16 leaf buckets, nested bucket symlinks (not flat), generate opencode.json leaf paths, detect package-entry conflicts (engineering/design, documents-kit). 151 stale flat symlinks removed.
 - Feat(skills): apply ticket-003 prototype skill (timebox, commitment gate, pivot protocol), ticket-005 builder (Boundary Test section, null protocol), ticket-006 orchestrator (mandatory verify-evidence gate), ticket-007 aggregate-eval.sh (YAML frontmatter parser, priority list, JSON output).
 - Docs: AGENTS.md + docs/architecture.md — skill integration flow (`external → opencode-workflow → ~/.config/opencode/`) + deployment (multiple leaf paths, bucket preservation via link-skills.sh).

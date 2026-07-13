@@ -24,17 +24,17 @@ The script is non-destructive. If a target skill already exists as a real direct
 
 Active repo skills:
 
-- `diagnose`
+- `diagnosing-bugs`
 - `grill-with-docs`
 - `triage`
 - `improve-codebase-architecture`
 - `setup-matt-pocock-skills`
 - `tdd`
-- `to-issues`
-- `to-prd`
+- `to-spec`
+- `to-tickets`
 - `zoom-out`
 - `prototype`
-- `review`
+- `code-review`
 - `accessibility`
 - `ai-regression-testing`
 - `android-clean-architecture`
@@ -151,8 +151,8 @@ OpenCode loads config, agents, skills, and plugins at startup. Quit and restart 
 
 Use [`docs/templates/opencode.primitive-agents.jsonc`](./templates/opencode.primitive-agents.jsonc) as the canonical config template for `~/.config/opencode/opencode.json`. It includes:
 
-- Model assignments per agent (orchestrator, builder, reviewer, validator, scout, etc.)
-- Permission rules (orchestrator can spawn subagents, validator can't edit/bash, etc.)
+- Model assignments per agent (planner, builder, reviewer, advisor, scout, etc.)
+- Permission rules (planner can spawn subagents, reviewer has chrome-devtools access, etc.)
 - Skill triggers (auto-load keywords for officecli, ponytail, design, etc.)
 - Disabled built-ins (`general`, `plan`, `build`)
 - MCP examples (exa, chrome-devtools, openviking, officecli)

@@ -16,16 +16,14 @@ You are building, reviewing, testing, diagnosing, deploying, or planning code pr
 
 - **planning/** — turning conversation into artifacts (PRDs, issues, triage)
 - **design/** — architecture and UI design decisions
-- **quality/** — review, test, diagnose, audit, verify
+- **quality/** — code-review, tdd, diagnosing-bugs, audit, verify
 - **workflow/** — meta-workflow: prototyping, memory, setup, skill-authoring
 
 ### planning/
 
 - [ask-matt](ask-matt/SKILL.md) — Research skill: ask Matt Pocock about skill design, workflow, or coding patterns.
-- [to-prd](to-prd/SKILL.md) — Turn current conversation context into a PRD and publish it to the configured project issue tracker.
-- [to-issues](to-issues/SKILL.md) — Break any plan, spec, or PRD into independently-grabbable issue slices for the configured tracker, defaulting to local markdown issues.
-- [to-spec](to-spec/SKILL.md) — Turn a sharp idea into a structured specification document (upstream replacement for to-prd).
-- [to-tickets](to-tickets/SKILL.md) — Break specs into independently-grabbable tickets (upstream replacement for to-issues).
+- [to-spec](to-spec/SKILL.md) — Turn a sharp idea into a structured specification document.
+- [to-tickets](to-tickets/SKILL.md) — Break specs into independently-grabbable tickets.
 - [triage](triage/SKILL.md) — Triage issues through a state machine of triage roles.
 - [wayfinder](wayfinder/SKILL.md) — Plan big work: decide what to build and how to sequence it.
 
@@ -33,7 +31,7 @@ You are building, reviewing, testing, diagnosing, deploying, or planning code pr
 
 - [architecture-decision-records](architecture-decision-records/SKILL.md) — Capture architectural decisions as structured ADRs — context, alternatives, rationale, consequences.
 - [codebase-design](codebase-design/SKILL.md) — Design interfaces for modules using parallel sub-agent pattern (design-it-twice).
-- [design](design/SKILL.md) — Full-stack design skill for frontend interfaces. 22 sub-commands (craft, shape, audit, critique, adapt, animate, etc.). Merges former impeccable + emil-design-eng skills.
+- [design-skill](design/design-skill/SKILL.md) — Full-stack design skill for frontend interfaces. 22 sub-commands (craft, shape, audit, critique, adapt, animate, etc.). Merges former impeccable + emil-design-eng skills. Own repo: `~/Workspace/personal/agents/design-skill`.
 - [design-system](design-system/SKILL.md) — Generate, audit, or review design systems for visual consistency (moved from misc/frontend/).
 - [domain-modeling](domain-modeling/SKILL.md) — Extract sharp domain terms and update CONTEXT.md + ADR docs as decisions crystallize.
 - [grill-with-docs](grill-with-docs/SKILL.md) — Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline.
@@ -43,14 +41,16 @@ You are building, reviewing, testing, diagnosing, deploying, or planning code pr
 
 - [ai-regression-testing](ai-regression-testing/SKILL.md) — Regression testing for AI-assisted dev — sandbox-mode API testing, AI blind-spot patterns.
 - [click-path-audit](click-path-audit/SKILL.md) — Trace button click paths for sequential-undo, race, stale-closure, dead-path bugs (moved from misc/frontend/).
-- [code-review](code-review/SKILL.md) — Behavior + Change Health diff review (upstream replacement for review).
-- [diagnose](diagnose/SKILL.md) — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
-- [diagnosing-bugs](diagnosing-bugs/SKILL.md) — Upstream replacement for diagnose with hitl-loop template.
+- [code-review](code-review/SKILL.md) — Behavior + Change Health diff review.
+- [diagnosing-bugs](diagnosing-bugs/SKILL.md) — Disciplined diagnosis loop for hard bugs and performance regressions.
 - [error-handling](error-handling/SKILL.md) — Error-handling review checklist for typed errors, retries, safe messages (moved from misc/backend/).
-- [ponytail](ponytail/SKILL.md) — Forces the laziest solution that actually works (npm plugin, auto-injects on every turn). `/ponytail [lite|full|ultra|off]`. Companion: `/ponytail-review`, `/ponytail-audit`, `/ponytail-debt`, `/ponytail-help`, `/ponytail-gain`.
-- [ponytail-gain](ponytail-gain/SKILL.md) — One-shot scoreboard: ponytail's measured impact (less code, less cost, faster). `/ponytail-gain`. Restored from git history; not in npm package.
-- [production-audit](production-audit/SKILL.md) — Local-evidence production readiness audit — security, data integrity, operations, payments, UX.
-- [review](review/SKILL.md) — Compact branch/PR/WIP review since a fixed point using parallel Behavior and ambitious Change Health passes.
+- [ponytail](ponytail/SKILL.md) — Forces the laziest solution that actually works (npm plugin, auto-injects on every turn). `/ponytail [lite|full|ultra|off]`. Companion skills below.
+- [ponytail-audit](ponytail-audit/SKILL.md) — Whole-repo audit for over-engineering. `/ponytail-audit`.
+- [ponytail-debt](ponytail-debt/SKILL.md) — Harvest `ponytail:` comments into a debt ledger. `/ponytail-debt`.
+- [ponytail-gain](ponytail-gain/SKILL.md) — One-shot scoreboard: ponytail's measured impact. `/ponytail-gain`.
+- [ponytail-help](ponytail-help/SKILL.md) — Quick-reference card for all ponytail modes, skills, commands. `/ponytail-help`.
+- [ponytail-review](ponytail-review/SKILL.md) — Code review focused on over-engineering. `/ponytail-review`.
+- [production-audit](production-audit/SKILL.md) — Local-evidence production readiness audit.
 - [security-review](security-review/SKILL.md) — Security review checklist for auth, input handling, secrets, PII (moved from misc/security/).
 - [tdd](tdd/SKILL.md) — Test-driven development with a red-green-refactor loop.
 - [team-handoff-quality](team-handoff-quality/SKILL.md) — Team-ready handoff checklist for changes, verification evidence, version bump, changelog, migration notes.

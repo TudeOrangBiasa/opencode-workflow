@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenCode Workflow — Architecture Map</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0d1117; color:#e6edf3; padding:2rem; line-height:1.5 }
+h1 { font-size:2rem; margin-bottom:.3rem; color:#58a6ff }
+h2 { font-size:1.3rem; margin:2rem 0 1rem; color:#f0883e; border-bottom:1px solid #30363d; padding-bottom:.4rem }
+h3 { font-size:1rem; margin:1rem 0 .5rem; color:#8b949e; text-transform:uppercase; letter-spacing:.05em }
+.subtitle { color:#8b949e; margin-bottom:1.5rem; font-size:.9rem }
+.grid { display:grid; gap:1rem }
+.cols-2 { grid-template-columns:1fr 1fr }
+.cols-3 { grid-template-columns:1fr 1fr 1fr }
+.cols-4 { grid-template-columns:1fr 1fr 1fr 1fr }
+@media(max-width:900px){ .cols-2,.cols-3,.cols-4 { grid-template-columns:1fr } }
+
+/* cards */
+.card { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:1rem }
+.card h4 { color:#58a6ff; margin-bottom:.4rem; font-size:.95rem }
+.card p { color:#8b949e; font-size:.85rem }
+.card .badge { display:inline-block; font-size:.7rem; padding:2px 8px; border-radius:10px; margin-right:4px; font-weight:600 }
+.badge-primary { background:#1f6feb33; color:#58a6ff; border:1px solid #1f6feb55 }
+.badge-warning { background:#d2992233; color:#d29922; border:1px solid #d2992255 }
+.badge-info { background:#1c7a3e33; color:#3fb950; border:1px solid #1c7a3e55 }
+.badge-accent { background:#bc8cff33; color:#bc8cff; border:1px solid #bc8cff55 }
+.badge-success { background:#1c7a3e33; color:#3fb950; border:1px solid #1c7a3e55 }
+.badge-free { background:#3fb95022; color:#3fb950; border:1px solid #3fb95044 }
+.badge-cheap { background:#d2992222; color:#d29922; border:1px solid #d2992244 }
+.badge-best { background:#bc8cff33; color:#bc8cff; border:1px solid #bc8cff55 }
+.badge-medium { background:#58a6ff33; color:#58a6ff; border:1px solid #58a6ff55 }
+.badge-large { background:#f0883e22; color:#f0883e; border:1px solid #f0883e44 }
+
+/* pipeline */
+.pipeline { display:flex; align-items:center; justify-content:center; gap:.5rem; flex-wrap:wrap; margin:1.5rem 0 }
+.pipe-node { text-align:center; min-width:110px }
+.pipe-node .box { padding:.6rem .8rem; border-radius:8px; font-weight:600; font-size:.85rem }
+.pipe-node .label { font-size:.7rem; color:#8b949e; margin-top:3px }
+.pipe-arrow { color:#30363d; font-size:1.5rem; font-weight:300 }
+.pipe-rev { color:#484f58; font-size:.7rem; text-align:center; margin-top:2px }
+
+/* integration diagram */
+.integration { display:flex; flex-direction:column; align-items:center; gap:.5rem }
+.integration-row { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:center }
+.integration-item { background:#161b22; border:1px solid #30363d; border-radius:6px; padding:.5rem .8rem; text-align:center; font-size:.8rem }
+.integration-item .name { color:#58a6ff; font-weight:600 }
+.integration-item .desc { color:#8b949e; font-size:.7rem }
+.v-line { width:2px; height:20px; background:#30363d }
+.line { height:2px; width:40px; background:#30363d }
+
+/* flow arrows */
+.flow-row { display:flex; align-items:center; gap:.3rem; flex-wrap:wrap }
+.flow-step { background:#161b22; border:1px solid #30363d; border-radius:6px; padding:.3rem .6rem; font-size:.75rem; white-space:nowrap; color:#8b949e }
+.flow-step.active { border-color:#58a6ff55; color:#e6edf3; background:#1f6feb11 }
+.flow-step.primary { border-color:#58a6ff; color:#58a6ff }
+.flow-arrow { color:#30363d; font-size:1rem }
+
+/* mindmap */
+.mindmap { display:flex; flex-direction:column; align-items:center; gap:.3rem; margin:1rem 0 }
+.mm-root { background:#1f6feb22; border:2px solid #58a6ff; border-radius:10px; padding:.5rem 1rem; font-size:1rem; font-weight:700; color:#58a6ff }
+.mm-children { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center }
+.mm-child { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:.4rem .7rem; font-size:.8rem; min-width:100px; text-align:center }
+.mm-grandchildren { display:flex; gap:.3rem; flex-wrap:wrap; justify-content:center; margin-top:.2rem }
+.mm-grandchild { background:#0d1117; border:1px solid #21262d; border-radius:6px; padding:.2rem .5rem; font-size:.7rem; color:#8b949e }
+
+/* tree */
+.tree { font-family:'JetBrains Mono','Cascadia Code',monospace; font-size:.8rem; line-height:1.7; color:#8b949e; background:#161b22; border:1px solid #30363d; border-radius:8px; padding:1rem; overflow-x:auto }
+.tree .dir { color:#58a6ff }
+.tree .file { color:#e6edf3 }
+.tree .symlink { color:#3fb950 }
+.tree .active { background:#1f6feb11; border-radius:3px }
+.indent { padding-left:1.5rem }
+
+/* table */
+table { width:100%; border-collapse:collapse; font-size:.85rem; margin:.5rem 0 }
+th, td { padding:.5rem .7rem; text-align:left; border-bottom:1px solid #21262d }
+th { color:#8b949e; font-weight:600; font-size:.75rem; text-transform:uppercase; letter-spacing:.05em }
+td { color:#e6edf3 }
+tr:hover td { background:#1f6feb08 }
+
+/* section highlight */
+.goal { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:1rem; margin:1rem 0 }
+.goal h4 { color:#3fb950; margin-bottom:.3rem }
+.goal p { color:#8b949e; font-size:.85rem }
+
+/* agent flow vis */
+.flow-canvas { position:relative; width:100%; height:220px; margin:1rem 0; overflow:hidden }
+.flow-line { position:absolute; top:50%; left:0; right:0; height:2px; background:#30363d; z-index:0 }
+.flow-node { position:absolute; top:50%; transform:translate(-50%,-50%); z-index:1; text-align:center; min-width:100px }
+.flow-node .circle { width:80px; height:80px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; margin:0 auto; font-size:.7rem; font-weight:600; border:2px solid }
+.flow-node .arrow-down { color:#30363d; font-size:1.2rem; margin-top:90px }
+
+/* tag */
+.tag { display:inline-block; font-size:.65rem; padding:1px 6px; border-radius:4px; margin-right:3px }
+.tag-blue { background:#1f6feb22; color:#58a6ff; border:1px solid #1f6feb44 }
+.tag-green { background:#1c7a3e22; color:#3fb950; border:1px solid #1c7a3e44 }
+.tag-yellow { background:#d2992222; color:#d29922; border:1px solid #d2992244 }
+.tag-purple { background:#bc8cff22; color:#bc8cff; border:1px solid #bc8cff44 }
+.tag-grey { background:#30363d44; color:#8b949e; border:1px solid #30363d }
+
+/* plugin hooks */
+.hooks { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:1rem; margin:.5rem 0 }
+.hook { display:flex; align-items:center; gap:.5rem; padding:.3rem 0; border-bottom:1px solid #21262d; font-size:.8rem }
+.hook:last-child { border-bottom:0 }
+.hook .name { color:#58a6ff; font-weight:600; min-width:200px }
+.hook .desc { color:#8b949e }
+</style>
+</head>
+<body>
+
+<h1>🏗️ OpenCode Workflow — Architecture Map</h1>
+<p class="subtitle">Monorepo pipeline: agents → plugins → MCP → skills → integration</p>
+
+<!-- ============ SECTION 1: CODEBASE MAP ============ -->
+<h2>📁 1. Codebase Map</h2>
+<div class="grid cols-2">
+  <div>
+    <h3>Monorepo Structure</h3>
+    <div class="tree">
+      <span class="dir">opencode-workflow/</span><br>
+      <span class="indent">├── <span class="dir active">agents/</span>           # Agent definitions (4 files)</span><br>
+      <span class="indent" style="color:#484f58">│   ├── planner.md (primary)</span><br>
+      <span class="indent" style="color:#484f58">│   ├── builder.md (subagent)</span><br>
+      <span class="indent" style="color:#484f58">│   ├── reviewer.md (subagent)</span><br>
+      <span class="indent" style="color:#484f58">│   └── advisor.md (subagent)</span><br>
+      <span class="indent">├── <span class="dir">skills/</span>            # 100+ skills, 5 buckets</span><br>
+      <span class="indent" style="color:#484f58">│   ├── engineering/ (planning, design, quality, workflow)</span><br>
+      <span class="indent" style="color:#484f58">│   ├── productivity/ (documents-kit, research, handoff)</span><br>
+      <span class="indent" style="color:#484f58">│   ├── misc/ (8 domains: backend, frontend, devops, etc)</span><br>
+      <span class="indent" style="color:#484f58">│   ├── personal/ (workflow + tools, not promoted)</span><br>
+      <span class="indent" style="color:#484f58">│   └── in-progress/ + deprecated/</span><br>
+      <span class="indent">├── <span class="dir">scripts/</span>           # 12 utility scripts</span><br>
+      <span class="indent">├── <span class="dir">docs/</span>              # architecture, workflow, models, templates</span><br>
+      <span class="indent">├── <span class="dir">.scratch/</span>          # issues, evals, verification, out-of-scope</span><br>
+      <span class="indent">├── <span class="dir">.opencode/</span>         # local config + plugin runtime</span><br>
+      <span class="indent">└── AGENTS.md / CONTEXT.md / README.md</span>
+    </div>
+  </div>
+  <div>
+    <h3>External Repos (Symlinked)</h3>
+    <div class="tree">
+      <span class="symlink">design/design-skill/</span><br>
+      <span class="indent" style="color:#8b949e">→ ~/Workspace/personal/agents/design-skill</span><br>
+      <span class="indent" style="color:#484f58">   Inside design/ bucket. Own agents, assets, reference files</span><br>
+      <span class="indent" style="color:#484f58">   37 reference files, 85-line SKILL.md</span><br>
+      <br>
+      <span class="symlink">documents-kit/</span><br>
+      <span class="indent" style="color:#8b949e">→ documents-kit-skills (external)</span><br>
+      <span class="indent" style="color:#484f58">   10 sub-skills, 15 tools, templates, presets</span><br>
+      <br>
+      <span class="symlink">ponytail/ (npm)</span><br>
+      <span class="indent" style="color:#484f58">   npm package, 5 sub-skills, plugin, instructions</span><br>
+      <br>
+      <span class="symlink">caveman/ (npm)</span><br>
+      <span class="indent" style="color:#484f58">   npm package, 1 skill, plugin</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 2: AGENT PIPELINE ============ -->
+<h2>🤖 2. Agent Pipeline</h2>
+<p style="color:#8b949e;font-size:.85rem;margin-bottom:1rem">How work flows through 4 agents + orthogonal judge/eval layer. Advisor operates in 3 modes: <strong>pre-flight</strong> (validate plan scope), <strong>judge</strong> (detect context drift mid-execution), <strong>post-session</strong> (eval report).</p>
+
+<div class="pipeline">
+  <div class="pipe-node">
+    <div class="box" style="background:#1f6feb22;border:2px solid #58a6ff;color:#58a6ff">🧠 Planner</div>
+    <div class="label">qwen3.7-plus · primary</div>
+    <div class="label" style="color:#484f58">Plans · Routes · Gates</div>
+  </div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-node">
+    <div class="box" style="background:#d2992222;border:2px solid #d29922;color:#d29922">🔨 Builder</div>
+    <div class="label">deepseek-v4-flash-free · cheap</div>
+    <div class="label" style="color:#484f58">Code edits · Verify · Report</div>
+  </div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-node">
+    <div class="box" style="background:#1c7a3e22;border:2px solid #3fb950;color:#3fb950">🔍 Reviewer</div>
+    <div class="label">mimo-v2.5-free · medium</div>
+    <div class="label" style="color:#484f58">Code review + Browser QA</div>
+  </div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-node">
+    <div class="box" style="background:#bc8cff22;border:2px solid #bc8cff;color:#bc8cff">💡 Advisor</div>
+    <div class="label">qwen3.7-plus · best</div>
+    <div class="label" style="color:#484f58">Architecture · Critique · 🧑‍⚖️ Judge · 📋 Eval</div>
+  </div>
+</div>
+
+<table>
+  <tr><th>Agent</th><th>Mode</th><th>Model</th><th>Cost</th><th>Role</th><th>Permissions</th></tr>
+  <tr><td>planner</td><td><span class="tag tag-blue">primary</span></td><td>qwen3.7-plus</td><td><span class="badge badge-best">best</span></td><td>Route, plan, quality gates, delegate</td><td>task: deny* (allow builder/reviewer/advisor/explore/scout)</td></tr>
+  <tr><td>builder</td><td><span class="tag tag-yellow">subagent</span></td><td>deepseek-v4-flash-free</td><td><span class="badge badge-cheap">cheap</span></td><td>Bounded code changes, verify, report</td><td>default allow</td></tr>
+  <tr><td>reviewer</td><td><span class="tag tag-green">subagent</span></td><td>mimo-v2.5-free</td><td><span class="badge badge-medium">medium</span></td><td>Code review + browser QA (merged)</td><td>*:allow, edit:deny</td></tr>
+  <tr><td>advisor</td><td><span class="tag tag-purple">subagent</span></td><td>qwen3.7-plus</td><td><span class="badge badge-best">best</span></td><td>Consultation, architecture critique, 🧑‍⚖️ judge context drift, 📋 session eval</td><td>edit:deny, task:deny</td></tr>
+</table>
+
+<div style="margin-top:1rem">
+  <h3>Workflow Flow (Planner → Execution → Verify → Review)</h3>
+  <div class="flow-row">
+    <span class="flow-step primary">User Request</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Planner: Plan approach</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Load skills + prior lessons</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Advisor: validate plan (scope, drift)</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Delegate to builder</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Builder: implement + verify</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Planner: verify-evidence gate</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Delegate to reviewer</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step">Reviewer: code + browser QA</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Advisor: judge output (drift, quality)</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Report / retry / done</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-step active">Eval: advisor reviews session</span>
+  </div>
+</div>
+
+<!-- Agent interaction mindmap -->
+<h3>Agent Interaction Model</h3>
+<div class="mindmap">
+  <div class="mm-root">🧠 Planner</div>
+  <div class="mm-children">
+    <div class="mm-child">→ <strong>Builder</strong><br><span style="color:#8b949e;font-size:.7rem">"Implement this slice"</span>
+      <div class="mm-grandchildren">
+        <span class="mm-grandchild">Read context</span>
+        <span class="mm-grandchild">Edit code</span>
+        <span class="mm-grandchild">Verify</span>
+        <span class="mm-grandchild">Report done/blocked</span>
+      </div>
+    </div>
+    <div class="mm-child">→ <strong>Reviewer</strong><br><span style="color:#8b949e;font-size:.7rem">"Review this diff + UI"</span>
+      <div class="mm-grandchildren">
+        <span class="mm-grandchild">Code review</span>
+        <span class="mm-grandchild">Browser QA</span>
+        <span class="mm-grandchild">Screenshots</span>
+        <span class="mm-grandchild">Verdict</span>
+      </div>
+    </div>
+    <div class="mm-child">→ <strong>Advisor</strong><br><span style="color:#8b949e;font-size:.7rem">"Best approach?" + "Any drift?"</span>
+      <div class="mm-grandchildren">
+        <span class="mm-grandchild">Architecture</span>
+        <span class="mm-grandchild">Tradeoffs</span>
+        <span class="mm-grandchild">Alternatives</span>
+        <span class="mm-grandchild">🧑‍⚖️ Context drift</span>
+        <span class="mm-grandchild">📋 Session eval</span>
+      </div>
+    </div>
+    <div class="mm-child">→ <strong>Explore</strong><br><span style="color:#8b949e;font-size:.7rem">"Find X in codebase"</span>
+      <div class="mm-grandchildren">
+        <span class="mm-grandchild">Read files</span>
+        <span class="mm-grandchild">Search symbols</span>
+      </div>
+    </div>
+    <div class="mm-child">→ <strong>Scout</strong><br><span style="color:#8b949e;font-size:.7rem">"Research external topic"</span>
+      <div class="mm-grandchildren">
+        <span class="mm-grandchild">Web search</span>
+        <span class="mm-grandchild">Fetch docs</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 3: PLUGIN SYSTEM ============ -->
+<h2>🔌 3. Plugin System</h2>
+<p style="color:#8b949e;font-size:.85rem;margin-bottom:.5rem">Two npm plugins hook into OpenCode runtime. No repo-local plugins.</p>
+
+<div class="grid cols-2">
+  <div class="hooks">
+    <h4 style="color:#f0883e;margin-bottom:.5rem">🦣 opencode-caveman</h4>
+    <div><span class="tag tag-yellow">npm</span> <span class="tag tag-blue">v0.1.4</span></div>
+    <div class="hook"><span class="name">Purpose</span><span class="desc">Token-compression mode: strips articles, filler, hedging. Forces terse communication</span></div>
+    <div class="hook"><span class="name">Levels</span><span class="desc">lite · full (default) · ultra · wenyan</span></div>
+    <div class="hook"><span class="name">Skill</span><span class="desc">1 skill: <code>caveman/SKILL.md</code></span></div>
+  </div>
+
+  <div class="hooks">
+    <h4 style="color:#58a6ff;margin-bottom:.5rem">🐴 opencode-ponytail</h4>
+    <div><span class="tag tag-yellow">npm</span> <span class="tag tag-blue">v4.7.3</span></div>
+    <div class="hook"><span class="name">Purpose</span><span class="desc">Lazy senior dev: stdlib first, delete over-engineering, shortest diff wins</span></div>
+    <div class="hook"><span class="name">Hooks</span><span class="desc">config · system.transform · command.execute.before</span></div>
+    <div class="hook"><span class="name">Levels</span><span class="desc">lite · full (default) · ultra</span></div>
+    <div class="hook"><span class="name">Skills</span><span class="desc">5 skills: main, audit, debt, help, review</span></div>
+    <div class="hook"><span class="name">Commands</span><span class="desc">/ponytail {level} · /ponytail-audit · /ponytail-review</span></div>
+  </div>
+</div>
+
+<h3>Plugin Architecture</h3>
+<div class="grid cols-3" style="margin-top:.5rem">
+  <div class="card">
+    <h4>📥 Config Hook</h4>
+    <p>Registers slash commands at startup. Parses markdown from <code>command/</code> directory.</p>
+  </div>
+  <div class="card">
+    <h4>🔄 System Transform</h4>
+    <p>Injects caveman/ponytail ruleset into system prompt every turn. Reads state from <code>~/.config/opencode/.ponytail-active</code>.</p>
+  </div>
+  <div class="card">
+    <h4>⚡ Command Execute</h4>
+    <p>Intercepts <code>/ponytail</code> commands, persists intensity level, invokes skill.</p>
+  </div>
+</div>
+
+<!-- ============ SECTION 4: MCP + INTEGRATIONS ============ -->
+<h2>🔗 4. MCP Servers & Integrations</h2>
+
+<table>
+  <tr><th>Server</th><th>Type</th><th>Purpose</th><th>Used By</th></tr>
+  <tr><td><span class="tag tag-green">exa</span></td><td>🌐 remote</td><td>Web search & research</td><td>scout (rate limit: 10/session)</td></tr>
+  <tr><td><span class="tag tag-blue">chrome-devtools</span></td><td>🖥️ local</td><td>Browser QA: screenshots, console/network, DOM</td><td>reviewer (UI verification)</td></tr>
+  <tr><td><span class="tag tag-purple">openviking</span></td><td>🧠 remote</td><td>Persistent memory: lessons, task context, project knowledge</td><td>planner, builder, all agents</td></tr>
+  <tr><td><span class="tag tag-yellow">officecli</span></td><td>📄 local</td><td>Office docs: .docx/.pptx/.xlsx create, edit, screenshot</td><td>planner (doc tasks)</td></tr>
+  <tr><td><span class="tag tag-purple">scholar-paper-mcp</span></td><td>📚 local</td><td>Academic paper research, extraction, analysis</td><td>scout (research tasks)</td></tr>
+</table>
+
+<!-- ============ SECTION 5: SKILL TRIGGER SYSTEM ============ -->
+<h2>🎯 5. Skill Trigger System</h2>
+<p style="color:#8b949e;font-size:.85rem;margin-bottom:.5rem">30+ auto-load triggers in <code>opencode.json</code>. Keyword match → skill loads before delegation.</p>
+
+<div class="grid cols-4">
+  <div class="card"><h4>🎨 design</h4><p>ui, frontend, layout, polish, visual, ux, motion, animation, ...</p></div>
+  <div class="card"><h4>🐛 diagnosing-bugs</h4><p>bug, broken, error, crash, slow, regression</p></div>
+  <div class="card"><h4>📄 officecli</h4><p>docx, pptx, xlsx, laporan, spreadsheet</p></div>
+  <div class="card"><h4>✍️ humanizer</h4><p>write, edit, draft, prose, narasi, laporan, docs</p></div>
+  <div class="card"><h4>🔒 security-review</h4><p>auth, secret, password, credential, vulnerability</p></div>
+  <div class="card"><h4>🧠 openviking</h4><p>memory, remember, store, retrieve, task, fix, implement</p></div>
+  <div class="card"><h4>🔨 ponytail</h4><p>review, audit, yagni, over-engineer, simple, minimal</p></div>
+  <div class="card"><h4>📊 verify-evidence</h4><p>ship, done, merge, deploy, release, /ship, /yeet</p></div>
+</div>
+
+<!-- ============ SECTION 6: DEPLOYMENT ============ -->
+<h2>📦 6. Deployment Flow</h2>
+<div style="display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;justify-content:center;padding:1rem;background:#161b22;border:1px solid #30363d;border-radius:8px">
+  <span class="flow-step primary">opencode-workflow</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step active">scripts/link-skills.sh</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step">~/.config/opencode/skills/</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step active">opencode.json</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step">OpenCode Runtime</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step active">Restart</span>
+  <span class="flow-arrow">→</span>
+  <span class="flow-step primary">✅ Active</span>
+</div>
+
+<table style="margin-top:.5rem">
+  <tr><th>Step</th><th>What Happens</th></tr>
+  <tr><td>1. Develop</td><td>Edit agent files in <code>agents/</code>, skills in <code>skills/</code></td></tr>
+  <tr><td>2. Link</td><td><code>scripts/link-skills.sh</code> creates categorized bucket symlinks in <code>~/.config/opencode/skills/</code></td></tr>
+  <tr><td>3. Config</td><td><code>~/.config/opencode/opencode.json</code> points paths, model routing, plugins, MCP</td></tr>
+  <tr><td>4. Activate</td><td>Restart OpenCode → loads agents, skills, plugins, MCP</td></tr>
+  <tr><td>5. Run</td><td>Planner receives request → advisor validates plan → delegates to builder → reviewer QA → advisor judge → eval</td></tr>
+</table>
+
+<!-- ============ SECTION 7: GOALS ============ -->
+<h2>🎯 7. Goals & Integration Destinations</h2>
+
+<div class="grid cols-2">
+  <div>
+    <div class="goal">
+      <h4>📈 Session Eval</h4>
+      <p><strong>Destination:</strong> Eval reports in <code>.scratch/evals/</code> + OpenViking lessons<br>
+      <strong>Via:</strong> Advisor runs post-session eval → memory-dreaming consolidates<br>
+      <strong>Tools:</strong> eval skill, openviking MCP, memory-dreaming</p>
+    </div>
+    <div class="goal">
+      <h4>🎨 Design Output</h4>
+      <p><strong>Destination:</strong> Frontend code, design tokens, CSS, component code<br>
+      <strong>Via:</strong> planner → designer skill → generates UI code + visual specs<br>
+      <strong>Tools:</strong> design-skill (22 sub-commands), chrome-devtools for validation</p>
+    </div>
+    <div class="goal">
+      <h4>📄 Document Output</h4>
+      <p><strong>Destination:</strong> .docx reports, .pptx decks, academic papers<br>
+      <strong>Via:</strong> planner → documents-kit → officecli creates/edits files<br>
+      <strong>Tools:</strong> officecli MCP, drawio diagrams, humanizer for prose</p>
+    </div>
+    <div class="goal">
+      <h4>🔧 Code Output</h4>
+      <p><strong>Destination:</strong> Production code, tests, migrations<br>
+      <strong>Via:</strong> planner → builder → reviewer cycle<br>
+      <strong>Tools:</strong> tdd, diagnosing-bugs, security-review, php-review</p>
+    </div>
+  </div>
+  <div>
+    <div class="goal">
+      <h4>🧠 Learning & Memory</h4>
+      <p><strong>Destination:</strong> OpenViking persistent store<br>
+      <strong>Via:</strong> Every agent stores lessons via <code>ov add-memory</code><br>
+      <strong>Tools:</strong> openviking MCP, memory-dreaming skill for consolidation</p>
+    </div>
+    <div class="goal">
+      <h4>📊 Research Output</h4>
+      <p><strong>Destination:</strong> Research docs, reports, synthesis<br>
+      <strong>Via:</strong> scout (exa web search) + explorer (codebase) → advisor synthesizes<br>
+      <strong>Tools:</strong> exa MCP, deep-research skill, handoff skill</p>
+    </div>
+    <div class="goal">
+      <h4>📋 Issue Management</h4>
+      <p><strong>Destination:</strong> Local markdown issues in <code>.scratch/issues/</code><br>
+      <strong>Via:</strong> to-spec → to-tickets → triage pipeline<br>
+      <strong>Tools:</strong> triage skill, issue-tracker docs, wayfinder for exploration</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 8: FULL SYSTEM DIAGRAM ============ -->
+<h2>🔄 8. System Integration Diagram</h2>
+<div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.5rem;text-align:center;line-height:2;font-size:.85rem">
+
+<div style="font-size:1.2rem;font-weight:700;color:#58a6ff;margin-bottom:.8rem">User Input</div>
+<div style="display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap">
+  <span class="tag tag-blue">"fix this bug"</span>
+  <span class="tag tag-green">"design this UI"</span>
+  <span class="tag tag-yellow">"write laporan"</span>
+  <span class="tag tag-purple">"research topic"</span>
+  <span class="tag tag-grey">"review this PR"</span>
+</div>
+
+<div style="margin:.8rem 0">↓ <strong>Skill Triggers auto-load</strong> ↓</div>
+
+<div style="background:#1f6feb22;border:2px solid #58a6ff;border-radius:10px;padding:.6rem;display:inline-block;font-weight:700;color:#58a6ff;font-size:1rem">🧠 Planner (primary)</div>
+
+<div style="margin:.5rem 0;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
+  <div style="background:#d2992222;border:1px solid #d29922;border-radius:8px;padding:.4rem .8rem;font-size:.8rem">
+    🔨 <strong>Builder</strong><br><span style="color:#8b949e">deepseek-v4-flash-free</span>
+  </div>
+  <div style="background:#1c7a3e22;border:1px solid #3fb950;border-radius:8px;padding:.4rem .8rem;font-size:.8rem">
+    🔍 <strong>Reviewer</strong><br><span style="color:#8b949e">mimo-v2.5-free</span>
+  </div>
+  <div style="background:#bc8cff22;border:1px solid #bc8cff;border-radius:8px;padding:.4rem .8rem;font-size:.8rem">
+    💡<strong>Advisor</strong> · 🧑‍⚖️<strong>Judge</strong> · 📋<strong>Eval</strong><br><span style="color:#8b949e">qwen3.7-plus · drift detect · session eval</span>
+  </div>
+  <div style="background:#30363d44;border:1px solid #484f58;border-radius:8px;padding:.4rem .8rem;font-size:.8rem">
+    🔎 <strong>Explore</strong><br><span style="color:#8b949e">deepseek-v4-flash</span>
+  </div>
+  <div style="background:#30363d44;border:1px solid #484f58;border-radius:8px;padding:.4rem .8rem;font-size:.8rem">
+    🌐 <strong>Scout</strong><br><span style="color:#8b949e">deepseek-v4-flash</span>
+  </div>
+</div>
+
+<div style="margin:.8rem 0;display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;font-size:.75rem">
+  <div>
+    <div style="font-weight:600;color:#d29922">📦 Skills (100+)</div>
+    <div style="color:#8b949e">engineering · productivity · misc · personal</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#58a6ff">🔌 Plugins (2)</div>
+    <div style="color:#8b949e">caveman + ponytail</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#3fb950">🔗 MCP Servers (5)</div>
+    <div style="color:#8b949e">exa · chrome-devtools · openviking · officecli · scholar</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#bc8cff">🎯 Skill Triggers (30+)</div>
+    <div style="color:#8b949e">keyword → auto-load before delegation</div>
+  </div>
+</div>
+
+<div style="margin:.5rem 0;color:#8b949e;font-size:.75rem">
+  ↻ <strong>Advisor Eval Loop:</strong> post-session → eval report → memory-dreaming → lessons stored → future sessions improved
+</div>
+
+<div style="border-top:1px solid #30363d;padding-top:.8rem;margin-top:.5rem">
+  <div style="display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap">
+    <span class="tag tag-green">✅ Code</span>
+    <span class="tag tag-blue">🎨 Design</span>
+    <span class="tag tag-yellow">📄 Document</span>
+    <span class="tag tag-purple">🧠 Memory</span>
+    <span class="tag tag-grey">📊 Research</span>
+    <span class="tag tag-green">📋 Issue</span>
+    <span class="tag tag-purple">📈 Eval Report</span>
+  </div>
+  <div style="color:#8b949e;margin-top:.3rem;font-size:.8rem">Output Artifacts</div>
+</div>
+
+</div>
+
+<hr style="border-color:#30363d;margin:2rem 0">
+<p style="color:#484f58;font-size:.75rem;text-align:center">
+  Generated: 2026-07-13 · opencode-workflow · 4 agents · 2 plugins · 5 MCP · 100+ skills · 30+ triggers
+</p>
+
+</body>
+</html>

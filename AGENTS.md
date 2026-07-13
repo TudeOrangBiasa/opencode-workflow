@@ -19,11 +19,36 @@ Heavy skills (4+ external deps, fully automates a task, multiple patterns) live 
 
 - Source of truth for OpenCode agents in `agents/`.
 - Source of truth for **pipeline-level** skills in `skills/` (write-a-skill, skill-author, dev-workflow, etc.)
-- Source of truth for OpenCode plugins in `.opencode/plugins/` (repair-harness, taste, lesson-injector, ov-helper).
-- Project boundaries in `.out-of-scope/` — what this repo does NOT do (see [boundary notes](../.out-of-scope/README.md)).
+- Plugins live in `~/.config/opencode/opencode.json` (caveman, ponytail). No plugins in this repo.
+- Project boundaries in `.scratch/out-of-scope/` — what this repo does NOT do.
 - Documentation for local installation and model routing in `docs/`.
 - Symlinks to external skill packages in `skills/personal/`.
 - Do not edit `~/.config/opencode` while maturing changes here unless the user explicitly asks to install or activate them.
+
+## Context Map (Monorepo)
+
+This repo is a monorepo for OpenCode agent workflow. Key directories:
+
+| Path | Purpose |
+|------|---------|
+| `agents/` | Agent files (planner, builder, reviewer, advisor) |
+| `skills/` | Skill packages organized by bucket |
+| `skills/engineering/` | Daily code-work skills (planning, design, quality, workflow) |
+| `skills/productivity/` | Non-code workflow tools (documents-kit, research) |
+| `skills/misc/` | Specialist domain skills (backend, frontend, languages, etc.) |
+| `skills/personal/` | Personal workflow/tool skills, not promoted |
+| `docs/` | Documentation (architecture, workflow, models, install, agents) |
+| `docs/agents/` | Agent-specific reference docs (issue tracker, triage, domain) |
+| `docs/templates/` | Config templates (opencode.json) |
+| `scripts/` | Utility scripts (lint, audit, link, install) |
+| `.scratch/` | Scratch/working directory (issues, evals, verification, out-of-scope) |
+| `.scratch/issues/` | Local markdown issue tracker (inbox, inprogress, done) |
+| `.scratch/evals/` | Session evaluation reports |
+| `.scratch/out-of-scope/` | Boundary decisions — what repo does NOT do |
+| `.scratch/verification/` | Verification evidence per change |
+| `.opencode/` | Local config (plugins, package.json) |
+
+Heavy skills (design-skill, documents-kit) live in external repos, symlinked under `skills/`. See [docs/architecture.md](docs/architecture.md).
 
 ## Skill authoring
 
@@ -54,7 +79,7 @@ Enforcement:
 
 Skills are organized into bucket folders under `skills/`:
 
-- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-prd, to-issues, triage), `design/` (architecture-decision-records, design, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnose, ponytail, production-audit, review, tdd, team-handoff-quality, verify-evidence), `workflow/` (canary-watch, codebase-onboarding, context-budget, deployment-patterns, git-workflow, github-ops, memory-dreaming, prototype, search-first, setup-matt-pocock-skills, skill-author, zoom-out).
+- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-spec, to-tickets, triage), `design/` (architecture-decision-records, codebase-design, design-skill (external repo), design-system, domain-modeling, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnosing-bugs, ponytail, production-audit, code-review, tdd, team-handoff-quality, verify-evidence), `workflow/` (canary-watch, codebase-onboarding, context-budget, deployment-patterns, git-workflow, github-ops, memory-dreaming, prototype, search-first, setup-matt-pocock-skills, skill-author, zoom-out).
 - `productivity/` — daily non-code workflow tools. Includes `documents-kit/` sub-package (10 sub-skills + 15 tools + assets for document/presentation/diagram workflows).
 - `misc/` — specialist domain skills, grouped into sub-directories (`frontend`, `backend`, `languages`, `security`, `ml`, `mobile`, `devops`, `data`).
 - `personal/` — tied to personal setup, not promoted. Has 2 sub-areas: `workflow/` (dev-workflow, eval, idea-fragments, workflow-audit), `tools/` (ddev, openviking).
@@ -72,6 +97,13 @@ Each bucket folder has a `README.md` that lists every active skill in the bucket
 ## OpenCode Agents
 
 Agent files live in `agents/*.md` and use OpenCode-compatible frontmatter only.
+
+| File | Mode | Role |
+|------|------|------|
+| `planner.md` | primary | Route, plan, quality gates, delegate. Never implements |
+| `builder.md` | subagent | Cheap bounded code changes, verify, report |
+| `reviewer.md` | subagent | Code review + browser QA (merged). Read-only |
+| `advisor.md` | subagent | Consultation, architecture, design critique. Read-only |
 
 Rules:
 
@@ -129,7 +161,7 @@ All config changes (paths, triggers, MCP, plugins) MUST go through `opencode-wor
 
 ```
 ~/.config/opencode/skills/
-├── engineering/quality/diagnose/         → repo/engineering/quality/diagnose/
+├── engineering/quality/diagnosing-bugs/  → repo/engineering/quality/diagnosing-bugs/
 ├── engineering/workflow/prototype/       → repo/engineering/workflow/prototype/
 ├── productivity/documents-kit/skills/drawio/  → external symlink via repo/
 ├── personal/workflow/eval/              → repo/personal/workflow/eval/
@@ -154,7 +186,7 @@ When adding a new external skill package:
 
 ### Sandbox Research Lifecycle
 
-- Sandbox research in `sandbox/` is temporary. Once decisions are promoted to `docs/agents/`, `skills/`, or `AGENTS.md`, delete the corresponding sandbox files.
+- Use `sandbox/` for temporary research (`.gitignore`). Once decisions promoted, delete sandbox files.
 - Do not treat sandbox findings as active policy until promoted.
 
 ### Verification Agent Decision

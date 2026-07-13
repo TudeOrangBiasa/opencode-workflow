@@ -5,11 +5,11 @@ An OpenCode-first workflow repo containing agent prompts, selected workflow skil
 ## Language
 
 **Issue tracker**:
-The tool that hosts a repo's issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-issues`, `to-prd`, `triage`, and `qa` read from and write to it.
+The tool that hosts a repo's issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-tickets`, `to-spec`, `triage`, and `qa` read from and write to it.
 _Avoid_: backlog manager, backlog backend, issue host
 
 **Issue**:
-A single tracked unit of work inside an **Issue tracker** — a bug, task, PRD, or slice produced by `to-issues`.
+A single tracked unit of work inside an **Issue tracker** — a bug, task, PRD, or slice produced by `to-tickets`.
 _Avoid_: ticket (use only when quoting external systems that call them tickets)
 
 **Triage role**:
@@ -19,13 +19,13 @@ A canonical state-machine label applied to an **Issue** during triage (e.g. `nee
 Manual step that links or copies repo agents/skills into `~/.config/opencode`. Activation is separate from development; do not activate until changes are mature.
 
 **Out-of-scope note**:
-Maintainer note under `.out-of-scope/` explaining a rejected or deferred feature request. Not runtime config and not installed into OpenCode.
+Maintainer note under `.scratch/out-of-scope/` explaining a rejected or deferred feature request. Not runtime config and not installed into OpenCode.
 
 **Plugin**:
-A TypeScript module under `.opencode/plugins/` that intercepts OpenCode hooks (tool execution, chat messages). Runs on every call to the hooked event, unlike **On-demand skills**. Examples: `repair-harness` (tool arg repair), `taste` (preference extraction), `lesson-injector` (past-lesson injection).
+A TypeScript module under `.opencode/plugins/` that intercepts OpenCode hooks (tool execution, chat messages). Runs on every call to the hooked event, unlike **On-demand skills**. (Archived — taste, lesson-injector.)
 
 **Primitive agent**:
-A narrow, single-responsibility agent — either repo-defined (`agents/*.md`) or a built-in OpenCode primitive used by routing. Examples: repo-defined `builder`, `reviewer`, `validator` and built-in `explore`, `scout`. Primitive agents are always active and part of the routing table. Not to be confused with **On-demand skills**.
+A narrow, single-responsibility agent — either repo-defined (`agents/*.md`) or a built-in OpenCode primitive used by routing. Examples: repo-defined `planner`, `builder`, `reviewer`, `advisor` and built-in `explore`, `scout`. Primitive agents are always active and part of the routing table. Not to be confused with **On-demand skills**.
 
 **On-demand skill**:
 A `SKILL.md` file under `skills/` loaded only when the domain matches. Not an agent — no agent file, no frontmatter `mode`. Loaded via skill tool when the task fits.
@@ -55,7 +55,7 @@ Durable summary (changes, verification evidence, version bump, changelog, migrat
 - **Activation** installs selected repo assets into local OpenCode config
 - **Out-of-scope notes** preserve product/development decisions
 - A **Primitive agent** is always active; an **On-demand skill** loads only when triggered
-- A **Plugin** hooks into runtime events; an **On-demand skill** is loaded only when the domain matches
+- A **Plugin** hooks into runtime events (loaded via `~/.config/opencode/opencode.json`); an **On-demand skill** is loaded only when the domain matches
 - **Verification evidence** is collected by `verify-evidence` skill and consumed by `reviewer` — reviewer remains the judgment gate
 - `reviewer` is the review gate; `verify-evidence` provides independent evidence, not a separate active agent
 - An **Artifact repo** excludes env/secrets; a `public_html` symlink points at the **Public artifact** only

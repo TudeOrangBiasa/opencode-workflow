@@ -1,6 +1,6 @@
 ---
 name: setup-matt-pocock-skills
-description: Use when first-time setup of repo-aware engineering skills (diagnose, tdd, triage, to-prd, to-issues, improve-codebase-architecture, zoom-out). Use when user says setup matt pocock, set up engineering skills, configure repo skills. ALSO use when reconfiguring skill management repo (detects meta-repo mode).
+description: Use when first-time setup of repo-aware engineering skills (diagnosing-bugs, tdd, triage, to-spec, to-tickets, improve-codebase-architecture, zoom-out). Use when user says setup matt pocock, set up engineering skills, configure repo skills. ALSO use when reconfiguring skill management repo (detects meta-repo mode).
 disable-model-invocation: true
 ---
 # Setup Matt Pocock's Skills

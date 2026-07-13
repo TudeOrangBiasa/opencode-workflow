@@ -4,10 +4,14 @@ This workflow repo uses local markdown issues unless a target project says other
 
 ## Local Layout
 
-- `.scratch/issues/inbox/` for untriaged issues.
-- `.scratch/issues/ready/` for implementation-ready issues.
-- `.scratch/issues/doing/` for active work.
-- `.scratch/issues/done/` for completed work.
+- `.scratch/issues/inbox/` — untriaged
+- `.scratch/issues/inprogress/` — actively being worked on
+- `.scratch/issues/done/` — completed
+
+## Related
+
+- `.scratch/issues/` is the canonical agent issue tracker.
+- All issue tracking uses `.scratch/issues/` — no separate `.issues/` directory.
 
 ## Rules
 

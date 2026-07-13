@@ -29,15 +29,14 @@ opencode-workflow is the **personal dotfiles + workflow pipeline**. It contains:
 ```
 opencode-workflow/
 ├── .opencode/plugins/        ← runtime plugins loaded by OpenCode
-│   ├── repair-harness.ts     ← tool-call repair (4 patterns, kill switch, auto-disable)
-│   ├── taste.ts              ← preference extraction → OpenViking
-│   ├── lesson-injector.ts    ← past-lesson injection into system prompt
+│   ├── (taste.ts — archived)
+│   ├── (lesson-injector.ts — archived)
 │   └── ov-helper.ts          ← shared ov CLI wrapper
 ├── skills/
 │   ├── engineering/          ← pipeline skills (sub-dirs: planning, design, quality, workflow)
-│   │   ├── planning/         ← to-prd, to-issues, triage
-│   │   ├── design/           ← design, grill-with-docs, improve-codebase-architecture
-│   │   ├── quality/          ← review, tdd, diagnose, ponytail
+│   │   ├── planning/         ← to-spec, to-tickets, triage
+│   │   ├── design/           ← 7 sub-skills (incl. design-skill external repo)
+│   │   ├── quality/          ← code-review, tdd, diagnosing-bugs, ponytail
 │   │   └── workflow/         ← prototype, memory-dreaming, setup-matt-pocock-skills, skill-author, zoom-out
 │   ├── misc/                 ← specialist domain skills
 │   │   ├── backend/

@@ -10,7 +10,7 @@ Execute assigned slice only. No broad decisions.
 ## Process
 
 ### 0. Apply Prior Lessons
-Orchestrator should include them. If not: `ov find "<project-name>"`. Apply each. At end: `ov add-memory "<what worked/to avoid>"`.
+Planner should include them. If not: `ov find "<project-name>"`. Apply each. At end: `ov add-memory "<what worked/to avoid>"`.
 
 ### 1. Read Context
 - Read files in task. Understand patterns. Check existing tests.
@@ -25,22 +25,21 @@ Return `NEEDS_CONTEXT` — state what's missing. Don't guess across security/dat
 - Run tests after change.
 - **UI work**: only design.md tokens — no off-scale hex/spacing/border.
 
-### 4. Boundary Test
-Before commit, test minimum 3 cases:
-- [ ] Happy path (expected input)
-- [ ] Empty/null (no results, missing fields)
-- [ ] Edge/overflow (boundary values, large input)
+### 4. Verify
+Run task-relevant verification:
+- [ ] Happy path works
+- [ ] Empty/null handled (missing fields, no results)
+- [ ] Edge/overflow handled
+- [ ] Tests pass (if test suite exists)
+- [ ] No debug artifacts (console.log, debugger, TODO)
 
 Assume every external API field can return null — add null check in all model constructors.
 
 ### 5. Self-Review
 - [ ] All AC met
-- [ ] Tests pass
 - [ ] No unrelated changes
-- [ ] No debug artifacts (console.log, debugger, TODO)
 - [ ] Artifacts in `.scratch/`, not root or /tmp/
-- [ ] Commits use ponytail mode — no AI tells (verbose comments, hedging, filler)
-- [ ] Null checks on all external API fields
+- [ ] Output matches report format
 
 ### 6. Report
 ```
@@ -58,4 +57,4 @@ Blocked: [if BLOCKED, why]
 - Self-review before handoff. One retry max.
 - No commits unless asked.
 - Artifacts go in `.scratch/`.
-- skip humanizer for code/SQL/JSON/commits/legal.
+- Skip humanizer for code/SQL/JSON/commits/legal.

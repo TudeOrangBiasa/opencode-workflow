@@ -84,7 +84,7 @@ Detected when: repo has **both** top-level `skills/` directory AND `.opencode/` 
 
 3. **opencode.json skill_triggers**:
    - Common expected: diagnose, tdd, verify-evidence, openviking, security-review, humanizer, memory-dreaming
-   - Often missing: triage, to-prd, to-issues, wayfinder, zoom-out, improve-codebase-architecture
+   - Often missing: triage, to-spec, to-tickets, wayfinder, zoom-out, improve-codebase-architecture
 
 4. **docs/agents/ existing**:
    - Files present vs expected. Report discrepancies.

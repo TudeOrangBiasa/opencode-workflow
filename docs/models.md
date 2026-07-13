@@ -6,7 +6,7 @@ See [`docs/templates/opencode.primitive-agents.jsonc`](./templates/opencode.prim
 
 ## Expensive / Judgement Tier
 
-Use for `orchestrator`, `planner`, and deep `reviewer` runs. These handle planning, routing, hard review, and tradeoffs.
+Use for `planner`, `advisor`, and deep `reviewer` runs. These handle planning, routing, hard review, and tradeoffs.
 
 Candidate model families:
 
@@ -18,7 +18,7 @@ Candidate model families:
 
 ## Cheap / Execution Tier
 
-Use for `builder`, `explore`, `scout`, and low-risk quick review. These receive bounded tasks with acceptance criteria and verification commands.
+Use for `builder`, `explore`, `scout`, and low-risk quick review. `reviewer` (mimo) for multimodal screenshots. These receive bounded tasks with acceptance criteria and verification commands.
 
 Candidate model families:
 
@@ -28,7 +28,7 @@ Candidate model families:
 
 ## Browser / Multimodal Tier
 
-Use for `validator`. Screenshots, DOM snapshots, page sweeps, and console/network evidence. Do not route browser work to models that cannot handle visual/browser evidence well.
+Use for `reviewer` when UI screenshots needed. Screenshots, DOM snapshots, page sweeps, and console/network evidence. Do not route browser work to models that cannot handle visual/browser evidence well (`mimo-v2.5-free`).
 
 Candidate model families:
 

@@ -1,21 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // Copy this template into ~/.config/opencode/opencode.json or merge it manually.
+  // Copy template into ~/.config/opencode/opencode.json or merge manually.
   // Do not commit real provider API keys.
   // Replace model ids with the exact ids exposed by `opencode models`.
 
-  "default_agent": "orchestrator",
+  "default_agent": "planner",
 
-  // Default conversation model. Pick one strong reasoning model.
-  // Recommended candidates for orchestrator:
-  // - mimo-v2.5-pro
-  // - kimi-k2.6
-  // - deepseek-v4-pro
-  // - qwen-3.7
-  // - minimax-m3
-  // - glm-5.1
-  // - gpt-5.5
+  // Default conversation model. Pick strong reasoning model.
   "model": "opencode-go/minimax-m3",
 
   // Cheap/free model for bounded execution and exploration.
@@ -30,11 +22,8 @@
     ]
   },
 
-  // Optional modules such as OpenViking can be enabled in personal config.
-  // If OpenViking MCP is absent, agents should continue with local files only.
-
   "agent": {
-    "orchestrator": {
+    "planner": {
       "mode": "primary",
       "model": "opencode-go/minimax-m3",
       "permission": {
@@ -42,32 +31,21 @@
           "*": "deny",
           "builder": "allow",
           "reviewer": "allow",
-          "validator": "allow",
+          "advisor": "allow",
           "explore": "allow",
           "scout": "allow"
         }
       },
-      // Skill auto-load triggers: keywords that fire skill load before delegation.
-      // Edit this when adding new auto-loadable skills.
       "skill_triggers": {
         "officecli": ["docx", "pptx", "xlsx", "laporan", "spreadsheet", "presentation"],
-        "document-writing": ["laporan", "dokumen", "docx", "bab", "lanjutkan", "extend", "tambah bab", "new chapter", "laporan akhir", "laporan tugas", "skripsi", "thesis", "academic", "akademik", "bikin laporan"],
+        "document-writing": ["laporan", "dokumen", "docx", "bab", "extend", "tambah bab", "skripsi", "thesis", "academic"],
         "ponytail": ["review", "audit", "yagni", "over-engineer", "simple", "minimal", "refactor"],
-        "diagnose": ["bug", "broken", "error", "crash", "slow", "regression"],
+        "diagnosing-bugs": ["bug", "broken", "error", "crash", "slow", "regression"],
         "tdd": ["implement", "feature", "test-first", "red-green"],
-        "verify-evidence": ["ship", "ship it", "done", "is it done", "finish", "finished", "merge", "pr ready", "deploy", "deploy it", "push to prod", "release", "cut release", "tag release", "/ship", "/ship-it", "/yeet"],
-        "openviking": ["memory", "remember", "openviking", "store", "retrieve", "start", "begin", "new task", "task", "fix", "implement", "build", "create", "update", "modify", "refactor", "add", "find", "search memory"],
-        "humanizer": ["write", "edit", "draft", "tulis", "nulis", "buat", "readme", "docs", "documentation", "dokumentasi", "laporan", "dokumen", "essay", "paper", "artikel", "bab", "konten", "paragraph", "prose", "narasi", "rangkum", "summarize", "explain", "jelaskan", "caption", "label", "description"],
-        "design": [
-          "ui", "frontend", "layout", "design", "polish", "visual", "ux",
-          "design craft", "design teach", "design document", "design audit",
-          "design critique", "design adapt", "design live", "design polish",
-          "design bolder", "design quieter", "design colorize", "design typeset",
-          "design optimize", "design harden", "design animate", "design delight",
-          "design distill", "design clarify", "design shape", "design extract",
-          "design surface", "design taste-bootstrap",
-          "motion", "animation", "easing", "spring", "transition", "gesture"
-        ],
+        "verify-evidence": ["ship", "done", "is it done", "finish", "merge", "pr ready", "deploy", "release", "/ship", "/yeet"],
+        "openviking": ["memory", "remember", "openviking", "store", "retrieve", "task", "fix", "implement", "build", "create", "update", "modify", "refactor", "add", "find"],
+        "humanizer": ["write", "edit", "draft", "readme", "docs", "laporan", "dokumen", "essay", "paper", "artikel", "bab", "prose", "narasi", "summarize", "explain", "caption"],
+        "design": ["ui", "frontend", "layout", "design", "polish", "visual", "ux", "motion", "animation", "easing", "transition", "gesture"],
         "design-system": ["design system", "design tokens", "style guide"],
         "ui-to-vue": ["vue", "convert to vue", "vue component"],
         "review-animations": ["review motion", "review animation", "animation review"],
@@ -83,27 +61,24 @@
 
     "reviewer": {
       "mode": "subagent",
-      "model": "opencode-go/qwen3.7-plus",
+      "model": "opencode/mimo-v2.5-free",
       "permission": {
+        "*": "allow",
         "edit": "deny"
-      },
-      "skill_triggers": {
-        "ponytail": ["review", "audit", "yagni", "over-engineer", "simple", "minimal"]
       }
     },
 
-    "validator": {
+    "advisor": {
       "mode": "subagent",
-      "model": "opencode/mimo-v2.5-free",
+      "model": "opencode-go/minimax-m3",
       "permission": {
         "edit": "deny",
-        "bash": "deny"
+        "task": "deny"
       }
     },
 
     "explore": {
-      // Built-in OpenCode subagent. Keep prompt built-in; tune only model/permissions here.
-      // Use for current local repo discovery.
+      // Built-in OpenCode subagent. Keep prompt built-in; tune only model/permissions.
       "mode": "subagent",
       "model": "opencode/deepseek-v4-flash-free",
       "permission": {
@@ -112,63 +87,45 @@
     },
 
     "scout": {
-      // Built-in OpenCode subagent. Keep prompt built-in; tune only model/permissions here.
-      // Use for external docs/dependency source research.
-      // mimo is multimodal — good for reading docs/screenshots with images.
+      // Built-in OpenCode subagent. Keep prompt built-in.
       "mode": "subagent",
-      "model": "opencode/mimo-v2.5-free",
+      "model": "opencode/deepseek-v4-flash-free",
       "permission": {
         "edit": "deny"
       }
     },
 
     "compaction": {
-      "model": "opencode/deepseek-v4-flash-free",
       "temperature": 0.1
     },
 
     // Optional: disable built-ins you do not use as primaries.
     "general": { "disable": true },
     "plan": { "disable": true },
-    "build": { "disable": true }
+    "build": { "disable": true },
+    "orchestrator": { "disable": true },
+    "validator": { "disable": true }
   },
 
   "mcp": {
-    // Web research. Useful for scout/planner/orchestrator when docs or current web context matter.
     "exa": {
       "type": "remote",
       "url": "https://mcp.exa.ai/mcp",
       "enabled": true
     },
-
-    // Browser/runtime evidence. Required for validator full-page sweeps, console/network checks, screenshots.
     "chrome-devtools": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "chrome-devtools-mcp@latest"
-      ],
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": true
     },
-
-    // Optional memory/RAG. Workflow must continue if this is absent or disabled.
     "openviking": {
       "type": "remote",
       "url": "http://localhost:1933/mcp",
       "enabled": true
     },
-
-    // Office document tool. Required for .docx/.xlsx/.pptx work.
-    // Install: curl -fsSL https://raw.githubusercontent.com/iOfficeAI/OfficeCLI/main/install.sh | bash
-    // Path is absolute to avoid PATH resolution conflicts with the unrelated
-    // npm "officecli" package (officecli.io / delaym, generation-only API tool).
     "officecli": {
       "type": "local",
-      "command": [
-        "/home/todayz/.local/bin/officecli",
-        "mcp"
-      ],
+      "command": ["/home/todayz/.local/bin/officecli", "mcp"],
       "enabled": true
     }
   }

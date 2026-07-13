@@ -149,8 +149,6 @@ All plugins pass **70 tests** (0 fail), **tsc --noEmit clean** (0 errors). Devel
 - [.out-of-scope/](.scratch/out-of-scope/README.md) — boundary decisions (what this repo does NOT do)
 - [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md) — when to extract
 - [docs/skills/anti-hardcoded-pattern.md](docs/skills/anti-hardcoded-pattern.md) — portability
-- [docs/integrations/documents-kit.md](docs/integrations/documents-kit.md) — example integration
-- [DOCUMENTS_KIT.md](docs/DOCUMENTS_KIT.md) — documents-kit integration details
 - **write-a-skill** — skill structure principles (load before creating skills)
 - **skill-author** — meta-skill for creating skills
 

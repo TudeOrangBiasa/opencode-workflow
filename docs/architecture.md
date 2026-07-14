@@ -32,9 +32,9 @@ opencode-workflow/
 ├── skills/
 │   ├── engineering/          ← pipeline skills (sub-dirs: planning, design, quality, workflow)
 │   │   ├── planning/         ← to-spec, to-tickets, triage
-│   │   ├── design/           ← 6 sub-skills (incl. design-skill external repo)
+│   │   ├── design/           ← 4 sub-skills (incl. design-skill external repo)
 │   │   ├── quality/          ← code-review, tdd, diagnosing-bugs, ponytail, verify-evidence
-│   │   └── workflow/         ← agent-config, canary-watch, codebase-onboarding, context-budget, deployment-patterns, dev-workflow, eval, git-workflow, github-ops, implement, memory-dreaming, prototype, search-first, skill-author, workflow-audit, zoom-out
+│   │   └── workflow/         ← agent-config, canary-watch, codebase-onboarding, context-budget, deployment-patterns, dev-workflow, eval, github-ops, git-workflow, implement, memory-dreaming, openviking, prototype, search-first, skill-author, workflow-audit
 │   ├── misc/                 ← specialist domain skills
 │   │   ├── backend/
 │   │   ├── devops/
@@ -83,7 +83,7 @@ See [skills/extraction-criteria.md](skills/extraction-criteria.md) for the full 
 2. If here, pick the right bucket:
    - `engineering/` — pipeline/daily code-work skills (sub-dirs: `planning/`, `design/`, `quality/`, `workflow/`)
    - `productivity/` — non-code workflow tools (documents, research, handoffs, skill authoring)
-   - `misc/<domain>/` — specialist skills grouped by domain (`frontend`, `backend`, `languages`, `workflow`, `security`, `ml`, `mobile`, `devops`)
+    - `misc/<domain>/` — specialist skills grouped by domain (`frontend`, `backend`, `languages`, `security`, `ml`, `mobile`, `devops`, `data`)
 3. Create `skills/{bucket}/skill-name/` with `SKILL.md` + optional `REFERENCE.md`
 4. If external: create repo with same structure, integrate via symlink
 5. Run `./scripts/audit-skill.sh skills/path/to/skill` to verify

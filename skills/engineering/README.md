@@ -64,6 +64,7 @@ You are building, reviewing, testing, diagnosing, deploying, or planning code pr
 - [github-ops](github-ops/SKILL.md) — GitHub operations — issue triage, PR management, CI/CD debugging, release management, security monitoring.
 - [implement](implement/SKILL.md) — Implement a specific, well-defined piece of code from a spec or ticket.
 - [memory-dreaming](memory-dreaming/SKILL.md) — Consolidate lessons across sessions — find duplicates, merge, archive stale entries.
+- [openviking](openviking/SKILL.md) — Persist agent memory across sessions with OpenViking store/retrieve/search.
 - [prototype](prototype/SKILL.md) — Build a throwaway prototype to flesh out a design — terminal app or UI variations.
 - [search-first](search-first/SKILL.md) — Research-before-coding for external dependency, integration, or custom utility decisions. Also covers general open-ended research.
 - [agent-config](agent-config/SKILL.md) — Scaffold the per-repo config (issue tracker, triage labels, domain docs, workspace skill symlinks) that other engineering skills consume.

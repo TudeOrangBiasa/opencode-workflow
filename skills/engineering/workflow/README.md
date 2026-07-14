@@ -15,6 +15,7 @@ Daily workflow tools for planning, executing, and shipping work.
 | [github-ops](github-ops/) | GitHub issue triage, PR management, CI/CD, releases, security monitoring |
 | [implement](implement/) | Implement work from spec/tickets (TDD + review) |
 | [memory-dreaming](memory-dreaming/) | Consolidate, merge, archive OpenViking memory entries |
+| [openviking](openviking/) | Persist agent memory across sessions — OpenViking store/retrieve/search |
 | [prototype](prototype/) | Build throwaway prototype for design exploration |
 | [search-first](search-first/) | Research-before-coding with decision matrix + general research mode |
 | [skill-author](skill-author/) | Create, audit, validate new skills (meta-skill) |

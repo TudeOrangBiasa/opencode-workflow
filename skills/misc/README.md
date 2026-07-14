@@ -107,7 +107,6 @@ You are working with a specific framework, database, language, platform, securit
 - [herdr](herdr/SKILL.md) — Control Herdr terminal multiplexer — panes, tabs, agent coordination.
 - [kubernetes-patterns](kubernetes-patterns/SKILL.md) — K8s workload patterns, probes, RBAC, HPA.
 - [mysql-patterns](mysql-patterns/SKILL.md) — MySQL/MariaDB schema, indexing, queries, transactions.
-- [openviking](openviking/SKILL.md) — Persist agent memory across sessions with OpenViking store/retrieve/search.
 - [postgres-patterns](postgres-patterns/SKILL.md) — PostgreSQL schema, indexing, RLS, queries.
 - [prisma-patterns](prisma-patterns/SKILL.md) — Prisma ORM patterns — schema, queries, transactions, pagination.
 - [redis-patterns](redis-patterns/SKILL.md) — Redis data structures, caching, distributed locks, rate limiting.

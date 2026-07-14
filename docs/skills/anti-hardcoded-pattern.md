@@ -24,10 +24,10 @@ SKILLS_DIR="/home/user/.local/share/my-skill"
 Every path must be overridable:
 ```bash
 # Good
-KIT_DIR="${DOCUMENTS_KIT_DIR:-$HOME/.local/share/documents-kit-skills}"
+KIT_DIR="${MY_SKILL_DIR:-$HOME/.local/share/my-skill}"
 
 # Bad (hardcoded default, no override)
-KIT_DIR="/home/user/Workspace/ai-kit/documents-kit-skills"
+KIT_DIR="/home/user/Workspace/ai-kit/my-skill"
 ```
 
 ### 3. No absolute paths in source
@@ -92,17 +92,17 @@ See [write-a-skill](~/.config/opencode/skills/write-a-skill/SKILL.md)
 **Good** (portable):
 ```bash
 #!/usr/bin/env bash
-KIT_DIR="${DOCUMENTS_KIT_DIR:-$HOME/.local/share/documents-kit-skills}"
+KIT_DIR="${MY_SKILL_DIR:-$HOME/.local/share/my-skill}"
 SKILLS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/opencode/skills"
-ln -s "$KIT_DIR/skills/document-writing" "$SKILLS_DIR/document-writing"
+ln -s "$KIT_DIR/skills/my-skill" "$SKILLS_DIR/my-skill"
 ```
 
 **Bad** (hardcoded):
 ```bash
 #!/usr/bin/env bash
-KIT_DIR="/home/user/Workspace/ai-kit/documents-kit-skills"
+KIT_DIR="/home/user/Workspace/ai-kit/my-skill"
 SKILLS_DIR="/home/user/.config/opencode/skills"
-ln -s "$KIT_DIR/skills/document-writing" "$SKILLS_DIR/document-writing"
+ln -s "$KIT_DIR/skills/my-skill" "$SKILLS_DIR/my-skill"
 ```
 
 ## Reference

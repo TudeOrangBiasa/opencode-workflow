@@ -28,16 +28,13 @@ opencode-workflow is the **personal dotfiles + workflow pipeline**. It contains:
 
 ```
 opencode-workflow/
-├── .opencode/plugins/        ← runtime plugins loaded by OpenCode
-│   ├── (taste.ts — archived)
-│   ├── (lesson-injector.ts — archived)
-│   └── ov-helper.ts          ← shared ov CLI wrapper
+├── .opencode/                 ← local config, package.json
 ├── skills/
 │   ├── engineering/          ← pipeline skills (sub-dirs: planning, design, quality, workflow)
 │   │   ├── planning/         ← to-spec, to-tickets, triage
 │   │   ├── design/           ← 7 sub-skills (incl. design-skill external repo)
-│   │   ├── quality/          ← code-review, tdd, diagnosing-bugs, ponytail
-│   │   └── workflow/         ← prototype, memory-dreaming, setup-matt-pocock-skills, skill-author, zoom-out
+│   │   ├── quality/          ← code-review, tdd, diagnosing-bugs, ponytail, verify-evidence
+│   │   └── workflow/         ← prototype, memory-dreaming, agent-config, skill-author, zoom-out
 │   ├── misc/                 ← specialist domain skills
 │   │   ├── backend/
 │   │   ├── devops/
@@ -51,21 +48,14 @@ opencode-workflow/
 │   │   ├── workflow/         ← dev-workflow, eval, idea-fragments, workflow-audit
 │   │   └── tools/            ← ddev, openviking
 │   ├── productivity/         ← daily non-code workflow tools
-│   │   ├── documents-kit/    ← sub-package: 10 sub-skills + 15 tools + assets
-│   │   │   ├── SKILL.md     (package entry)
-│   │   │   ├── skills/      ← 10 sub-skills (symlinks from documents-kit-skills repo)
-│   │   │   ├── tools/       ← 15 glue scripts (symlinks)
-│   │   │   ├── templates/   ← paper, presentation, report, thesis
-│   │   │   ├── presets/     ← drawio-styles, hackathon-energetic, material-light, storytelling-fallback
-│   │   │   ├── diagrams/    ← architecture, aws-3-tier, c4-context, erd, flowchart, …
-│   │   │   └── examples/
 │   │   ├── deep-research/
 │   │   ├── grill-me/
 │   │   ├── handoff/
-│   │   └── write-a-skill/
+│   │   ├── write-a-skill/
+│   │   └── writing-great-skills/
 │   └── ...
 ├── scripts/                  ← check-portable, check-skill-structure, audit-skill, pre-commit
-├── docs/                     ← architecture, extraction-criteria, anti-hardcoded-pattern, integrations
+├── docs/                     ← architecture, extraction-criteria, anti-hardcoded-pattern
 ├── .git/hooks/pre-commit     ← installed by scripts/install-hooks.sh
 └── AGENTS.md / README.md     ← entry points
 ```
@@ -74,31 +64,9 @@ opencode-workflow/
 
 External skill packages integrate via symlinks + MCP registration. All config MUST go through `opencode-workflow` first, never direct to `~/.config/opencode/`.
 
-```
-documents-kit-skills/                              (source of truth)
-  ↓ symlinks
-opencode-workflow/skills/productivity/documents-kit/skills/   (package — 10 sub-skills)
-  ↓ link-skills.sh (preserves bucket path)
-~/.config/opencode/skills/productivity/documents-kit/skills/  (OpenCode path)
-  ↓ loaded via skill_triggers + opencode.json paths
-
-documents-kit-skills/tools/                         (source of truth)
-  ↓ symlinks
-opencode-workflow/skills/productivity/documents-kit/tools/    (15 glue scripts)
-   (no direct global symlinks for tools — loaded via skill scripts)
-
-documents-kit-skills/{templates,presets,diagrams,examples}/   (source of truth)
-  ↓ symlinks
-opencode-workflow/skills/productivity/documents-kit/{...}/    (assets)
-
-scholar-paper-mcp/                                  (peer dep, cloned separately)
-  ↓ MCP registration in opencode-workflow install docs
-  ↓ → ~/.config/opencode/opencode.json
-```
-
 OpenCode scans 1 level deep per path. `opencode.json` defines multiple leaf paths matching bucket structure (one per sub-bucket with skills). `link-skills.sh` manages this on install/update. See [AGENTS.md](../AGENTS.md) for the full policy.
 
-Setup: `scripts/setup-documents-kit.sh` creates the skill + tools + assets symlink chain (`SETUP_ASSETS=1` enables the assets section, default true). scholar-paper-mcp cloned and MCP-registered separately. `scripts/link-skills.sh` then creates the categorized symlinks in `~/.config/opencode/`. See [integrations/documents-kit.md](integrations/documents-kit.md).
+Setup: `scripts/link-skills.sh` creates categorized symlinks in `~/.config/opencode/`.
 
 ## When to extract a skill
 
@@ -131,6 +99,6 @@ See [skills/extraction-criteria.md](skills/extraction-criteria.md) for the full 
 
 - **write-a-skill** — skill structure principles (the rulebook)
 - **skill-author** — meta-skill for creating new skills
-- [integrations/documents-kit.md](integrations/documents-kit.md) — example integration
+- design-skill — example external package
 - [skills/extraction-criteria.md](skills/extraction-criteria.md) — when to extract
 - [skills/anti-hardcoded-pattern.md](skills/anti-hardcoded-pattern.md) — portability rules

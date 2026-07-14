@@ -11,7 +11,7 @@ Personal setup scripts (install, hooks, audit)
 
 Documentation for project decisions
 
-Symlinks to heavy skills that live in their own repos (e.g., `documents-kit-skills/`)
+Symlinks to heavy skills that live in their own repos
 
 Heavy skills (4+ external deps, fully automates a task, multiple patterns) live in their own repos and integrate via symlinks. See [docs/architecture.md](docs/architecture.md) and [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md).
 
@@ -34,21 +34,23 @@ This repo is a monorepo for OpenCode agent workflow. Key directories:
 | `agents/` | Agent files (planner, builder, reviewer, advisor) |
 | `skills/` | Skill packages organized by bucket |
 | `skills/engineering/` | Daily code-work skills (planning, design, quality, workflow) |
-| `skills/productivity/` | Non-code workflow tools (documents-kit, research) |
+| `skills/productivity/` | Non-code workflow tools (research, handoffs, skill authoring) |
 | `skills/misc/` | Specialist domain skills (backend, frontend, languages, etc.) |
 | `skills/personal/` | Personal workflow/tool skills, not promoted |
 | `docs/` | Documentation (architecture, workflow, models, install, agents) |
 | `docs/agents/` | Agent-specific reference docs (issue tracker, triage, domain) |
 | `docs/templates/` | Config templates (opencode.json) |
 | `scripts/` | Utility scripts (lint, audit, link, install) |
-| `.scratch/` | Scratch/working directory (issues, evals, verification, out-of-scope) |
+| `.scratch/` | Agent workspace (issues, kanban, spec, evals, verification, out-of-scope) |
 | `.scratch/issues/` | Local markdown issue tracker (inbox, inprogress, done) |
+| `.scratch/kanban/` | Kanban board (columns, cards) |
+| `.scratch/spec/` | Specs — *.md, *.xml, *.html |
 | `.scratch/evals/` | Session evaluation reports |
 | `.scratch/out-of-scope/` | Boundary decisions — what repo does NOT do |
 | `.scratch/verification/` | Verification evidence per change |
-| `.opencode/` | Local config (plugins, package.json) |
+| `.opencode/` | Local config (package.json, install deps) |
 
-Heavy skills (design-skill, documents-kit) live in external repos, symlinked under `skills/`. See [docs/architecture.md](docs/architecture.md).
+Heavy skills (e.g., design-skill) live in external repos, symlinked under `skills/`. See [docs/architecture.md](docs/architecture.md).
 
 ## Skill authoring
 
@@ -79,8 +81,8 @@ Enforcement:
 
 Skills are organized into bucket folders under `skills/`:
 
-- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-spec, to-tickets, triage), `design/` (architecture-decision-records, codebase-design, design-skill (external repo), design-system, domain-modeling, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnosing-bugs, ponytail, production-audit, code-review, tdd, team-handoff-quality, verify-evidence), `workflow/` (canary-watch, codebase-onboarding, context-budget, deployment-patterns, git-workflow, github-ops, memory-dreaming, prototype, search-first, setup-matt-pocock-skills, skill-author, zoom-out).
-- `productivity/` — daily non-code workflow tools. Includes `documents-kit/` sub-package (10 sub-skills + 15 tools + assets for document/presentation/diagram workflows).
+- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-spec, to-tickets, triage), `design/` (architecture-decision-records, codebase-design, design-skill (external repo), design-system, domain-modeling, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnosing-bugs, ponytail, production-audit, code-review, tdd, team-handoff-quality, verify-evidence), `workflow/` (canary-watch, codebase-onboarding, context-budget, deployment-patterns, git-workflow, github-ops, memory-dreaming, prototype, search-first, agent-config, skill-author, zoom-out).
+- `productivity/` — daily non-code workflow tools (deep-research, grill-me, handoff, write-a-skill, writing-great-skills).
 - `misc/` — specialist domain skills, grouped into sub-directories (`frontend`, `backend`, `languages`, `security`, `ml`, `mobile`, `devops`, `data`).
 - `personal/` — tied to personal setup, not promoted. Has 2 sub-areas: `workflow/` (dev-workflow, eval, idea-fragments, workflow-audit), `tools/` (ddev, openviking).
 - `in-progress/` — drafts not ready to ship.
@@ -124,9 +126,7 @@ Rules:
 - [Issue Tracker](docs/agents/issue-tracker.md) — local markdown issue layout
 - [Triage Labels](docs/agents/triage-labels.md) — canonical role labels
 - [Domain Docs](docs/agents/domain.md) — domain language + CONTEXT.md rules
-- [Design Reference](docs/agents/design.md) — design tokens, anti-patterns, component rules
 - [Invocation Rules](docs/agents/invocation.md) — model-invoked vs user-invoked skills
-- [Writing Docs](docs/agents/writing-docs.md) — publishing skill docs to aihero.dev
 
 ### Delegation protocol
 
@@ -139,10 +139,8 @@ When delegating work to a subagent, always pass:
 ### Pre-flight checks
 
 Before delegating tool-dependent work, verify:
-- OfficeCLI: `.docx`/`.pptx`/`.xlsx` work → `officecli --version`
 - Browser QA: UI validation → chrome-devtools MCP connected
 - Web search: research → exa MCP rate limit (max 10/session)
-- Drawing: diagrams → drawio desktop CLI
 - Memory: OpenViking health check
 
 ### Skill integration flow
@@ -163,7 +161,7 @@ All config changes (paths, triggers, MCP, plugins) MUST go through `opencode-wor
 ~/.config/opencode/skills/
 ├── engineering/quality/diagnosing-bugs/  → repo/engineering/quality/diagnosing-bugs/
 ├── engineering/workflow/prototype/       → repo/engineering/workflow/prototype/
-├── productivity/documents-kit/skills/drawio/  → external symlink via repo/
+├── productivity/deep-research/               → repo/productivity/deep-research/
 ├── personal/workflow/eval/              → repo/personal/workflow/eval/
 └── misc/frontend/accessibility/         → repo/misc/frontend/accessibility/
 ```

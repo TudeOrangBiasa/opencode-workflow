@@ -19,7 +19,7 @@ A skill should be extracted to its own repository if it meets **3 or more** of t
 
 ### Passes (extract)
 
-- **documents-kit-skills** — 4 deps (officecli MCP, pandoc, python-docx, drawio), 4 coupled skills, 5 style presets, 5 diagram templates, fully automates document creation. Score: 5/5.
+- **design-skill** — 2 deps (design MCP, chrome-devtools), 4 coupling skills, 10+ pattern libraries, fully automates UI refinement. Score: 4/5.
 
 ### Fails (keep inline)
 
@@ -33,16 +33,15 @@ A skill should be extracted to its own repository if it meets **3 or more** of t
 
 ## How to extract
 
-1. Create new repo (e.g., `documents-kit-skills/`)
+1. Create new repo (e.g., `design-skill/`)
 2. Add skill files at `skills/skill-name/`
 3. Add `install.sh` (curl-friendly) and `setup.sh` (local)
 4. Add README with deps + usage
 5. Add GitHub Actions for tests
 6. In opencode-workflow: create symlink under `skills/personal/package-name/`
 7. Update `scripts/setup-<package>.sh` to create symlinks
-8. Update `docs/integrations/<package>.md`
 
-See [integrations/documents-kit.md](../integrations/documents-kit.md) as reference.
+See design-skill for a reference extraction example.
 
 ## Reference
 

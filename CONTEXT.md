@@ -22,7 +22,7 @@ Manual step that links or copies repo agents/skills into `~/.config/opencode`. A
 Maintainer note under `.scratch/out-of-scope/` explaining a rejected or deferred feature request. Not runtime config and not installed into OpenCode.
 
 **Plugin**:
-A TypeScript module under `.opencode/plugins/` that intercepts OpenCode hooks (tool execution, chat messages). Runs on every call to the hooked event, unlike **On-demand skills**. (Archived — taste, lesson-injector.)
+A TypeScript module that intercepts OpenCode hooks (tool execution, chat messages). Runs on every call to the hooked event, unlike **On-demand skills**. Loaded via `~/.config/opencode/opencode.json`.
 
 **Primitive agent**:
 A narrow, single-responsibility agent — either repo-defined (`agents/*.md`) or a built-in OpenCode primitive used by routing. Examples: repo-defined `planner`, `builder`, `reviewer`, `advisor` and built-in `explore`, `scout`. Primitive agents are always active and part of the routing table. Not to be confused with **On-demand skills**.

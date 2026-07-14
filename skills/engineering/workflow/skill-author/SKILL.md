@@ -82,4 +82,4 @@ See **write-a-skill** for full principles.
 - [docs/architecture.md](../../docs/architecture.md) — overall layout
 - [docs/skills/extraction-criteria.md](../../docs/skills/extraction-criteria.md) — when to extract
 - [docs/skills/anti-hardcoded-pattern.md](../../docs/skills/anti-hardcoded-pattern.md) — portability rules
-- [docs/integrations/documents-kit.md](../../docs/integrations/documents-kit.md) — example integration
+

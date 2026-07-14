@@ -6,8 +6,8 @@
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-15s %s\n", $$1, $$2}'
 
-install: ## Set up documents-kit-skills symlinks
-	./scripts/setup-documents-kit.sh
+install: ## Run link-skills
+	./scripts/link-skills.sh
 
 hooks: ## Install pre-commit hook
 	./scripts/install-hooks.sh

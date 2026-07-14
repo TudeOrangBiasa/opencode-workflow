@@ -19,7 +19,6 @@ SKILLS_DIR="${1:-$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )/skills}"
 
 # Excluded buckets (not skills, or external)
 EXCLUDES=(
-  "documents-kit-skills"  # symlink to external package
   "deprecated"            # old skills
   "in-progress"           # WIP skills
   "personal"              # personal skills (may have OS-specific paths)

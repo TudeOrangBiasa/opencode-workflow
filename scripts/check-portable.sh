@@ -10,7 +10,6 @@
 #   - CHANGELOG.md (historical, not actionable)
 #   - The script itself (contains the patterns it flags)
 #   - AGENTS.md / README.md (documentation that may reference paths as examples)
-#   - documents-kit-skills/ (symlink to external package, not our code)
 #
 # Exits 1 if hardcoded paths found, 0 if clean.
 #
@@ -38,7 +37,7 @@ EXCLUDES=(
   "CHANGELOG.md"           # historical file
   "AGENTS.md"              # documentation (may reference paths as examples)
   "README.md"              # documentation
-  "documents-kit-skills/"  # symlink to external package
+
   "personal/"              # personal skills (may have OS-specific paths)
   "misc/"                  # legacy skills (not actively maintained)
   ".scratch/"              # local workspace
@@ -73,7 +72,7 @@ for pattern in "${PATTERNS[@]}"; do
             | grep -v "CHANGELOG.md" \
             | grep -v "/AGENTS.md" \
             | grep -v "/README.md" \
-            | grep -v "/documents-kit-skills/" \
+
             | grep -v "/check-portable.sh" \
             || true)
 done

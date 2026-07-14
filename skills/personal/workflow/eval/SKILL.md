@@ -17,7 +17,7 @@ See [REFERENCE.md](REFERENCE.md) for detailed content: examples, patterns, anti-
 
 ## Self-Improvement Pipeline Integration
 
-Part of [self-improvement pipeline](https://github.com/TudeOrangBiasa/opencode-workflow/blob/main/docs/engineering/self-improvement-pipeline.md).
+Part of self-improvement pipeline (see [ADR-0003](../../../../docs/adr/0003-skills-recategorization-and-memory-protocol.md): Skills Recategorization & Memory Protocol).
 
 Eval reports feed into aggregate → verify-evidence gate → skill fix cycle. Use YAML frontmatter format (see REFERENCE.md). Set `findings[].target` to the exact skill/agent name so verify-evidence can cross-reference.
 

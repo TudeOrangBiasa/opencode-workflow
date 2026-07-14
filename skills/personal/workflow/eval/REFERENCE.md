@@ -174,7 +174,7 @@ session:
 findings:
   - severity: MEDIUM
     category: tool-misuse
-    target: orchestrator
+    target: planner
     repeat: first
     grader: model-based
     verdict: warn

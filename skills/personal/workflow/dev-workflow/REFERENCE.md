@@ -12,7 +12,7 @@ First, read `docs/development.md` at the repo root. It contains the full develop
 |-------------|----------------------------------|
 | "add skill X" / "new skill" | "Adding a Skill" |
 | "sync from upstream" / "update drawio" | "Syncing from Upstream" |
-| "change orchestrator" / "modify agent" | "Modifying an Agent" |
+| "change planner" / "modify agent" | "Modifying an Agent" |
 | "new bucket" / "reorganize" | "Repository Layout" → bucket decision tree |
 | "bump version" / "tag release" | "Releasing a Version" |
 | "link not working" / "skill not loading" | "When Things Go Wrong" |

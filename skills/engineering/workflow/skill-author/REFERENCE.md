@@ -148,7 +148,6 @@ When a skill qualifies for extraction:
 3. In opencode-workflow:
    - Create `skills/personal/<package-name>/<skill-name>/` symlinks
    - Add `scripts/setup-<package-name>.sh` to create symlinks
-   - Add `docs/integrations/<package-name>.md`
    - Update `docs/architecture.md`
 
 ---
@@ -159,5 +158,4 @@ When a skill qualifies for extraction:
 - [docs/architecture.md](../../docs/architecture.md)
 - [docs/skills/extraction-criteria.md](../../docs/skills/extraction-criteria.md)
 - [docs/skills/anti-hardcoded-pattern.md](../../docs/skills/anti-hardcoded-pattern.md)
-- [docs/integrations/documents-kit.md](../../docs/integrations/documents-kit.md)
-- [DOCUMENTS_KIT.md](../../DOCUMENTS_KIT.md) — example integration
+- [docs/architecture.md](../../docs/architecture.md)

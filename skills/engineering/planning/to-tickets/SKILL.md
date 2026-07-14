@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Break a plan, spec, or conversation into **tickets** — tracer-bullet vertical slices, each declaring tickets that **block** it.
 
-The issue tracker and triage label vocabulary should have been provided — run `/setup-matt-pocock-skills` if not.
+The issue tracker and triage label vocabulary should have been provided — run `/agent-config` if not.
 
 ## Process
 

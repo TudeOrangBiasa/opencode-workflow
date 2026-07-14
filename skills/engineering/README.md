@@ -70,6 +70,6 @@ You are building, reviewing, testing, diagnosing, deploying, or planning code pr
 - [research](research/SKILL.md) — Research a topic using web search MCP and synthesize findings.
 - [resolving-merge-conflicts](resolving-merge-conflicts/SKILL.md) — Step-by-step guide for resolving git merge conflicts.
 - [search-first](search-first/SKILL.md) — Research-before-coding for external dependency, integration, or custom utility decisions.
-- [setup-matt-pocock-skills](setup-matt-pocock-skills/SKILL.md) — Scaffold the per-repo config (issue tracker, triage labels, domain docs) that other engineering skills consume.
+- [agent-config](agent-config/SKILL.md) — Scaffold the per-repo config (issue tracker, triage labels, domain docs, workspace skill symlinks) that other engineering skills consume.
 - [skill-author](skill-author/SKILL.md) — Meta-skill for creating new skills.
 - [zoom-out](zoom-out/SKILL.md) — Tell the agent to zoom out and give broader context on an unfamiliar section of code.

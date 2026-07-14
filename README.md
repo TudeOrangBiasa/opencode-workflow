@@ -15,14 +15,11 @@ This repo is the **personal AI workflow setup**:
 
 ```
 opencode-workflow/                              (this repo)
-├── .opencode/plugins/                          (active OpenCode plugins)
-│   ├── (taste.ts — archived)    (preference extraction)
-│   ├── (lesson-injector.ts — archived) (past-lesson injection)
-│   └── ov-helper.ts            (shared ov CLI wrapper)
+├── .opencode/                                   (local config, package.json)
 ├── skills/                                     (pipeline + symlinks)
 │   ├── engineering/                             (pipeline skills)
 │   │   ├── planning/                            (wayfinder, to-spec, to-tickets, triage, ask-matt)
-│   │   ├── design/                              (codebase-design, design-skill, design-system, domain-modeling, grill-with-docs)
+│   │   ├── design/                              (architecture-decision-records, codebase-design, design-skill, design-system, domain-modeling, grill-with-docs, improve-codebase-architecture)
 │   │   ├── quality/                             (code-review, diagnosing-bugs, tdd, ponytail, verify-evidence)
 │   │   └── workflow/                            (implement, research, resolving-merge-conflicts, prototype, memory, skill-author)
 │   ├── personal/workflow/                       (personal workflow skills)
@@ -34,15 +31,11 @@ opencode-workflow/                              (this repo)
 │   │   ├── ddev/
 │   │   └── openviking/
 │   ├── productivity/                            (daily non-code workflow tools)
-│   │   └── documents-kit/                       (sub-package: 10 sub-skills + 15 tools + assets)
-│   │       ├── SKILL.md                         (package entry skill)
-│   │       ├── REFERENCE.md
-│   │       ├── skills/                          (10 sub-skills, symlinks)
-│   │       ├── tools/                           (15 glue scripts, symlinks)
-│   │       ├── templates/                       (paper, presentation, report, thesis)
-│   │       ├── presets/                         (drawio-styles, hackathon-energetic, material-light, storytelling-fallback)
-│   │       ├── diagrams/                        (architecture, aws-3-tier, c4-context, erd, …)
-│   │       └── examples/
+│   │   ├── deep-research/
+│   │   ├── grill-me/
+│   │   ├── handoff/
+│   │   ├── write-a-skill/
+│   │   └── writing-great-skills/
 │   ├── misc/                                    (specialist domains: frontend, backend, languages, security, ml, mobile, devops, data)
 │   └── ...
 ├── scripts/                                    (check, audit, install)
@@ -51,14 +44,11 @@ opencode-workflow/                              (this repo)
 │   ├── audit-skill.sh         (single-skill audit)
 │   ├── pre-commit.sh          (runs all before commit)
 │   ├── install-hooks.sh       (installs pre-commit hook)
-│   └── setup-documents-kit.sh (creates documents-kit symlinks)
-├── docs/                                       (architecture, extraction criteria, anti-hardcoded, integrations)
+│   └── audit-skill.sh         (single-skill audit)
+├── docs/                                       (architecture, extraction criteria, anti-hardcoded)
 │   ├── architecture.md        (overall layout)
-│   ├── engineering/            (18 reference docs per skill — code-review, tdd, wayfinder, etc.)
-│   ├── productivity/           (5 reference docs — grilling, handoff, writing-great-skills, etc.)
 │   ├── skills/extraction-criteria.md
-│   ├── skills/anti-hardcoded-pattern.md
-│   └── integrations/documents-kit.md
+│   └── skills/anti-hardcoded-pattern.md
 ├── .scratch/out-of-scope/                       (boundary notes — what repo does NOT do)
 │   ├── agent-boundaries.md
 │   ├── orchestration-boundaries.md
@@ -80,8 +70,8 @@ chmod +x scripts/*.sh
 # Install pre-commit hook (catches hardcoded paths + bad structure)
 ./scripts/install-hooks.sh
 
-# Set up documents-kit (10 sub-skills + 15 tools + templates/presets/diagrams/examples assets)
-./scripts/setup-documents-kit.sh
+# Audit any skill
+./scripts/audit-skill.sh skills/engineering/skill-author
 
 # Audit any skill
 ./scripts/audit-skill.sh skills/engineering/skill-author
@@ -128,25 +118,12 @@ Enforced by `scripts/check-portable.sh` (pre-commit hook).
 | `audit-skill.sh <path>` | Full single-skill audit |
 | `pre-commit.sh` | Run all checks before commit |
 | `install-hooks.sh` | Install pre-commit hook |
-| `setup-documents-kit.sh` | Create documents-kit symlinks |
-
-## OpenCode Plugins (`.opencode/plugins/`)
-
-Runtime plugins that intercept OpenCode hooks for reliability and personalization:
-
-| Plugin | Tests | Lines | Role |
-|--------|-------|-------|------|
-| `taste` | 34 | 332 | Extracts user preferences from messages (patterns, convention, category) and persists to OpenViking via `ov add-memory`. KL divergence filter for common conventions. |
-| `lesson-injector` | 21 | 129 | Fetches past lessons via `ov find` and injects into system prompt. Session cache with 30-min TTL. |
-| `ov-helper` | — | 30 | Shared `ovFindJson()` helper — async `Bun.spawn` wrapper for `ov find -o json`. |
-
-All plugins pass **70 tests** (0 fail), **tsc --noEmit clean** (0 errors). Developed via TDD + ponytail across 13 issues (19–31). Per-issue atomic commits.
 
 ## Reference
 
 - [AGENTS.md](AGENTS.md) — agent-facing context (rules, conventions)
 - [docs/architecture.md](docs/architecture.md) — overall layout
-- [.out-of-scope/](.scratch/out-of-scope/README.md) — boundary decisions (what this repo does NOT do)
+- [.scratch/out-of-scope/](.scratch/out-of-scope/README.md) — boundary decisions (what this repo does NOT do)
 - [docs/skills/extraction-criteria.md](docs/skills/extraction-criteria.md) — when to extract
 - [docs/skills/anti-hardcoded-pattern.md](docs/skills/anti-hardcoded-pattern.md) — portability
 - **write-a-skill** — skill structure principles (load before creating skills)
@@ -158,7 +135,7 @@ This is personal dotfiles / workflow setup. Not for public distribution as a who
 
 ## Skill compliance
 
-125/150 skills pass write-a-skill compliance. 25 in personal/in-progress/deprecated (excluded by design). 0 failed.
+104 active skills pass write-a-skill compliance. Personal/in-progress/deprecated excluded by design. 0 failed.
 
 Last skill merge: 2026-07-09 — 32 framework + language skills merged into 10 (net -22). 6 generic skills recategorized from misc/ to engineering/. SKILL.md average: 27 lines. See [AGENTS.md § Maintenance](AGENTS.md#maintenance) for the pattern.
 

@@ -74,10 +74,10 @@ When running without user supervision:
 
 ## Integration with Validator Agent
 
-When validator subagent is available:
+When reviewer subagent is available:
 - Delegate UI verification: screenshots, console, network, responsive
 - Delegate API verification: endpoint responses, status codes
-- Validator returns compact facts only — see `validator.md` agent file
+- Reviewer returns compact facts only — see `reviewer.md` agent file
 
 ## Test Scenarios for Improvement Baseline
 

@@ -40,7 +40,7 @@ done
 | 003b | [SMELL — ban consolidation](./done/003b-design-slop-smell.md) | Done | — | 2/2 AC pass. 3 bans added to SKILL.md. audit.md tells updated. |
 | 002 | [Taste Plugin — auto-learn coding preferences](./done/002-taste-plugin.md) | **Done** | — | taste.ts + taste.test.ts (36/36 pass). Extracts preferences from user messages via 6 regex patterns, stores in OpenViking with confidence scores, injects into system prompt, KL divergence filter for common conventions. |
 | 003c | ~~EMIL — animate delegation~~ | **Done (superseded)** | — | Achieved via restructure: impeccable+emil → /design. animate.md = emil content natively |
-| 20 | [Setup-matt-pocock-skills revamp for meta-repo](./20-setup-matt-pocock-revamp.md) | **Done** | A→D→C→B→E | setup-matt-pocock-skills SKILL.md+REFERENCE.md revamp with meta-repo mode, AGENTS.md block, triage labels senior scheme, domain/design split, bucket README links |
+| 20 | [Setup-matt-pocock-skills revamp for meta-repo](./20-setup-matt-pocock-revamp.md) | **Done** | A→D→C→B→E | setup-matt-pocock-skills SKILL.md+REFERENCE.md revamp with meta-repo mode, AGENTS.md block, triage labels senior scheme, domain/design split, bucket README links (renamed to `agent-config` 2026-07-14) |
 | 19 | [Taste + Lesson-Injector Plugins — Archived](./done/19-taste-lesson-injector-plugins.md) | **Archived** | — | Both plugins tested, TS→JS compile + runtime instability. Taste KL divergence filter unreliable. Lesson-injector redundant with `ov find` + `memory-dreaming`. Removed from opencode.json |
 | 21 | [Design Skill Merge P1 — Foundation](./21-design-skill-merge-p1.md) | **Done** | — | SKILL.md routing, merged design laws, bans, Emil animate, truthful completion, scope gate, persona mode |
 | 22 | [Design Skill Merge P2 — New Tools](./22-design-skill-merge-p2.md) | **Done** | — | 15 new ref files: checkup/smell/review/deslop/motion/interaction/responsive/voice/access |
@@ -48,13 +48,23 @@ done
 
 ## Pending Issues
 
+_(none — all resolved)_
+
+## Recently Done
+
 | # | Title | Type | Status |
 |---|-------|------|--------|
-| 26 | [Advisor Judge Runtime — Spec](inbox/26-advisor-judge-spec.md) | Spec | Inbox |
-| 27 | [Advisor Judge Runtime — Tickets (a-d)](inbox/27-advisor-judge-tickets.md) | Tickets | Inbox |
-| 28 | [Skill Triggers Optimization — Spec](inbox/28-skill-triggers-optimization-spec.md) | Spec | Inbox |
-| 29 | [Skill Triggers Optimization — Tickets (a-e)](inbox/29-skill-triggers-tickets.md) | Tickets | Inbox |
-| 30 | [Fix Design Categorization](inbox/30-design-categorization-ticket.md) | Fix | Done ✅ |
+| — | _26, 27, 30 moved to done/_ | — | See table below |
+
+## Done (moved from inbox)
+
+| # | Title | File |
+|---|-------|------|
+| 26 | Advisor Judge Runtime — Spec | [done/26-...](done/26-advisor-judge-spec.md) |
+| 27 | Advisor Judge Runtime — Tickets | [done/27-...](done/27-advisor-judge-tickets.md) |
+| 28 | Skill Triggers Optimization — Spec | [done/28-...](done/28-skill-triggers-optimization-spec.md) |
+| 29 | Skill Triggers Optimization — Tickets | [done/29-...](done/29-skill-triggers-tickets.md) |
+| 30 | Fix Design Categorization | [done/30-...](done/30-design-categorization-ticket.md) |
 
 ## Archived / YAGNI
 
@@ -89,11 +99,9 @@ PENDING:
 ```
 30 (design fix) — DONE ✓
 24 → 25 (hashline) — YAGNI, archived
+26 → 27 (advisor judge) — DONE ✓
 
-26 → 27 (advisor judge: spec → tickets) — sequential
-28 → 29 (triggers: spec → tickets) — sequential
-     │
-     └── Both independent of each other. Can parallelize.
+28 → 29 (skill triggers: spec → tickets) — DONE ✓ (2026-07-14: 5 triggers added, openviking trimmed)
 ```
 
 ## Priority Order (New Issues)
@@ -106,7 +114,7 @@ PENDING:
 26 → 27. Advisor Judge Runtime — solves reviewer pain, auto-quality gate
 
 **Phase 2 (medium impact)**:
-28 → 29. Skill Triggers Optimization — cleaner triggers, less false positives
+28 → 29. Skill Triggers Optimization — DONE ✓ (5 triggers added, openviking trimmed)
 
 **Phase 1 (verify existing, low risk)**:
 1. Issue 01 — verify OpenViking protocol works
@@ -114,9 +122,9 @@ PENDING:
 3. Issue 08 — verify skill context delegation
 
 **Phase 2 (high impact, AFK)**:
-4. Issue 02 — OfficeCLI pre-flight (unblocks 5+ errors)
-5. Issue 04 — Browser-QA re-snapshot (unblocks 16 errors)
-6. Issue 03 — OfficeCLI smart fallback (kills 314 bash workarounds)
+4. ~~Issue 02 — OfficeCLI pre-flight~~ _(moot — documents-kit removed)_
+5. ~~Issue 04 — Browser-QA re-snapshot~~ _(moot — QA in reviewer)_
+6. ~~Issue 03 — OfficeCLI smart fallback~~ _(moot — documents-kit removed)_
 
 **Phase 3 (medium impact, AFK)**:
 7. Issue 07 — Scout URL cache + rate limit

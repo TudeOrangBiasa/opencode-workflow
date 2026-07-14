@@ -31,7 +31,7 @@ Use this skill when the user wants to know:
 
 ## Self-Improvement Pipeline Integration
 
-Part of [self-improvement pipeline](https://github.com/TudeOrangBiasa/opencode-workflow/blob/main/docs/engineering/self-improvement-pipeline.md).
+Part of self-improvement pipeline (see [ADR-0003](../../../../docs/adr/0003-skills-recategorization-and-memory-protocol.md): Skills Recategorization & Memory Protocol).
 
 Audit findings feed into eval aggregation. Run before eval to provide repo health context for session scoring.
 

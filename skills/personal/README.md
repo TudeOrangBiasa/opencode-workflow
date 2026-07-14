@@ -31,4 +31,4 @@ You are working on the opencode-workflow repo itself (editing agents, skills, co
 
 ## Notes
 
-Documents/kit workflows moved to [productivity/documents-kit/](../productivity/documents-kit/SKILL.md).
+

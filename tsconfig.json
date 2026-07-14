@@ -9,5 +9,4 @@
     "allowImportingTsExtensions": true,
     "types": ["bun-types"]
   },
-  "include": [".opencode/plugins/**/*.ts"]
 }

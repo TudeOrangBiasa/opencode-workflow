@@ -37,14 +37,11 @@
         }
       },
       "skill_triggers": {
-        "officecli": ["docx", "pptx", "xlsx", "laporan", "spreadsheet", "presentation"],
-        "document-writing": ["laporan", "dokumen", "docx", "bab", "extend", "tambah bab", "skripsi", "thesis", "academic"],
         "ponytail": ["review", "audit", "yagni", "over-engineer", "simple", "minimal", "refactor"],
         "diagnosing-bugs": ["bug", "broken", "error", "crash", "slow", "regression"],
         "tdd": ["implement", "feature", "test-first", "red-green"],
         "verify-evidence": ["ship", "done", "is it done", "finish", "merge", "pr ready", "deploy", "release", "/ship", "/yeet"],
         "openviking": ["memory", "remember", "openviking", "store", "retrieve", "task", "fix", "implement", "build", "create", "update", "modify", "refactor", "add", "find"],
-        "humanizer": ["write", "edit", "draft", "readme", "docs", "laporan", "dokumen", "essay", "paper", "artikel", "bab", "prose", "narasi", "summarize", "explain", "caption"],
         "design": ["ui", "frontend", "layout", "design", "polish", "visual", "ux", "motion", "animation", "easing", "transition", "gesture"],
         "design-system": ["design system", "design tokens", "style guide"],
         "ui-to-vue": ["vue", "convert to vue", "vue component"],
@@ -121,11 +118,6 @@
     "openviking": {
       "type": "remote",
       "url": "http://localhost:1933/mcp",
-      "enabled": true
-    },
-    "officecli": {
-      "type": "local",
-      "command": ["/home/todayz/.local/bin/officecli", "mcp"],
       "enabled": true
     }
   }

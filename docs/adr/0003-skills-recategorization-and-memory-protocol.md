@@ -2,13 +2,13 @@
 
 **Date**: 2026-07-10
 **Status**: accepted
-**Deciders**: user + orchestrator + reviewer
+**Deciders**: user + planner + reviewer
 
 ## Context
 
 Three structural problems emerged as the skill count grew past 140 active entries:
 
-1. **Agent files had hardcoded skill names.** Every agent file (`orchestrator.md`, `builder.md`, `reviewer.md`, `validator.md`) listed which skills to load. Every recategorization or new skill required touching 4+ agent files. Easy to forget one. Hard to keep consistent.
+1. **Agent files had hardcoded skill names.** Every agent file (`planner.md`, `builder.md`, `reviewer.md`) listed which skills to load. Every recategorization or new skill required touching 4+ agent files. Easy to forget one. Hard to keep consistent.
 
 2. **Skills scattered across buckets without clear functional homes.** The `memory` bucket was created as a temporary catch-all for eval, workflow-audit, verify-evidence, memory-dreaming, and openviking — but these skills serve different purposes (session evaluation, repo audit, verification gate, memory consolidation, OpenViking adapter). Grouping by "uses OpenViking" was wrong: it's an implementation detail, not a function.
 
@@ -35,7 +35,7 @@ All agents use these 6 categories for `ov add-memory`:
 - `[tool-failure:<tool>]` — non-obvious tool workarounds (e.g., `[tool-failure:officecli] raw-set not valid, use set`)
 - `[pattern:<domain>]` — reusable patterns (e.g., `[pattern:docx-edit] cell-by-cell verify ALL cells`)
 
-Cross-agent retrieval: orchestrator does wide `ov find "<project-name>"` before delegating, surfacing lessons from ALL agent namespaces.
+Cross-agent retrieval: planner does wide `ov find "<project-name>"` before delegating, surfacing lessons from ALL agent namespaces.
 
 ### 3. Bucket recategorization
 

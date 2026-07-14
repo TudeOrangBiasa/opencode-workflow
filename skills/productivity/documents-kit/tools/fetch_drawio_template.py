@@ -1,1 +1,0 @@
-/home/todayz/Workspace/personal/dev/ai-kit/documents-kit-skills/tools/fetch_drawio_template.py

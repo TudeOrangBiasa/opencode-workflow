@@ -1,9 +1,9 @@
 ---
 name: verify-evidence
-description: Tool-based verification checklist for acceptance criteria, test evidence, stuck-loop detection, and AFK/high-risk review. Use when reviewer/orchestrator needs independent evidence for non-trivial changes, AFK tasks, flaky/failing tests, deployment, auth, DB, payment, or ambiguous verification.
+description: Tool-based verification checklist for acceptance criteria, test evidence, stuck-loop detection, and AFK/high-risk review. Use when reviewer/planner needs independent evidence for non-trivial changes, AFK tasks, flaky/failing tests, deployment, auth, DB, payment, or ambiguous verification.
 ---
 
-Load this skill when orchestrator or reviewer needs independent evidence. Do not load for trivial docs/config changes.
+Load this skill when planner or reviewer needs independent evidence. Do not load for trivial docs/config changes.
 
 ## When to Use
 
@@ -22,7 +22,7 @@ Load this skill when orchestrator or reviewer needs independent evidence. Do not
 
 ## Self-Improvement Pipeline Integration
 
-Part of [self-improvement pipeline](docs/engineering/self-improvement-pipeline.md).
+Part of self-improvement pipeline (see [ADR-0003](../../../../docs/adr/0003-skills-recategorization-and-memory-protocol.md): Skills Recategorization & Memory Protocol).
 
 Before verifying, scan `.scratch/evals/` for findings matching current change's `target` or `category`. Flag if CRITICAL/HIGH findings exist for same skill — verify fixes applied. Escalate to BLOCKED if same finding repeats 2+ times.
 

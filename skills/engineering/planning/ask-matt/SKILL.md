@@ -73,4 +73,4 @@ Off the main flow entirely.
 
 ## Precondition
 
-**`/setup-matt-pocock-skills`** — run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
+**`/agent-config`** — run before your first engineering flow to configure the issue tracker, triage labels, doc layout, and workspace skill symlinks the other skills assume. Custom issue trackers also work.

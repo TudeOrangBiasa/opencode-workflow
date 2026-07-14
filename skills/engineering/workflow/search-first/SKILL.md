@@ -51,6 +51,12 @@ Use this skill when:
 └─────────────────────────────────────────────┘
 ```
 
+## General research mode
+
+For open-ended research (not dependency-focused): spin up a background agent to investigate against primary sources — official docs, source code, specs, first-party APIs. Write findings to a single Markdown file, cite each claim's source.
+
+Same workflow as above but skip the Adopt/Extend/Compose/Build decision matrix.
+
 For full workflow details, examples, and anti-patterns, see [REFERENCE.md](REFERENCE.md).
 
 ## REFERENCE.md Contents

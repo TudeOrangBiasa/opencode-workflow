@@ -683,6 +683,29 @@ git add node_modules/
 # GOOD: Add to .gitignore
 ```
 
+## Merge Conflict Resolution
+
+### Process
+
+1. **See the current state** — check git history, conflicting files. `git status` shows which files have conflicts.
+2. **Find the primary sources** — read commit messages, check PRs, understand original intent of each conflicting change.
+3. **Resolve each hunk** — preserve both intents where possible. Where incompatible, pick the one matching the merge's stated goal and note the trade-off. Do NOT invent new behaviour.
+4. **Run automated checks** — typecheck, then tests, then format. Fix anything the merge broke.
+5. **Finish** — `git add` resolved files, then `git commit` (for merge) or `git rebase --continue` (for rebase).
+
+### Commands
+
+| Task | Command |
+|------|---------|
+| View conflicted files | `git status` |
+| View conflict details | `git diff` |
+| Start merge tool | `git mergetool` |
+| Mark resolved | `git add <file>` |
+| Finish merge | `git commit` |
+| Continue rebase | `git rebase --continue` |
+| Abort merge | `git merge --abort` |
+| Abort rebase | `git rebase --abort` |
+
 ## Quick Reference
 
 | Task | Command |

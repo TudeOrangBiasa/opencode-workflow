@@ -1,5 +1,6 @@
 1. OpenCode Workflow Kit
 2. This repo is developed for OpenCode only. Do not add compatibility surfaces for other agent runtimes unless a task explicitly asks for it.
+3. When user says "zoom out" or "big picture", go up a layer of abstraction and describe the relevant module map.
 
 ## Role
 

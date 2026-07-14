@@ -21,7 +21,7 @@ opencode-workflow/                              (this repo)
 │   │   ├── planning/                            (wayfinder, to-spec, to-tickets, triage, ask-matt)
 │   │   ├── design/                              (architecture-decision-records, codebase-design, design-skill, design-system, domain-modeling, grill-with-docs, improve-codebase-architecture)
 │   │   ├── quality/                             (code-review, diagnosing-bugs, tdd, ponytail, verify-evidence)
-│   │   └── workflow/                            (implement, research, resolving-merge-conflicts, prototype, memory, skill-author)
+│   │   └── workflow/                            (implement, search-first, prototype, memory, skill-author)
 │   ├── personal/workflow/                       (personal workflow skills)
 │   │   ├── dev-workflow/
 │   │   ├── eval/

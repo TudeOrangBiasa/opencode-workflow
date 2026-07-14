@@ -117,7 +117,6 @@ Skill triggers:
 | `triage` | triage issue, classify issue |
 | `to-spec` | write spec, buat spec |
 | `to-tickets` | break tickets, buat ticket |
-| `zoom-out` | zoom out, big picture, broader context |
 | `improve-codebase-architecture` | architecture review, deepening |
 | `code-review` | review this, code review, review since |
 | `domain-modeling` | domain model, ubiquitous language |

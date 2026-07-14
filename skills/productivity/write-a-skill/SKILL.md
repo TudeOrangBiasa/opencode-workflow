@@ -1,20 +1,14 @@
 ---
 name: write-a-skill
-description: Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.
+description: Create, audit, and write great agent skills — structure, progressive disclosure, bundled resources, and the principles that make a skill predictable. Use when user wants to create, write, build, or improve a skill, or asks about skill structure or quality.
 ---
 
-# Writing Skills
+# Write a Skill
 
-For full process, examples, and checklist, see [REFERENCE.md](REFERENCE.md).
+This skill is three parts. Load the one you need.
 
-## REFERENCE.md Contents
-
-| Section | Description |
-|---------|-------------|
-| [Process](REFERENCE.md#process) | Gather, classify, draft, review |
-| [Skill Structure](REFERENCE.md#skill-structure) | SKILL.md, REFERENCE.md, scripts/ |
-| [Description Requirements](REFERENCE.md#description-requirements) | Max 1024 chars, "Use when" format |
-| [When to Add Scripts](REFERENCE.md#when-to-add-scripts) | Deterministic → script, judgement → skill |
-| [When to Split Files](REFERENCE.md#when-to-split-files) | Over 100 lines, distinct domains |
-| [Review Checklist](REFERENCE.md#review-checklist) | Pre-submit verification |
-| [Template](REFERENCE.md#skillmd-template) | SKILL.md markdown template |
+| File | What it covers |
+|------|----------------|
+| [REFERENCE.md](REFERENCE.md) | Process, structure, description format, scripts, split rules, review checklist, template — the how-to |
+| [PRINCIPLES.md](PRINCIPLES.md) | Predictability, invocation, description theory, information hierarchy, progressive disclosure, leading words, failure modes — the why |
+| [GLOSSARY.md](GLOSSARY.md) | Skill-writing vocabulary — Predictability, Model-Invoked, Context Load, Leading Word, Premature Completion, and more |

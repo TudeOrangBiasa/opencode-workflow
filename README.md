@@ -26,8 +26,7 @@ opencode-workflow/                              (this repo)
 │   │   ├── deep-research/
 │   │   ├── grill-me/
 │   │   ├── handoff/
-│   │   ├── write-a-skill/
-│   │   └── writing-great-skills/
+│   │   └── write-a-skill/
 │   ├── misc/                                    (specialist domains: frontend, backend, languages, security, ml, mobile, devops, data)
 │   └── ...
 ├── scripts/                                    (check, audit, install)

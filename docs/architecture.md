@@ -48,8 +48,7 @@ opencode-workflow/
 │   │   ├── deep-research/
 │   │   ├── grill-me/
 │   │   ├── handoff/
-│   │   ├── write-a-skill/
-│   │   └── writing-great-skills/
+│   │   └── write-a-skill/
 │   └── ...
 ├── scripts/                  ← check-portable, check-skill-structure, audit-skill, pre-commit
 ├── docs/                     ← architecture, extraction-criteria, anti-hardcoded-pattern

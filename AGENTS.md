@@ -82,7 +82,7 @@ Enforcement:
 Skills are organized into bucket folders under `skills/`:
 
 - `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-spec, to-tickets, triage), `design/` (architecture-decision-records, design-skill (external repo), design-system, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnosing-bugs, ponytail, production-audit, code-review, tdd, team-handoff-quality, verify-evidence), `workflow/` (agent-config, canary-watch, codebase-onboarding, context-budget, deployment-patterns, dev-workflow, eval, git-workflow, github-ops, memory-dreaming, prototype, search-first, skill-author, workflow-audit, zoom-out).
-- `productivity/` — daily non-code workflow tools (deep-research, grill-me, handoff, write-a-skill, writing-great-skills).
+- `productivity/` — daily non-code workflow tools (deep-research, grill-me, handoff, write-a-skill).
 - `misc/` — specialist domain skills, grouped into sub-directories (`frontend`, `backend`, `languages`, `security`, `ml`, `mobile`, `devops`, `data`).
 - `in-progress/` — drafts not ready to ship.
 - `deprecated/` — no longer active.

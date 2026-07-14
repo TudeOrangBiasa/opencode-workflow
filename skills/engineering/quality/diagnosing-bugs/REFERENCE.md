@@ -53,3 +53,5 @@ If no correct seam exists, note it — that itself is the finding. Codebase arch
 - [ ] Throwaway prototypes deleted (or moved to clearly-marked debug location)
 - [ ] Correct hypothesis stated in commit/PR message
 - [ ] What would have prevented this bug?
+
+For UI-specific state tracing (buttons that cancel each other out), see [click-path-audit](../click-path-audit/).

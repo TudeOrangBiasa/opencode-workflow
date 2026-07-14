@@ -18,3 +18,5 @@ Consistent, robust error handling patterns for production applications.
 - Debugging cascading failures or silent error swallowing
 
 See [REFERENCE.md](REFERENCE.md) for typed error classes, Result pattern, API error handlers, React Error Boundaries, Python/FastAPI/Go examples, retry with backoff, and user-facing messages.
+
+For security-specific error handling (info leakage, logging secrets), see [security-review](../security-review/).

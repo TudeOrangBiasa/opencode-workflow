@@ -23,7 +23,7 @@ Heavy skills (4+ external deps, fully automates a task, multiple patterns) live 
 - Plugins live in `~/.config/opencode/opencode.json` (caveman, ponytail). No plugins in this repo.
 - Project boundaries in `.scratch/out-of-scope/` — what this repo does NOT do.
 - Documentation for local installation and model routing in `docs/`.
-- Symlinks to external skill packages in `skills/personal/`.
+- External heavy skill packages integrate via symlinks under `skills/`.
 - Do not edit `~/.config/opencode` while maturing changes here unless the user explicitly asks to install or activate them.
 
 ## Context Map (Monorepo)
@@ -37,7 +37,6 @@ This repo is a monorepo for OpenCode agent workflow. Key directories:
 | `skills/engineering/` | Daily code-work skills (planning, design, quality, workflow) |
 | `skills/productivity/` | Non-code workflow tools (research, handoffs, skill authoring) |
 | `skills/misc/` | Specialist domain skills (backend, frontend, languages, etc.) |
-| `skills/personal/` | Personal workflow/tool skills, not promoted |
 | `docs/` | Documentation (architecture, workflow, models, install, agents) |
 | `docs/agents/` | Agent-specific reference docs (issue tracker, triage, domain) |
 | `docs/templates/` | Config templates (opencode.json) |
@@ -82,16 +81,15 @@ Enforcement:
 
 Skills are organized into bucket folders under `skills/`:
 
-- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-spec, to-tickets, triage), `design/` (architecture-decision-records, design-skill (external repo), design-system, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnosing-bugs, ponytail, production-audit, code-review, tdd, team-handoff-quality, verify-evidence), `workflow/` (canary-watch, codebase-onboarding, context-budget, deployment-patterns, git-workflow, github-ops, memory-dreaming, prototype, search-first, agent-config, skill-author, zoom-out).
+- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-spec, to-tickets, triage), `design/` (architecture-decision-records, design-skill (external repo), design-system, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnosing-bugs, ponytail, production-audit, code-review, tdd, team-handoff-quality, verify-evidence), `workflow/` (agent-config, canary-watch, codebase-onboarding, context-budget, deployment-patterns, dev-workflow, eval, git-workflow, github-ops, memory-dreaming, prototype, search-first, skill-author, workflow-audit, zoom-out).
 - `productivity/` — daily non-code workflow tools (deep-research, grill-me, handoff, write-a-skill, writing-great-skills).
 - `misc/` — specialist domain skills, grouped into sub-directories (`frontend`, `backend`, `languages`, `security`, `ml`, `mobile`, `devops`, `data`).
-- `personal/` — tied to personal setup, not promoted. Has 2 sub-areas: `workflow/` (dev-workflow, eval, idea-fragments, workflow-audit), `tools/` (ddev, openviking).
 - `in-progress/` — drafts not ready to ship.
 - `deprecated/` — no longer active.
 
 Every skill in `engineering/`, `productivity/`, or `misc/` must have a reference in the top-level `README.md` and the relevant bucket `README.md`.
 
-Skills in `personal/`, `in-progress/`, and `deprecated/` must not appear in the top-level active skill reference.
+Skills in `in-progress/` and `deprecated/` must not appear in the top-level active skill reference.
 
 Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
 
@@ -163,7 +161,7 @@ All config changes (paths, triggers, MCP, plugins) MUST go through `opencode-wor
 ├── engineering/quality/diagnosing-bugs/  → repo/engineering/quality/diagnosing-bugs/
 ├── engineering/workflow/prototype/       → repo/engineering/workflow/prototype/
 ├── productivity/deep-research/               → repo/productivity/deep-research/
-├── personal/workflow/eval/              → repo/personal/workflow/eval/
+├── engineering/workflow/eval/              → repo/engineering/workflow/eval/
 └── misc/frontend/accessibility/         → repo/misc/frontend/accessibility/
 ```
 

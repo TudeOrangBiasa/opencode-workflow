@@ -68,8 +68,6 @@ OpenCode scans 1 level deep per path. Each leaf bucket gets its own path:
   "~/.config/opencode/skills/misc/ml",
   "~/.config/opencode/skills/misc/mobile",
   "~/.config/opencode/skills/misc/security",
-  "~/.config/opencode/skills/personal/tools",
-  "~/.config/opencode/skills/personal/workflow",
   "~/.config/opencode/skills/productivity"
 ]
 ```

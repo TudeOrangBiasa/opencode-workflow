@@ -41,6 +41,7 @@ You are working with a specific framework, database, language, platform, securit
 - [api-connector-builder](api-connector-builder/SKILL.md) — Build API connectors matching the host repo's existing integration pattern.
 - [api-design](api-design/SKILL.md) — REST/API design checklist for endpoint naming, status codes, pagination, errors.
 - [backend-patterns](backend-patterns/SKILL.md) — Backend architecture patterns — API design, repo/service layers, caching, error handling, auth.
+- [ddev](ddev/SKILL.md) — DDEV workflow for PHP/Laravel — Composer, Artisan, PHPUnit, database commands.
 - [django](django/SKILL.md) — Django: architecture, DRF, Celery, security, TDD, verification (merged from 5 skills).
 - [dotnet-patterns](dotnet-patterns/SKILL.md) — C#/.NET patterns, DI, EF Core, Minimal APIs.
 - [fastapi-patterns](fastapi-patterns/SKILL.md) — FastAPI project structure, Pydantic v2, DI, auth, testing.
@@ -104,8 +105,10 @@ You are working with a specific framework, database, language, platform, securit
 - [database-review](database-review/SKILL.md) — Database review checklist for schema, indexes, RLS, transactions (moved from backend/).
 - [docker-patterns](docker-patterns/SKILL.md) — Docker Compose, multi-stage builds, networking, volumes, security.
 - [flox-environments](flox-environments/SKILL.md) — Reproducible dev environments with Flox.
+- [herdr](herdr/SKILL.md) — Control Herdr terminal multiplexer — panes, tabs, agent coordination.
 - [kubernetes-patterns](kubernetes-patterns/SKILL.md) — K8s workload patterns, probes, RBAC, HPA.
 - [mysql-patterns](mysql-patterns/SKILL.md) — MySQL/MariaDB schema, indexing, queries, transactions.
+- [openviking](openviking/SKILL.md) — Persist agent memory across sessions with OpenViking store/retrieve/search.
 - [postgres-patterns](postgres-patterns/SKILL.md) — PostgreSQL schema, indexing, RLS, queries.
 - [prisma-patterns](prisma-patterns/SKILL.md) — Prisma ORM patterns — schema, queries, transactions, pagination.
 - [redis-patterns](redis-patterns/SKILL.md) — Redis data structures, caching, distributed locks, rate limiting.

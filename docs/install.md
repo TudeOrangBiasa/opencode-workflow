@@ -22,9 +22,9 @@ Links only the active workflow skills into `~/.config/opencode/skills`.
 
 The script is non-destructive. If a target skill already exists as a real directory, the script stops instead of deleting it. Keep existing global skill dirs when they contain local customizations.
 
-Active repo skills span `engineering/`, `productivity/`, `misc/`, and `personal/` buckets. Run `ls skills/*/*/SKILL.md` for current list.
+Active repo skills span `engineering/`, `productivity/`, and `misc/` buckets. Run `ls skills/*/*/SKILL.md` for current list.
 
-Global-only skills such as `design` stay in `~/.config/opencode/skills`. Personal repo skills such as `openviking`, `eval`, `ddev`, and `idea-fragments` live under `skills/personal/` and are linked by the default active-skill script. OpenViking is the agent's persistent memory — standard practice, but optional. If `openviking-server` is not running, the workflow continues without it (graceful degradation).
+Global-only skills such as `design` stay in `~/.config/opencode/skills`.
 
 ## OpenCode Restart
 

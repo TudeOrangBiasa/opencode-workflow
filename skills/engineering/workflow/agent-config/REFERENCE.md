@@ -117,9 +117,7 @@ Update `.opencode/opencode.json` `skills.paths` — add leaf bucket paths:
     ".opencode/skills/misc/ml",
     ".opencode/skills/misc/mobile",
     ".opencode/skills/misc/devops",
-    ".opencode/skills/misc/data",
-    ".opencode/skills/personal/workflow",
-    ".opencode/skills/personal/tools"
+    ".opencode/skills/misc/data"
   ]
 }
 ```

@@ -21,15 +21,7 @@ opencode-workflow/                              (this repo)
 │   │   ├── planning/                            (wayfinder, to-spec, to-tickets, triage, ask-matt)
 │   │   ├── design/                              (architecture-decision-records, design-skill, design-system, grill-with-docs, improve-codebase-architecture)
 │   │   ├── quality/                             (verify-evidence, code-review, diagnosing-bugs, tdd, production-audit, security-review, ai-regression-testing, click-path-audit, error-handling, team-handoff-quality, ponytail-gain)
-│   │   └── workflow/                            (agent-config, skill-author, git-workflow, search-first, implement, prototype, canary-watch, deployment-patterns, codebase-onboarding, context-budget, github-ops, herdr, memory-dreaming)
-│   ├── personal/workflow/                       (personal workflow skills)
-│   │   ├── dev-workflow/
-│   │   ├── eval/
-│   │   ├── idea-fragments/
-│   │   └── workflow-audit/
-│   ├── personal/tools/                          (personal tools)
-│   │   ├── ddev/
-│   │   └── openviking/
+│   │   └── workflow/                            (agent-config, canary-watch, codebase-onboarding, context-budget, deployment-patterns, dev-workflow, eval, git-workflow, github-ops, implement, memory-dreaming, prototype, search-first, skill-author, workflow-audit, zoom-out)
 │   ├── productivity/                            (daily non-code workflow tools)
 │   │   ├── deep-research/
 │   │   ├── grill-me/

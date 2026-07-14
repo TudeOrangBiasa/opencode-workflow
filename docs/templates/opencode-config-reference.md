@@ -101,7 +101,7 @@ Skill triggers:
 | `security-review` | auth, secret, password, credential, vulnerability |
 | `memory-dreaming` | consolidate, dream, clean up lessons |
 | `youtube-transcript` | youtube, video transcript, summarize video |
-| `modular-monolith-decisions` | modular monolith, architecture evolution |
+| `modular-monolith` | modular monolith, architecture evolution, backend scaling |
 | `vault` | vault, obsidian, daily note, kanban, sync |
 | `eval` | eval session, session audit, post-mortem |
 | `workflow-audit` | workflow status, lint workflow |

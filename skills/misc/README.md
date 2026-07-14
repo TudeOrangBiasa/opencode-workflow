@@ -49,8 +49,7 @@ You are working with a specific framework, database, language, platform, securit
 - [jpa-patterns](jpa-patterns/SKILL.md) — JPA/Hibernate entity mapping, fetch strategies, caching.
 - [laravel](laravel/SKILL.md) — Laravel: architecture, Eloquent, security, verification (merged from 3 skills).
 - [mcp-server-patterns](mcp-server-patterns/SKILL.md) — Build MCP servers with Node/TS SDK — tools, resources, prompts.
-- [modular-monolith-decisions](modular-monolith-decisions/SKILL.md) — Architecture decision framework for backend evolution (6-stage).
-- [modular-monolith-patterns](modular-monolith-patterns/SKILL.md) — Modular monolith architecture — domain separation, ArchUnit enforcement.
+- [modular-monolith](modular-monolith/SKILL.md) — Modular monolith architecture: decision framework (when/why to evolve) + implementation patterns (domain separation, Client/Implementation, ArchUnit).
 - [nestjs-patterns](nestjs-patterns/SKILL.md) — NestJS modules, controllers, DTOs, guards, interceptors.
 - [php-review](php-review/SKILL.md) — PHP/Laravel review checklist for framework correctness, security.
 - [quarkus](quarkus/SKILL.md) — Quarkus: CDI, Panache, Camel, security, TDD, verification (merged from 4 skills).

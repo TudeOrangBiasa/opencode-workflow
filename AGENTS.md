@@ -48,7 +48,7 @@ This repo is a monorepo for OpenCode agent workflow. Key directories:
 | `.scratch/evals/` | Session evaluation reports |
 | `.scratch/out-of-scope/` | Boundary decisions — what repo does NOT do |
 | `.scratch/verification/` | Verification evidence per change |
-| `.opencode/` | Local config (package.json, install deps) |
+| `.opencode/` | OpenCode project config (empty placeholder, no deps) |
 
 Heavy skills (e.g., design-skill) live in external repos, symlinked under `skills/`. See [docs/architecture.md](docs/architecture.md).
 

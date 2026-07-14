@@ -28,7 +28,7 @@ opencode-workflow is the **personal dotfiles + workflow pipeline**. It contains:
 
 ```
 opencode-workflow/
-├── .opencode/                 ← local config, package.json
+├── .opencode/                 ← OpenCode project config (empty placeholder)
 ├── skills/
 │   ├── engineering/          ← pipeline skills (sub-dirs: planning, design, quality, workflow)
 │   │   ├── planning/         ← to-spec, to-tickets, triage

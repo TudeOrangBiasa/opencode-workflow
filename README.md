@@ -15,7 +15,7 @@ This repo is the **personal AI workflow setup**:
 
 ```
 opencode-workflow/                              (this repo)
-├── .opencode/                                   (local config, package.json)
+├── .opencode/                                   (OpenCode project config — empty placeholder)
 ├── skills/                                     (pipeline + symlinks)
 │   ├── engineering/                             (pipeline skills)
 │   │   ├── planning/                            (wayfinder, to-spec, to-tickets, triage, ask-matt)

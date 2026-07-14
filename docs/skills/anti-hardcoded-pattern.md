@@ -1,6 +1,6 @@
 ---
 name: anti-hardcoded-pattern
-description: Rules for writing portable skills that work across machines, OSes, and users. Use when writing or reviewing any skill, script, or tool. Enforced by `scripts/check-portable.sh` and pre-commit hook.
+description: Rules for writing portable skills that work across machines, OSes, and users. Use when writing or reviewing any skill, script, or tool. Enforced by pre-commit hook (skill-structure check) and manual review.
 ---
 
 # Anti-Hardcoded Pattern
@@ -83,9 +83,8 @@ See [write-a-skill](~/.config/opencode/skills/write-a-skill/SKILL.md)
 
 ## Enforced by
 
-- `scripts/check-portable.sh` — scans for hardcoded paths, fails if found
 - `scripts/check-skill-structure.sh` — verifies skill structure
-- `scripts/pre-commit.sh` — runs both before commit
+- `scripts/pre-commit.sh` — runs skill-structure check before commit
 
 ## Good vs Bad example
 

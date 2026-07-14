@@ -84,7 +84,7 @@ KIT_DIR="${DOCUMENTS_KIT_DIR:-$HOME/.local/share/documents-kit-skills}"
 KIT_DIR="<HOME>/Workspace/ai-kit/my-skill"
 ```
 
-Run `./scripts/check-portable.sh` before commit.
+Run `./scripts/check-skill-structure.sh` before commit.
 
 ---
 
@@ -109,7 +109,6 @@ Run `./scripts/check-portable.sh` before commit.
 ./scripts/audit-skill.sh skills/engineering/skill-author
 
 # Project-wide check
-./scripts/check-portable.sh
 ./scripts/check-skill-structure.sh
 
 # Pre-commit (install once)
@@ -146,7 +145,7 @@ When a skill qualifies for extraction:
    └── docs/                ← architecture, decisions
    ```
 3. In opencode-workflow:
-   - Create `skills/personal/<package-name>/<skill-name>/` symlinks
+   - Create `skills/<bucket>/<leaf>/<package-name>/<skill-name>/` symlinks
    - Add `scripts/setup-<package-name>.sh` to create symlinks
    - Update `docs/architecture.md`
 

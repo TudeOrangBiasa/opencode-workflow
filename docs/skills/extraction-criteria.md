@@ -38,7 +38,7 @@ A skill should be extracted to its own repository if it meets **3 or more** of t
 3. Add `install.sh` (curl-friendly) and `setup.sh` (local)
 4. Add README with deps + usage
 5. Add GitHub Actions for tests
-6. In opencode-workflow: create symlink under `skills/personal/package-name/`
+6. In opencode-workflow: create symlink under `skills/<bucket>/<leaf>/<package-name>/`
 7. Update `scripts/setup-<package>.sh` to create symlinks
 
 See design-skill for a reference extraction example.

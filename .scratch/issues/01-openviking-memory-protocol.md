@@ -15,7 +15,7 @@
    ```
    Now auto-loads on any task verb. The 0% rate was a config bug, not a model problem.
 
-2. **Rewrite top of `skills/personal/openviking/SKILL.md`** as imperative "PROTOCOL" section (5 numbered steps, not passive description). Agent reads protocol, follows it.
+2. **Rewrite top of `skills/misc/devops/openviking/SKILL.md`** as imperative "PROTOCOL" section (5 numbered steps, not passive description). Agent reads protocol, follows it.
 
 ## Mechanism vs Rule
 

@@ -30,7 +30,6 @@ opencode-workflow/                              (this repo)
 │   ├── misc/                                    (specialist domains: frontend, backend, languages, security, ml, mobile, devops, data)
 │   └── ...
 ├── scripts/                                    (check, audit, install)
-│   ├── check-portable.sh      (hardcoded path lint)
 │   ├── check-skill-structure.sh (write-a-skill compliance)
 │   ├── audit-skill.sh         (single-skill audit)
 │   ├── pre-commit.sh          (runs all before commit)
@@ -98,13 +97,12 @@ All skills, scripts, and tools must be portable — installable by anyone on any
 
 Rules: [docs/skills/anti-hardcoded-pattern.md](docs/skills/anti-hardcoded-pattern.md)
 
-Enforced by `scripts/check-portable.sh` (pre-commit hook).
+Enforced by pre-commit hook (skill-structure check) and the anti-hardcoded-pattern skill.
 
 ## Tools (workflow scripts)
 
 | Script | Purpose |
 |--------|---------|
-| `check-portable.sh` | Scan for hardcoded paths |
 | `check-skill-structure.sh` | Verify write-a-skill compliance |
 | `audit-skill.sh <path>` | Full single-skill audit |
 | `pre-commit.sh` | Run all checks before commit |

@@ -3,6 +3,7 @@
 **Date**: 2026-07-10
 **Status**: accepted
 **Deciders**: user + planner + reviewer
+**Updated**: 2026-07-14 — deferred physical move completed: `personal/` bucket dissolved; `eval`/`workflow-audit` → `engineering/workflow`, `openviking` → `misc/devops`. `(from personal/workflow)` annotations above are now historical context.
 
 ## Context
 

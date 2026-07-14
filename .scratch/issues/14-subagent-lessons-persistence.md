@@ -42,7 +42,7 @@ Initial implementation had HALLUCINATED commands. Discovered during restart veri
 
 ### 3. openviking SKILL.md corrected (CRITICAL)
 
-`skills/personal/openviking/SKILL.md` rewritten:
+`skills/misc/devops/openviking/SKILL.md` rewritten:
 - Removed all `ov remember` references
 - Added "Critical: `ov remember` is NOT a real command" warning
 - Real commands: `ov add-memory`, `ov add-resource`, `ov find`, `ov read`
@@ -81,7 +81,7 @@ Cycle confirmed: write via `ov add-memory`, retrieve via `ov find`.
 - `agents/builder.md` — Prior Lessons section (corrected)
 - `agents/reviewer.md` — Prior Lessons section (corrected)
 - `agents/browser-qa.md` — Prior Lessons section (corrected)
-- `skills/personal/openviking/SKILL.md` — full rewrite (corrected API reference)
+- `skills/misc/devops/openviking/SKILL.md` — full rewrite (corrected API reference)
 
 ## Remaining (Issue 18 P1 + P2)
 

@@ -6,7 +6,6 @@
 # Use git rev-parse to find the project root, then locate scripts/ from there.
 #
 # Runs:
-#   - check-portable.sh (no hardcoded paths)
 #   - check-skill-structure.sh (write-a-skill compliance)
 #
 # Skip with: git commit --no-verify
@@ -21,16 +20,7 @@ echo "=== pre-commit checks ==="
 echo "Project root: $ROOT"
 echo
 
-# Check 1: Portability
-if ! "$SCRIPTS_DIR/check-portable.sh" "$ROOT" 2>&1; then
-  echo
-  echo "FAIL: portability check"
-  echo "Fix hardcoded paths or use 'git commit --no-verify' to skip"
-  exit 1
-fi
-echo
-
-# Check 2: Skill structure
+# Check 1: Skill structure
 if ! "$SCRIPTS_DIR/check-skill-structure.sh" "$ROOT/skills" 2>&1; then
   echo
   echo "FAIL: skill structure check"

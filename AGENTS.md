@@ -72,7 +72,6 @@ Project-specific decisions (where to put a skill, portability rules):
 
 Enforcement:
 
-- `scripts/check-portable.sh` — hardcoded path lint
 - `scripts/check-skill-structure.sh` — write-a-skill compliance
 - `scripts/audit-skill.sh <path>` — full single-skill audit
 - `scripts/pre-commit.sh` — runs all before commit (install with `scripts/install-hooks.sh`)

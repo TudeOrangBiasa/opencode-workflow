@@ -50,7 +50,7 @@ opencode-workflow/
 │   │   ├── handoff/
 │   │   └── write-a-skill/
 │   └── ...
-├── scripts/                  ← check-portable, check-skill-structure, audit-skill, pre-commit
+├── scripts/                  ← check-skill-structure, audit-skill, pre-commit
 ├── docs/                     ← architecture, extraction-criteria, anti-hardcoded-pattern
 ├── .git/hooks/pre-commit     ← installed by scripts/install-hooks.sh
 └── AGENTS.md / README.md     ← entry points

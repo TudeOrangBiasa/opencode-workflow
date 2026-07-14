@@ -66,9 +66,6 @@ See **write-a-skill** for full principles.
 # Audit a skill
 ./scripts/audit-skill.sh skills/engineering/skill-author
 
-# Check portability of all skills
-./scripts/check-portable.sh
-
 # Check structure compliance
 ./scripts/check-skill-structure.sh
 

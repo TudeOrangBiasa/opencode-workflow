@@ -14,6 +14,7 @@ Scaffold per-repo config that engineering skills assume. For meta-repos (skill m
 - **Triage labels** — five canonical triage role strings
 - **Domain docs** — CONTEXT.md and ADR consumer rules
 - **Design reference** — `design.md` with tokens, anti-patterns, component rules
+- **Coding-style** — `coding-style.md` (optional, captures user conventions)
 - **Workspace symlinks** — skill symlinks in `.opencode/skills/` for `@skill-name` in chat
 - **Skill triggers** — which skills auto-load via opencode.json (meta-repo only)
 
@@ -24,7 +25,7 @@ For full process, templates, and meta-repo mode, see [REFERENCE.md](REFERENCE.md
 | Section | Description |
 |---------|-------------|
 | [Process](REFERENCE.md#process) | Explore → present → confirm → write |
-| [Standard Mode](REFERENCE.md#standard-mode) | Scratch workspace, issue tracker, triage, domain, design, workspace symlinks |
+| [Standard Mode](REFERENCE.md#standard-mode) | Scratch workspace, issue tracker, triage, domain, design, coding-style, workspace symlinks |
 | [Meta-Repo Mode](REFERENCE.md#meta-repo-mode) | Detection, exploration, write behavior, config audit |
 | [Pre-flight Checks](REFERENCE.md#pre-flight-checks) | OfficeCLI, chrome-devtools, exa, drawio, OpenViking |
 | [Seed Templates](REFERENCE.md#seed-templates) | Standard + meta-repo templates |

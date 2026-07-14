@@ -16,7 +16,8 @@ graph TB
         G["Section D: Domain docs config"]
         H["Section E: Design reference<br/>(conditional on frontend)"]
         I["Section F: Workspace skill symlinks"]
-        J["Section G: Meta-repo audit<br/>(if meta-repo mode)"]
+        CS["Section G: Coding-style preferences"]
+        MT["Section H: Meta-repo audit<br/>(if meta-repo mode)"]
     end
     subgraph WRITE["3-5. Write + Symlink"]
         J["docs/agents/issue-tracker.md"]
@@ -67,9 +68,11 @@ Summarise what's present and missing. Walk user through decisions **one at a tim
 
 **Section F — Workspace skill symlinks.** Symlink global skills into `.opencode/skills/` so `@skill-name` works in workspace chat without skills modal. Default: yes (all buckets). User can pick subset.
 
+**Section G — Coding-style preferences.** Capture the user's coding conventions so agents follow them. Default: yes. Seed `docs/agents/coding-style.md` from `coding-style.md` template. Covers: minimal code (no over-engineering, no speculative abstraction), prefer stdlib/native over new deps, delete dead code, non-trivial logic leaves one runnable check. Communication: commits/PRs/code use normal prose; terse/caveman is chat-only.
+
 If meta-repo mode detected, ask one more section:
 
-**Section F — Meta-repo config.** Skill_triggers, plugin health, agent sync, bucket README links.
+**Section H — Meta-repo config.** Skill_triggers, plugin health, agent sync, bucket README links.
 
 ### 3. Confirm and edit
 
@@ -145,6 +148,7 @@ Default behavior. Scaffolds:
 - `docs/agents/triage-labels.md` — from triage-labels.md template
 - `docs/agents/domain.md` — from domain.md template
 - `docs/agents/design.md` — from design.md template (conditional on frontend)
+- `docs/agents/coding-style.md` — from coding-style.md template (conditional on Section G)
 - `## Agent skills` block in AGENTS.md
 - `.opencode/skills/` — workspace skill symlinks (all leaf buckets)
 - `.opencode/opencode.json` — updated `skills.paths` (if file exists)
@@ -224,6 +228,9 @@ Print end-of-setup audit:
 - **False positive**: repo has `skills/` but not for skill management → confirm with user before meta-repo mode
 - **Ambiguous**: repo has `.opencode/` but no `skills/` → standard mode (correct)
 - **Existing block**: if `## Agent skills` exists, update in-place; do NOT duplicate
+- **Coding-style present**: if `docs/agents/coding-style.md` exists, update in-place; do NOT overwrite user conventions
+- **Both AGENTS.md + CLAUDE.md**: prefer CLAUDE.md for the `## Agent skills` block; leave the other untouched unless user says
+- **No git repo**: skip remote detection; default to local-markdown issue tracker, still scaffold `.scratch/` + `docs/agents/`
 
 ---
 
@@ -278,6 +285,7 @@ Templates:
 - `triage-labels.md` — label mapping
 - `domain.md` — domain doc consumer rules (CONTEXT.md + ADRs)
 - `design.md` — design reference seed template (conditional on frontend)
+- `coding-style.md` — coding-style preferences seed (conditional on Section G)
 
 ### Meta-Repo Mode
 

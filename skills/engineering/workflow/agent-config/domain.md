@@ -9,7 +9,7 @@ This file defines consumer rules for domain docs. The actual domain language liv
 ## When to use
 
 - Before any feature work — read `CONTEXT.md` for vocabulary, check `docs/adr/` for relevant decisions
-- When terminology is ambiguous or overloaded — use `/domain-modeling`
+- When terminology is ambiguous or overloaded — use `/grill-with-docs`
 - Before making a hard-to-reverse decision — write an ADR
 - When onboarding — read this first to learn the domain language
 

@@ -119,8 +119,6 @@ Skill triggers:
 | `to-tickets` | break tickets, buat ticket |
 | `improve-codebase-architecture` | architecture review, deepening |
 | `code-review` | review this, code review, review since |
-| `domain-modeling` | domain model, ubiquitous language |
-| `codebase-design` | module design, seam, deep module |
 | `team-handoff-quality` | handoff, release notes, changelog, version bump |
 | `production-audit` | prod readiness, launch check |
 

@@ -30,10 +30,8 @@ You are building, reviewing, testing, diagnosing, deploying, or planning code pr
 ### design/
 
 - [architecture-decision-records](architecture-decision-records/SKILL.md) — Capture architectural decisions as structured ADRs — context, alternatives, rationale, consequences.
-- [codebase-design](codebase-design/SKILL.md) — Design interfaces for modules using parallel sub-agent pattern (design-it-twice).
 - [design-skill](design/design-skill/SKILL.md) — Full-stack design skill for frontend interfaces. 22 sub-commands (craft, shape, audit, critique, adapt, animate, etc.). Merges former impeccable + emil-design-eng skills. Own repo: `~/Workspace/personal/agents/design-skill`.
 - [design-system](design-system/SKILL.md) — Generate, audit, or review design systems for visual consistency (moved from misc/frontend/).
-- [domain-modeling](domain-modeling/SKILL.md) — Extract sharp domain terms and update CONTEXT.md + ADR docs as decisions crystallize.
 - [grill-with-docs](grill-with-docs/SKILL.md) — Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates CONTEXT.md and ADRs inline.
 - [improve-codebase-architecture](improve-codebase-architecture/SKILL.md) — Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/.
 

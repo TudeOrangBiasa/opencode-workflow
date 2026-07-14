@@ -43,7 +43,7 @@ Two modes. **Never resolve more than one ticket per session.**
 
 ### Chart the map
 
-1. **Name the destination** via `/grilling` and `/domain-modeling`.
+1. **Name the destination** via `/grilling` and `/grill-with-docs`.
 2. **Map the frontier** breadth-first. If no fog (route already clear for one session) → stop, no map needed.
 3. **Create the map** (label `wayfinder:map`).
 4. **Create tickets** as child issues, wire blocking edges in second pass.

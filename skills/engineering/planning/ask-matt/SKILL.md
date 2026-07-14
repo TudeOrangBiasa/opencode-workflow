@@ -47,14 +47,14 @@ A starting situation that generates work, then merges onto the main flow.
 
 Not feature work — upkeep.
 
-- **`/improve-codebase-architecture`** — run whenever you have a spare moment to keep the codebase good for agents to operate in. It surfaces **deepening opportunities**; picking one _generates an idea_ you can take into the main flow at `/grill-with-docs`. It's the survey that finds the candidates; **`/codebase-design`** (below) is the bench you design the chosen one on.
+- **`/improve-codebase-architecture`** — run whenever you have a spare moment to keep the codebase good for agents to operate in. It surfaces **deepening opportunities**; picking one _generates an idea_ you can take into the main flow at `/grill-with-docs`. It's the survey that finds the candidates; its [INTERFACE-DESIGN.md](INTERFACE-DESIGN.md) is the bench you design the chosen one on.
 
 ## Vocabulary underneath
 
 Two model-invoked references that run *beneath* the other skills — each the single source of truth for its vocabulary. Reach for them directly when the **words**, not the process, are the problem; or let the skills above pull them in.
 
-- **`/domain-modeling`** — sharpen the project's *domain* language: challenge a fuzzy term, resolve an overloaded word ("account" doing three jobs), record a hard-to-reverse decision as an ADR. It's the active discipline `/grill-with-docs` drives to keep `CONTEXT.md` a clean glossary.
-- **`/codebase-design`** — the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's *shape*: a lot of behaviour behind a small interface at a clean seam. `/tdd` and `/improve-codebase-architecture` both speak it.
+- **`/grill-with-docs`** — sharpen the project's *domain* language while building a paper trail: challenge a fuzzy term, resolve an overloaded word ("account" doing three jobs), record a hard-to-reverse decision as an ADR, update `CONTEXT.md` inline. It now subsumes the former `domain-modeling` discipline.
+- **`/improve-codebase-architecture`** — the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) lives in its [LANGUAGE.md](LANGUAGE.md) and [INTERFACE-DESIGN.md](INTERFACE-DESIGN.md). Design a module's *shape*: a lot of behaviour behind a small interface at a clean seam. `/tdd` speaks it too.
 
 ## Crossing sessions
 

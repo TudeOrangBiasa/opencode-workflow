@@ -82,7 +82,7 @@ Enforcement:
 
 Skills are organized into bucket folders under `skills/`:
 
-- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-spec, to-tickets, triage), `design/` (architecture-decision-records, codebase-design, design-skill (external repo), design-system, domain-modeling, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnosing-bugs, ponytail, production-audit, code-review, tdd, team-handoff-quality, verify-evidence), `workflow/` (canary-watch, codebase-onboarding, context-budget, deployment-patterns, git-workflow, github-ops, memory-dreaming, prototype, search-first, agent-config, skill-author, zoom-out).
+- `engineering/` — daily code work, with 4 sub-directories: `planning/` (to-spec, to-tickets, triage), `design/` (architecture-decision-records, design-skill (external repo), design-system, grill-with-docs, improve-codebase-architecture), `quality/` (ai-regression-testing, diagnosing-bugs, ponytail, production-audit, code-review, tdd, team-handoff-quality, verify-evidence), `workflow/` (canary-watch, codebase-onboarding, context-budget, deployment-patterns, git-workflow, github-ops, memory-dreaming, prototype, search-first, agent-config, skill-author, zoom-out).
 - `productivity/` — daily non-code workflow tools (deep-research, grill-me, handoff, write-a-skill, writing-great-skills).
 - `misc/` — specialist domain skills, grouped into sub-directories (`frontend`, `backend`, `languages`, `security`, `ml`, `mobile`, `devops`, `data`).
 - `personal/` — tied to personal setup, not promoted. Has 2 sub-areas: `workflow/` (dev-workflow, eval, idea-fragments, workflow-audit), `tools/` (ddev, openviking).

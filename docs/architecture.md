@@ -32,7 +32,7 @@ opencode-workflow/
 ├── skills/
 │   ├── engineering/          ← pipeline skills (sub-dirs: planning, design, quality, workflow)
 │   │   ├── planning/         ← to-spec, to-tickets, triage
-│   │   ├── design/           ← 7 sub-skills (incl. design-skill external repo)
+│   │   ├── design/           ← 6 sub-skills (incl. design-skill external repo)
 │   │   ├── quality/          ← code-review, tdd, diagnosing-bugs, ponytail, verify-evidence
 │   │   └── workflow/         ← prototype, memory-dreaming, agent-config, skill-author, search-first
 │   ├── misc/                 ← specialist domain skills

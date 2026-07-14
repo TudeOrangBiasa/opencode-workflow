@@ -15,4 +15,4 @@ Dependencies are expressed as **`/skill`-style prose invocation** ("Run the `/gr
 
 ## Passive vs active domain work
 
-Merely _reading_ `CONTEXT.md` for vocabulary is a one-line prose pointer, not the `domain-modeling` skill. Only the active build/sharpen discipline (challenge terms, edge-case scenarios, write ADRs, update `CONTEXT.md` inline) is `domain-modeling`.
+Merely _reading_ `CONTEXT.md` for vocabulary is a one-line prose pointer, not the `grill-with-docs` skill. Only the active build/sharpen discipline (challenge terms, edge-case scenarios, write ADRs, update `CONTEXT.md` inline) is `grill-with-docs`.

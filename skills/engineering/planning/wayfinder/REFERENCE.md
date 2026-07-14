@@ -40,7 +40,7 @@ The whole map at low resolution, loaded once per session:
 
 - **Research** (AFK): Reading docs/third-party APIs/local knowledge bases. Creates markdown summary as linked asset.
 - **Prototype** (HITL): Raise discussion fidelity via cheap rough artifact (outline, stub, UI/logic code via `/prototype`). Links prototype as asset.
-- **Grilling** (HITL): Conversation via `/grilling` and `/domain-modeling`, one question at a time. Default case.
+- **Grilling** (HITL): Conversation via `/grilling` and `/grill-with-docs`, one question at a time. Default case.
 - **Task** (HITL or AFK): Manual work blocking a decision — nothing to decide, but discussion blocked until done. Agent drives alone where possible (AFK); otherwise hands precise checklist (HITL). Resolved when work done.
 
 ## Fog of War Detail

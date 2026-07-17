@@ -18,7 +18,11 @@
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
+      "command": [
+        "npx",
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ],
       "enabled": true
     },
     "openviking": {
@@ -28,24 +32,8 @@
     }
   },
   "skills": {
-    "paths": ["./skills"]
-  },
-  "skill_triggers": {
-    "ai-regression-testing": ["AI regression", "regression test", "AI test", "model regression"],
-    "tdd": ["TDD", "test-driven", "red-green", "test first", "write test"],
-    "code-review": ["code review", "review this", "review PR", "review diff", "review branch"],
-    "diagnosing-bugs": ["bug", "broken", "error", "crash", "slow", "regression", "not working"],
-    "verify-evidence": ["verify", "evidence", "ship", "ship it", "done", "is it done", "merge", "PR ready", "deploy"],
-    "click-path-audit": ["click path", "user flow", "navigation audit", "UX flow"],
-    "error-handling": ["error handling", "error case", "edge case", "null check"],
-    "production-audit": ["prod readiness", "launch check", "pre-deploy audit", "production check"],
-    "team-handoff-quality": ["handoff quality", "delivery summary", "release notes", "changelog"],
-    "php-review": ["PHP", "PHP review", "laravel review", "PHP code review"],
-    "security-review": ["security", "auth", "secret", "password", "credential", "vulnerability", "security audit"],
-    "security-bounty-hunter": ["bug bounty", "CVE", "exploit", "security bounty"],
-    "defi-amm-security": ["DeFi", "AMM", "liquidity pool", "flash loan", "DEX security"],
-    "evm-token-decimals": ["token decimals", "ERC20", "EVM token", "token standard"],
-    "nodejs-keccak256": ["keccak256", "hash", "ethereum hash", "SHA3"],
-    "prediction-market-risk-review": ["prediction market", "market risk", "betting platform", "oracle risk"]
+    "paths": [
+      "./skills"
+    ]
   }
 }

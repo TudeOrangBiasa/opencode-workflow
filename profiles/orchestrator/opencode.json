@@ -15,19 +15,8 @@
     }
   },
   "skills": {
-    "paths": ["./skills"]
-  },
-  "skill_triggers": {
-    "memory-dreaming": ["consolidate", "dream", "clean up lessons", "memory hygiene", "merge duplicates", "archive stale"],
-    "workflow-audit": ["workflow status", "check changes", "verify sync", "opencode config", "lint workflow"],
-    "eval": ["eval session", "what went wrong", "session audit", "post-mortem", "diagnose session"],
-    "codebase-onboarding": ["onboarding guide", "unfamiliar codebase", "new project analysis", "first time setup"],
-    "context-budget": ["context overhead", "audit context", "context bloat", "token overhead"],
-    "deployment-patterns": ["deployment", "CI/CD", "release", "deploy strategy", "blue-green", "canary"],
-    "git-workflow": ["branch strategy", "merge conflict", "PR workflow", "rebase", "commit convention"],
-    "github-ops": ["issue triage", "PR management", "CI status", "GitHub actions"],
-    "search-first": ["search first", "look up", "research before coding", "check existing"],
-    "skill-author": ["create skill", "add skill", "audit skill structure", "validate skill"],
-    "herdr": ["herdr", "multiplexer", "pane", "terminal pane", "background agent", "parallel agent"]
+    "paths": [
+      "./skills"
+    ]
   }
 }

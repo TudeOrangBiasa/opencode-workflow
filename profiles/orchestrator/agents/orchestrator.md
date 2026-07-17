@@ -35,18 +35,18 @@ oc-validation     # Quality assurance, security review
 
 Use the `herdr` skill to inspect or control panes, tabs, workspaces, and other profiles.
 
-### Spawn profile terminals for the user
+### Spawn team in one Herdr workspace
 
-When user asks to spawn other profiles, open Ghostty windows so they can see:
+When user asks to spawn the team, open ONE Ghostty window running Herdr with all profiles:
 
 ```bash
-# Open each profile in a new Ghostty window
-ghostty -e bash -c "oc-planning; exec bash" &
-ghostty -e bash -c "oc-engineering; exec bash" &
-ghostty -e bash -c "oc-validation; exec bash" &
+zsh -i -c "source ~/.zshrc; ghostty -e zsh -i -c 'source ~/.zshrc; herdr'"
 ```
 
-Then use Herdr to coordinate work between them.
+Or use the spawn script:
+```bash
+zsh -i ~/Workspace/personal/agents/opencode-workflow/spawn-team.zsh
+```
 
 ## Herdr Sessions
 

@@ -1,99 +1,117 @@
 ---
 name: architecture
-description: How opencode-workflow is structured — what lives here vs external packages, and how skills integrate. Use when asking about the overall layout, where to add new content, or how skills/packages connect.
+description: How opencode-workflow is structured — profile-based agent teams with Herdr orchestration.
 ---
 
 # Architecture
 
 ## Role of opencode-workflow
 
-opencode-workflow is the **personal dotfiles + workflow pipeline**. It contains:
+opencode-workflow is the **personal dotfiles + workflow pipeline** for profile-based agent teams. It contains:
 
-- The AI agent's core workflow management skills (grill-with-docs, dev-workflow, memory-dreaming, etc.)
-- Personal setup scripts (install, hooks, audit)
-- Documentation for project decisions
-- Symlinks to heavy skills that live in their own repos
+- 4 specialized agent profiles (orchestrator, planning, engineering, validation)
+- 10 agents total with hierarchical delegation
+- Skills distributed per profile specialization
+- Shared config (providers, plugins) that merges with profile configs
+- Herdr orchestration for inter-profile communication
 
-## What lives here vs external
-
-| Lives in opencode-workflow | Lives in external repo | Decision criteria |
-|---------------------------|------------------------|-------------------|
-| Pipeline/agent skills | Anything with 4+ external deps | Heavy = extract |
-| Workflow management | Multiple templates/patterns | Multi-purpose = extract |
-| Personal dotfiles | Fully automates a task | Automation = extract |
-| Meta-skills (skill-author) | Used by others (OSS) | Reusable = extract |
-| Documentation | | |
-
-## Layout
+## Profile-Based Architecture
 
 ```
 opencode-workflow/
-├── .opencode/                 ← OpenCode project config (empty placeholder)
-├── skills/
-│   ├── engineering/          ← pipeline skills (sub-dirs: planning, design, quality, workflow)
-│   │   ├── planning/         ← to-spec, to-tickets, triage
-│   │   ├── design/           ← 4 sub-skills (incl. design-skill external repo)
-│   │   ├── quality/          ← code-review, tdd, diagnosing-bugs, ponytail, verify-evidence
-│   │   └── workflow/         ← agent-config, canary-watch, codebase-onboarding, context-budget, deployment-patterns, dev-workflow, eval, github-ops, git-workflow, implement, memory-dreaming, openviking, prototype, search-first, skill-author, workflow-audit
-│   ├── misc/                 ← specialist domain skills
-│   │   ├── backend/
-│   │   ├── devops/
-│   │   ├── frontend/
-│   │   ├── languages/
-│   │   ├── ml/
-│   │   ├── mobile/
-│   │   ├── security/
-│   │   └── data/
-│   ├── productivity/         ← daily non-code workflow tools
-│   │   ├── deep-research/
-│   │   ├── grill-me/
-│   │   ├── handoff/
-│   │   └── write-a-skill/
-│   └── ...
-├── scripts/                  ← check-skill-structure, audit-skill, pre-commit
-├── docs/                     ← architecture, extraction-criteria, anti-hardcoded-pattern
-├── .git/hooks/pre-commit     ← installed by scripts/install-hooks.sh
-└── AGENTS.md / README.md     ← entry points
+├── profiles/
+│   ├── orchestrator/       ← User's right hand, manages other profiles via Herdr
+│   │   ├── opencode.json   ← Model: opencode/hy3-free, MCP: openviking
+│   │   ├── agents/         ← orchestrator.md
+│   │   ├── skills/         ← memory-dreaming, workflow-audit, eval, etc.
+│   │   └── rules/agents.md
+│   ├── planning/           ← Requirements, specs, design thinking
+│   │   ├── opencode.json   ← Model: opencode/hy3-free, MCP: exa + openviking
+│   │   ├── agents/         ← planning-lead, product-manager, ux-researcher
+│   │   ├── skills/         ← triage, to-spec, wayfinder, design-system, etc.
+│   │   └── rules/agents.md
+│   ├── engineering/        ← Code execution, frontend/backend/platform
+│   │   ├── opencode.json   ← Model: deepseek/deepseek-v4-flash, MCP: chrome-devtools + openviking
+│   │   ├── agents/         ← engineering-lead, frontend-dev, backend-dev
+│   │   ├── skills/         ← react-patterns, laravel, docker-patterns, etc.
+│   │   └── rules/agents.md
+│   ── validation/         ← Quality assurance, security review
+│       ├── opencode.json   ← Model: opencode/hy3-free, MCP: chrome-devtools + openviking
+│       ├── agents/         ← validation-lead, qa-engineer, security-reviewer
+│       ├── skills/         ← tdd, security-review, code-review, etc.
+│       └── rules/agents.md
+├── shared/
+│   ├── opencode.json       ← Providers (opencode, deepseek), plugins (caveman, ponytail)
+│   ├── skills/             ← openviking (symlinked to profiles)
+│   └── rules/agents.md     ← Global conventions
+├── install.sh              ← Creates symlinks + shell aliases
+├── .scratch/spec/          ← hierarchical-team-design.md
+└── AGENTS.md / README.md   ← Entry points
 ```
 
-## How integration works
+## How It Works
 
-External skill packages integrate via symlinks + MCP registration. All config MUST go through `opencode-workflow` first, never direct to `~/.config/opencode/`.
+### Config Merging
 
-OpenCode scans 1 level deep per path. `opencode.json` defines multiple leaf paths matching bucket structure (one per sub-bucket with skills). `link-skills.sh` manages this on install/update. See [AGENTS.md](../AGENTS.md) for the full policy.
+OpenCode configs **merge**, not replace. Precedence order:
+1. Global config (`~/.config/opencode/opencode.json`) — providers, plugins
+2. Profile config (`OPENCODE_CONFIG_DIR`) — agents, skills, MCP, model routing
 
-Setup: `scripts/link-skills.sh` creates categorized symlinks in `~/.config/opencode/`.
+Profile configs override global on conflicts. Non-conflicting settings preserved.
 
-## When to extract a skill
+### Herdr Orchestration
 
-If a skill:
-- Has 4+ external dependencies (MCP, CLI, libs)
-- Needs additional skills to function (composition)
-- Fully automates a task (not just a helper)
-- Has multiple patterns/templates
-- Updates frequently independent of the workflow
+Each profile is an independent OpenCode instance. Herdr manages all sessions:
 
-→ Extract to its own repo, integrate via symlink + setup script.
+```bash
+herdr new-session --name orchestrator -- cmd oc-orchestrator
+herdr new-session --name planning -- cmd oc-planning
+herdr new-session --name engineering -- cmd oc-engineering
+herdr new-session --name validation -- cmd oc-validation
+```
 
-See [skills/extraction-criteria.md](skills/extraction-criteria.md) for the full checklist.
+Orchestrator communicates with other profiles via Herdr:
+- `herdr pane send-text <id> <text>` — send work
+- `herdr pane read <id>` — read results
+- `herdr wait output <id> --match <text>` — wait for completion
 
-## How to add a new skill
+### Skill Distribution
 
-1. Decide: pipeline-level (here) or extractable (own repo)? See above.
-2. If here, pick the right bucket:
-   - `engineering/` — pipeline/daily code-work skills (sub-dirs: `planning/`, `design/`, `quality/`, `workflow/`)
-   - `productivity/` — non-code workflow tools (documents, research, handoffs, skill authoring)
-    - `misc/<domain>/` — specialist skills grouped by domain (`frontend`, `backend`, `languages`, `security`, `ml`, `mobile`, `devops`, `data`)
-3. Create `skills/{bucket}/skill-name/` with `SKILL.md` + optional `REFERENCE.md`
-4. If external: create repo with same structure, integrate via symlink
-5. Run `./scripts/audit-skill.sh skills/path/to/skill` to verify
-6. Run `./scripts/install-hooks.sh` if not already done
-7. Update the bucket `README.md` (and `skills/misc/README.md` for misc sub-domains)
+Skills distributed per profile specialization:
+- **Orchestrator**: workflow management (memory-dreaming, workflow-audit, eval, etc.)
+- **Planning**: planning + design (triage, to-spec, wayfinder, design-system, etc.)
+- **Engineering**: frontend/backend/platform (react-patterns, laravel, docker-patterns, etc.)
+- **Validation**: QA + security (tdd, security-review, code-review, etc.)
+
+### Model Routing
+
+- **Planning/Validation**: `opencode/hy3-free` (cheap, fast)
+- **Engineering**: `deepseek/deepseek-v4-flash` (code execution)
+
+Providers configured in shared config, model routing per profile.
+
+## Installation
+
+```bash
+./install.sh
+source ~/.zshrc
+```
+
+Creates:
+- `~/.config/opencode-profiles/{orchestrator,planning,engineering,validation}/`
+- Shell aliases: `oc-orchestrator`, `oc-planning`, `oc-engineering`, `oc-validation`
+- Symlinks to repo profiles + shared resources
+
+## When to Add/Modify
+
+- **New skill**: Add to appropriate profile's `skills/` directory
+- **New agent**: Add to profile's `agents/` directory, update profile's `opencode.json`
+- **New profile**: Create directory, add to `install.sh`, update this doc
+- **Model change**: Update profile's `opencode.json` agent block
 
 ## Reference
 
-- **write-a-skill** — skill structure principles (the rulebook)
-- **skill-author** — meta-skill for creating new skills
-- design-skill — example external package
-- [skills/extraction-criteria.md](skills/extraction-criteria.md) — when to extract
-- [skills/anti-hardcoded-pattern.md](skills/anti-hardcoded-pattern.md) — portability rules
+- `.scratch/spec/hierarchical-team-design.md` — full spec
+- `shared/opencode.json` — providers + plugins
+- `profiles/*/opencode.json` — profile-specific config
+- `profiles/*/rules/agents.md` — profile conventions

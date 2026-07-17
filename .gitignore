@@ -1,22 +1,17 @@
-# Plugin compiled output (taste.ts, lesson-injector.ts → .js)
+# OpenCode Workflow Kit — .gitignore
+
+# Plugin compiled output
 .opencode/plugins/out/
 
-# Machine-specific symlinks to npm package skills
-/skills/engineering/quality/ponytail
-/skills/engineering/quality/ponytail-audit
-/skills/engineering/quality/ponytail-debt
-/skills/engineering/quality/ponytail-help
-/skills/engineering/quality/ponytail-review
-
-# Sandbox — temporary workspace, not for main branch
-
-
-
-# Dependencies
+# Node modules
 node_modules/
 
-# Session artifacts, scratch notes
+# Session artifacts
 .scratch/
 
-# Backup dirs from refactors
+# Backup dirs
 *.bak/
+
+# OS files
+.DS_Store
+Thumbs.db

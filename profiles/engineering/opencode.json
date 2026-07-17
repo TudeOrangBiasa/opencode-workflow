@@ -29,5 +29,30 @@
   },
   "skills": {
     "paths": ["./skills"]
+  },
+  "skill_triggers": {
+    "react-patterns": ["react", "react component", "react hooks", "JSX", "tsx"],
+    "angular-developer": ["angular", "angular component", "TypeScript angular"],
+    "ui-to-vue": ["vue", "convert to vue", "vue component"],
+    "accessibility": ["accessibility", "a11y", "WCAG", "screen reader", "ARIA"],
+    "nextjs-turbopack": ["nextjs", "next.js", "turbopack", "next config"],
+    "nuxt4-patterns": ["nuxt", "nuxt4", "nuxt config"],
+    "vite-patterns": ["vite", "vite config", "vite build"],
+    "design-skill": ["design", "redesign", "UI", "frontend design", "visual", "polish", "audit design", "colorize", "typeset", "layout", "animate", "craft", "refine", "bolder", "quieter", "deslop"],
+    "laravel": ["laravel", "eloquent", "blade", "artisan"],
+    "django": ["django", "django model", "django view"],
+    "fastapi-patterns": ["fastapi", "fast api", "python API"],
+    "api-connector-builder": ["API connector", "API client", "integrate API", "external API"],
+    "backend-patterns": ["backend pattern", "service layer", "repository pattern", "business logic"],
+    "mcp-server-patterns": ["MCP server", "model context protocol", "MCP tool"],
+    "modular-monolith": ["modular monolith", "monolith to microservices", "module boundary"],
+    "implement": ["implement", "build this", "code this", "make it work"],
+    "prototype": ["prototype this", "throwaway code", "try it out", "sandbox"],
+    "containers": ["docker", "dockerfile", "docker-compose", "kubernetes", "k8s", "container"],
+    "database-patterns": ["postgres", "postgresql", "mysql", "redis", "prisma", "database", "SQL", "query"],
+    "database-migrations": ["migration", "database migration", "schema change", "alter table"],
+    "database-review": ["database review", "schema review", "query review", "index review"],
+    "flox-environments": ["flox", "flox environment", "dev environment"],
+    "shared-hosting-deployment": ["shared hosting", "cPanel", "FTP deploy", "cheap hosting"]
   }
 }

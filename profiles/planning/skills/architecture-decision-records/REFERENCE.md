@@ -131,5 +131,5 @@ docs/adr/
 
 ## Integration with Other Skills
 
-- **Planner agent**: when proposing architecture changes, suggest creating an ADR
-- **Code reviewer agent**: flag PRs with architectural changes missing an ADR
+- **Planning-lead agent**: when proposing architecture changes, suggest creating an ADR
+- **Validation-lead agent**: flag PRs with architectural changes missing an ADR

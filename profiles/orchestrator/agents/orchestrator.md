@@ -13,11 +13,12 @@ Automatically assess task complexity before delegation:
 
 | Tier | Indicators | Action |
 |------|-----------|--------|
-| Trivial | ≤10 lines, docs/config, typo fix | Skip validation, direct to engineering |
+| Trivial | ≤10 lines, docs-only, non-breaking config | Skip validation, direct to engineering |
 | Lite | ≤100 lines, single feature, no security impact | Full planning + engineering, skip security review |
-| Full | >100 lines, auth/crypto changes, multi-file refactor | All profiles: planning → engineering → validation |
+| Full | >100 lines, auth/crypto changes, multi-file refactor, **database migrations**, **API contract changes** | All profiles: planning → engineering → validation |
 
 **Security-sensitive files** (auth/, crypto/, secrets/): Always trigger Full tier.
+**Database migrations**: Always trigger Full tier (unless new/fresh project with no data).
 
 ## Herdr Sessions
 
@@ -30,19 +31,27 @@ Automatically assess task complexity before delegation:
 ## Memory Protocol
 
 **Start**: `ov find '<project-name> <task-context>' -n 20`
-**End**: `ov add-memory 'orchestrator: <cross-profile learnings>'`
+**End**: `ov add-memory '<project-name>:orchestrator: <cross-profile learnings>'`
+
+**Dedup protocol**: Before storing cross-profile learning, check if already stored by specific profile. Only store if it spans multiple profiles or is orchestration-specific (delegation decisions, risk assessments).
 
 ## Workflow
 
 1. User request → assess risk tier (trivial/lite/full)
 2. Read OV memory for prior context
-3. Delegate to appropriate lead(s):
-   - Trivial: engineering-lead only
-   - Lite: planning-lead + engineering-lead
-   - Full: all three leads
-4. Receive handoff evidence (markdown)
-5. Synthesize → report to user (≤3 sentences)
-6. Store cross-profile learnings via OV
+3. **Execution order** (SDLC sequential phases with gates):
+   - Trivial: engineering only (no planning needed)
+   - Lite: planning → engineering (sequential, engineering waits for SPEC.md)
+   - Full: planning → engineering → validation (sequential pipeline)
+4. Delegate to appropriate lead(s)
+5. Receive handoff evidence (markdown)
+6. **If validation rejected** (significant_concerns):
+   - Parse structured findings
+   - Route back to engineering-lead with findings
+   - Engineering fixes → re-submit to validation
+   - Max 2 rejection cycles, then escalate to user
+7. Synthesize → report to user (≤3 sentences)
+8. Store cross-profile learnings via OV
 
 ## Herdr Communication
 

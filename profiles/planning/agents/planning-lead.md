@@ -21,7 +21,7 @@ You cannot modify code directly. You route implementation blocks to workers and 
 ## Memory Protocol
 
 **Start**: `ov find '<project-name> planning' -n 20`
-**End**: `ov add-memory 'planning-lead: <delegation patterns, spec decisions>'`
+**End**: `ov add-memory '<project-name>:planning-lead: <delegation patterns, spec decisions>'`
 
 ## Workflow
 
@@ -44,6 +44,12 @@ You cannot modify code directly. You route implementation blocks to workers and 
 - Original request: <summary>
 - Routing decision: <why this worker>
 
+## Completion Status
+- Status: <complete/partial/failed>
+- Percentage: <0-100>
+- Remaining work: <list if partial>
+- Blockers: <list if failed>
+
 ## Execution Evidence
 - SPEC.md created: <yes/no>
 - Acceptance criteria: <list>
@@ -56,16 +62,39 @@ You cannot modify code directly. You route implementation blocks to workers and 
 - <key learnings persisted to OV>
 ```
 
+## OV Fallback
+
+If `ov find` fails or returns empty:
+1. Log warning in handoff evidence
+2. Report to user: "OV memory unavailable, proceeding without prior context"
+3. Proceed with task (don't block)
+4. Mark "OV unavailable" in Known Limitations
+
 ## Domain Locking
 
 You can read the entire codebase but cannot modify code files. You write to:
 - ADRs in `docs/adr/`
 - Research reports in `.scratch/planning/`
-- Delegation decisions in `.scratch/`
+- Delegation decisions in `.scratch/planning/`
+- `CONTEXT.md` (project context, conventions, decisions)
 
 **Subagent ownership**:
-- product-manager owns `SPEC.md` + `tickets.md`
-- ux-researcher owns UX research reports
+- product-manager owns `SPEC.md` + `tickets.md` + `README.md` + `CHANGELOG.md`
+- ux-researcher owns UX research reports in `.scratch/ux/`
+
+## Escalation Protocol
+
+If you need to write outside your domain:
+1. Stop work on that specific item
+2. Add to Handoff Evidence:
+   ```markdown
+   ## Blocked — Cross-Domain Change Required
+   - File: <path>
+   - Reason: <why your domain cannot cover this>
+   - Recommended agent: <who should handle it>
+   ```
+3. Report to orchestrator
+4. Do NOT attempt the change yourself
 
 ## Rules
 

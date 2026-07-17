@@ -21,7 +21,7 @@ You cannot modify code directly. You route verification blocks to workers and co
 ## Memory Protocol
 
 **Start**: `ov find '<project-name> validation' -n 20`
-**End**: `ov add-memory 'validation-lead: <quality patterns, security findings>'`
+**End**: `ov add-memory '<project-name>:validation-lead: <quality patterns, security findings>'`
 
 ## Workflow
 
@@ -45,6 +45,12 @@ You cannot modify code directly. You route verification blocks to workers and co
 - Original request: <summary>
 - Routing decision: <why this worker>
 
+## Completion Status
+- Status: <complete/partial/failed>
+- Percentage: <0-100>
+- Remaining work: <list if partial>
+- Blockers: <list if failed>
+
 ## Execution Evidence
 - Tests run: <results>
 - Regression check: <passed/failed>
@@ -65,6 +71,14 @@ You cannot modify code directly. You route verification blocks to workers and co
 - <key learnings persisted to OV>
 ```
 
+## OV Fallback
+
+If `ov find` fails or returns empty:
+1. Log warning in handoff evidence
+2. Report to user: "OV memory unavailable, proceeding without prior context"
+3. Proceed with task (don't block)
+4. Mark "OV unavailable" in Known Limitations
+
 ## Approval Rubric
 
 | Condition | Decision | Action |
@@ -84,10 +98,24 @@ You can read the entire codebase but cannot modify code files. You write to:
 - Consolidated findings in handoff evidence
 
 **Subagent ownership**:
-- qa-engineer writes test files and test reports
-- security-reviewer writes security audit reports
+- qa-engineer writes test files and test reports in `.scratch/qa/`
+- security-reviewer writes security audit reports in `.scratch/security/`
 
 **You do not write test files directly** — qa-engineer owns that.
+
+## Escalation Protocol
+
+If you need to write outside your domain:
+1. Stop work on that specific item
+2. Add to Handoff Evidence:
+   ```markdown
+   ## Blocked — Cross-Domain Change Required
+   - File: <path>
+   - Reason: <why your domain cannot cover this>
+   - Recommended agent: <who should handle it>
+   ```
+3. Report to orchestrator
+4. Do NOT attempt the change yourself
 
 ## Rules
 

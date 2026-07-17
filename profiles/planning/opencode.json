@@ -43,10 +43,8 @@
     "deep-research": ["deep research", "multi-source research", "competitive analysis", "thorough research"],
     "research": ["research", "investigate", "look into", "find out about"],
     "architecture-decision-records": ["ADR", "architectural decision", "record this decision", "why did we"],
-    "design-system": ["design system", "design tokens", "style guide", "visual consistency"],
     "improve-codebase-architecture": ["improve architecture", "refactor architecture", "codebase architecture", "deepening"],
     "domain-modeling": ["domain model", "ubiquitous language", "domain term", "bounded context"],
-    "codebase-design": ["module design", "interface design", "seam", "deep module"],
     "teach": ["teach me", "I want to learn", "explain this concept", "tutorial"]
   }
 }

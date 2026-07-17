@@ -26,10 +26,8 @@
     "deployment-patterns": ["deployment", "CI/CD", "release", "deploy strategy", "blue-green", "canary"],
     "git-workflow": ["branch strategy", "merge conflict", "PR workflow", "rebase", "commit convention"],
     "github-ops": ["issue triage", "PR management", "CI status", "GitHub actions"],
-    "prototype": ["prototype this", "mock up", "try a few designs", "let me play with it"],
     "search-first": ["search first", "look up", "research before coding", "check existing"],
     "skill-author": ["create skill", "add skill", "audit skill structure", "validate skill"],
-    "zoom-out": ["zoom out", "big picture", "overview", "broader context", "higher level"],
     "herdr": ["herdr", "multiplexer", "pane", "terminal pane", "background agent", "parallel agent"]
   }
 }

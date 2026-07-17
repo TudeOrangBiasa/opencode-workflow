@@ -42,10 +42,7 @@ echo "alias oc-orchestrator='OPENCODE_CONFIG_DIR=$CONFIG_DIR/orchestrator openco
 echo "alias oc-planning='OPENCODE_CONFIG_DIR=$CONFIG_DIR/planning opencode'" >> "$SHELL_RC"
 echo "alias oc-engineering='OPENCODE_CONFIG_DIR=$CONFIG_DIR/engineering opencode'" >> "$SHELL_RC"
 echo "alias oc-validation='OPENCODE_CONFIG_DIR=$CONFIG_DIR/validation opencode'" >> "$SHELL_RC"
-echo "alias oc-spawn='$REPO_DIR/start-all-profiles.sh'" >> "$SHELL_RC"
 
-# Make start-all-profiles.sh executable
-chmod +x "$REPO_DIR/start-all-profiles.sh"
 
 echo ""
 echo "=== Installation complete ==="
@@ -56,7 +53,6 @@ echo "  oc-engineering"
 echo "  oc-validation"
 echo ""
 echo "Or spawn all profiles at once:"
-echo "  ./start-all-profiles.sh"
 echo ""
 echo "Or use Herdr:"
 echo "  herdr new-session --name orchestrator -- cmd oc-orchestrator"

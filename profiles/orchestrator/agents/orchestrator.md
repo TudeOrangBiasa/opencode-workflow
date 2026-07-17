@@ -28,23 +28,6 @@ Automatically assess task complexity before delegation:
 | `engineering` | Code execution, frontend/backend/platform |
 | `validation` | Quality assurance, security review |
 
-## Spawning Profiles
-
-If a profile session doesn't exist, spawn it via bash:
-
-```bash
-# Check if session exists
-herdr session list | grep -q "planning" || herdr new-session --name planning -- cmd oc-planning
-herdr session list | grep -q "engineering" || herdr new-session --name engineering -- cmd oc-engineering
-herdr session list | grep -q "validation" || herdr new-session --name validation -- cmd oc-validation
-```
-
-Or spawn all at once:
-```bash
-bash start-all-profiles.sh
-```
-
-## Herdr Communication
 
 Send work to a profile:
 ```bash

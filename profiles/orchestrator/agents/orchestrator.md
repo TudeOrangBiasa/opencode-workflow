@@ -31,6 +31,23 @@ oc-engineering    # Code execution, frontend/backend/platform
 oc-validation     # Quality assurance, security review
 ```
 
+## Herdr
+
+Use the `herdr` skill to inspect or control panes, tabs, workspaces, and other profiles.
+
+### Spawn profile terminals for the user
+
+When user asks to spawn other profiles, open Ghostty windows so they can see:
+
+```bash
+# Open each profile in a new Ghostty window
+ghostty -e bash -c "oc-planning; exec bash" &
+ghostty -e bash -c "oc-engineering; exec bash" &
+ghostty -e bash -c "oc-validation; exec bash" &
+```
+
+Then use Herdr to coordinate work between them.
+
 ## Herdr Sessions
 
 | Session | Purpose |

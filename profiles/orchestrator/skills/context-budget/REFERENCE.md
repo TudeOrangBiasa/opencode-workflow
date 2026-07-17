@@ -72,7 +72,7 @@ Skill: Scans setup → 16 agents (12,400 tokens), 28 skills (6,200), 87 MCP tool
 **Verbose mode:**
 ```
 User: /context-budget --verbose
-Skill: Full report + per-file breakdown showing planner.md (213 lines, 1,840 tokens),
+Skill: Full report + per-file breakdown showing orchestrator.md (213 lines, 1,840 tokens),
        MCP tool list with per-tool sizes, duplicated rule lines side by side
 ```
 

@@ -25,7 +25,7 @@ Extract `result.memories[]` — each has `uri`, `abstract`, `score`. Classify ea
 - **Archive**: duplicate, superseded, irrelevant
 - **Keep**: unique, still relevant
 
-Single broad query covers all subagent namespaces (builder, reviewer). No per-namespace queries.
+Single broad query covers all profile namespaces. No per-profile queries.
 
 ## Phase 2: Present + Merge
 

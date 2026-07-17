@@ -41,7 +41,7 @@ Development tooling (eslint, ruff, prettier, husky), AI/LLM (SDKs, prompt mgmt),
 
 ## Integration Points
 
-With planner: identify available tools before architecture review. With architect: consult for tech stack decisions.
+With orchestrator: identify available tools before architecture review. With engineering-lead: consult for tech stack decisions.
 
 ## Examples
 

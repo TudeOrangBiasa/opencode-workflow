@@ -174,14 +174,14 @@ session:
 findings:
   - severity: MEDIUM
     category: tool-misuse
-    target: planner
+    target: orchestrator
     repeat: first
     grader: model-based
     verdict: warn
-    summary: "Spawned reviewer before loading eval"
-    evidence: "Spawned reviewer subagent without first running eval skill — reviewer checked .scratch/evals/ independently and found 0 files, corrected sequencing"
-    impact: "Minor — reviewer caught it anyway"
-    fix: "Load eval before reviewer to check data state"
+    summary: "Spawned validation profile before loading eval"
+    evidence: "Spawned validation profile without first running eval skill — validation checked .scratch/evals/ independently and found 0 files, corrected sequencing"
+    impact: "Minor — validation caught it anyway"
+    fix: "Load eval before validation profile to check data state"
 
 metrics:
   pass_at_1: 0.85
@@ -223,7 +223,7 @@ From `eval-harness` framework:
 - `context-budget` — Token overhead audit
 - `diagnose` — Diagnosis loop for hard bugs
 - `design` — UI/UX gate
-- `reviewer` — Can load this skill for session behavior audits
+- `validation-lead` — Can load this skill for session behavior audits
 
 ## References
 

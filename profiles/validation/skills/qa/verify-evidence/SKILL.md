@@ -1,9 +1,9 @@
 ---
 name: verify-evidence
-description: Tool-based verification checklist for acceptance criteria, test evidence, stuck-loop detection, and AFK/high-risk review. Use when reviewer/planner needs independent evidence for non-trivial changes, AFK tasks, flaky/failing tests, deployment, auth, DB, payment, or ambiguous verification.
+description: Tool-based verification checklist for acceptance criteria, test evidence, stuck-loop detection, and AFK/high-risk review. Use when validation-lead/engineering-lead needs independent evidence for non-trivial changes, AFK tasks, flaky/failing tests, deployment, auth, DB, payment, or ambiguous verification.
 ---
 
-Load this skill when planner or reviewer needs independent evidence. Do not load for trivial docs/config changes.
+Load this skill when validation-lead or engineering-lead needs independent evidence. Do not load for trivial docs/config changes.
 
 ## When to Use
 
@@ -17,7 +17,7 @@ Load this skill when planner or reviewer needs independent evidence. Do not load
 ## When to Skip
 
 - Trivial docs/config changes — inspect diff directly
-- No acceptance criteria AND no high-risk/AFK/reviewer evidence need exists
+- No acceptance criteria AND no high-risk/AFK/validation-lead evidence need exists
 - Review is purely style/naming suggestions
 
 ## Self-Improvement Pipeline Integration

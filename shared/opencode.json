@@ -1,22 +1,4 @@
 {
-  "provider": {
-    "opencode": {
-      "npm": "@ai-sdk/opencode",
-      "models": {
-        "hy3-free": { "name": "hy3-free" }
-      }
-    },
-    "deepseek": {
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "https://api.deepseek.com/v1",
-        "apiKey": "{env:DEEPSEEK_API_KEY}"
-      },
-      "models": {
-        "deepseek-v4-flash": { "name": "deepseek-v4-flash" }
-      }
-    }
-  },
   "plugin": [
     "/home/todayz/.local/share/fnm/node-versions/v24.12.0/installation/lib/node_modules/opencode-caveman/.opencode/plugins/opencode-caveman.js",
     "/home/todayz/.local/share/fnm/node-versions/v24.12.0/installation/lib/node_modules/opencode-ponytail/.opencode/plugins/ponytail.mjs"

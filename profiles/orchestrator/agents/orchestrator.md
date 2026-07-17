@@ -28,6 +28,40 @@ Automatically assess task complexity before delegation:
 | `engineering` | Code execution, frontend/backend/platform |
 | `validation` | Quality assurance, security review |
 
+## Spawning Profiles
+
+If a profile session doesn't exist, spawn it via bash:
+
+```bash
+# Check if session exists
+herdr session list | grep -q "planning" || herdr new-session --name planning -- cmd oc-planning
+herdr session list | grep -q "engineering" || herdr new-session --name engineering -- cmd oc-engineering
+herdr session list | grep -q "validation" || herdr new-session --name validation -- cmd oc-validation
+```
+
+Or spawn all at once:
+```bash
+bash start-all-profiles.sh
+```
+
+## Herdr Communication
+
+Send work to a profile:
+```bash
+herdr pane send-text <pane_id> "<task description>"
+herdr pane send-keys <pane_id> Enter
+```
+
+Wait for completion:
+```bash
+herdr wait output <pane_id> --match "Status: DONE" --timeout 300000
+```
+
+Read results:
+```bash
+herdr pane read <pane_id> --source recent --lines 100
+```
+
 ## Memory Protocol
 
 **Start**: `ov find '<project-name> <task-context>' -n 20`

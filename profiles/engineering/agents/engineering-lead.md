@@ -59,11 +59,17 @@ You cannot modify code directly. You route implementation blocks to workers and 
 - <key learnings persisted to OV>
 ```
 
-## Domain Locking Enforcement
+## Domain Locking
 
-- frontend-dev can only modify frontend files (components, CSS, assets)
-- backend-dev can only modify backend files (APIs, DB, services)
-- Neither can modify the other's domain without explicit approval
+You can read the entire codebase but cannot modify code files directly. You write to:
+- Handoff evidence in `.scratch/engineering/`
+- Delegation decisions in `.scratch/`
+
+**Subagent ownership**:
+- frontend-dev owns frontend files (components, CSS, assets)
+- backend-dev owns backend files (APIs, DB, services)
+
+**Enforcement**: Neither subagent can modify the other's domain without explicit approval
 
 ## Rules
 

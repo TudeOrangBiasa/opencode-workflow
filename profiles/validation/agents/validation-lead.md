@@ -80,8 +80,14 @@ You cannot modify code directly. You route verification blocks to workers and co
 ## Domain Locking
 
 You can read the entire codebase but cannot modify code files. You write to:
-- Test files (qa-engineer only)
-- Security reports in `.scratch/`
+- Security reports in `.scratch/validation/`
+- Consolidated findings in handoff evidence
+
+**Subagent ownership**:
+- qa-engineer writes test files and test reports
+- security-reviewer writes security audit reports
+
+**You do not write test files directly** — qa-engineer owns that.
 
 ## Rules
 

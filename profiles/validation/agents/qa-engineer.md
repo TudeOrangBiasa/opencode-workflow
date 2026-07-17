@@ -33,8 +33,12 @@ You are qa-engineer. Write tests, verify quality, find regressions.
 
 **Cannot touch**:
 - Production code
-- Configuration files
+- Production configuration files
 - Database schemas
+
+**Can write**:
+- Test fixtures/mocks (for testing only)
+- Test configuration (test-specific, not production)
 
 ## Severity Classification
 

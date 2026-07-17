@@ -59,9 +59,13 @@ You cannot modify code directly. You route implementation blocks to workers and 
 ## Domain Locking
 
 You can read the entire codebase but cannot modify code files. You write to:
-- `SPEC.md`
-- `tickets.md`
-- Research reports in `.scratch/`
+- ADRs in `docs/adr/`
+- Research reports in `.scratch/planning/`
+- Delegation decisions in `.scratch/`
+
+**Subagent ownership**:
+- product-manager owns `SPEC.md` + `tickets.md`
+- ux-researcher owns UX research reports
 
 ## Rules
 

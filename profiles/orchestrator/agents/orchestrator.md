@@ -37,15 +37,24 @@ Use the `herdr` skill to inspect or control panes, tabs, workspaces, and other p
 
 ### Spawn team in one Herdr workspace
 
-When user asks to spawn the team, open ONE Ghostty window running Herdr with all profiles:
+When user asks to spawn the team, open ONE Ghostty window with all 3 profiles in Herdr panes:
 
 ```bash
-zsh -i -c "source ~/.zshrc; ghostty -e zsh -i -c 'source ~/.zshrc; herdr'"
+# Option 1: Use spawn script (recommended)
+~/Workspace/personal/agents/opencode-workflow/spawn-team.zsh
+# or: oc-spawn
+
+# Option 2: Open Ghostty running Herdr (manual pane splits)
+ghostty -e zsh -i -c "source ~/.zshrc; herdr"
 ```
 
-Or use the spawn script:
-```bash
-zsh -i ~/Workspace/personal/agents/opencode-workflow/spawn-team.zsh
+The spawn script creates a workspace (`herdr workspace list` to find the ID) with splitting:
+```
+┌──────────────┬──────────────┐
+│              │  engineering  │
+│   planning   ├──────────────┤
+│              │  validation   │
+└──────────────┴──────────────┘
 ```
 
 ## Herdr Sessions

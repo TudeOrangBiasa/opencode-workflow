@@ -1,14 +1,19 @@
 {
   "provider": {
-    "9router": {
+    "opencode": {
+      "npm": "@ai-sdk/opencode",
+      "models": {
+        "hy3-free": { "name": "hy3-free" }
+      }
+    },
+    "deepseek": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
-        "baseURL": "http://127.0.0.1:20128/v1",
-        "apiKey": "{env:NINE_ROUTER_API_KEY}"
+        "baseURL": "https://api.deepseek.com/v1",
+        "apiKey": "{env:DEEPSEEK_API_KEY}"
       },
       "models": {
-        "oc/hy3-free": { "name": "oc/hy3-free" },
-        "ds/deepseek-v4-flash": { "name": "ds/deepseek-v4-flash" }
+        "deepseek-v4-flash": { "name": "deepseek-v4-flash" }
       }
     }
   },

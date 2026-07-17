@@ -3,15 +3,15 @@
   "agent": {
     "engineering-lead": {
       "mode": "primary",
-      "model": "9router/ds/deepseek-v4-flash"
+      "model": "deepseek/deepseek-v4-flash"
     },
     "frontend-dev": {
       "mode": "subagent",
-      "model": "9router/ds/deepseek-v4-flash"
+      "model": "deepseek/deepseek-v4-flash"
     },
     "backend-dev": {
       "mode": "subagent",
-      "model": "9router/ds/deepseek-v4-flash"
+      "model": "deepseek/deepseek-v4-flash"
     }
   },
   "mcp": {

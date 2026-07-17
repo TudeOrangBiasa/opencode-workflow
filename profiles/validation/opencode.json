@@ -3,15 +3,15 @@
   "agent": {
     "validation-lead": {
       "mode": "primary",
-      "model": "9router/oc/hy3-free"
+      "model": "opencode/hy3-free"
     },
     "qa-engineer": {
       "mode": "subagent",
-      "model": "9router/oc/hy3-free"
+      "model": "opencode/hy3-free"
     },
     "security-reviewer": {
       "mode": "subagent",
-      "model": "9router/oc/hy3-free"
+      "model": "opencode/hy3-free"
     }
   },
   "mcp": {

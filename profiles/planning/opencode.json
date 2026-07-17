@@ -3,15 +3,15 @@
   "agent": {
     "planning-lead": {
       "mode": "primary",
-      "model": "9router/oc/hy3-free"
+      "model": "opencode/hy3-free"
     },
     "product-manager": {
       "mode": "subagent",
-      "model": "9router/oc/hy3-free"
+      "model": "opencode/hy3-free"
     },
     "ux-researcher": {
       "mode": "subagent",
-      "model": "9router/oc/hy3-free"
+      "model": "opencode/hy3-free"
     }
   },
   "mcp": {

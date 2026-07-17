@@ -1,9 +1,10 @@
 {
+  "$schema": "https://opencode.ai/config.json",
   "default_agent": "orchestrator",
   "agent": {
     "orchestrator": {
       "mode": "primary",
-      "model": "9router/oc/hy3-free"
+      "model": "opencode/hy3-free"
     }
   },
   "mcp": {

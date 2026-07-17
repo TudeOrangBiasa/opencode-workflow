@@ -13,6 +13,12 @@
     "backend-dev": {
       "mode": "subagent",
       "model": "deepseek/deepseek-v4-flash"
+    },
+    "plan": {
+      "disable": true
+    },
+    "build": {
+      "disable": true
     }
   },
   "mcp": {

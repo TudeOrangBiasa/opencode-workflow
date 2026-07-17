@@ -13,6 +13,12 @@
     "ux-researcher": {
       "mode": "subagent",
       "model": "opencode/hy3-free"
+    },
+    "plan": {
+      "disable": true
+    },
+    "build": {
+      "disable": true
     }
   },
   "mcp": {

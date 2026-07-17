@@ -5,6 +5,12 @@
     "orchestrator": {
       "mode": "primary",
       "model": "opencode/hy3-free"
+    },
+    "plan": {
+      "disable": true
+    },
+    "build": {
+      "disable": true
     }
   },
   "mcp": {

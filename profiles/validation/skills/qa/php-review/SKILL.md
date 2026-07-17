@@ -5,7 +5,7 @@ description: PHP and Laravel review checklist for diffs touching PHP, Blade, Liv
 
 # PHP Review
 
-Use as a focused add-on to `review` or `reviewer`. Keep findings actionable and PHP-specific.
+Use as a focused add-on to `review` or `validation-lead`. Keep findings actionable and PHP-specific.
 
 ## Process
 

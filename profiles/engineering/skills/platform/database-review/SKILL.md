@@ -5,7 +5,7 @@ description: Database review checklist for SQL, migrations, schema design, index
 
 # Database Review
 
-Use as a focused add-on to `review` or `reviewer`. Keep findings tied to changed persistence behavior.
+Use as a focused add-on to `review` or `validation-lead`. Keep findings tied to changed persistence behavior.
 
 ## Checks
 

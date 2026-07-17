@@ -7,7 +7,7 @@ description: Use when postgreSQL schema, indexing, queries, RLS, and configurati
 
 Adapted from ECC's `postgres-patterns` skill (MIT).
 
-Quick reference for PostgreSQL best practices. For detailed guidance, use the `database-reviewer` agent.
+Quick reference for PostgreSQL best practices. For detailed guidance, use the `validation-lead` agent.
 
 ## When to Activate
 

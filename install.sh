@@ -16,6 +16,12 @@ for profile in orchestrator planning engineering validation; do
   ln -sf "$REPO_DIR/profiles/$profile/agents" "$CONFIG_DIR/$profile/agents"
   ln -sf "$REPO_DIR/profiles/$profile/skills" "$CONFIG_DIR/$profile/skills"
   ln -sf "$REPO_DIR/profiles/$profile/rules" "$CONFIG_DIR/$profile/rules"
+  
+  # Create .opencode symlinks (OpenCode expects .opencode/ prefix)
+  mkdir -p "$CONFIG_DIR/$profile/.opencode"
+  ln -sf "../agents" "$CONFIG_DIR/$profile/.opencode/agents"
+  ln -sf "../skills" "$CONFIG_DIR/$profile/.opencode/skills"
+  ln -sf "../rules" "$CONFIG_DIR/$profile/.opencode/rules"
 done
 
 # Symlink shared resources to each profile

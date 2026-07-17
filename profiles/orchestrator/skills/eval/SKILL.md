@@ -4,7 +4,7 @@ description: Use when evaluate a session for AI mistakes, user frustration, repe
 ---
 # Eval
 
-Analyze the current session for agent failures, user frustration, and repeated mistakes. Create an eval report in the opencode-workflow repo. Report only — never fix directly. After report, use `grill-with-docs` or `grill-me` to plan fixes before implementing.
+Analyze the current session for agent failures, user frustration, and repeated mistakes. Create an eval report in the opencode-workflow repo. Report only — never fix directly. After report, use `grill-with-docs` or `grilling` to plan fixes before implementing.
 
 ## When to Activate
 

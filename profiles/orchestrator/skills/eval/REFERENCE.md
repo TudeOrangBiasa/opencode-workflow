@@ -93,7 +93,7 @@ Eval report created: .scratch/evals/<session-name>.md
 
 Next steps:
 1. Review the report
-2. Load grill-with-docs or grill-me to plan fixes
+2. Load grill-with-docs or grilling to plan fixes
 3. Apply fixes to agents/skills after planning
 ```
 
@@ -217,7 +217,7 @@ From `eval-harness` framework:
 ## Integration
 
 - `grill-with-docs` — Plan fixes against domain model, sharpen terminology
-- `grill-me` — Stress-test fix plans before implementing
+- `grilling` — Stress-test fix plans before implementing
 - `eval-harness` — Grader types, pass@k metrics (theory)
 - `verify-evidence` — Tool-based verification checklist
 - `context-budget` — Token overhead audit

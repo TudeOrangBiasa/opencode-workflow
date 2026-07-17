@@ -1,0 +1,19 @@
+{
+  "default_agent": "orchestrator",
+  "agent": {
+    "orchestrator": {
+      "mode": "primary",
+      "model": "9router/oc/hy3-free"
+    }
+  },
+  "mcp": {
+    "openviking": {
+      "type": "remote",
+      "url": "http://localhost:1933/mcp",
+      "enabled": true
+    }
+  },
+  "skills": {
+    "paths": ["./skills"]
+  }
+}

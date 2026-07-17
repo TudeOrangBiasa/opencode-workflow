@@ -1,0 +1,32 @@
+{
+  "default_agent": "engineering-lead",
+  "agent": {
+    "engineering-lead": {
+      "mode": "primary",
+      "model": "9router/ds/deepseek-v4-flash"
+    },
+    "frontend-dev": {
+      "mode": "subagent",
+      "model": "9router/ds/deepseek-v4-flash"
+    },
+    "backend-dev": {
+      "mode": "subagent",
+      "model": "9router/ds/deepseek-v4-flash"
+    }
+  },
+  "mcp": {
+    "chrome-devtools": {
+      "type": "local",
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
+      "enabled": true
+    },
+    "openviking": {
+      "type": "remote",
+      "url": "http://localhost:1933/mcp",
+      "enabled": true
+    }
+  },
+  "skills": {
+    "paths": ["./skills"]
+  }
+}

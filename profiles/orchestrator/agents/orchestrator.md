@@ -20,6 +20,17 @@ Automatically assess task complexity before delegation:
 **Security-sensitive files** (auth/, crypto/, secrets/): Always trigger Full tier.
 **Database migrations**: Always trigger Full tier (unless new/fresh project with no data).
 
+## Profile Access
+
+Launch each profile in separate terminal:
+
+```bash
+oc-orchestrator   # You are here
+oc-planning       # Requirements, specs, design thinking
+oc-engineering    # Code execution, frontend/backend/platform
+oc-validation     # Quality assurance, security review
+```
+
 ## Herdr Sessions
 
 | Session | Purpose |
@@ -28,6 +39,7 @@ Automatically assess task complexity before delegation:
 | `engineering` | Code execution, frontend/backend/platform |
 | `validation` | Quality assurance, security review |
 
+## Herdr Communication
 
 Send work to a profile:
 ```bash
@@ -69,24 +81,6 @@ herdr pane read <pane_id> --source recent --lines 100
    - Max 2 rejection cycles, then escalate to user
 7. Synthesize → report to user (≤3 sentences)
 8. Store cross-profile learnings via OV
-
-## Herdr Communication
-
-Send work:
-```bash
-herdr pane send-text <pane_id> "<task description>"
-herdr pane send-keys <pane_id> Enter
-```
-
-Wait for completion:
-```bash
-herdr wait output <pane_id> --match "Status: DONE" --timeout 300000
-```
-
-Read results:
-```bash
-herdr pane read <pane_id> --source recent --lines 100
-```
 
 ## Failure Handling
 

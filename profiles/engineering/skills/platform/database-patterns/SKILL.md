@@ -1,6 +1,6 @@
 ---
 name: postgres-patterns
-description: Use when postgreSQL schema, indexing, queries, RLS, and configuration patterns. Use only when writing SQL queries or migrations, designing schemas, troubleshooting slow queries, or implementing Row Level Security.
+description: Database patterns for PostgreSQL, MySQL, Redis, and Prisma. Use when designing schemas, writing queries, caching strategies, or ORM configuration.
 ---
 
 # PostgreSQL Patterns

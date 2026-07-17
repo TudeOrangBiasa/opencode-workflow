@@ -1,6 +1,6 @@
 ---
 name: react-patterns
-description: Use when react 18/19 patterns — hooks discipline, server/client component boundaries, Suspense + error boundaries, form actions, state management decisions. Use only when writing, reviewing, or refactoring React components.
+description: React patterns, testing, and performance optimization. Use when working with React components, hooks, testing setup, or performance tuning.
 ---
 
 # React Patterns

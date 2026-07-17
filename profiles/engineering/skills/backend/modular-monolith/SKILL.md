@@ -1,6 +1,6 @@
 ---
 name: modular-monolith
-description: Architecture guidance for modular monolith and backend evolution — decision framework (when/why to add stages: DB, LB, gateway, broker, cache/CDN) and implementation patterns (domain separation, Client/Implementation, no cross-domain FKs, ArchUnit enforcement, microservice migration). Use when designing backend architecture, deciding monolith vs microservices, structuring a modular monolith, or planning scaling evolution.
+description: Architecture patterns including modular monolith and hexagonal architecture. Use when designing module boundaries, ports/adapters, or refactoring for testability.
 ---
 
 # Modular Monolith

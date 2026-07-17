@@ -1,6 +1,6 @@
 ---
 name: docker-patterns
-description: Use when docker Compose local dev stacks, multi-stage Dockerfiles, networking, volume strategies, and container security hardening. Use only when setting up containerized dev environments or reviewing Docker configs.
+description: Container patterns for Docker and Kubernetes. Use when writing Dockerfiles, docker-compose, K8s manifests, or deployment configs.
 ---
 
 # Docker Patterns

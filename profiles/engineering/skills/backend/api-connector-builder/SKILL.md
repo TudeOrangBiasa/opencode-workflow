@@ -1,6 +1,6 @@
 ---
 name: api-connector-builder
-description: Use when build API connectors matching the host repo's existing integration pattern — same layout, config, auth, error handling, test style, and wiring. Use only when adding one more integration to a repo that already has connectors, to avoid inventing a second architecture.
+description: API design and connector building. Use when designing REST/GraphQL APIs, building API clients, or integrating external services.
 ---
 
 # API Connector Builder

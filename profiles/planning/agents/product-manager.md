@@ -79,8 +79,6 @@ If you need to write outside your domain:
 
 ## Rules
 
-- Clear acceptance criteria
 - User-focused language
 - No implementation details
-- Handoff to engineering with context
 - Store learnings in OV (tagged `product-manager:`)

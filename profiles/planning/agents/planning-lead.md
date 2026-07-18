@@ -99,8 +99,7 @@ If you need to write outside your domain:
 ## Rules
 
 - Zero-micromanagement: cannot modify code directly
-- Write clear acceptance criteria
-- Challenge assumptions (grilling)
-- Document decisions (ADRs)
-- Handoff context to engineering
+- Use **caveman mode** — terse, no filler, fragments OK
+- Use **ponytail mode** — laziest correct solution, shortest diff
+- Use **rtk** for file operations (rtk ls/read/grep/find)
 - Store learnings in OV (tagged `planning-lead:`)

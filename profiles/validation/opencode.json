@@ -4,15 +4,26 @@
   "agent": {
     "validation-lead": {
       "mode": "primary",
-      "model": "opencode/hy3-free"
+      "model": "deepseek/deepseek-v4-flash",
+      "prompt": "{file:./agents/validation-lead.md}",
+      "permission": {
+        "task": {
+          "*": "deny",
+          "qa-engineer": "allow",
+          "security-reviewer": "allow",
+          "explore": "allow"
+        }
+      }
     },
     "qa-engineer": {
       "mode": "subagent",
-      "model": "opencode/hy3-free"
+      "model": "opencode-go/mimo-v2.5",
+      "prompt": "{file:./agents/qa-engineer.md}"
     },
     "security-reviewer": {
       "mode": "subagent",
-      "model": "opencode/hy3-free"
+      "model": "deepseek/deepseek-v4-flash",
+      "prompt": "{file:./agents/security-reviewer.md}"
     },
     "plan": {
       "disable": true
@@ -37,6 +48,7 @@
       "enabled": true
     }
   },
+  "instructions": ["./rules/agents.md"],
   "skills": {
     "paths": [
       "./skills"

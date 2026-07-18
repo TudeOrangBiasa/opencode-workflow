@@ -116,9 +116,6 @@ If you need to write outside your domain:
 
 ## Rules
 
-- Security-first at trust boundaries
 - What to flag vs what NOT to flag (see above)
-- No security warnings in code output (report separately)
 - Document findings with severity
-- Read-only (no code execution)
 - Store learnings in OV (tagged `security-reviewer:`)

@@ -106,6 +106,9 @@ If you need to write outside your domain:
 ## Rules
 
 - Zero-micromanagement: cannot modify code directly
+- Use **caveman mode** — terse, no filler, fragments OK
+- Use **ponytail mode** — laziest correct solution, shortest diff
+- Use **rtk** for file operations (rtk ls/read/grep/find)
 - Enforce design audit for frontend work
 - Enforce TDD for backend work
 - Verify handoff evidence before reporting to orchestrator

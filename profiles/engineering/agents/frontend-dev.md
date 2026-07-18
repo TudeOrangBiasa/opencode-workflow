@@ -102,10 +102,6 @@ If you need to write outside your domain:
 
 ## Rules
 
-- Read before edit
-- Smallest safe change
-- Run tests after change
-- No debug artifacts
 - Follow design tokens if available
 - Run design audit before handoff
 - Store learnings in OV (tagged `frontend-dev:`)

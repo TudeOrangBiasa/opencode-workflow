@@ -4,7 +4,15 @@
   "agent": {
     "orchestrator": {
       "mode": "primary",
-      "model": "opencode/hy3-free"
+      "model": "opencode/hy3-free",
+      "prompt": "{file:./agents/orchestrator.md}",
+      "permission": {
+        "task": {
+          "*": "deny",
+          "explore": "allow",
+          "scout": "allow"
+        }
+      }
     },
     "plan": {
       "disable": true
@@ -20,6 +28,7 @@
       "enabled": true
     }
   },
+  "instructions": ["./rules/agents.md"],
   "skills": {
     "paths": [
       "./skills"

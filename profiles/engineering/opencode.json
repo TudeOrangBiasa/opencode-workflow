@@ -4,15 +4,26 @@
   "agent": {
     "engineering-lead": {
       "mode": "primary",
-      "model": "deepseek/deepseek-v4-flash"
+      "model": "opencode/hy3-free",
+      "prompt": "{file:./agents/engineering-lead.md}",
+      "permission": {
+        "task": {
+          "*": "deny",
+          "frontend-dev": "allow",
+          "backend-dev": "allow",
+          "explore": "allow"
+        }
+      }
     },
     "frontend-dev": {
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash"
+      "model": "opencode-go/mimo-v2.5",
+      "prompt": "{file:./agents/frontend-dev.md}"
     },
     "backend-dev": {
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash"
+      "model": "deepseek/deepseek-v4-flash",
+      "prompt": "{file:./agents/backend-dev.md}"
     },
     "plan": {
       "disable": true
@@ -37,6 +48,7 @@
       "enabled": true
     }
   },
+  "instructions": ["./rules/agents.md"],
   "skills": {
     "paths": [
       "./skills"

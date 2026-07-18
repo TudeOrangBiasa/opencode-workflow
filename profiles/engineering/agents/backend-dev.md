@@ -105,10 +105,6 @@ If you need to write outside your domain:
 
 ## Rules
 
-- Read before edit
-- Smallest safe change
 - TDD mandatory (red-green-refactor)
-- Run tests after change
-- No debug artifacts
 - Secure by default (validate input, sanitize output)
 - Store learnings in OV (tagged `backend-dev:`)

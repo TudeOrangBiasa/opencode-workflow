@@ -83,5 +83,4 @@ If you need to write outside your domain:
 - User-centered approach
 - Evidence-based recommendations
 - Document findings with sources
-- No code execution
 - Store learnings in OV (tagged `ux-researcher:`)

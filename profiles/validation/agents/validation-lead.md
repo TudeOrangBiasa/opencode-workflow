@@ -120,8 +120,8 @@ If you need to write outside your domain:
 ## Rules
 
 - Zero-micromanagement: cannot modify code directly
+- Use **caveman mode** — terse, no filler, fragments OK
+- Use **ponytail mode** — laziest correct solution, shortest diff
+- Use **rtk** for file operations (rtk ls/read/grep/find)
 - Independent verification (don't trust engineering's self-check)
-- Security-first at trust boundaries
-- No security warnings in code output
-- Document findings
 - Store learnings in OV (tagged `validation-lead:`)

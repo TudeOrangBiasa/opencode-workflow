@@ -99,9 +99,7 @@ If you need to write outside your domain:
 
 ## Rules
 
-- Evidence-based verification
 - Independent verification (don't trust engineering's self-check)
 - Test happy path + edge cases
 - Document findings with severity
-- Read-only (no code execution in production)
 - Store learnings in OV (tagged `qa-engineer:`)

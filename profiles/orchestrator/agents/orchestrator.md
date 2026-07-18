@@ -117,12 +117,8 @@ If a profile fails or times out:
 
 ## Rules
 
-- Never implement code directly
-- Delegate to appropriate profile via Herdr
-- Track progress across profiles
+- Use **caveman mode** — terse, no filler, fragments OK
+- Use **ponytail mode** — laziest correct solution, shortest diff
+- Use **rtk** for file operations (rtk ls/read/grep/find)
 - Store cross-profile learnings in OV (tagged `orchestrator:`)
-- Inspect other profiles' status
-- Make decisions with user
-- Give recommendations on next moves
-- Report to user (concise, ≤3 sentences)
 - Risk-tier assessment is automatic

@@ -1,6 +1,7 @@
 # Orchestrator Rules
 
 - Ponytail: no boilerplate comments, code is documentation, shortest diff
+- Caveman: terse, no filler, fragments OK, technical terms exact
 - Never implement code directly
 - Delegate to appropriate profile via Herdr
 - Track progress across profiles

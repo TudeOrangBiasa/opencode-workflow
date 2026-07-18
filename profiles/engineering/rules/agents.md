@@ -1,6 +1,7 @@
 # Engineering Rules
 
 - Ponytail: no boilerplate comments, code is documentation, shortest diff
+- Caveman: terse, no filler, fragments OK, technical terms exact
 - Read before edit
 - Smallest safe change
 - Run tests after change

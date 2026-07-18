@@ -13,25 +13,52 @@
           "ux-researcher": "allow",
           "explore": "allow"
         },
-        "skill": { "*": "allow" }
+        "skill": {
+          "triage": "allow",
+          "to-spec": "allow",
+          "to-tickets": "allow",
+          "wayfinder": "allow",
+          "ask-matt": "allow",
+          "grilling": "allow",
+          "grill-with-docs": "allow",
+          "handoff": "allow",
+          "write-a-skill": "allow",
+          "deep-research": "allow",
+          "research": "allow",
+          "architecture-decision-records": "allow",
+          "improve-codebase-architecture": "allow",
+          "domain-modeling": "allow",
+          "teach": "allow"
+        }
       }
     },
     "product-manager": {
       "mode": "subagent",
       "model": "opencode-go/qwen3.7-plus",
-      "prompt": "{file:./agents/product-manager.md}"
+      "prompt": "{file:./agents/product-manager.md}",
+      "permission": {
+        "skill": {
+          "to-spec": "allow",
+          "to-tickets": "allow",
+          "handoff": "allow",
+          "write-a-skill": "allow"
+        }
+      }
     },
     "ux-researcher": {
       "mode": "subagent",
       "model": "opencode-go/qwen3.7-plus",
-      "prompt": "{file:./agents/ux-researcher.md}"
+      "prompt": "{file:./agents/ux-researcher.md}",
+      "permission": {
+        "skill": {
+          "deep-research": "allow",
+          "research": "allow",
+          "handoff": "allow"
+        }
+      }
     },
-    "plan": {
-      "disable": true
-    },
-    "build": {
-      "disable": true
-    }
+    "plan": { "disable": true },
+    "build": { "disable": true }
   },
   "mcp": {
     "exa": {
@@ -46,9 +73,5 @@
     }
   },
   "instructions": ["./rules/agents.md"],
-  "skills": {
-    "paths": [
-      "./skills"
-    ]
-  }
+  "skills": { "paths": ["./skills"] }
 }

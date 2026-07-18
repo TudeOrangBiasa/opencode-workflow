@@ -13,34 +13,67 @@
           "security-reviewer": "allow",
           "explore": "allow"
         },
-        "skill": { "*": "allow" }
+        "skill": {
+          "ai-regression-testing": "allow",
+          "tdd": "allow",
+          "code-review": "allow",
+          "diagnosing-bugs": "allow",
+          "verify-evidence": "allow",
+          "click-path-audit": "allow",
+          "error-handling": "allow",
+          "production-audit": "allow",
+          "team-handoff-quality": "allow",
+          "php-review": "allow",
+          "security-review": "allow",
+          "security-bounty-hunter": "allow",
+          "defi-amm-security": "allow",
+          "evm-token-decimals": "allow",
+          "nodejs-keccak256": "allow",
+          "prediction-market-risk-review": "allow"
+        }
       }
     },
     "qa-engineer": {
       "mode": "subagent",
       "model": "opencode-go/mimo-v2.5",
-      "prompt": "{file:./agents/qa-engineer.md}"
+      "prompt": "{file:./agents/qa-engineer.md}",
+      "permission": {
+        "skill": {
+          "ai-regression-testing": "allow",
+          "tdd": "allow",
+          "code-review": "allow",
+          "diagnosing-bugs": "allow",
+          "verify-evidence": "allow",
+          "click-path-audit": "allow",
+          "error-handling": "allow",
+          "production-audit": "allow",
+          "team-handoff-quality": "allow",
+          "php-review": "allow"
+        }
+      }
     },
     "security-reviewer": {
       "mode": "subagent",
       "model": "deepseek/deepseek-v4-flash",
-      "prompt": "{file:./agents/security-reviewer.md}"
+      "prompt": "{file:./agents/security-reviewer.md}",
+      "permission": {
+        "skill": {
+          "security-review": "allow",
+          "security-bounty-hunter": "allow",
+          "defi-amm-security": "allow",
+          "evm-token-decimals": "allow",
+          "nodejs-keccak256": "allow",
+          "prediction-market-risk-review": "allow"
+        }
+      }
     },
-    "plan": {
-      "disable": true
-    },
-    "build": {
-      "disable": true
-    }
+    "plan": { "disable": true },
+    "build": { "disable": true }
   },
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "chrome-devtools-mcp@latest"
-      ],
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": true
     },
     "openviking": {
@@ -50,9 +83,5 @@
     }
   },
   "instructions": ["./rules/agents.md"],
-  "skills": {
-    "paths": [
-      "./skills"
-    ]
-  }
+  "skills": { "paths": ["./skills"] }
 }

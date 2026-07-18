@@ -13,34 +13,81 @@
           "backend-dev": "allow",
           "explore": "allow"
         },
-        "skill": { "*": "allow" }
+        "skill": {
+          "react-patterns": "allow",
+          "angular-developer": "allow",
+          "ui-to-vue": "allow",
+          "accessibility": "allow",
+          "nextjs-turbopack": "allow",
+          "nuxt4-patterns": "allow",
+          "vite-patterns": "allow",
+          "design-skill": "allow",
+          "laravel": "allow",
+          "django": "allow",
+          "fastapi-patterns": "allow",
+          "api-connector-builder": "allow",
+          "backend-patterns": "allow",
+          "mcp-server-patterns": "allow",
+          "modular-monolith": "allow",
+          "implement": "allow",
+          "prototype": "allow",
+          "containers": "allow",
+          "database-patterns": "allow",
+          "database-migrations": "allow",
+          "database-review": "allow",
+          "flox-environments": "allow",
+          "shared-hosting-deployment": "allow"
+        }
       }
     },
     "frontend-dev": {
       "mode": "subagent",
       "model": "opencode-go/mimo-v2.5",
-      "prompt": "{file:./agents/frontend-dev.md}"
+      "prompt": "{file:./agents/frontend-dev.md}",
+      "permission": {
+        "skill": {
+          "react-patterns": "allow",
+          "angular-developer": "allow",
+          "ui-to-vue": "allow",
+          "accessibility": "allow",
+          "nextjs-turbopack": "allow",
+          "nuxt4-patterns": "allow",
+          "vite-patterns": "allow",
+          "design-skill": "allow"
+        }
+      }
     },
     "backend-dev": {
       "mode": "subagent",
       "model": "deepseek/deepseek-v4-flash",
-      "prompt": "{file:./agents/backend-dev.md}"
+      "prompt": "{file:./agents/backend-dev.md}",
+      "permission": {
+        "skill": {
+          "laravel": "allow",
+          "django": "allow",
+          "fastapi-patterns": "allow",
+          "api-connector-builder": "allow",
+          "backend-patterns": "allow",
+          "mcp-server-patterns": "allow",
+          "modular-monolith": "allow",
+          "implement": "allow",
+          "prototype": "allow",
+          "containers": "allow",
+          "database-patterns": "allow",
+          "database-migrations": "allow",
+          "database-review": "allow",
+          "flox-environments": "allow",
+          "shared-hosting-deployment": "allow"
+        }
+      }
     },
-    "plan": {
-      "disable": true
-    },
-    "build": {
-      "disable": true
-    }
+    "plan": { "disable": true },
+    "build": { "disable": true }
   },
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "chrome-devtools-mcp@latest"
-      ],
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
       "enabled": true
     },
     "openviking": {
@@ -50,9 +97,5 @@
     }
   },
   "instructions": ["./rules/agents.md"],
-  "skills": {
-    "paths": [
-      "./skills"
-    ]
-  }
+  "skills": { "paths": ["./skills"] }
 }

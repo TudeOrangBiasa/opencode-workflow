@@ -12,15 +12,24 @@
           "explore": "allow",
           "scout": "allow"
         },
-        "skill": { "*": "allow" }
+        "skill": {
+          "memory-dreaming": "allow",
+          "workflow-audit": "allow",
+          "eval": "allow",
+          "codebase-onboarding": "allow",
+          "context-budget": "allow",
+          "deployment-patterns": "allow",
+          "git-workflow": "allow",
+          "github-ops": "allow",
+          "herdr": "allow",
+          "search-first": "allow",
+          "skill-author": "allow",
+          "setup-matt-pocock-skills": "allow"
+        }
       }
     },
-    "plan": {
-      "disable": true
-    },
-    "build": {
-      "disable": true
-    }
+    "plan": { "disable": true },
+    "build": { "disable": true }
   },
   "mcp": {
     "openviking": {
@@ -30,9 +39,5 @@
     }
   },
   "instructions": ["./rules/agents.md"],
-  "skills": {
-    "paths": [
-      "./skills"
-    ]
-  }
+  "skills": { "paths": ["./skills"] }
 }

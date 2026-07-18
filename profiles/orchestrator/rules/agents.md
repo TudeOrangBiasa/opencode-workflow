@@ -1,5 +1,6 @@
 # Orchestrator Rules
 
+- Ponytail: no boilerplate comments, code is documentation, shortest diff
 - Never implement code directly
 - Delegate to appropriate profile via Herdr
 - Track progress across profiles

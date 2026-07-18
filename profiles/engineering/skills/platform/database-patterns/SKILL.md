@@ -1,5 +1,5 @@
 ---
-name: postgres-patterns
+name: database-patterns
 description: Database patterns for PostgreSQL, MySQL, Redis, and Prisma. Use when designing schemas, writing queries, caching strategies, or ORM configuration.
 ---
 

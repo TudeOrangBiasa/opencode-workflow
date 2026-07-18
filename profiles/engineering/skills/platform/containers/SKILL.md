@@ -1,5 +1,5 @@
 ---
-name: docker-patterns
+name: containers
 description: Container patterns for Docker and Kubernetes. Use when writing Dockerfiles, docker-compose, K8s manifests, or deployment configs.
 ---
 

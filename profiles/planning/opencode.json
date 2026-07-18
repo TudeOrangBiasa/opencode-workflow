@@ -12,7 +12,8 @@
           "product-manager": "allow",
           "ux-researcher": "allow",
           "explore": "allow"
-        }
+        },
+        "skill": { "*": "allow" }
       }
     },
     "product-manager": {

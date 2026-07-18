@@ -12,7 +12,8 @@
           "qa-engineer": "allow",
           "security-reviewer": "allow",
           "explore": "allow"
-        }
+        },
+        "skill": { "*": "allow" }
       }
     },
     "qa-engineer": {

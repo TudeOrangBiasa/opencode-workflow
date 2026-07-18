@@ -12,7 +12,8 @@
           "frontend-dev": "allow",
           "backend-dev": "allow",
           "explore": "allow"
-        }
+        },
+        "skill": { "*": "allow" }
       }
     },
     "frontend-dev": {

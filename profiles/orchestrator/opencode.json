@@ -11,7 +11,8 @@
           "*": "deny",
           "explore": "allow",
           "scout": "allow"
-        }
+        },
+        "skill": { "*": "allow" }
       }
     },
     "plan": {

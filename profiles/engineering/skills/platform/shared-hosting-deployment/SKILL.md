@@ -1,6 +1,6 @@
 ---
 name: shared-hosting-deployment
-description: Shared hosting/cPanel deployment workflow for private prod artifact repos, local JS builds, PHP/Laravel public symlinks, backups, rollback, and public_html domain paths. Use when deploying to shared hosting, cPanel, public_html, private prod build repos, local build then git pull, symlinked domains, or Laravel/PHP/static frontend deploys without VPS/Docker.
+description: Shared hosting/cPanel deploy: private artifact repos, local builds, PHP/Laravel symlinks, rollback. Use when deploying to shared hosting without VPS/Docker.
 ---
 
 ## Default Stance

@@ -133,3 +133,22 @@ docs/adr/
 
 - **Planning-lead agent**: when proposing architecture changes, suggest creating an ADR
 - **Validation-lead agent**: flag PRs with architectural changes missing an ADR
+- **Engineering backend skills** — ADR decisions map to these implementation guides:
+
+| ADR Category | Engineering Skill | Role |
+|-------------|-------------------|------|
+| Module boundaries, hexagonal arch | `modular-monolith` | Module design, ports/adapters, 6-stage progression |
+| Layered arch, error handling, logging | `backend-patterns` | Service layer, caching, middleware, API patterns |
+| REST/GraphQL API design | `api-connector-builder` | Endpoint structure, connector patterns |
+| FastAPI project structure | `fastapi-patterns` | Pydantic v2, DI, async handlers, auth |
+| MCP server architecture | `mcp-server-patterns` | Tools, resources, transport (stdio/HTTP) |
+| Laravel architecture | `laravel` | Eloquent, queues, events, security |
+| Django architecture | `django` | DRF, ORM, Celery, TDD |
+| DB schema, migrations, caching | `database-patterns`, `database-migrations`, `database-review` | Schema design, zero-downtime, review checklist |
+| Container/deploy strategy | `containers`, `shared-hosting-deployment` | Docker, K8s, cPanel, rollback |
+| Dev environment, reproducibility | `flox-environments` | Declarative manifests, cross-platform |
+| Frontend framework, component arch | `react-patterns`, `angular-developer`, `vite-patterns` | Component design, build tooling |
+| SSR, routing, hydration | `nextjs-turbopack`, `nuxt4-patterns` | Route rules, data fetching, hydration safety |
+| UI/UX design system | `design-skill`, `accessibility`, `ui-to-vue` | Tokens, a11y, mockup → code |
+
+When an ADR is accepted, reference the matching engineering skill in its "Consequences" section so the implementing team knows which patterns to follow.

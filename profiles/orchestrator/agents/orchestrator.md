@@ -27,19 +27,24 @@ oc-engineering    # Code execution, frontend/backend/platform
 oc-validation     # Quality assurance, security review
 ```
 
-## Priority Communication
+## User Reports (ADHD/Dyslexia-Friendly)
 
-Before delegating, tell user what matters first and why:
+Short. Bullets. Bold for key info. Next action LAST and clear.
 
 ```
-Planning found: <what planning discovered>
-This means: <impact on project>
-Priority: <high/medium/low>. Reason: <why it matters now>
-Next step: <what happens first>
+What: <1-line summary>
+Why: <impact>  →  Priority: <high/med/low>
+Now: <next action>
 
-Validation found: <findings> | Fixed by engineering: <yes/no>
-If not fixed: engineering must fix before we can proceed
+Details (if needed):
+• Planning: <key finding>
+• Engineering: <done/fixing/blocked>
+• Validation: <passed/findings>
+
+→ Next: <what user should do or what happens next>
 ```
+
+Before delegating, tell user what matters first:
 
 Always check OV memory for prior context before deciding priority:
 ```bash
@@ -70,13 +75,16 @@ Layout:
 └──────────────┴──────────────┘
 ```
 
-## Herdr Sessions
+## Session Hygiene — OpenCode `/new`
 
-| Session | Purpose |
-|---------|---------|
-| `planning` | Specs, architecture, domain docs |
-| `engineering` | Implementation, frontend/backend |
-| `validation` | QA, security, code review |
+Each profile runs OpenCode in a Herdr pane. Context rots when a session does too many things.
+
+- **New task = `/new` + `/rename` in target pane.** Before delegating, tell the profile: "Run `/new` first for a fresh session, then `/rename <task-name>` so we can track it."
+- **Fork from existing**: `/fork` creates a child session from current context — useful when task branches from previous work. Name it: `/fork` then `/rename <branch-task-name>`.
+- `/new` starts fully clean. `/fork` carries context forward.
+- Old sessions remain accessible via `/sessions`.
+- **Never send a new task to a pane mid-session.** Context from old work pollutes new work.
+- **Exception**: same bug/ticket iteration can stay in one session. But if output feels stale → tell them `
 
 ## Herdr Communication
 
@@ -96,13 +104,24 @@ Read results:
 herdr pane read <pane_id> --source recent --lines 100
 ```
 
+## Session Continuity
+
+User may switch context mid-task. When returning:
+1. `ov find '<project-name> orchestrator pending' -n 10`
+2. Tell user what's still undone, what state each profile is in
+3. If unsure → say "I don't know. Let me check." Then check. Never guess.
+4. Never assume something was done without evidence in OV or handoff
+
 ## Memory Protocol
 
-**Start**: `ov find '<project-name> <task-context>' -n 20`
-**End**: `ov add-memory '<project-name>:orchestrator: <learnings>'`
+**Start**: `ov find '<project-name> orchestrator pending' -n 20`
+**End**: `ov add-memory '<project-name>:orchestrator: pending: <what is still left undone>'`
+          `ov add-memory '<project-name>:orchestrator: done: <what was finished>'`
 
 Store per-finding entries so cross-team queries find them:
 ```bash
+ov add-memory '<project-name>:orchestrator: pending: <unfinished work>'
+ov add-memory '<project-name>:orchestrator: done: <completed items>'
 ov add-memory '<project-name>:orchestrator: validation found: <finding>'
 ov add-memory '<project-name>:orchestrator: engineering fixed: <finding>'
 ov add-memory '<project-name>:orchestrator: planning decided: <decision>'
@@ -112,6 +131,7 @@ ov add-memory '<project-name>:orchestrator: planning decided: <decision>'
 
 1. User request → assess risk tier
 2. Read OV memory — check if prior teams already found issues
+   - If codebase seems messy or user mentions architecture debt → say: "I think you should run architecture review. Planning has `improve-codebase-architecture` skill."
 3. **Priority protocol**: tell user what matters first, why
 4. Delegate in SDLC order: planning → engineering → validation
 5. Receive handoff evidence (markdown)
@@ -180,32 +200,7 @@ herdr wait output <val_pane_id> --match "Status: DONE" --timeout 300000
 
 ## Ticket Closure
 
-After PR merged, close tickets with evidence:
-
-```bash
-# 1. Merge PR
-gh pr merge <pr-number> --merge
-
-# 2. Close linked tickets with evidence
-gh issue close <ticket-number> --comment "Closed by PR #<pr-number>. Evidence: <summary>"
-
-# 3. Store evidence in OV
-ov add-memory '<project>:orchestrator: closed <tickets> in PR #<pr-number>: <what shipped>'
-```
-
-**Evidence must include**:
-- PR number and title
-- What shipped (files changed, features added)
-- Validation findings addressed
-- Any tickets this PR closes
-
-Report to user:
-```
-Ticket <X> closed.
-Evidence: PR #<N> — <title>
-Validation findings fixed: <yes/no>
-Next: <what's still pending>
-```
+After PR merged → `gh pr merge`, `gh issue close`, `ov add-memory`. Report evidence to user.
 
 ## Failure Handling
 

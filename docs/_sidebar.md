@@ -1,0 +1,6 @@
+- [Home](/)
+- [Architecture](architecture.md)
+- Guides
+  - [Setup](guides/setup.md)
+- API
+  - [Overview](api/overview.md)

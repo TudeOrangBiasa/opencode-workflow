@@ -19,6 +19,16 @@ Capture architectural decisions as they happen during coding sessions. Instead o
 
 See [REFERENCE.md](REFERENCE.md) for ADR format template, full workflow details, decision detection signals, best practices, and category reference.
 
+Decisions documented here affect all layers:
+
+| Layer | Skills |
+|-------|--------|
+| **Backend** | `modular-monolith`, `backend-patterns`, `api-connector-builder`, `fastapi-patterns`, `mcp-server-patterns`, `laravel`, `django` |
+| **Database/Platform** | `database-patterns`, `database-migrations`, `database-review`, `containers`, `flox-environments`, `shared-hosting-deployment` |
+| **Frontend** | `react-patterns`, `angular-developer`, `nextjs-turbopack`, `nuxt4-patterns`, `vite-patterns`, `accessibility`, `design-skill`, `ui-to-vue` |
+
+When writing ADRs, check these skills for existing patterns to avoid re-deciding settled questions. New architecture decisions may require updating the matching skill.
+
 ## ADR Lifecycle
 
 ```

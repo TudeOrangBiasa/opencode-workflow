@@ -5,13 +5,7 @@ description: Use when multi-source deep research using web search MCP — search
 
 # Deep Research
 
-Adapted from ECC's `deep-research` skill (MIT).
-
-> **Drift-prone skill.** Firecrawl/Exa MCP tool names, quotas, and result
-> shapes change. Verify the configured MCP tools and current API docs before
-> promising coverage or quoting live source counts.
-
-Produce thorough, cited research reports from multiple web sources using firecrawl and exa MCP tools.
+Produce thorough, cited research reports from multiple web sources using 9router search/fetch tools.
 
 ## When to Activate
 

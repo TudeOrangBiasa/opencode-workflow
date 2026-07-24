@@ -1,10 +1,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "9router": {
+      "options": {
+        "baseURL": "http://localhost:20128/v1",
+        "apiKey": "{env:NINEROUTER_KEY}"
+      },
+      "models": {
+        "claude-fable-5": {},
+        "gpt-5.6-sol": {},
+        "claude-sonnet-5": {},
+        "gpt-5.6-terra": {}
+      }
+    }
+  },
   "default_agent": "planning-lead",
   "agent": {
     "planning-lead": {
       "mode": "primary",
-      "model": "opencode-go/qwen3.7-plus",
+      "model": "9router/gpt-5.6-sol",
       "prompt": "{file:./agents/planning-lead.md}",
       "permission": {
         "task": {
@@ -13,12 +27,16 @@
           "ux-researcher": "allow",
           "explore": "allow"
         },
+        "websearch": "deny",
+        "webfetch": "deny",
+        "9router-web-search": "allow",
+        "9router-web-fetch": "allow",
         "skill": {
+          "caveman": "allow",
           "triage": "allow",
           "to-spec": "allow",
           "to-tickets": "allow",
           "wayfinder": "allow",
-          "ask-matt": "allow",
           "grilling": "allow",
           "grill-with-docs": "allow",
           "handoff": "allow",
@@ -34,7 +52,7 @@
     },
     "product-manager": {
       "mode": "subagent",
-      "model": "opencode-go/qwen3.7-plus",
+      "model": "9router/gpt-5.6-sol",
       "prompt": "{file:./agents/product-manager.md}",
       "permission": {
         "skill": {
@@ -47,7 +65,7 @@
     },
     "ux-researcher": {
       "mode": "subagent",
-      "model": "opencode-go/qwen3.7-plus",
+      "model": "9router/gpt-5.6-sol",
       "prompt": "{file:./agents/ux-researcher.md}",
       "permission": {
         "skill": {
@@ -61,17 +79,12 @@
     "build": { "disable": true }
   },
   "mcp": {
-    "exa": {
-      "type": "remote",
-      "url": "https://mcp.exa.ai/mcp",
-      "enabled": true
-    },
     "openviking": {
       "type": "remote",
       "url": "http://localhost:1933/mcp",
       "enabled": true
     }
   },
-  "instructions": ["./rules/agents.md"],
+  "instructions": ["./rules/agents.md", "../../CODING_STANDARDS.md"],
   "skills": { "paths": ["./skills"] }
 }

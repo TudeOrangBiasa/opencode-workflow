@@ -1,5 +1,5 @@
 ---
-name: setup-matt-pocock-skills
+name: setup-matt
 description: Proactive onboarding for all agent profiles. Asks about each profile's needs (coding style, DESIGN.md, test framework, CI/CD, issue tracker, domain docs) one at a time before writing configs. Run when starting a new project or when profiles are missing context.
 disable-model-invocation: true
 ---

@@ -1,8 +1,8 @@
 ---
 name: caveman
 description: >
-  Ultra-compressed communication mode. Cuts token usage ~75% by speaking like caveman
-  while keeping full technical accuracy. Supports intensity levels: lite, full (default), ultra,
+  Ultra-compressed communication. Cuts token usage ~75% while keeping technical accuracy.
+  Levels: lite/full/ultra/wenyan. Auto-triggers on efficiency request. Use when user says
   wenyan-lite, wenyan-full, wenyan-ultra.
   Use when user says "caveman mode", "talk like caveman", "use caveman", "less tokens",
   "be brief", or invokes /caveman. Also auto-triggers when token efficiency is requested.

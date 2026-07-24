@@ -22,3 +22,15 @@
 - Smallest safe change
 - Run tests after change
 - Self-review before handoff
+
+## Open Source First (PajakinID)
+- Ponytail enforced: use OSS, don't build from scratch.
+- Invoices, PDF, exports, auth: prefer mature OSS packages.
+- Go: fast OSS tools (gofpdf, go-redis, shopspring/decimal, testify, gin/echo optional).
+- Before writing a util, check OSS first.
+
+## Tools — opensrc (NOT a coding style, a reference tool)
+- `opensrc` (vercel-labs) is installed globally: `npm i -g opensrc`.
+- Purpose: fetch any OSS repo/package SOURCE CODE as documentation/context to inform your code.
+- Usage: `opensrc path <pkg>` (npm), `opensrc path owner/repo` (GitHub), `opensrc path pypi:<x>` / `crates:<x>`.
+- Before implementing against a library, fetch its source for accurate API reference. Cache is global (~/.opensrc).

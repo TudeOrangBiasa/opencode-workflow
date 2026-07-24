@@ -73,4 +73,13 @@ Off the main flow entirely.
 
 ## Precondition
 
-**`/agent-config`** — run before your first engineering flow to configure the issue tracker, triage labels, doc layout, and workspace skill symlinks the other skills assume. Custom issue trackers also work.
+**`/setup-matt`** — run before your first engineering flow to configure profiles, issue tracker, triage labels, doc layout, and workspace context the other skills assume. Custom issue trackers also work.
+
+## Skill Map (current)
+
+| Profile | Skills |
+|---------|--------|
+| **orchestrator** | caveman, codebase-onboarding, context-budget, eval, git-workflow, github-ops, herdr, memory-dreaming, search-first, setup-matt, skill-author, workflow-audit, handoff, research, grilling, verify-evidence, production-audit, ask-matt |
+| **planning** | architecture-decision-records, deep-research, domain-modeling, grill-with-docs, handoff, improve-codebase-architecture, research, teach, to-spec, to-tickets, triage, wayfinder, write-a-skill |
+| **engineering** | accessibility, angular-developer, api-connector-builder, backend-patterns, containers, database-migrations, database-patterns, database-review, design-skill, django, fastapi-patterns, flox-environments, implement, laravel, mcp-server-patterns, modular-monolith, nextjs-turbopack, nuxt4-patterns, prototype, react-patterns, shared-hosting-deployment, ui-to-vue, vite-patterns |
+| **validation** | ai-regression-testing, click-path-audit, code-review, diagnosing-bugs, error-handling, php-review, production-audit, tdd, team-handoff-quality, verify-evidence, defi-amm-security, evm-token-decimals, nodejs-keccak256, prediction-market-risk-review, security-bounty-hunter, security-review |

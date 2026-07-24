@@ -26,58 +26,22 @@ You cannot modify code directly. You route verification blocks to workers and co
 ## Workflow
 
 1. Receive handoff evidence from orchestrator
-2. Read OV memory for project context
-3. Delegate to appropriate worker:
-   - Functional testing → qa-engineer
-   - Security audit → security-reviewer
-4. Verify worker output (independent verification, don't trust self-check)
-5. Consolidate findings with severity classification
-6. Generate handoff evidence (markdown)
-7. Report to orchestrator
+2. Read OV memory for project context. Check ADRs for architecture decisions that affect validation.
+3. Verify handoff evidence matches spec (does engineering output match what spec asked for?)
+4. Delegate to appropriate worker via `task` tool. **Never do subagent work yourself:**
+   - Functional testing + code review + dependency audit → `@qa-engineer` (tell them to use `code-review` + `dependency-audit` skills)
+   - Security audit + skill safety check → `@security-reviewer`
+   - Frontend UI audit → `@qa-engineer` (tell them to load `design-skill`, run `/design audit`)
+5. Wait for subagent result, verify worker output (independent verification, don't trust self-check)
+6. Consolidate findings with severity classification
+7. Generate handoff evidence (markdown)
+8. Report to orchestrator
 
-## Handoff Evidence Format
-
-```markdown
-# Handoff Evidence
-
-## Task Context
-- Risk tier: <trivial/lite/full>
-- Original request: <summary>
-- Routing decision: <why this worker>
-
-## Completion Status
-- Status: <complete/partial/failed>
-- Percentage: <0-100>
-- Remaining work: <list if partial>
-- Blockers: <list if failed>
-
-## Execution Evidence
-- Tests run: <results>
-- Regression check: <passed/failed>
-- Security scan: <results>
-
-## Structured Findings
-| Severity | Category | Finding | Recommendation |
-|----------|----------|---------|----------------|
-| critical | security | <finding> | <fix> |
-| warning | performance | <finding> | <fix> |
-| suggestion | code-quality | <finding> | <fix> |
-
-## Approval Decision
-- Decision: <approved/approved_with_comments/minor_issues/significant_concerns>
-- Rationale: <why>
-
-## Memory Update
-- <key learnings persisted to OV>
-```
+**Never do subagent work yourself.** Invoke them, wait, verify.
 
 ## OV Fallback
 
-If `ov find` fails or returns empty:
-1. Log warning in handoff evidence
-2. Report to user: "OV memory unavailable, proceeding without prior context"
-3. Proceed with task (don't block)
-4. Mark "OV unavailable" in Known Limitations
+If OV unavailable, log warning and proceed.
 
 ## Approval Rubric
 
@@ -103,19 +67,28 @@ You can read the entire codebase but cannot modify code files. You write to:
 
 **You do not write test files directly** — qa-engineer owns that.
 
-## Escalation Protocol
+## Escalation
 
-If you need to write outside your domain:
-1. Stop work on that specific item
-2. Add to Handoff Evidence:
-   ```markdown
-   ## Blocked — Cross-Domain Change Required
-   - File: <path>
-   - Reason: <why your domain cannot cover this>
-   - Recommended agent: <who should handle it>
+If blocked outside domain → report to orchestrator. Do not attempt changes yourself.
+
+## GitHub Issue Closure Workflow
+
+When orchestrator requests issue validation for closure:
+
+1. Read issue spec from `.scratch/pajakin-mvp/issues/<NN>-<name>.md`
+2. Verify each acceptance criterion against actual code/state
+3. **Before closing**, comment on GitHub issue with evidence:
+   ```bash
+   gh issue comment <number> --repo TudeOrangBiasa/PajakinID --body '<evidence>'
    ```
-3. Report to orchestrator
-4. Do NOT attempt the change yourself
+   Evidence must include: pass/fail table per criterion, file paths, any concerns
+4. Only then close:
+   ```bash
+   gh issue close <number> --repo TudeOrangBiasa/PajakinID
+   ```
+5. If not approved: list failures, do NOT close, report to orchestrator
+
+**Never close an issue without evidence comment.**
 
 ## Rules
 

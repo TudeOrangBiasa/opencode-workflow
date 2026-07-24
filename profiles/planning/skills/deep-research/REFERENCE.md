@@ -1,12 +1,11 @@
 # Deep Research — Reference
 
-## MCP Requirements
+## Required Tools
 
-At least one of:
-- **firecrawl** — `firecrawl_search`, `firecrawl_scrape`, `firecrawl_crawl`
-- **exa** — `web_search_exa`, `web_search_advanced_exa`, `crawling_exa`
+- **9router-web-search** — web search (round-robin: Tavily, Exa, Brave, Serper, Perplexity, Linkup)
+- **9router-web-fetch** — URL → markdown (Jina Reader, Firecrawl, Tavily, Exa)
 
-Both together give the best coverage. Configure in `~/.claude.json` or `~/.codex/config.toml`.
+Both available in all profiles. See `.opencode/tools/`.
 
 ## Full Workflow
 
@@ -29,33 +28,25 @@ Break the topic into 3-5 research sub-questions. Example for "Impact of AI on he
 
 ### Step 3: Execute Multi-Source Search
 
-For each sub-question, search using available MCP tools.
-
-**With firecrawl:**
+For each sub-question, use `9router-web-search`:
 ```
-firecrawl_search(query: "<sub-question keywords>", limit: 8)
+9router-web-search: query="<sub-question keywords>" max_results=5
 ```
 
-**With exa:**
-```
-web_search_exa(query: "<sub-question keywords>", numResults: 8)
-web_search_advanced_exa(query: "<keywords>", numResults: 5, startPublishedDate: "2025-01-01")
-```
-
-**Search strategy:**
+Search strategy:
 - Use 2-3 different keyword variations per sub-question
-- Mix general and news-focused queries
-- Aim for 15-30 unique sources total
-- Prioritize: academic, official, reputable news > blogs > forums
+- Mix general and topic-specific queries
+- Aim for 10-20 unique sources total
+- Prioritize: official docs, academic, reputable news > blogs > forums
 
 ### Step 4: Deep-Read Key Sources
 
-For the most promising URLs, fetch full content.
+For the most promising URLs, fetch full content with `9router-web-fetch`:
+```
+9router-web-fetch: url="<url>" format="markdown"
+```
 
-**With firecrawl:** `firecrawl_scrape(url: "<url>")`
-**With exa:** `crawling_exa(url: "<url>", tokensNum: 5000)`
-
-Read 3-5 key sources in full for depth. Do not rely only on search snippets.
+Use `model="firecrawl"` for JS-rendered pages, `model="jina-reader"` for fastest. Read 3-5 key sources in full.
 
 ### Step 5: Synthesize and Write Report
 
@@ -83,7 +74,7 @@ Read 3-5 key sources in full for depth. Do not rely only on search snippets.
 1. [Title](url) — [one-line summary]
 
 ## Methodology
-Searched [N] queries across web and news. Analyzed [M] sources.
+Searched [N] queries across multiple search providers. Analyzed [M] sources.
 ```
 
 ### Step 6: Deliver
@@ -93,7 +84,7 @@ Searched [N] queries across web and news. Analyzed [M] sources.
 
 ## Parallel Research with Subagents
 
-For broad topics, parallelize with OpenCode's Task tool:
+For broad topics, parallelize with `task` tool:
 
 ```
 Agent 1: Research sub-questions 1-2
@@ -101,7 +92,7 @@ Agent 2: Research sub-questions 3-4
 Agent 3: Research sub-question 5 + cross-cutting themes
 ```
 
-Each agent searches, reads sources, returns findings. Main session synthesizes final report.
+Each agent uses 9router-web-search/fetch. Main session synthesizes final report.
 
 ## Example Queries
 

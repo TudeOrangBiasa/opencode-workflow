@@ -1,16 +1,20 @@
 ---
 name: code-review
-description: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
+description: Two-axis diff review: Standards (follows coding style?) and Spec (matches issue/PRD?). Runs parallel sub-agents. Use when user wants review of branch, PR, or asks "review since X".
 ---
 
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 - **Standards** — does the code conform to this repo's documented coding standards?
+  - Ponytail style: no boilerplate comments, no docblocks for trivial code, code is source of truth
+  - YAGNI: no speculative code, no abstractions before they're needed
+  - Shortest correct diff wins, deletion over addition
+  - Existing OSS preferred over custom build (unless user explicitly says build from scratch)
 - **Spec** — does the code faithfully implement the originating issue / PRD / spec?
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-The issue tracker should have been provided to you — run `/agent-config` if `docs/agents/issue-tracker.md` is missing.
+The issue tracker should have been provided to you — run `/setup-matt` if `docs/agents/issue-tracker.md` is missing.
 
 ## Process
 
@@ -51,6 +55,7 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Shotgun Surgery** — one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
 - **Divergent Change** — one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
 - **Speculative Generality** — abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
+- **Dead Code** — unused exports, unreachable branches, parameters no caller uses, commented-out code, files nothing imports. → remove it; version control remembers.
 - **Message Chains** — long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
 - **Middle Man** — a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
@@ -62,7 +67,7 @@ Send a single message with two `Agent` tool calls. Use the `general-purpose` sub
 **Standards sub-agent prompt** — include:
 
 - The full diff command and commit list.
-- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full — the sub-agent has no other access to it.
+- The list of standards-source files you found in step 3 (including `CODING_STANDARDS.md`), **plus the smell baseline from step 3** pasted in full — the sub-agent has no other access to it.
 - The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
 **Spec sub-agent prompt** — include:

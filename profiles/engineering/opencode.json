@@ -1,10 +1,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "9router": {
+      "options": {
+        "baseURL": "http://localhost:20128/v1",
+        "apiKey": "{env:NINEROUTER_KEY}"
+      },
+      "models": {
+        "claude-fable-5": {},
+        "gpt-5.6-sol": {},
+        "claude-sonnet-5": {},
+        "gpt-5.6-terra": {}
+      }
+    }
+  },
   "default_agent": "engineering-lead",
   "agent": {
     "engineering-lead": {
       "mode": "primary",
-      "model": "opencode/hy3-free",
+      "model": "9router/claude-sonnet-5",
       "prompt": "{file:./agents/engineering-lead.md}",
       "permission": {
         "task": {
@@ -13,7 +27,12 @@
           "backend-dev": "allow",
           "explore": "allow"
         },
+        "websearch": "deny",
+        "webfetch": "deny",
+        "9router-web-search": "allow",
+        "9router-web-fetch": "allow",
         "skill": {
+          "caveman": "allow",
           "react-patterns": "allow",
           "angular-developer": "allow",
           "ui-to-vue": "allow",
@@ -42,9 +61,11 @@
     },
     "frontend-dev": {
       "mode": "subagent",
-      "model": "opencode-go/mimo-v2.5",
+      "model": "9router/claude-sonnet-5",
       "prompt": "{file:./agents/frontend-dev.md}",
       "permission": {
+        "9router-web-search": "allow",
+        "9router-web-fetch": "allow",
         "skill": {
           "react-patterns": "allow",
           "angular-developer": "allow",
@@ -59,9 +80,11 @@
     },
     "backend-dev": {
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "9router/claude-sonnet-5",
       "prompt": "{file:./agents/backend-dev.md}",
       "permission": {
+        "9router-web-search": "allow",
+        "9router-web-fetch": "allow",
         "skill": {
           "laravel": "allow",
           "django": "allow",
@@ -69,6 +92,7 @@
           "api-connector-builder": "allow",
           "backend-patterns": "allow",
           "mcp-server-patterns": "allow",
+          "tdd": "allow",
           "modular-monolith": "allow",
           "implement": "allow",
           "prototype": "allow",
@@ -85,9 +109,9 @@
     "build": { "disable": true }
   },
   "mcp": {
-    "chrome-devtools": {
+    "browser-use": {
       "type": "local",
-      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
+      "command": ["/home/todayz/.local/share/opencode/browser-use-venv/bin/mcp-browser-use"],
       "enabled": true
     },
     "openviking": {
@@ -96,6 +120,6 @@
       "enabled": true
     }
   },
-  "instructions": ["./rules/agents.md"],
+  "instructions": ["./rules/agents.md", "../../CODING_STANDARDS.md"],
   "skills": { "paths": ["./skills"] }
 }

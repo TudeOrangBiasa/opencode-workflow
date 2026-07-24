@@ -1,6 +1,6 @@
 ---
 name: skill-author
-description: Meta-skill for creating, auditing, and validating new skills. Bundles write-a-skill (general principles) with project-specific decisions (extraction criteria, portability rules). Use when user says "create a skill", "add a skill", "audit skill", "validate skill structure", or asks where a new skill should live.
+description: Meta-skill: create, audit, validate skills. Bundles write-a-skill principles with extraction criteria. Use when user says "create skill", "audit skill", or asks where to add it.
 ---
 
 # Skill Author

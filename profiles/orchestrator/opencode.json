@@ -1,10 +1,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "9router": {
+      "options": {
+        "baseURL": "http://localhost:20128/v1",
+        "apiKey": "{env:NINEROUTER_KEY}"
+      },
+      "models": {
+        "claude-fable-5": {},
+        "oc-go-plan": {},
+        "oc-go-eng": {},
+        "oc-go-valid": {}
+      }
+    }
+  },
   "default_agent": "orchestrator",
   "agent": {
     "orchestrator": {
       "mode": "primary",
-      "model": "opencode/hy3-free",
+      "model": "9router/claude-fable-5",
       "prompt": "{file:./agents/orchestrator.md}",
       "permission": {
         "task": {
@@ -12,7 +26,12 @@
           "explore": "allow",
           "scout": "allow"
         },
+        "websearch": "deny",
+        "webfetch": "deny",
+        "9router-web-search": "allow",
+        "9router-web-fetch": "allow",
         "skill": {
+          "caveman": "allow",
           "memory-dreaming": "allow",
           "workflow-audit": "allow",
           "eval": "allow",
@@ -24,7 +43,13 @@
           "herdr": "allow",
           "search-first": "allow",
           "skill-author": "allow",
-          "setup-matt-pocock-skills": "allow"
+          "setup-matt": "allow",
+          "ask-matt": "allow",
+          "handoff": "allow",
+          "research": "allow",
+          "grilling": "allow",
+          "verify-evidence": "allow",
+          "production-audit": "allow"
         }
       }
     },
@@ -38,6 +63,13 @@
       "enabled": true
     }
   },
-  "instructions": ["./rules/agents.md"],
+  "command": {
+    "spawn": {
+      "template": "Run spawn script: `!bash $HOME/.config/opencode-profiles/orchestrator/spawn-team.zsh $ARGUMENTS`",
+      "description": "Spawn planning/engineering/validation in Herdr workspace. Usage: /spawn <workspace-name>",
+      "agent": "orchestrator"
+    }
+  },
+  "instructions": ["./rules/agents.md", "../../CODING_STANDARDS.md"],
   "skills": { "paths": ["./skills"] }
 }

@@ -1,10 +1,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "9router": {
+      "options": {
+        "baseURL": "http://localhost:20128/v1",
+        "apiKey": "{env:NINEROUTER_KEY}"
+      },
+      "models": {
+        "claude-fable-5": {},
+        "gpt-5.6-sol": {},
+        "claude-sonnet-5": {},
+        "gpt-5.6-terra": {}
+      }
+    }
+  },
   "default_agent": "validation-lead",
   "agent": {
     "validation-lead": {
       "mode": "primary",
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "9router/gpt-5.6-terra",
       "prompt": "{file:./agents/validation-lead.md}",
       "permission": {
         "task": {
@@ -13,7 +27,13 @@
           "security-reviewer": "allow",
           "explore": "allow"
         },
+        "websearch": "deny",
+        "webfetch": "deny",
+        "9router-web-search": "allow",
+        "9router-web-fetch": "allow",
         "skill": {
+          "caveman": "allow",
+          "design-skill": "allow",
           "ai-regression-testing": "allow",
           "tdd": "allow",
           "code-review": "allow",
@@ -23,6 +43,8 @@
           "error-handling": "allow",
           "production-audit": "allow",
           "team-handoff-quality": "allow",
+          "dependency-audit": "allow",
+          "skill-spector": "allow",
           "php-review": "allow",
           "security-review": "allow",
           "security-bounty-hunter": "allow",
@@ -35,10 +57,13 @@
     },
     "qa-engineer": {
       "mode": "subagent",
-      "model": "opencode-go/mimo-v2.5",
+      "model": "9router/gpt-5.6-terra",
       "prompt": "{file:./agents/qa-engineer.md}",
       "permission": {
+        "9router-web-search": "allow",
+        "9router-web-fetch": "allow",
         "skill": {
+          "design-skill": "allow",
           "ai-regression-testing": "allow",
           "tdd": "allow",
           "code-review": "allow",
@@ -48,16 +73,20 @@
           "error-handling": "allow",
           "production-audit": "allow",
           "team-handoff-quality": "allow",
+          "dependency-audit": "allow",
           "php-review": "allow"
         }
       }
     },
     "security-reviewer": {
       "mode": "subagent",
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "9router/gpt-5.6-terra",
       "prompt": "{file:./agents/security-reviewer.md}",
       "permission": {
+        "9router-web-search": "allow",
+        "9router-web-fetch": "allow",
         "skill": {
+          "skill-spector": "allow",
           "security-review": "allow",
           "security-bounty-hunter": "allow",
           "defi-amm-security": "allow",
@@ -71,9 +100,9 @@
     "build": { "disable": true }
   },
   "mcp": {
-    "chrome-devtools": {
+    "browser-use": {
       "type": "local",
-      "command": ["npx", "-y", "chrome-devtools-mcp@latest"],
+      "command": ["/home/todayz/.local/share/opencode/browser-use-venv/bin/mcp-browser-use"],
       "enabled": true
     },
     "openviking": {
@@ -82,6 +111,6 @@
       "enabled": true
     }
   },
-  "instructions": ["./rules/agents.md"],
+  "instructions": ["./rules/agents.md", "../../CODING_STANDARDS.md"],
   "skills": { "paths": ["./skills"] }
 }

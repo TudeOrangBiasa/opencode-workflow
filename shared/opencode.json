@@ -2,5 +2,19 @@
   "plugin": [
     "/home/todayz/.local/share/fnm/node-versions/v24.12.0/installation/lib/node_modules/opencode-caveman/.opencode/plugins/opencode-caveman.js",
     "/home/todayz/.local/share/fnm/node-versions/v24.12.0/installation/lib/node_modules/opencode-ponytail/.opencode/plugins/ponytail.mjs"
-  ]
+  ],
+  "provider": {
+    "9router": {
+      "options": {
+        "baseURL": "http://localhost:20128/v1",
+        "apiKey": "{env:NINEROUTER_KEY}"
+      },
+      "models": {
+        "claude-fable-5": {},
+        "gpt-5.6-sol": {},
+        "claude-sonnet-5": {},
+        "gpt-5.6-terra": {}
+      }
+    }
+  }
 }

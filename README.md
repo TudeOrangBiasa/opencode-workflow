@@ -1,82 +1,152 @@
 # OpenCode Workflow Kit
 
-> Personal dotfiles + workflow pipeline for profile-based agent teams. Orchestrator manages planning, engineering, and validation profiles via Herdr.
+> Augmented, not automated. User-in-the-loop profile system. Invoke profiles on demand via SDLC patterns (plan → build → validate). No blind loops, no agentic spirals.
 
-## What This Is
+## Philosophy
 
-This repo is the **personal AI workflow setup**:
+You at the top. Profiles are tools you invoke — not autonomous workers.
 
-- 4 specialized agent profiles (orchestrator, planning, engineering, validation)
-- 10 agents total with hierarchical delegation
-- Skills distributed per profile specialization
-- Shared config (providers, plugins) that merges with profile configs
-- Herdr orchestration for inter-profile communication
+- **Augmented over automated** — AI assists thinking, doesn't replace it
+- **You invoke** — decide when to engage each profile
+- **SDLC patterns** — planning → engineering → validation, not random looping
+- **Observability** — inspect any profile's status via Herdr
+- **Token control** — cheap models for planning/validation, powerful ones for engineering
+- **Skills on-demand** — user-invocable (`/design audit`) + agent-invoked for repetitive patterns
 
-## Architecture
+Inspired by Cloudflare Software Factory, Pi Agents Maker, indydevdan, mattpocock.
+
+## Structure
 
 ```
 opencode-workflow/
 ├── profiles/
-│   ├── orchestrator/       ← User's right hand, manages other profiles via Herdr
-│   ├── planning/           ← Requirements, specs, design thinking
-│   ├── engineering/        ← Code execution, frontend/backend/platform
-│   └── validation/         ← Quality assurance, security review
+│   ├── orchestrator/       ← Right hand. Delegates via Herdr.
+│   ├── planning/           ← Specs, architecture, research.
+│   ├── engineering/        ← Code: frontend/backend/platform.
+│   └── validation/         ← QA, security, UI audit.
 ├── shared/
-│   ├── opencode.json       ← Providers, plugins
-│   ├── skills/             ← openviking (symlinked to profiles)
-│   └── rules/agents.md     ← Global conventions
-├── install.sh              ← Creates symlinks + shell aliases
-├── .scratch/spec/          ← hierarchical-team-design.md
-└── AGENTS.md / README.md   ← Entry points
-```
-
-## Quick Start
-
-```bash
-./install.sh
-source ~/.zshrc
-```
-
-Then use shell aliases:
-- `oc-orchestrator`
-- `oc-planning`
-- `oc-engineering`
-- `oc-validation`
-
-Or use Herdr:
-```bash
-herdr new-session --name orchestrator -- cmd oc-orchestrator
-herdr new-session --name planning -- cmd oc-planning
-herdr new-session --name engineering -- cmd oc-engineering
-herdr new-session --name validation -- cmd oc-validation
+│   ├── opencode.json       ← Plugins (caveman, ponytail) + 9router provider
+│   ├── rules/agents.md     ← Global conventions
+│   └── skills/openviking/  ← Shared memory skill
+├── .opencode/tools/        ← 9router web search/fetch (symlinked into profiles)
+├── install.sh              ← Symlinks + shell aliases
+├── spawn-team.zsh          ← Herdr workspace + Ghostty launch
+└── AGENTS.md / CODING_STANDARDS.md
 ```
 
 ## Agent Teams
 
+Each profile has a lead + subagents:
+
 ```
-orchestrator (user's right hand)
-├── planning-lead → product-manager, ux-researcher
-├── engineering-lead → frontend-dev, backend-dev
-└── validation-lead → qa-engineer, security-reviewer
+orchestrator (delegates to all profiles via Herdr)
+├── (no subagents — orchestration only)
+
+planning (gpt-5.6-sol)
+├── planning-lead
+├── product-manager    → to-spec, to-tickets, handoff, write-a-skill
+└── ux-researcher      → deep-research, research, handoff
+
+engineering (claude-sonnet-5)
+├── engineering-lead
+├── frontend-dev       → react, angular, vue, a11y, nextjs, nuxt, vite, design-skill
+└── backend-dev        → laravel, django, fastapi, api-connector, tdd, modular-monolith, containers, database-*
+
+validation (gpt-5.6-terra)
+├── validation-lead
+├── qa-engineer        → tdd, code-review, diagnosing-bugs, ai-regression, click-path-audit
+└── security-reviewer  → security-review, bounty-hunter, defi-amm, evm-token, nodejs-keccak256
 ```
 
 ## Model Routing
 
-- **Planning/Validation**: `opencode/hy3-free` (cheap, fast)
-- **Engineering**: `deepseek/deepseek-v4-flash` (code execution)
+| Profile | Model | Role |
+|---------|-------|------|
+| orchestrator | `claude-fable-5` | Delegation, coordination |
+| planning | `gpt-5.6-sol` | Specs, research, architecture |
+| engineering | `claude-sonnet-5` | Code execution |
+| validation | `gpt-5.6-terra` | QA, security, design audit |
 
-## Documentation
+All models via 9router gateway (localhost:20128).
 
-- [Architecture](docs/architecture.md) — profile structure, config merging, Herdr orchestration
-- [Install](docs/install.md) — setup instructions
-- [Models](docs/models.md) — model routing details
-- `.scratch/spec/hierarchical-team-design.md` — full spec
+## MCP Per Profile
 
-## Adding Skills
+| Profile | MCP |
+|---------|-----|
+| orchestrator | openviking (memory) |
+| planning | openviking (memory) |
+| engineering | browser-use, openviking (memory) |
+| validation | browser-use, openviking (memory) |
 
-1. Determine which profile needs the skill
-2. Add skill to `profiles/<profile>/skills/`
-3. Update `profiles/<profile>/opencode.json` skill_triggers if needed
+## Custom Tools
+
+| Tool | What | Via |
+|------|------|-----|
+| `9router-web-search` | Web search (Tavily, Exa, Brave, etc.) | 9router round-robin |
+| `9router-web-fetch` | URL → markdown (Jina, Firecrawl, etc.) | 9router round-robin |
+
+Built-in `websearch`/`webfetch` disabled. All profiles use 9router custom tools.
+
+## Plugins
+
+Defined in `shared/opencode.json`, inherited by all profiles:
+
+- **opencode-caveman** — ultra-terse communication mode (token savings)
+- **opencode-ponytail** — lazy senior dev style (YAGNI, shortest diff)
+
+## Skills Count
+
+| Profile | Skills |
+|---------|--------|
+| orchestrator | 18 (workflow-audit, eval, memory-dreaming, setup-matt, etc.) |
+| planning | 15 (deep-research, to-spec, to-tickets, domain-modeling, teach, etc.) |
+| engineering | 22 (frontend: 8, backend: 13, platform: 6) |
+| validation | 20 (qa: 12, security: 7, design-skill) |
+
+## Installation
+
+```bash
+# Install profile configs + shell aliases
+./install.sh
+
+# Restart shell, then invoke profiles:
+oc-orchestrator   # Delegate to others
+oc-planning       # Write specs
+oc-engineering    # Implement
+oc-validation     # Review & audit
+```
+
+`install.sh` symlinks profiles to `~/.config/opencode-profiles/` and adds shell aliases.
+
+## Spawning Team Workspace
+
+```bash
+# Spawn all profiles in Herdr workspace + Ghostty terminal
+./spawn-team.zsh <label> <project-dir>
+
+# Example
+./spawn-team.zsh my-project /path/to/project
+```
+
+Opens Ghostty with 3 panes (planning | engineering | validation) managed by Herdr.
+
+## Herdr Communication
+
+Orchestrator communicates with profiles via Herdr:
+
+```bash
+herdr pane send-text <id> <text>    # send work
+herdr pane read <id>                # read results
+herdr wait output <id> --match <text>  # wait for completion
+```
+
+## Config Merging
+
+OpenCode configs merge, not replace. Precedence: Global → Profile config. Profile overrides global on conflicts.
+
+## Coding Standards
+
+See `CODING_STANDARDS.md` — Ponytail style, OSS-first, no boilerplate, shortest diff wins.
 
 ## License
 
